@@ -6,4 +6,6 @@ Team Members:
 * Demessie Amede
 * Gurman Toor
 * Safran Bin Kader
-[Project Proposal](https://github.com/alborzk/neighbourhood/wiki/Project-Proposal)
+
+  
+### [Project Proposal](https://github.com/alborzk/neighbourhood/wiki/Project-Proposal)
