@@ -118,3 +118,7 @@ dist
 .vscode-test
 
 .DS_Store
+
+# amplify
+.amplify
+amplifyconfiguration*
