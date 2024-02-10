@@ -1,74 +1,12 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
-
-// Notes: 
-// One shared table for all types of posts, with a type field (marketplace, event, etc.)
-// OR different tables for marketplace, event, post
-
-//friends
-//friends field in user, check members field of community for overlap with friends list?
-
-//keep track of eligible communities?
-
-//trim down events + items for sale to play nicely with posts table
-
-type User {
-  id: ID!
-  username: String!
-  email: String!
-  password: String!
-  postalCode: String!
-  communities: [Community!]! @hasMany
-  selectedCommunity: Community @belongsTo
-  posts: [Post!]! @hasMany
-  friends: [User!]! @hasMany
-  friendRequests: [FriendRequest!]! @hasMany
-  events: [Event!]! @hasMany
-  itemsForSale: [ItemForSale!]! @hasMany
-  likedPosts: [Post!]! @hasMany
-  likedEvents: [Event!]! @hasMany
-  likedItems: [ItemForSale!]! @hasMany
-  location: String
-  age: Int
-  bio: String
-  profilePic: String
-  pets: Int
-  kids: Int
-}
-
-type FriendRequest {
-  id: ID!
-  sender: User! @belongsTo
-  receiver: User! @belongsTo
-  status: FriendRequestStatus!
-}
-
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
 enum FriendRequestStatus {
   PENDING
   ACCEPTED
   DECLINED
-}
-
-type Community {
-  id: ID!
-  name: String!
-  location: String!
-  postalCode: String!
-  members: [User!]! @hasMany
-  posts: [Post!]! @hasMany
-}
-
-type Post {
-  id: ID!
-  author: User! @belongsTo
-  community: Community! @belongsTo
-  images: [String]
-  content: String!
-  postType: PostType!
-  likedBy: [User!]! @hasMany
-  comments: [Comment!]! @hasMany
-  visibility: Visibility!
 }
 
 enum PostType {
@@ -84,14 +22,69 @@ enum Visibility {
   PRIVATE
 }
 
-type Comment {
+type FriendRequest @model {
+  id: ID!
+  sender: User! @belongsTo
+  receiver: User! @belongsTo
+  status: FriendRequestStatus!
+}
+
+type User @model {
+  id: ID!
+  username: String!
+  email: String!
+  password: String!
+  postalCode: String!
+  communities: [Community!]! @manyToMany(relationName: "UserCommunity")
+  selectedCommunity: Int #Store selected community's id
+  posts: [Post!]! @hasMany
+  friends: [User!]! @hasMany
+  friendRequests: [FriendRequest!]! @hasMany
+  events: [Event!]! @hasMany
+  itemsForSale: [ItemForSale!]! @hasMany
+  likedPosts: [Post!]! @manyToMany(relationName: "UserLikedPosts")
+  likedEvents: [Event!]! @manyToMany(relationName: "UserLikedEvents")
+  likedItems: [ItemForSale!]! @manyToMany(relationName: "UserLikedItems")
+  location: String
+  age: Int
+  bio: String
+  profilePic: String
+  pets: Int
+  kids: Int
+  comments: [Comment] @hasMany
+}
+
+type Community @model {
+  id: ID!
+  name: String!
+  location: String!
+  postalCode: String!
+  members: [User!]! @manyToMany(relationName: "UserCommunity")
+  posts: [Post!]! @hasMany
+  events: [Event] @hasMany
+  itemsForSale: [ItemForSale] @hasMany
+}
+
+type Post @model {
+  id: ID!
+  author: User! @belongsTo
+  community: Community! @belongsTo
+  images: [String]
+  content: String!
+  postType: PostType!
+  likedBy: [User!]! @manyToMany(relationName: "UserLikedPosts")
+  comments: [Comment!]! @hasMany
+  visibility: Visibility!
+}
+
+type Comment @model {
   id: ID!
   post: Post! @belongsTo
   author: User! @belongsTo
   content: String!
 }
 
-type Event {
+type Event @model {
   id: ID!
   name: String!
   description: String!
@@ -100,12 +93,12 @@ type Event {
   datetime: AWSDateTime!
   community: Community! @belongsTo
   organizer: User! @belongsTo
-  attendees: [User!]! @hasMany
-  likedBy: [User!]! @hasMany
+  # attendees: [User!]! @hasMany
+  likedBy: [User!]! @manyToMany(relationName: "UserLikedEvents")
   visibility: Visibility!
 }
 
-type ItemForSale {
+type ItemForSale @model {
   id: ID!
   title: String!
   description: String!
@@ -114,7 +107,7 @@ type ItemForSale {
   price: Float!
   seller: User! @belongsTo
   community: Community! @belongsTo
-  likedBy: [User!]! @hasMany
+  likedBy: [User!]! @manyToMany(relationName: "UserLikedItems")
   visibility: Visibility!
 }
 
@@ -129,16 +122,21 @@ type Query {
 }
 
 type Mutation {
-  createUser(username: String!, email: String!, password: String!, postalCode: String!): User
-  updateUser(id: ID!, username: String, email: String, password: String, postalCode: String, age: Int, bio: String, profilePic: String, pets: Int, kids: Int): User
   switchCommunity(userId: ID!, communityId: ID!): User
   joinCommunity(userId: ID!, communityId: ID!): User
-  createPost(authorId: ID!, communityId: ID!, content: String!, postType: PostType!, visibility: Visibility!, images: [String]): Post
   likePost(postId: ID!): Post
   unlikePost(postId: ID!): Post
   commentOnPost(postId: ID!, authorId: ID!, content: String!): Comment
-  createEvent(name: String!, description: String!, datetime: AWSDateTime!, communityId: ID!, organizerId: ID!, images: [String], visibility: Visibility!): Event
-  sellItem(title: String!, description: String!, price: Float!, sellerId: ID!, communityId: ID!, images: [String], contact: String!, visibility: Visibility!): ItemForSale
+  sellItem(
+    title: String!
+    description: String!
+    price: Float!
+    sellerId: ID!
+    communityId: ID!
+    images: [String]
+    contact: String!
+    visibility: Visibility!
+  ): ItemForSale
   addFriend(userId: ID!, friendId: ID!): User
   likeEvent(userId: ID!, eventId: ID!): Event
   unlikeEvent(userId: ID!, eventId: ID!): Event
