@@ -2,14 +2,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { TextInput, PasswordInput, Button, Group, Box, Title } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Box, Title } from '@mantine/core';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import UserPool from '@/components/Authorization/UserPool.js';
 
 const SignUpForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // State for confirm password
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [familyName, setFamilyName] = useState('');
   const [preferredUsername, setPreferredUsername] = useState('');
   const [name, setName] = useState('');
@@ -29,6 +29,7 @@ const SignUpForm: React.FC = () => {
       return; // Prevent the form from proceeding
     }
 
+    //Compile attributes and send to cognito
     if (step === 2) {
       const attributeList = [
         new CognitoUserAttribute({ Name: 'family_name', Value: familyName }),
@@ -42,7 +43,6 @@ const SignUpForm: React.FC = () => {
           console.error(err.message || JSON.stringify(err));
         } else {
           console.log(data);
-          // Implement success logic here
         }
       });
     } else {
