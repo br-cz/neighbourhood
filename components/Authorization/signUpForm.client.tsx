@@ -1,7 +1,7 @@
-// LoginForm.tsx
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter for navigation
 import { TextInput, PasswordInput, Button, Box, Title } from '@mantine/core';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import UserPool from '@/components/Authorization/UserPool.js';
@@ -14,8 +14,10 @@ const SignUpForm: React.FC = () => {
   const [preferredUsername, setPreferredUsername] = useState('');
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
-
   const [step, setStep] = useState(1);
+  const [isSignUpSuccessful, setIsSignUpSuccessful] = useState(false);
+  const [signUpError, setSignUpError] = useState('');
+  const router = useRouter(); // Initialize useRouter for navigation
 
   const previousStep = () => setStep(step - 1);
   const nextStep = () => setStep(step + 1);
@@ -23,7 +25,6 @@ const SignUpForm: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Check for password match in the step where password is collected
     if (step === 1 && password !== confirmPassword) {
       alert('Passwords do not match.');
       return; // Prevent the form from proceeding
@@ -41,8 +42,11 @@ const SignUpForm: React.FC = () => {
       UserPool.signUp(email, password, attributeList, [], (err, data) => {
         if (err) {
           console.error(err.message || JSON.stringify(err));
+          setSignUpError(err.message || 'An error occurred during signup.');
         } else {
           console.log(data);
+          setIsSignUpSuccessful(true);
+          setTimeout(() => router.push('/login'), 10000);
         }
       });
     } else {
@@ -72,7 +76,6 @@ const SignUpForm: React.FC = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.currentTarget.value)}
               required
-              type="password"
             />
             <TextInput
               label="First Name"
@@ -113,14 +116,27 @@ const SignUpForm: React.FC = () => {
     }
   };
 
+  const navigateToLogin = () => router.push('/login');
+
   return (
     <Box style={{ maxWidth: 300 }} mx="auto">
-      <form onSubmit={handleSubmit}>
-        <Title order={2} style={{ textAlign: 'center' }} mb="lg">
-          Sign Up
-        </Title>
-        {renderStep()}
-      </form>
+      {isSignUpSuccessful ? (
+        <div>
+          <Title order={2} style={{ textAlign: 'center' }} mb="lg">
+            Sign up Successful!
+          </Title>
+          <p>Thank you for signing up. You can now login to your account.</p>
+          <Button onClick={navigateToLogin}>Login</Button> {/* Button to navigate to /login */}
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <Title order={2} style={{ textAlign: 'center' }} mb="lg">
+            Sign Up
+          </Title>
+          {signUpError && <p style={{ color: 'red' }}>{signUpError}</p>}
+          {renderStep()}
+        </form>
+      )}
     </Box>
   );
 };
