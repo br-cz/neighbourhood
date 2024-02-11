@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { TextInput, PasswordInput, Button, Group, Box, Title } from '@mantine/core';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import UserPool from '@/components/Login/UserPool.js';
+import UserPool from '@/components/Authorization/UserPool.js';
 
 const SignUpForm: React.FC = () => {
   const [email, setEmail] = useState('');
