@@ -17,6 +17,7 @@ const SignUpForm: React.FC = () => {
 
   const [step, setStep] = useState(1);
 
+  const previousStep = () => setStep(step - 1);
   const nextStep = () => setStep(step + 1);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -103,6 +104,7 @@ const SignUpForm: React.FC = () => {
               onChange={(e) => setAddress(e.currentTarget.value)}
               required
             />
+            <Button onClick={previousStep}>Previous</Button>
             <Button type="submit">Sign Up</Button>
           </>
         );
