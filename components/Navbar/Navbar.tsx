@@ -17,7 +17,11 @@ const data = [
   { link: '/people', label: 'People', icon: SolarUsersGroupTwoRoundedBold },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  user: User;
+}
+
+export function Navbar({ user }: NavbarProps) {
   const [active, setActive] = useState('Home');
 
   const links = data.map((item) => (
@@ -39,8 +43,8 @@ export function Navbar() {
       <div className={classes.navbarMain}>{links}</div>
 
       <div className={classes.footer}>
-        <UserButton />
-        <CommunityButton />
+        <UserButton user={user} />
+        <CommunityButton user={user} />
       </div>
     </nav>
   );

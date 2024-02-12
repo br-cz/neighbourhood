@@ -9,3 +9,9 @@
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
   }
 }
+
+.link {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}

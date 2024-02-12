@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { CustomAppShell } from '../../components/NeighbourhoodShell/NeighbourhoodShell';
+import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 
 export default function ProfilePage() {
   return (
-    <CustomAppShell>
+    <NeighbourhoodShell>
       <p>Profile</p>
-    </CustomAppShell>
+    </NeighbourhoodShell>
   );
 }
