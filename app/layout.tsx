@@ -1,16 +1,20 @@
+"use client";
 import '@mantine/core/styles.css';
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
+import { BrowserRouter } from 'react-router-dom';
 
+/*
 export const metadata = {
   title: 'neighbourhood - your community at your fingertips',
   description:
     'Neighbourhood is a community platform that allows you to connect with your neighbours and local community. Its a place to spark discussion, host events, and build relationships through proximity.',
 };
-
+*/
 export default function RootLayout({ children }: { children: any }) {
   return (
+    <BrowserRouter>
     <html lang="en">
       <head>
         <ColorSchemeScript />
@@ -30,5 +34,6 @@ export default function RootLayout({ children }: { children: any }) {
         <MantineProvider theme={theme}>{children}</MantineProvider>
       </body>
     </html>
+    </BrowserRouter>
   );
 }

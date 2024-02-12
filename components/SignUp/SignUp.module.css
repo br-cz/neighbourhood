@@ -1,0 +1,48 @@
+@keyframes wordAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animatedText {
+  display: inline-block;
+  opacity: 0;
+  animation-name: wordAppear;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.blinkingPeriod {
+  animation: blink 3s infinite;
+}
+
+.containerStyling {
+  display: flex;
+  //justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.addressModalStyling {
+  display: flex;
+  //justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
