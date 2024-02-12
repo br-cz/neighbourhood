@@ -1,23 +1,23 @@
-export enum FriendRequestStatus {
+enum FriendRequestStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
   DECLINED = 'DECLINED',
 }
 
-export enum PostType {
+enum PostType {
   THOUGHT = 'THOUGHT',
   EVENT_ANNOUNCEMENT = 'EVENT_ANNOUNCEMENT',
   ITEM_FOR_SALE = 'ITEM_FOR_SALE',
 }
 
-export enum Visibility {
+enum Visibility {
   PUBLIC = 'PUBLIC',
   FRIENDS_ONLY = 'FRIENDS_ONLY',
   FRIENDS_OF_FRIENDS = 'FRIENDS_OF_FRIENDS',
   PRIVATE = 'PRIVATE',
 }
 
-export interface User {
+interface User {
   id: string;
   username: string;
   email: string;
@@ -42,7 +42,7 @@ export interface User {
   kids: number;
 }
 
-export interface Community {
+interface Community {
   id: string;
   name: string;
   location: string;
@@ -52,7 +52,7 @@ export interface Community {
   posts: Post[];
 }
 
-export interface Post {
+interface Post {
   id: string;
   author: User;
   community: Community;
@@ -64,14 +64,14 @@ export interface Post {
   visibility: Visibility;
 }
 
-export interface Comment {
+interface Comment {
   id: string;
   post: Post;
   author: User;
   content: string;
 }
 
-export interface Event {
+interface Event {
   id: string;
   name: string;
   description: string;
@@ -85,7 +85,7 @@ export interface Event {
   visibility: Visibility;
 }
 
-export interface ItemForSale {
+interface ItemForSale {
   id: string;
   title: string;
   description: string;
@@ -98,7 +98,7 @@ export interface ItemForSale {
   visibility: Visibility;
 }
 
-export interface FriendRequest {
+interface FriendRequest {
   id: string;
   sender: User;
   receiver: User;
