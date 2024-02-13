@@ -75,9 +75,9 @@ interface Event {
   id: string;
   name: string;
   description: string;
-  images: string[];
+  image: string;
   location: string;
-  datetime: string; // Might need to change this to a date object
+  datetime: Date;
   community: Community;
   organizer: User;
   attendees: User[];

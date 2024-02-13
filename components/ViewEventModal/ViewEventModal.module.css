@@ -1,0 +1,8 @@
+.modal {
+    border-radius: var(--mantine-radius-lg);
+}
+
+.image{
+    width: 360px;
+    border-radius: var(--mantine-radius-md);
+}
