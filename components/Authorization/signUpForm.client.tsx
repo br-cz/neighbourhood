@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Import useRouter for navigation
+import { useRouter } from 'next/navigation';
 import { TextInput, PasswordInput, Button, Box, Title } from '@mantine/core';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import UserPool from '@/components/Authorization/UserPool.js';
@@ -17,7 +17,7 @@ const SignUpForm: React.FC = () => {
   const [step, setStep] = useState(1);
   const [isSignUpSuccessful, setIsSignUpSuccessful] = useState(false);
   const [signUpError, setSignUpError] = useState('');
-  const router = useRouter(); // Initialize useRouter for navigation
+  const router = useRouter();
 
   const previousStep = () => setStep(step - 1);
   const nextStep = () => setStep(step + 1);

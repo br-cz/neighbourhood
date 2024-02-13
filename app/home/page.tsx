@@ -1,4 +1,4 @@
-'use client'; // This is a client component
+'use client';
 
 export default function HomePage() {
   return <div>Welcome!</div>;
