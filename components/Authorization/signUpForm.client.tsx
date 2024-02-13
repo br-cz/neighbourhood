@@ -50,7 +50,7 @@ const SignUpForm: React.FC = () => {
         }
       });
     } else {
-      nextStep(); // Proceed to the next step if not the last step
+      nextStep();
     }
   };
 
@@ -126,7 +126,7 @@ const SignUpForm: React.FC = () => {
             Sign up Successful!
           </Title>
           <p>Thank you for signing up. You can now login to your account.</p>
-          <Button onClick={navigateToLogin}>Login</Button> {/* Button to navigate to /login */}
+          <Button onClick={navigateToLogin}>Login</Button>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
