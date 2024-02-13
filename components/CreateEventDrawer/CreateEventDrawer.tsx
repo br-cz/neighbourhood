@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Drawer,
   TextInput,
@@ -9,11 +10,13 @@ import {
   rem,
   Stack,
   Title,
+  Image,
+  ActionIcon,
 } from '@mantine/core';
-import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
+import { IconUpload, IconPhoto, IconX, IconTrashFilled } from '@tabler/icons-react';
 import { DatePickerInput, TimeInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 
 interface CreateEventDrawerProps {
   opened: boolean;
@@ -21,30 +24,68 @@ interface CreateEventDrawerProps {
 }
 
 export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
+  const [files, setFiles] = useState<FileWithPath[]>([]);
   const form = useForm({
     initialValues: {
       eventName: '',
       eventDescription: '',
       location: '',
-      date: null,
-      time: null,
-      visibility: '',
-      eventImage: null,
+      date: new Date(),
+      time: '',
+      visibility: 'public',
+      eventImage: null as File | null,
     },
   });
+
+  const previews = files.map((file, index) => {
+    const imageUrl = URL.createObjectURL(file);
+    return (
+      <Image
+        key={index}
+        src={imageUrl}
+        radius="md"
+        mt="xs"
+        onLoad={() => URL.revokeObjectURL(imageUrl)}
+      />
+    );
+  });
+
+  const handleDrop = (acceptedFiles: FileWithPath[]) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setFiles([file]);
+      form.setFieldValue('eventImage', file);
+    }
+  };
+
+  const handleRemove = () => {
+    setFiles([]);
+    form.setFieldValue('eventImage', null);
+  };
+
+  const handleClose = () => {
+    form.reset();
+    setFiles([]);
+    onClose();
+  };
 
   return (
     <Drawer
       offset={8}
       radius="md"
       opened={opened}
-      onClose={onClose}
+      onClose={handleClose}
       position="right"
       title={<Title order={3}>New Event</Title>}
       padding="lg"
       size="md"
     >
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <form
+        onSubmit={form.onSubmit((values) => {
+          console.log(values);
+          handleClose();
+        })}
+      >
         <TextInput
           required
           radius="md"
@@ -73,23 +114,25 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
           mt="md"
         />
 
-        <DatePickerInput
-          required
-          radius="md"
-          label="Date"
-          placeholder="Pick a date"
-          {...form.getInputProps('date')}
-          mt="md"
-        />
+        <Group grow>
+          <DatePickerInput
+            required
+            radius="md"
+            label="Date"
+            placeholder="Pick a date"
+            {...form.getInputProps('date')}
+            mt="md"
+          />
 
-        <TimeInput
-          required
-          radius="md"
-          label="Time"
-          placeholder="Select time"
-          {...form.getInputProps('time')}
-          mt="md"
-        />
+          <TimeInput
+            required
+            radius="md"
+            label="Time"
+            placeholder="Select time"
+            {...form.getInputProps('time')}
+            mt="md"
+          />
+        </Group>
 
         <Select
           required
@@ -104,47 +147,81 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
           mt="md"
         />
 
-        <Dropzone
-          onDrop={(files) => form.setFieldValue('eventImage', files[0])}
-          onReject={(files) => console.log('rejected files', files)}
-          maxSize={5 * 1024 ** 2}
-          accept={IMAGE_MIME_TYPE}
-          radius="md"
-          mt="lg"
-        >
-          <Stack align="center" justify="center" style={{ minHeight: 220, pointerEvents: 'none' }}>
-            <Dropzone.Accept>
-              <IconUpload
-                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-blue-6)' }}
-                stroke={1.5}
-              />
-            </Dropzone.Accept>
-            <Dropzone.Reject>
-              <IconX
-                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
-                stroke={1.5}
-              />
-            </Dropzone.Reject>
-            <Dropzone.Idle>
-              <IconPhoto
-                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-dimmed)' }}
-                stroke={1.5}
-              />
-            </Dropzone.Idle>
+        <div>
+          <Group gap="sm" align="center" mt="lg">
+            <Text fz="sm" fw={500}>
+              Cover Photo
+            </Text>
+            <ActionIcon
+              color="red"
+              radius="md"
+              variant="subtle"
+              size="xs"
+              onClick={handleRemove}
+              disabled={previews.length === 0}
+            >
+              <IconTrashFilled size={16} />
+            </ActionIcon>
+          </Group>
+          {previews.length === 0 ? (
+            <Dropzone
+              onDrop={handleDrop}
+              onReject={(rejected) => console.log('rejected files', rejected)}
+              maxSize={5 * 1024 ** 2}
+              maxFiles={1}
+              accept={IMAGE_MIME_TYPE}
+              radius="md"
+              mt="xs"
+            >
+              <Stack
+                align="center"
+                justify="center"
+                style={{ minHeight: 220, pointerEvents: 'none' }}
+              >
+                <Dropzone.Accept>
+                  <IconUpload
+                    style={{
+                      width: rem(52),
+                      height: rem(52),
+                      color: 'var(--mantine-color-blue-6)',
+                    }}
+                    stroke={1.5}
+                  />
+                </Dropzone.Accept>
+                <Dropzone.Reject>
+                  <IconX
+                    style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
+                    stroke={1.5}
+                  />
+                </Dropzone.Reject>
+                <Dropzone.Idle>
+                  <IconPhoto
+                    style={{
+                      width: rem(52),
+                      height: rem(52),
+                      color: 'var(--mantine-color-dimmed)',
+                    }}
+                    stroke={1.5}
+                  />
+                </Dropzone.Idle>
 
-            <div>
-              <Text ta="center" size="md">
-                Cover Photo
-              </Text>
-              <Text ta="center" size="xs" c="dimmed" mt={7}>
-                Drag here or click to select files
-              </Text>
-            </div>
-          </Stack>
-        </Dropzone>
+                <div>
+                  <Text ta="center" size="md">
+                    Drag here or click to select file
+                  </Text>
+                  <Text ta="center" size="xs" c="dimmed" mt={7}>
+                    File should not exceed 5MB
+                  </Text>
+                </div>
+              </Stack>
+            </Dropzone>
+          ) : (
+            <>{previews}</>
+          )}
+        </div>
 
         <Group justify="center" mt="lg">
-          <Button radius="md" type="submit">
+          <Button radius="md" type="submit" onClick={onClose}>
             Post Event
           </Button>
         </Group>
