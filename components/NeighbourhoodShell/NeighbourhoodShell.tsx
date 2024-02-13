@@ -32,7 +32,7 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
     <AppShell
       header={{ height: 70 }}
       navbar={{
-        width: 300,
+        width: 270,
         breakpoint: 'sm',
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
@@ -50,7 +50,9 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
       <AppShell.Navbar p="md">
         <Navbar user={user} />
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main m="xl" mt="xs">
+        {children}
+      </AppShell.Main>
     </AppShell>
   );
 };
