@@ -3,10 +3,10 @@
 import React from 'react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 
-export default function HomePage() {
+export default function CommunitiesPage() {
   return (
     <NeighbourhoodShell>
-      <p>Home</p>
+      <p>Communities</p>
     </NeighbourhoodShell>
   );
 }

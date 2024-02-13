@@ -1,13 +1,10 @@
-'use client';
+import React from 'react';
+import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 
-import { Welcome } from '../components/Welcome/Welcome';
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
-
-export default function HomePage() {
+export default function MainPage() {
   return (
-    <>
-      <Welcome />
-      <ColorSchemeToggle />
-    </>
+    <NeighbourhoodShell>
+      <h1>Login</h1>
+    </NeighbourhoodShell>
   );
 }
