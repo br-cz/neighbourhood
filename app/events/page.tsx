@@ -13,7 +13,8 @@ export default function EventsPage() {
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const [viewEventModalOpened, setViewEventModalOpened] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  // Placeholder data
+
+  // Placeholder data until we have our data figured out
   const users = {
     1: {
       name: 'Demessie Amede',
@@ -78,6 +79,7 @@ export default function EventsPage() {
         spacing={{ base: 5, sm: 'lg' }}
         verticalSpacing={{ base: 'md', sm: 'lg' }}
       >
+        {/* Iterates over the events array and maps them to cards - this will need to be modified with a get events query probably */}
         {Object.entries(events).map(([id, event]) => (
           <EventCard key={id} event={event} onView={() => handleViewEvent(event)} />
         ))}
