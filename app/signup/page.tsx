@@ -1,5 +1,4 @@
-'use client'; // This is a client component
-
+'use client';
 import SignUpForm from '@/components/Authorization/signUpForm.client';
 
 export default function SignUpPage() {

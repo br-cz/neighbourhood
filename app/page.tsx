@@ -1,4 +1,4 @@
-'use client'; // This is a client component
+'use client';
 
 import { Welcome } from '../components/Welcome/Welcome';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
