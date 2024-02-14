@@ -1,9 +1,10 @@
+import React from 'react';
+import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
-
-import React from 'react';
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import '@aws-amplify/ui-react/styles.css';
 import { theme } from '../theme';
 
 export const metadata = {
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
+        <ConfigureAmplifyClientSide />
         <MantineProvider theme={theme}>{children}</MantineProvider>
       </body>
     </html>

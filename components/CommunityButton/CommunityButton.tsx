@@ -4,15 +4,15 @@ import Link from 'next/link';
 import classes from './CommunityButton.module.css';
 
 interface CommunityButtonProps {
-  user: User;
+  community: Community;
 }
 
-export function CommunityButton({ user }: CommunityButtonProps) {
+export function CommunityButton({ community }: CommunityButtonProps) {
   return (
     <Link href="/communities" passHref className={classes.link}>
       <UnstyledButton className={classes.community}>
         <Group>
-          <Avatar src={user?.selectedCommunity?.image} size="md" radius="xl" />
+          <Avatar src={community?.image} size="md" radius="xl" />
 
           <div style={{ flex: 1 }}>
             <Text size="sm" fw={600}>
@@ -20,7 +20,7 @@ export function CommunityButton({ user }: CommunityButtonProps) {
             </Text>
 
             <Text c="dimmed" size="xs">
-              {user?.selectedCommunity?.name}
+              {community?.name}
             </Text>
           </div>
 

@@ -23,7 +23,8 @@ interface User {
   email: string;
   password: string;
   postalCode: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   communities: Community[];
   selectedCommunity: Community;
   posts: Post[];

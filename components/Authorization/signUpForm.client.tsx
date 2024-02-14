@@ -2,9 +2,22 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signUp } from 'aws-amplify/auth';
+import { generateClient } from 'aws-amplify/api';
 import { TextInput, PasswordInput, Button, Box, Title } from '@mantine/core';
-import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import UserPool from '@/components/Authorization/UserPool.js';
+import { createUser } from '@/src/graphql/mutations';
+import { listUsers } from '@/src/graphql/queries';
+
+const client = generateClient({});
+
+type SignUpParameters = {
+  email: string;
+  password: string;
+  name: string;
+  family_name: string;
+  preferred_username: string;
+  address: string;
+};
 
 const SignUpForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -22,6 +35,49 @@ const SignUpForm: React.FC = () => {
   const previousStep = () => setStep(step - 1);
   const nextStep = () => setStep(step + 1);
 
+  async function handleSignUp(parameters: SignUpParameters) {
+    try {
+      const cognitoResponse = await signUp({
+        username: parameters.email,
+        password: parameters.password,
+        options: {
+          userAttributes: {
+            email: parameters.email,
+            name: parameters.name,
+            family_name: parameters.family_name,
+            preferred_username: parameters.preferred_username,
+            address: parameters.address,
+          },
+        },
+      });
+
+      if (cognitoResponse.userId) {
+        const createUserInput = {
+          id: cognitoResponse.userId,
+          username: parameters.preferred_username,
+          email: parameters.email,
+          firstName: parameters.name,
+          lastName: parameters.family_name,
+          password: parameters.password,
+          postalCode: '',
+        };
+
+        await client.graphql({
+          query: createUser,
+          variables: {
+            input: createUserInput,
+          },
+        });
+      }
+
+      console.log('Sign up success:', cognitoResponse.userId);
+      setIsSignUpSuccessful(true);
+    } catch (error) {
+      console.log('error signing up:', error);
+      setSignUpError('An unexpected error occurred.');
+    }
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -32,22 +88,13 @@ const SignUpForm: React.FC = () => {
 
     //Compile attributes and send to cognito
     if (step === 2) {
-      const attributeList = [
-        new CognitoUserAttribute({ Name: 'family_name', Value: familyName }),
-        new CognitoUserAttribute({ Name: 'preferred_username', Value: preferredUsername }),
-        new CognitoUserAttribute({ Name: 'name', Value: name }),
-        new CognitoUserAttribute({ Name: 'address', Value: address }),
-      ];
-
-      UserPool.signUp(email, password, attributeList, [], (err, data) => {
-        if (err) {
-          console.error(err.message || JSON.stringify(err));
-          setSignUpError(err.message || 'An error occurred during signup.');
-        } else {
-          console.log(data);
-          setIsSignUpSuccessful(true);
-          setTimeout(() => router.push('/login'), 10000);
-        }
+      handleSignUp({
+        email,
+        password,
+        name,
+        family_name: familyName,
+        preferred_username: preferredUsername,
+        address,
       });
     } else {
       nextStep();

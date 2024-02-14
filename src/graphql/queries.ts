@@ -8,88 +8,67 @@ type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryOutput: OutputType;
 };
 
-export const getBlog = /* GraphQL */ `query GetBlog($id: ID!) {
-  getBlog(id: $id) {
+export const loginUser = /* GraphQL */ `query LoginUser($username: String!, $password: String!) {
+  loginUser(username: $username, password: $password) {
     id
-    name
+    username
+    email
+    password
+    postalCode
+    firstName
+    lastName
+    communities {
+      nextToken
+      startedAt
+      __typename
+    }
+    selectedCommunity
     posts {
       nextToken
       startedAt
       __typename
     }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedQuery<APITypes.GetBlogQueryVariables, APITypes.GetBlogQuery>;
-export const listBlogs = /* GraphQL */ `query ListBlogs(
-  $filter: ModelBlogFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
+    friends {
+      nextToken
+      startedAt
       __typename
     }
-    nextToken
-    startedAt
-    __typename
-  }
-}
-` as GeneratedQuery<APITypes.ListBlogsQueryVariables, APITypes.ListBlogsQuery>;
-export const syncBlogs = /* GraphQL */ `query SyncBlogs(
-  $filter: ModelBlogFilterInput
-  $limit: Int
-  $nextToken: String
-  $lastSync: AWSTimestamp
-) {
-  syncBlogs(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-    lastSync: $lastSync
-  ) {
-    items {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
+    friendRequests {
+      nextToken
+      startedAt
       __typename
     }
-    nextToken
-    startedAt
-    __typename
-  }
-}
-` as GeneratedQuery<APITypes.SyncBlogsQueryVariables, APITypes.SyncBlogsQuery>;
-export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
-  getPost(id: $id) {
-    id
-    title
-    blog {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
+    events {
+      nextToken
+      startedAt
       __typename
     }
+    itemsForSale {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedPosts {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedEvents {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedItems {
+      nextToken
+      startedAt
+      __typename
+    }
+    location
+    age
+    bio
+    profilePic
+    pets
+    kids
     comments {
       nextToken
       startedAt
@@ -100,7 +79,863 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
     _version
     _deleted
     _lastChangedAt
-    blogPostsId
+    userFriendsId
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.LoginUserQueryVariables, APITypes.LoginUserQuery>;
+export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $keyword: String!) {
+  searchPosts(communityId: $communityId, keyword: $keyword) {
+    id
+    author {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    community {
+      id
+      name
+      location
+      postalCode
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    images
+    content
+    postType
+    likedBy {
+      nextToken
+      startedAt
+      __typename
+    }
+    comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    visibility
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userPostsId
+    communityPostsId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SearchPostsQueryVariables,
+  APITypes.SearchPostsQuery
+>;
+export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!, $keyword: String!) {
+  searchPeople(communityId: $communityId, keyword: $keyword) {
+    id
+    username
+    email
+    password
+    postalCode
+    firstName
+    lastName
+    communities {
+      nextToken
+      startedAt
+      __typename
+    }
+    selectedCommunity
+    posts {
+      nextToken
+      startedAt
+      __typename
+    }
+    friends {
+      nextToken
+      startedAt
+      __typename
+    }
+    friendRequests {
+      nextToken
+      startedAt
+      __typename
+    }
+    events {
+      nextToken
+      startedAt
+      __typename
+    }
+    itemsForSale {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedPosts {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedEvents {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedItems {
+      nextToken
+      startedAt
+      __typename
+    }
+    location
+    age
+    bio
+    profilePic
+    pets
+    kids
+    comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userFriendsId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SearchPeopleQueryVariables,
+  APITypes.SearchPeopleQuery
+>;
+export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communityId: ID!) {
+  getCommunityPosts(communityId: $communityId) {
+    id
+    author {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    community {
+      id
+      name
+      location
+      postalCode
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    images
+    content
+    postType
+    likedBy {
+      nextToken
+      startedAt
+      __typename
+    }
+    comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    visibility
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userPostsId
+    communityPostsId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetCommunityPostsQueryVariables,
+  APITypes.GetCommunityPostsQuery
+>;
+export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) {
+  getUserFriends(userId: $userId) {
+    id
+    username
+    email
+    password
+    postalCode
+    firstName
+    lastName
+    communities {
+      nextToken
+      startedAt
+      __typename
+    }
+    selectedCommunity
+    posts {
+      nextToken
+      startedAt
+      __typename
+    }
+    friends {
+      nextToken
+      startedAt
+      __typename
+    }
+    friendRequests {
+      nextToken
+      startedAt
+      __typename
+    }
+    events {
+      nextToken
+      startedAt
+      __typename
+    }
+    itemsForSale {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedPosts {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedEvents {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedItems {
+      nextToken
+      startedAt
+      __typename
+    }
+    location
+    age
+    bio
+    profilePic
+    pets
+    kids
+    comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userFriendsId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetUserFriendsQueryVariables,
+  APITypes.GetUserFriendsQuery
+>;
+export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests($userId: ID!) {
+  pendingFriendRequests(userId: $userId) {
+    id
+    sender {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    receiver {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userFriendRequestsId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.PendingFriendRequestsQueryVariables,
+  APITypes.PendingFriendRequestsQuery
+>;
+export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userId: ID!) {
+  sentFriendRequests(userId: $userId) {
+    id
+    sender {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    receiver {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userFriendRequestsId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SentFriendRequestsQueryVariables,
+  APITypes.SentFriendRequestsQuery
+>;
+export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) {
+  getFriendRequest(id: $id) {
+    id
+    sender {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    receiver {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userFriendRequestsId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetFriendRequestQueryVariables,
+  APITypes.GetFriendRequestQuery
+>;
+export const listFriendRequests = /* GraphQL */ `query ListFriendRequests(
+  $filter: ModelFriendRequestFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFriendRequests(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      status
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendRequestsId
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListFriendRequestsQueryVariables,
+  APITypes.ListFriendRequestsQuery
+>;
+export const syncFriendRequests = /* GraphQL */ `query SyncFriendRequests(
+  $filter: ModelFriendRequestFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncFriendRequests(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      status
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendRequestsId
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncFriendRequestsQueryVariables,
+  APITypes.SyncFriendRequestsQuery
+>;
+export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+    username
+    email
+    password
+    postalCode
+    firstName
+    lastName
+    communities {
+      nextToken
+      startedAt
+      __typename
+    }
+    selectedCommunity
+    posts {
+      nextToken
+      startedAt
+      __typename
+    }
+    friends {
+      nextToken
+      startedAt
+      __typename
+    }
+    friendRequests {
+      nextToken
+      startedAt
+      __typename
+    }
+    events {
+      nextToken
+      startedAt
+      __typename
+    }
+    itemsForSale {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedPosts {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedEvents {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedItems {
+      nextToken
+      startedAt
+      __typename
+    }
+    location
+    age
+    bio
+    profilePic
+    pets
+    kids
+    comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userFriendsId
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.GetUserQueryVariables, APITypes.GetUserQuery>;
+export const listUsers = /* GraphQL */ `query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.ListUsersQueryVariables, APITypes.ListUsersQuery>;
+export const syncUsers = /* GraphQL */ `query SyncUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncUsers(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.SyncUsersQueryVariables, APITypes.SyncUsersQuery>;
+export const getCommunity = /* GraphQL */ `query GetCommunity($id: ID!) {
+  getCommunity(id: $id) {
+    id
+    name
+    location
+    postalCode
+    image
+    members {
+      nextToken
+      startedAt
+      __typename
+    }
+    posts {
+      nextToken
+      startedAt
+      __typename
+    }
+    events {
+      nextToken
+      startedAt
+      __typename
+    }
+    itemsForSale {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetCommunityQueryVariables,
+  APITypes.GetCommunityQuery
+>;
+export const listCommunities = /* GraphQL */ `query ListCommunities(
+  $filter: ModelCommunityFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCommunities(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      location
+      postalCode
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListCommunitiesQueryVariables,
+  APITypes.ListCommunitiesQuery
+>;
+export const syncCommunities = /* GraphQL */ `query SyncCommunities(
+  $filter: ModelCommunityFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncCommunities(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      name
+      location
+      postalCode
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncCommunitiesQueryVariables,
+  APITypes.SyncCommunitiesQuery
+>;
+export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
+  getPost(id: $id) {
+    id
+    author {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    community {
+      id
+      name
+      location
+      postalCode
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    images
+    content
+    postType
+    likedBy {
+      nextToken
+      startedAt
+      __typename
+    }
+    comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    visibility
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userPostsId
+    communityPostsId
     __typename
   }
 }
@@ -113,13 +948,17 @@ export const listPosts = /* GraphQL */ `query ListPosts(
   listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      title
+      images
+      content
+      postType
+      visibility
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      blogPostsId
+      userPostsId
+      communityPostsId
       __typename
     }
     nextToken
@@ -142,13 +981,17 @@ export const syncPosts = /* GraphQL */ `query SyncPosts(
   ) {
     items {
       id
-      title
+      images
+      content
+      postType
+      visibility
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      blogPostsId
+      userPostsId
+      communityPostsId
       __typename
     }
     nextToken
@@ -162,13 +1005,40 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
     id
     post {
       id
-      title
+      images
+      content
+      postType
+      visibility
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      blogPostsId
+      userPostsId
+      communityPostsId
+      __typename
+    }
+    author {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
       __typename
     }
     content
@@ -177,6 +1047,7 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
     _version
     _deleted
     _lastChangedAt
+    userCommentsId
     postCommentsId
     __typename
   }
@@ -199,6 +1070,7 @@ export const listComments = /* GraphQL */ `query ListComments(
       _version
       _deleted
       _lastChangedAt
+      userCommentsId
       postCommentsId
       __typename
     }
@@ -231,6 +1103,7 @@ export const syncComments = /* GraphQL */ `query SyncComments(
       _version
       _deleted
       _lastChangedAt
+      userCommentsId
       postCommentsId
       __typename
     }
@@ -242,4 +1115,995 @@ export const syncComments = /* GraphQL */ `query SyncComments(
 ` as GeneratedQuery<
   APITypes.SyncCommentsQueryVariables,
   APITypes.SyncCommentsQuery
+>;
+export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
+  getEvent(id: $id) {
+    id
+    name
+    description
+    images
+    location
+    datetime
+    community {
+      id
+      name
+      location
+      postalCode
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    organizer {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    likedBy {
+      nextToken
+      startedAt
+      __typename
+    }
+    visibility
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userEventsId
+    communityEventsId
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.GetEventQueryVariables, APITypes.GetEventQuery>;
+export const listEvents = /* GraphQL */ `query ListEvents(
+  $filter: ModelEventFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      images
+      location
+      datetime
+      visibility
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userEventsId
+      communityEventsId
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListEventsQueryVariables,
+  APITypes.ListEventsQuery
+>;
+export const syncEvents = /* GraphQL */ `query SyncEvents(
+  $filter: ModelEventFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncEvents(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      name
+      description
+      images
+      location
+      datetime
+      visibility
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userEventsId
+      communityEventsId
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncEventsQueryVariables,
+  APITypes.SyncEventsQuery
+>;
+export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
+  getItemForSale(id: $id) {
+    id
+    title
+    description
+    images
+    contact
+    price
+    seller {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    community {
+      id
+      name
+      location
+      postalCode
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    likedBy {
+      nextToken
+      startedAt
+      __typename
+    }
+    visibility
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userItemsForSaleId
+    communityItemsForSaleId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetItemForSaleQueryVariables,
+  APITypes.GetItemForSaleQuery
+>;
+export const listItemForSales = /* GraphQL */ `query ListItemForSales(
+  $filter: ModelItemForSaleFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listItemForSales(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      description
+      images
+      contact
+      price
+      visibility
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userItemsForSaleId
+      communityItemsForSaleId
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListItemForSalesQueryVariables,
+  APITypes.ListItemForSalesQuery
+>;
+export const syncItemForSales = /* GraphQL */ `query SyncItemForSales(
+  $filter: ModelItemForSaleFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncItemForSales(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      title
+      description
+      images
+      contact
+      price
+      visibility
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userItemsForSaleId
+      communityItemsForSaleId
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncItemForSalesQueryVariables,
+  APITypes.SyncItemForSalesQuery
+>;
+export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) {
+  getUserCommunity(id: $id) {
+    id
+    userId
+    communityId
+    user {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    community {
+      id
+      name
+      location
+      postalCode
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetUserCommunityQueryVariables,
+  APITypes.GetUserCommunityQuery
+>;
+export const listUserCommunities = /* GraphQL */ `query ListUserCommunities(
+  $filter: ModelUserCommunityFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUserCommunities(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      userId
+      communityId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListUserCommunitiesQueryVariables,
+  APITypes.ListUserCommunitiesQuery
+>;
+export const syncUserCommunities = /* GraphQL */ `query SyncUserCommunities(
+  $filter: ModelUserCommunityFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncUserCommunities(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      userId
+      communityId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncUserCommunitiesQueryVariables,
+  APITypes.SyncUserCommunitiesQuery
+>;
+export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!) {
+  getUserLikedPosts(id: $id) {
+    id
+    userId
+    postId
+    user {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    post {
+      id
+      images
+      content
+      postType
+      visibility
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userPostsId
+      communityPostsId
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetUserLikedPostsQueryVariables,
+  APITypes.GetUserLikedPostsQuery
+>;
+export const listUserLikedPosts = /* GraphQL */ `query ListUserLikedPosts(
+  $filter: ModelUserLikedPostsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUserLikedPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      userId
+      postId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListUserLikedPostsQueryVariables,
+  APITypes.ListUserLikedPostsQuery
+>;
+export const syncUserLikedPosts = /* GraphQL */ `query SyncUserLikedPosts(
+  $filter: ModelUserLikedPostsFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncUserLikedPosts(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      userId
+      postId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncUserLikedPostsQueryVariables,
+  APITypes.SyncUserLikedPostsQuery
+>;
+export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: ID!) {
+  getUserLikedEvents(id: $id) {
+    id
+    userId
+    eventId
+    user {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    event {
+      id
+      name
+      description
+      images
+      location
+      datetime
+      visibility
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userEventsId
+      communityEventsId
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetUserLikedEventsQueryVariables,
+  APITypes.GetUserLikedEventsQuery
+>;
+export const listUserLikedEvents = /* GraphQL */ `query ListUserLikedEvents(
+  $filter: ModelUserLikedEventsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUserLikedEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      userId
+      eventId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListUserLikedEventsQueryVariables,
+  APITypes.ListUserLikedEventsQuery
+>;
+export const syncUserLikedEvents = /* GraphQL */ `query SyncUserLikedEvents(
+  $filter: ModelUserLikedEventsFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncUserLikedEvents(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      userId
+      eventId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncUserLikedEventsQueryVariables,
+  APITypes.SyncUserLikedEventsQuery
+>;
+export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!) {
+  getUserLikedItems(id: $id) {
+    id
+    userId
+    itemForSaleId
+    user {
+      id
+      username
+      email
+      password
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    itemForSale {
+      id
+      title
+      description
+      images
+      contact
+      price
+      visibility
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userItemsForSaleId
+      communityItemsForSaleId
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetUserLikedItemsQueryVariables,
+  APITypes.GetUserLikedItemsQuery
+>;
+export const listUserLikedItems = /* GraphQL */ `query ListUserLikedItems(
+  $filter: ModelUserLikedItemsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUserLikedItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      userId
+      itemForSaleId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListUserLikedItemsQueryVariables,
+  APITypes.ListUserLikedItemsQuery
+>;
+export const syncUserLikedItems = /* GraphQL */ `query SyncUserLikedItems(
+  $filter: ModelUserLikedItemsFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncUserLikedItems(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      userId
+      itemForSaleId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncUserLikedItemsQueryVariables,
+  APITypes.SyncUserLikedItemsQuery
+>;
+export const userCommunitiesByUserId = /* GraphQL */ `query UserCommunitiesByUserId(
+  $userId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserCommunityFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  userCommunitiesByUserId(
+    userId: $userId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      communityId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UserCommunitiesByUserIdQueryVariables,
+  APITypes.UserCommunitiesByUserIdQuery
+>;
+export const userCommunitiesByCommunityId = /* GraphQL */ `query UserCommunitiesByCommunityId(
+  $communityId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserCommunityFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  userCommunitiesByCommunityId(
+    communityId: $communityId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      communityId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UserCommunitiesByCommunityIdQueryVariables,
+  APITypes.UserCommunitiesByCommunityIdQuery
+>;
+export const userLikedPostsByUserId = /* GraphQL */ `query UserLikedPostsByUserId(
+  $userId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserLikedPostsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  userLikedPostsByUserId(
+    userId: $userId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      postId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UserLikedPostsByUserIdQueryVariables,
+  APITypes.UserLikedPostsByUserIdQuery
+>;
+export const userLikedPostsByPostId = /* GraphQL */ `query UserLikedPostsByPostId(
+  $postId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserLikedPostsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  userLikedPostsByPostId(
+    postId: $postId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      postId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UserLikedPostsByPostIdQueryVariables,
+  APITypes.UserLikedPostsByPostIdQuery
+>;
+export const userLikedEventsByUserId = /* GraphQL */ `query UserLikedEventsByUserId(
+  $userId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserLikedEventsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  userLikedEventsByUserId(
+    userId: $userId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      eventId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UserLikedEventsByUserIdQueryVariables,
+  APITypes.UserLikedEventsByUserIdQuery
+>;
+export const userLikedEventsByEventId = /* GraphQL */ `query UserLikedEventsByEventId(
+  $eventId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserLikedEventsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  userLikedEventsByEventId(
+    eventId: $eventId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      eventId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UserLikedEventsByEventIdQueryVariables,
+  APITypes.UserLikedEventsByEventIdQuery
+>;
+export const userLikedItemsByUserId = /* GraphQL */ `query UserLikedItemsByUserId(
+  $userId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserLikedItemsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  userLikedItemsByUserId(
+    userId: $userId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      itemForSaleId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UserLikedItemsByUserIdQueryVariables,
+  APITypes.UserLikedItemsByUserIdQuery
+>;
+export const userLikedItemsByItemForSaleId = /* GraphQL */ `query UserLikedItemsByItemForSaleId(
+  $itemForSaleId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserLikedItemsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  userLikedItemsByItemForSaleId(
+    itemForSaleId: $itemForSaleId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      itemForSaleId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UserLikedItemsByItemForSaleIdQueryVariables,
+  APITypes.UserLikedItemsByItemForSaleIdQuery
 >;

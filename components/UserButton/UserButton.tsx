@@ -20,7 +20,7 @@ export function UserButton({ user }: UserButtonProps) {
             </Text>
 
             <Text c="dimmed" size="xs">
-              {user?.name}
+              {user?.firstName} {user?.lastName}
             </Text>
           </div>
 

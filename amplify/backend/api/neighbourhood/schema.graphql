@@ -35,10 +35,12 @@ type User @model {
   email: String!
   password: String!
   postalCode: String!
+  firstName: String!
+  lastName: String!
   communities: [Community!]! @manyToMany(relationName: "UserCommunity")
   selectedCommunity: Int #Store selected community's id
   posts: [Post!]! @hasMany
-  friends: [User!]! @hasMany
+  friends: [User] @hasMany
   friendRequests: [FriendRequest!]! @hasMany
   events: [Event!]! @hasMany
   itemsForSale: [ItemForSale!]! @hasMany
@@ -59,6 +61,7 @@ type Community @model {
   name: String!
   location: String!
   postalCode: String!
+  image: String
   members: [User!]! @manyToMany(relationName: "UserCommunity")
   posts: [Post!]! @hasMany
   events: [Event] @hasMany

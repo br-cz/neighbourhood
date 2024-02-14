@@ -1,38 +1,48 @@
 import React, { useState } from 'react';
-import { TextInput, PasswordInput, Button, Box, Title, Group } from '@mantine/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
-import UserPool from '@/components/Authorization/UserPool.js';
 import { useRouter } from 'next/navigation';
+import { generateClient } from 'aws-amplify/api';
+import { getCurrentUser, signIn, signOut, type SignInInput } from 'aws-amplify/auth';
+import { Box, Button, Group, PasswordInput, TextInput, Title } from '@mantine/core';
+import { getUser } from '@/src/graphql/queries';
+
+const client = generateClient({});
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [pass, setPass] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
+  async function handleSignOut() {
+    try {
+      await signOut({ global: true });
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  }
+
+  async function handleSignIn({ username, password }: SignInInput) {
+    try {
+      await signIn({ username, password });
+      const { userId } = await getCurrentUser();
+      console.log('Currently logged in user ID from Cognito:', userId);
+      const user = await client.graphql({
+        query: getUser,
+        variables: { id: userId },
+      });
+      console.log('User retrieved from Database:', user.data.getUser);
+      localStorage.setItem('userData', JSON.stringify(user.data.getUser));
+      router.push('/home');
+    } catch (error) {
+      console.log('Error signing in', error);
+      setErrorMessage('Check your details and try again.');
+    }
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const authenticationDetails = new AuthenticationDetails({
-      Username: email,
-      Password: password,
-    });
-
-    const cognitoUser = new CognitoUser({
-      Username: email,
-      Pool: UserPool,
-    });
-
-    cognitoUser.authenticateUser(authenticationDetails, {
-      onSuccess: (session) => {
-        console.log('Login successful', session);
-        router.push('/home');
-      },
-      onFailure: (err) => {
-        console.error('Login failed', err);
-        setErrorMessage(err.message || JSON.stringify(err));
-      },
-    });
+    handleSignOut();
+    handleSignIn({ username: email, password: pass });
   };
 
   return (
@@ -50,8 +60,8 @@ const LoginForm: React.FC = () => {
         />
         <PasswordInput
           label="Password"
-          value={password}
-          onChange={(e) => setPassword(e.currentTarget.value)}
+          value={pass}
+          onChange={(e) => setPass(e.currentTarget.value)}
           required
           mt="md"
         />
