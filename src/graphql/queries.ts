@@ -8,82 +8,6 @@ type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryOutput: OutputType;
 };
 
-export const loginUser = /* GraphQL */ `query LoginUser($username: String!, $password: String!) {
-  loginUser(username: $username, password: $password) {
-    id
-    username
-    email
-    password
-    postalCode
-    firstName
-    lastName
-    communities {
-      nextToken
-      startedAt
-      __typename
-    }
-    selectedCommunity
-    posts {
-      nextToken
-      startedAt
-      __typename
-    }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
-    friendRequests {
-      nextToken
-      startedAt
-      __typename
-    }
-    events {
-      nextToken
-      startedAt
-      __typename
-    }
-    itemsForSale {
-      nextToken
-      startedAt
-      __typename
-    }
-    likedPosts {
-      nextToken
-      startedAt
-      __typename
-    }
-    likedEvents {
-      nextToken
-      startedAt
-      __typename
-    }
-    likedItems {
-      nextToken
-      startedAt
-      __typename
-    }
-    location
-    age
-    bio
-    profilePic
-    pets
-    kids
-    comments {
-      nextToken
-      startedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    userFriendsId
-    __typename
-  }
-}
-` as GeneratedQuery<APITypes.LoginUserQueryVariables, APITypes.LoginUserQuery>;
 export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $keyword: String!) {
   searchPosts(communityId: $communityId, keyword: $keyword) {
     id
@@ -91,7 +15,6 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -156,7 +79,6 @@ export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!,
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -237,7 +159,6 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -302,7 +223,6 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -383,7 +303,6 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -406,7 +325,6 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -446,7 +364,6 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -469,7 +386,6 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -509,7 +425,6 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -532,7 +447,6 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -628,7 +542,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -709,7 +622,6 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -750,7 +662,6 @@ export const syncUsers = /* GraphQL */ `query SyncUsers(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -883,7 +794,6 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1022,7 +932,6 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1141,7 +1050,6 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1259,7 +1167,6 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1390,7 +1297,6 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1501,7 +1407,6 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1614,7 +1519,6 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1729,7 +1633,6 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       id
       username
       email
-      password
       postalCode
       firstName
       lastName

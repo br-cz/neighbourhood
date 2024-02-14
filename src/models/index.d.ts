@@ -65,7 +65,6 @@ type EagerUser = {
   readonly id: string;
   readonly username: string;
   readonly email: string;
-  readonly password: string;
   readonly postalCode: string;
   readonly firstName: string;
   readonly lastName: string;
@@ -99,7 +98,6 @@ type LazyUser = {
   readonly id: string;
   readonly username: string;
   readonly email: string;
-  readonly password: string;
   readonly postalCode: string;
   readonly firstName: string;
   readonly lastName: string;

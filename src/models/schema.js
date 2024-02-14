@@ -106,13 +106,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "password": {
-                    "name": "password",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "postalCode": {
                     "name": "postalCode",
                     "isArray": false,
@@ -1449,5 +1442,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "56e82a4d278af4dd1b22b85fa1c0b564"
+    "version": "c2c34292b3bab765ed6dbd10bddfc2fb"
 };

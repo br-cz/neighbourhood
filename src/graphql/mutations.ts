@@ -13,7 +13,6 @@ export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: 
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -92,7 +91,6 @@ export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!,
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -173,7 +171,6 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -240,7 +237,6 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -322,7 +318,6 @@ export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!,
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -386,7 +381,6 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -443,7 +437,6 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -542,7 +535,6 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -606,7 +598,6 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -657,7 +648,6 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -721,7 +711,6 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -780,7 +769,6 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -803,7 +791,6 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -843,7 +830,6 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -866,7 +852,6 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -906,7 +891,6 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -929,7 +913,6 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -972,7 +955,6 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -995,7 +977,6 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1038,7 +1019,6 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1061,7 +1041,6 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1104,7 +1083,6 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1127,7 +1105,6 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1168,7 +1145,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -1250,7 +1226,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -1332,7 +1307,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -1542,7 +1516,6 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1612,7 +1585,6 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1682,7 +1654,6 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1767,7 +1738,6 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1826,7 +1796,6 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1885,7 +1854,6 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1947,7 +1915,6 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2014,7 +1981,6 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2081,7 +2047,6 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2135,7 +2100,6 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2202,7 +2166,6 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2269,7 +2232,6 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2333,7 +2295,6 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2389,7 +2350,6 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2445,7 +2405,6 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2501,7 +2460,6 @@ export const createUserLikedPosts = /* GraphQL */ `mutation CreateUserLikedPosts
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2559,7 +2517,6 @@ export const updateUserLikedPosts = /* GraphQL */ `mutation UpdateUserLikedPosts
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2617,7 +2574,6 @@ export const deleteUserLikedPosts = /* GraphQL */ `mutation DeleteUserLikedPosts
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2675,7 +2631,6 @@ export const createUserLikedEvents = /* GraphQL */ `mutation CreateUserLikedEven
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2735,7 +2690,6 @@ export const updateUserLikedEvents = /* GraphQL */ `mutation UpdateUserLikedEven
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2795,7 +2749,6 @@ export const deleteUserLikedEvents = /* GraphQL */ `mutation DeleteUserLikedEven
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2855,7 +2808,6 @@ export const createUserLikedItems = /* GraphQL */ `mutation CreateUserLikedItems
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2915,7 +2867,6 @@ export const updateUserLikedItems = /* GraphQL */ `mutation UpdateUserLikedItems
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -2975,7 +2926,6 @@ export const deleteUserLikedItems = /* GraphQL */ `mutation DeleteUserLikedItems
       id
       username
       email
-      password
       postalCode
       firstName
       lastName

@@ -17,7 +17,6 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -40,7 +39,6 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -82,7 +80,6 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -105,7 +102,6 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -147,7 +143,6 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -170,7 +165,6 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -208,7 +202,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -287,7 +280,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -366,7 +358,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     id
     username
     email
-    password
     postalCode
     firstName
     lastName
@@ -564,7 +555,6 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -631,7 +621,6 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -698,7 +687,6 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -780,7 +768,6 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -836,7 +823,6 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -892,7 +878,6 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -951,7 +936,6 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1015,7 +999,6 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1079,7 +1062,6 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1132,7 +1114,6 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1198,7 +1179,6 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1264,7 +1244,6 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1327,7 +1306,6 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1382,7 +1360,6 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1437,7 +1414,6 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1492,7 +1468,6 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1549,7 +1524,6 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1606,7 +1580,6 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1663,7 +1636,6 @@ export const onCreateUserLikedEvents = /* GraphQL */ `subscription OnCreateUserL
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1722,7 +1694,6 @@ export const onUpdateUserLikedEvents = /* GraphQL */ `subscription OnUpdateUserL
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1781,7 +1752,6 @@ export const onDeleteUserLikedEvents = /* GraphQL */ `subscription OnDeleteUserL
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1840,7 +1810,6 @@ export const onCreateUserLikedItems = /* GraphQL */ `subscription OnCreateUserLi
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1899,7 +1868,6 @@ export const onUpdateUserLikedItems = /* GraphQL */ `subscription OnUpdateUserLi
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
@@ -1958,7 +1926,6 @@ export const onDeleteUserLikedItems = /* GraphQL */ `subscription OnDeleteUserLi
       id
       username
       email
-      password
       postalCode
       firstName
       lastName
