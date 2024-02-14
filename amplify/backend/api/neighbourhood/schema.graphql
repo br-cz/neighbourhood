@@ -33,7 +33,6 @@ type User @model {
   id: ID!
   username: String!
   email: String!
-  password: String!
   postalCode: String!
   firstName: String!
   lastName: String!
@@ -115,7 +114,6 @@ type ItemForSale @model {
 }
 
 type Query {
-  loginUser(username: String!, password: String!): User
   searchPosts(communityId: ID!, keyword: String!): [Post!]!
   searchPeople(communityId: ID!, keyword: String!): [User!]!
   getCommunityPosts(communityId: ID!): [Post!]!
