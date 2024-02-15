@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { UserButton } from '@/components/UserButton/UserButton';
 import { CommunityButton } from '@/components/CommunityButton/CommunityButton';
 import classes from '@/components/Navbar/Navbar.module.css';
@@ -22,16 +23,13 @@ interface NavbarProps {
 }
 
 export function Navbar({ user }: NavbarProps) {
-  const [active, setActive] = useState('Home');
-
   const links = data.map((item) => (
     <Link
       href={item.link}
       key={item.label}
       role="button"
       tabIndex={0}
-      className={`${classes.link} ${active === item.label ? classes.active : ''}`}
-      onClick={() => setActive(item.label)}
+      className={`${classes.link} ${usePathname() === item.link ? classes.active : ''}`}
     >
       <item.icon className={classes.linkIcon} />
       <span>{item.label}</span>
@@ -43,8 +41,8 @@ export function Navbar({ user }: NavbarProps) {
       <div className={classes.navbarMain}>{links}</div>
 
       <div className={classes.footer}>
-        <UserButton user={user} />
-        <CommunityButton user={user} />
+        <UserButton user={user} active={usePathname() === '/profile' && true} />
+        <CommunityButton user={user} active={usePathname() === '/communities' && true} />
       </div>
     </nav>
   );
