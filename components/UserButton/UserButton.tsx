@@ -4,12 +4,15 @@ import Link from 'next/link';
 import { useData } from '@/contexts/DataContext';
 import classes from './UserButton.module.css';
 
-export function UserButton() {
-  const { user } = useData();
+interface UserButtonProps {
+  active: boolean;
+}
 
+export function UserButton({ active }: UserButtonProps) {
+  const { user } = useData();
   return (
     <Link href="/profile" passHref className={classes.link}>
-      <UnstyledButton className={classes.user}>
+      <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
         <Group>
           <Avatar src={user?.profilePic} size="md" radius="xl" />
 

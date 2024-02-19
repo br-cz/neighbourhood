@@ -4,11 +4,15 @@ import Link from 'next/link';
 import classes from './CommunityButton.module.css';
 import { useData } from '@/contexts/DataContext';
 
-export function CommunityButton() {
+interface CommunityButtonProps {
+  active: boolean;
+}
+
+export function CommunityButton({ active }: CommunityButtonProps) {
   const { community } = useData();
   return (
     <Link href="/communities" passHref className={classes.link}>
-      <UnstyledButton className={classes.community}>
+      <UnstyledButton className={`${classes.community} ${active ? classes.active : ''}`}>
         <Group>
           <Avatar src={community?.image} size="md" radius="xl" />
 
