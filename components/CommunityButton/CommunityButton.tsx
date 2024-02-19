@@ -5,12 +5,13 @@ import classes from './CommunityButton.module.css';
 
 interface CommunityButtonProps {
   user: User;
+  active: boolean;
 }
 
-export function CommunityButton({ user }: CommunityButtonProps) {
+export function CommunityButton({ user, active }: CommunityButtonProps) {
   return (
     <Link href="/communities" passHref className={classes.link}>
-      <UnstyledButton className={classes.community}>
+      <UnstyledButton className={`${classes.community} ${active ? classes.active : ''}`}>
         <Group>
           <Avatar src={user?.selectedCommunity?.image} size="md" radius="xl" />
 

@@ -5,12 +5,13 @@ import classes from './UserButton.module.css';
 
 interface UserButtonProps {
   user: User;
+  active: boolean;
 }
 
-export function UserButton({ user }: UserButtonProps) {
+export function UserButton({ user, active }: UserButtonProps) {
   return (
     <Link href="/profile" passHref className={classes.link}>
-      <UnstyledButton className={classes.user}>
+      <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
         <Group>
           <Avatar src={user?.profilePic} size="md" radius="xl" />
 
