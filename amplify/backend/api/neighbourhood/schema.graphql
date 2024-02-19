@@ -33,12 +33,13 @@ type User @model {
   id: ID!
   username: String!
   email: String!
-  password: String!
   postalCode: String!
+  firstName: String!
+  lastName: String!
   communities: [Community!]! @manyToMany(relationName: "UserCommunity")
-  selectedCommunity: Int #Store selected community's id
+  selectedCommunity: String! #Store selected community's id
   posts: [Post!]! @hasMany
-  friends: [User!]! @hasMany
+  friends: [User] @hasMany
   friendRequests: [FriendRequest!]! @hasMany
   events: [Event!]! @hasMany
   itemsForSale: [ItemForSale!]! @hasMany
@@ -58,7 +59,8 @@ type Community @model {
   id: ID!
   name: String!
   location: String!
-  postalCode: String!
+  coordinates: String!
+  image: String
   members: [User!]! @manyToMany(relationName: "UserCommunity")
   posts: [Post!]! @hasMany
   events: [Event] @hasMany
@@ -112,10 +114,10 @@ type ItemForSale @model {
 }
 
 type Query {
-  loginUser(username: String!, password: String!): User
   searchPosts(communityId: ID!, keyword: String!): [Post!]!
   searchPeople(communityId: ID!, keyword: String!): [User!]!
   getCommunityPosts(communityId: ID!): [Post!]!
+  getCommunityEvents(communityId: ID!): [Event!]!
   getUserFriends(userId: ID!): [User!]!
   pendingFriendRequests(userId: ID!): [FriendRequest!]!
   sentFriendRequests(userId: ID!): [FriendRequest!]!
