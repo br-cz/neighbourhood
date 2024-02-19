@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { Group, Select, TextInput, Title } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
+import { UserList } from '@/components/UserList/UserList';
 
 export default function PeoplePage() {
   return (
@@ -15,11 +17,12 @@ export default function PeoplePage() {
           <TextInput
             radius="md"
             rightSectionPointerEvents="none"
-            rightSection={<IconSearch />}
+            rightSection={<FontAwesomeIcon icon={faMagnifyingGlass} />}
             placeholder="Search..."
           />
         </Group>
       </Group>
+      <UserList />
     </NeighbourhoodShell>
   );
 }
