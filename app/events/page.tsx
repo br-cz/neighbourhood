@@ -79,7 +79,6 @@ export default function EventsPage() {
         spacing={{ base: 5, sm: 'lg' }}
         verticalSpacing={{ base: 'md', sm: 'lg' }}
       >
-        {/* Iterates over the events array and maps them to cards - this will need to be modified with a get events query probably */}
         {Object.entries(events).map(([id, event]) => (
           <EventCard key={id} event={event} onView={() => handleViewEvent(event)} />
         ))}

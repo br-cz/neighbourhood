@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UserButton } from '@/components/UserButton/UserButton';
@@ -18,11 +17,7 @@ const data = [
   { link: '/people', label: 'People', icon: SolarUsersGroupTwoRoundedBold },
 ];
 
-interface NavbarProps {
-  user: User;
-}
-
-export function Navbar({ user }: NavbarProps) {
+export function Navbar() {
   const links = data.map((item) => (
     <Link
       href={item.link}
@@ -41,8 +36,8 @@ export function Navbar({ user }: NavbarProps) {
       <div className={classes.navbarMain}>{links}</div>
 
       <div className={classes.footer}>
-        <UserButton user={user} active={usePathname() === '/profile' && true} />
-        <CommunityButton user={user} active={usePathname() === '/communities' && true} />
+        <UserButton active={usePathname() === '/profile' && true} />
+        <CommunityButton active={usePathname() === '/communities' && true} />
       </div>
     </nav>
   );

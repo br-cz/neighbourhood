@@ -1,10 +1,11 @@
+import React from 'react';
+import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
-
-import React from 'react';
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
+import { DataProvider } from '@/contexts/DataContext';
 
 export const metadata = {
   title: 'neighbourhood - your community at your fingertips',
@@ -30,7 +31,10 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <ConfigureAmplifyClientSide />
+        <MantineProvider theme={theme}>
+          <DataProvider>{children}</DataProvider>
+        </MantineProvider>
       </body>
     </html>
   );

@@ -1,14 +1,15 @@
 import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
+import { useData } from '@/contexts/DataContext';
 import classes from './UserButton.module.css';
 
 interface UserButtonProps {
-  user: User;
   active: boolean;
 }
 
-export function UserButton({ user, active }: UserButtonProps) {
+export function UserButton({ active }: UserButtonProps) {
+  const { user } = useData();
   return (
     <Link href="/profile" passHref className={classes.link}>
       <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
@@ -21,7 +22,7 @@ export function UserButton({ user, active }: UserButtonProps) {
             </Text>
 
             <Text c="dimmed" size="xs">
-              {user?.name}
+              {user?.firstName} {user?.lastName}
             </Text>
           </div>
 

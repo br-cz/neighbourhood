@@ -106,15 +106,22 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "password": {
-                    "name": "password",
+                "postalCode": {
+                    "name": "postalCode",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
-                "postalCode": {
-                    "name": "postalCode",
+                "firstName": {
+                    "name": "firstName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "lastName": {
+                    "name": "lastName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -139,8 +146,8 @@ export const schema = {
                 "selectedCommunity": {
                     "name": "selectedCommunity",
                     "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
+                    "type": "String",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "posts": {
@@ -165,9 +172,9 @@ export const schema = {
                     "type": {
                         "model": "User"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": false,
+                    "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
@@ -395,11 +402,18 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "postalCode": {
-                    "name": "postalCode",
+                "coordinates": {
+                    "name": "coordinates",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "image": {
+                    "name": "image",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "members": {
@@ -1428,5 +1442,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "2bb76aef1a6d59b6041e8a07139ff5f6"
+    "version": "ae964f518d3d6214e6e7479277715c79"
 };
