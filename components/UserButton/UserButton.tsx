@@ -1,13 +1,12 @@
 import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
+import { useData } from '@/contexts/DataContext';
 import classes from './UserButton.module.css';
 
-interface UserButtonProps {
-  user: User;
-}
+export function UserButton() {
+  const { user } = useData();
 
-export function UserButton({ user }: UserButtonProps) {
   return (
     <Link href="/profile" passHref className={classes.link}>
       <UnstyledButton className={classes.user}>

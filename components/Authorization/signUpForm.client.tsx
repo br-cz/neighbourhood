@@ -6,7 +6,6 @@ import { signUp } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/api';
 import { TextInput, PasswordInput, Button, Box, Title } from '@mantine/core';
 import { createUser } from '@/src/graphql/mutations';
-import { listUsers } from '@/src/graphql/queries';
 
 const client = generateClient({});
 
@@ -37,6 +36,7 @@ const SignUpForm: React.FC = () => {
 
   async function handleSignUp(parameters: SignUpParameters) {
     try {
+      // Sign up with cognito
       const cognitoResponse = await signUp({
         username: parameters.email,
         password: parameters.password,
@@ -51,6 +51,7 @@ const SignUpForm: React.FC = () => {
         },
       });
 
+      // Create user entry in database
       if (cognitoResponse.userId) {
         const createUserInput = {
           id: cognitoResponse.userId,
@@ -58,7 +59,7 @@ const SignUpForm: React.FC = () => {
           email: parameters.email,
           firstName: parameters.name,
           lastName: parameters.family_name,
-          password: parameters.password,
+          selectedCommunity: 'dcc7f7e2-f0a2-476c-9890-542006de6d20', // Hardcoded as Waverley for now, replace with ID of user selection
           postalCode: '',
         };
 

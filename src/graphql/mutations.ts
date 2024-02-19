@@ -193,7 +193,7 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -259,7 +259,7 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -403,7 +403,7 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -522,7 +522,7 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -585,7 +585,7 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -670,7 +670,7 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -733,7 +733,7 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1388,7 +1388,7 @@ export const createCommunity = /* GraphQL */ `mutation CreateCommunity(
     id
     name
     location
-    postalCode
+    coordinates
     image
     members {
       nextToken
@@ -1430,7 +1430,7 @@ export const updateCommunity = /* GraphQL */ `mutation UpdateCommunity(
     id
     name
     location
-    postalCode
+    coordinates
     image
     members {
       nextToken
@@ -1472,7 +1472,7 @@ export const deleteCommunity = /* GraphQL */ `mutation DeleteCommunity(
     id
     name
     location
-    postalCode
+    coordinates
     image
     members {
       nextToken
@@ -1538,7 +1538,7 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1607,7 +1607,7 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1676,7 +1676,7 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1902,7 +1902,7 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1968,7 +1968,7 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -2034,7 +2034,7 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -2122,7 +2122,7 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -2188,7 +2188,7 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -2254,7 +2254,7 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -2317,7 +2317,7 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -2372,7 +2372,7 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -2427,7 +2427,7 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt

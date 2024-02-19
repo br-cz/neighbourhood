@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser, signIn, signOut, type SignInInput } from 'aws-amplify/auth';
 import { Box, Button, Group, PasswordInput, TextInput, Title } from '@mantine/core';
-import { getUser } from '@/src/graphql/queries';
+import { getCommunity, getUser } from '@/src/graphql/queries';
 
 const client = generateClient({});
 
@@ -23,15 +23,29 @@ const LoginForm: React.FC = () => {
 
   async function handleSignIn({ username, password }: SignInInput) {
     try {
+      // Sign in with cognito
       await signIn({ username, password });
+
+      // Get user ID from cognito
       const { userId } = await getCurrentUser();
       console.log('Currently logged in user ID from Cognito:', userId);
+
+      // Initialize localStorage with corresponding user
       const user = await client.graphql({
         query: getUser,
         variables: { id: userId },
       });
-      console.log('User retrieved from Database:', user.data.getUser);
-      localStorage.setItem('userData', JSON.stringify(user.data.getUser));
+      localStorage.setItem('currentUser', JSON.stringify(user.data.getUser));
+
+      // Initialize localStorage with corresponding community
+      if (user.data.getUser) {
+        const communityID = user.data.getUser.selectedCommunity;
+        const community = await client.graphql({
+          query: getCommunity,
+          variables: { id: communityID },
+        });
+        localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
+      }
       router.push('/home');
     } catch (error) {
       console.log('Error signing in', error);

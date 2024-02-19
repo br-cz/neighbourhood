@@ -436,7 +436,7 @@ export const onCreateCommunity = /* GraphQL */ `subscription OnCreateCommunity($
     id
     name
     location
-    postalCode
+    coordinates
     image
     members {
       nextToken
@@ -475,7 +475,7 @@ export const onUpdateCommunity = /* GraphQL */ `subscription OnUpdateCommunity($
     id
     name
     location
-    postalCode
+    coordinates
     image
     members {
       nextToken
@@ -514,7 +514,7 @@ export const onDeleteCommunity = /* GraphQL */ `subscription OnDeleteCommunity($
     id
     name
     location
-    postalCode
+    coordinates
     image
     members {
       nextToken
@@ -577,7 +577,7 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -643,7 +643,7 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -709,7 +709,7 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -923,7 +923,7 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -986,7 +986,7 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1049,7 +1049,7 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1136,7 +1136,7 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1201,7 +1201,7 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1266,7 +1266,7 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1328,7 +1328,7 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1382,7 +1382,7 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1436,7 +1436,7 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt

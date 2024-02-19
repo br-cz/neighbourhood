@@ -11,6 +11,7 @@ import { getUser } from '@/src/graphql/queries';
 const client = generateClient({});
 
 export default function HomePage() {
+  // This function is called when the "New Post..." button is clicked. Just testing the connection to the database.
   async function handleClick() {
     try {
       const { userId } = await getCurrentUser();
@@ -20,7 +21,11 @@ export default function HomePage() {
         variables: { id: userId },
       });
       console.log('User retrieved from Database:', user.data.getUser);
-      localStorage.setItem('userData', JSON.stringify(user.data.getUser));
+      localStorage.setItem('currentUser', JSON.stringify(user.data.getUser));
+      localStorage.setItem(
+        'currentCommunity',
+        JSON.stringify(user.data.getUser?.selectedCommunity)
+      );
     } catch (err) {
       console.log(err);
     }

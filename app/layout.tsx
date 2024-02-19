@@ -4,8 +4,8 @@ import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
-import '@aws-amplify/ui-react/styles.css';
 import { theme } from '../theme';
+import { DataProvider } from '@/contexts/DataContext';
 
 export const metadata = {
   title: 'neighbourhood - your community at your fingertips',
@@ -32,7 +32,9 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <ConfigureAmplifyClientSide />
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          <DataProvider>{children}</DataProvider>
+        </MantineProvider>
       </body>
     </html>
   );

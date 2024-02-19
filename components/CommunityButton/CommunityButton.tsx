@@ -2,12 +2,10 @@ import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
 import classes from './CommunityButton.module.css';
+import { useData } from '@/contexts/DataContext';
 
-interface CommunityButtonProps {
-  community: Community;
-}
-
-export function CommunityButton({ community }: CommunityButtonProps) {
+export function CommunityButton() {
+  const { community } = useData();
   return (
     <Link href="/communities" passHref className={classes.link}>
       <UnstyledButton className={classes.community}>

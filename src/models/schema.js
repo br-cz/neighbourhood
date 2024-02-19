@@ -146,8 +146,8 @@ export const schema = {
                 "selectedCommunity": {
                     "name": "selectedCommunity",
                     "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
+                    "type": "String",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "posts": {
@@ -402,8 +402,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "postalCode": {
-                    "name": "postalCode",
+                "coordinates": {
+                    "name": "coordinates",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -1442,5 +1442,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c2c34292b3bab765ed6dbd10bddfc2fb"
+    "version": "ae964f518d3d6214e6e7479277715c79"
 };

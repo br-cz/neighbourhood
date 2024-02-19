@@ -69,7 +69,7 @@ type EagerUser = {
   readonly firstName: string;
   readonly lastName: string;
   readonly communities: UserCommunity[];
-  readonly selectedCommunity?: number | null;
+  readonly selectedCommunity: string;
   readonly posts: Post[];
   readonly friends?: (User | null)[] | null;
   readonly friendRequests: FriendRequest[];
@@ -102,7 +102,7 @@ type LazyUser = {
   readonly firstName: string;
   readonly lastName: string;
   readonly communities: AsyncCollection<UserCommunity>;
-  readonly selectedCommunity?: number | null;
+  readonly selectedCommunity: string;
   readonly posts: AsyncCollection<Post>;
   readonly friends: AsyncCollection<User>;
   readonly friendRequests: AsyncCollection<FriendRequest>;
@@ -137,7 +137,7 @@ type EagerCommunity = {
   readonly id: string;
   readonly name: string;
   readonly location: string;
-  readonly postalCode: string;
+  readonly coordinates: string;
   readonly image?: string | null;
   readonly members: UserCommunity[];
   readonly posts: Post[];
@@ -155,7 +155,7 @@ type LazyCommunity = {
   readonly id: string;
   readonly name: string;
   readonly location: string;
-  readonly postalCode: string;
+  readonly coordinates: string;
   readonly image?: string | null;
   readonly members: AsyncCollection<UserCommunity>;
   readonly posts: AsyncCollection<Post>;

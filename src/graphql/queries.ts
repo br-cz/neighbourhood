@@ -37,7 +37,7 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -181,7 +181,7 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -217,6 +217,69 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
 ` as GeneratedQuery<
   APITypes.GetCommunityPostsQueryVariables,
   APITypes.GetCommunityPostsQuery
+>;
+export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($communityId: ID!) {
+  getCommunityEvents(communityId: $communityId) {
+    id
+    name
+    description
+    images
+    location
+    datetime
+    community {
+      id
+      name
+      location
+      coordinates
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    organizer {
+      id
+      username
+      email
+      postalCode
+      firstName
+      lastName
+      selectedCommunity
+      location
+      age
+      bio
+      profilePic
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userFriendsId
+      __typename
+    }
+    likedBy {
+      nextToken
+      startedAt
+      __typename
+    }
+    visibility
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userEventsId
+    communityEventsId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetCommunityEventsQueryVariables,
+  APITypes.GetCommunityEventsQuery
 >;
 export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) {
   getUserFriends(userId: $userId) {
@@ -691,7 +754,7 @@ export const getCommunity = /* GraphQL */ `query GetCommunity($id: ID!) {
     id
     name
     location
-    postalCode
+    coordinates
     image
     members {
       nextToken
@@ -735,7 +798,7 @@ export const listCommunities = /* GraphQL */ `query ListCommunities(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -769,7 +832,7 @@ export const syncCommunities = /* GraphQL */ `query SyncCommunities(
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -816,7 +879,7 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1037,7 +1100,7 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1189,7 +1252,7 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
@@ -1319,7 +1382,7 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       id
       name
       location
-      postalCode
+      coordinates
       image
       createdAt
       updatedAt
