@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { createEvent } from '@/src/graphql/mutations';
 import * as APITypes from '../API';
-import { getCommunity } from '../graphql/queries';
 import { User } from '../models';
 
 const client = generateClient();
@@ -37,6 +36,42 @@ export const useFetchEvents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const getCommunityEvents = /* GraphQL */ `
+    query GetCommunity($id: ID!) {
+      getCommunity(id: $id) {
+        id
+        events {
+          items {
+            _deleted
+            createdAt
+            datetime
+            description
+            id
+            images
+            likedBy {
+              items {
+                userId
+                user {
+                  username
+                  profilePic
+                }
+              }
+            }
+            location
+            name
+            updatedAt
+            userEventsId
+            visibility
+            organizer {
+              username
+              profilePic
+            }
+          }
+        }
+      }
+    }
+  `;
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -45,11 +80,11 @@ export const useFetchEvents = () => {
         const parsedUserData: User = JSON.parse(userData);
 
         const community = await client.graphql({
-          query: getCommunity,
+          query: getCommunityEvents,
           variables: { id: parsedUserData.selectedCommunity },
         });
 
-        setEvents(JSON.stringify(community.data.getCommunity?.events));
+        setEvents(JSON.stringify(community));
       } catch (err: any) {
         setError(err);
       } finally {

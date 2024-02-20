@@ -114,13 +114,13 @@ type ItemForSale @model {
 }
 
 type Query {
-  searchPosts(communityId: ID!, keyword: String!): [Post!]!
-  searchPeople(communityId: ID!, keyword: String!): [User!]!
-  getCommunityPosts(communityId: ID!): [Post!]!
-  getCommunityEvents(communityId: ID!): [Event!]!
-  getUserFriends(userId: ID!): [User!]!
-  pendingFriendRequests(userId: ID!): [FriendRequest!]!
-  sentFriendRequests(userId: ID!): [FriendRequest!]!
+  searchPosts(communityId: ID!, keyword: String!): [Post!]
+  searchPeople(communityId: ID!, keyword: String!): [User!]
+  getCommunityPosts(communityId: ID!): [Post!]
+  getCommunityEvents(communityId: ID!): [Event!]
+  getUserFriends(userId: ID!): [User!]
+  pendingFriendRequests(userId: ID!): [FriendRequest!]
+  sentFriendRequests(userId: ID!): [FriendRequest!]
 }
 
 type Mutation {
