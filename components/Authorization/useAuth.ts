@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from 'aws-amplify/auth';
+import { notifications } from '@mantine/notifications';
 
 export function useAuth(redirectUrl: string = '/') {
   const [user, setUser] = useState<any>(null);
@@ -14,6 +15,10 @@ export function useAuth(redirectUrl: string = '/') {
       setLoading(false);
     } catch (err) {
       router.push(redirectUrl);
+      notifications.show({
+        title: 'You were logged out!',
+        message: 'Please log in to continue to Neighbourhood.',
+      });
     }
   }
 

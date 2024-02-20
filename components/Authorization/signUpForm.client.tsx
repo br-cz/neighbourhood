@@ -164,7 +164,7 @@ const SignUpForm: React.FC = () => {
     }
   };
 
-  const navigateToLogin = () => router.push('/login');
+  const navigateToLogin = () => router.push('/');
 
   return (
     <Box style={{ maxWidth: 300 }} mx="auto">

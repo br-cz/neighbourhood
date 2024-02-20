@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser, signIn, signOut, type SignInInput } from 'aws-amplify/auth';
 import { Box, Button, Group, PasswordInput, Text, TextInput } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { getCommunity, getUser } from '@/src/graphql/queries';
 
@@ -50,6 +51,10 @@ const LoginForm: React.FC = () => {
         localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
       }
       router.push('/home');
+      notifications.show({
+        title: 'Welcome back! 👋 ',
+        message: 'Logged in successfully.',
+      });
     } catch (error) {
       console.log('Error signing in', error);
       setErrorMessage('Oops! Check your details and try again.');

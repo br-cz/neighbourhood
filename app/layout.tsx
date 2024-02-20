@@ -1,9 +1,11 @@
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
+import '@mantine/notifications/styles.css';
 import { theme } from '../theme';
 import { DataProvider } from '@/contexts/DataContext';
 
@@ -33,6 +35,7 @@ export default function RootLayout({ children }: { children: any }) {
       <body>
         <ConfigureAmplifyClientSide />
         <MantineProvider theme={theme}>
+          <Notifications />
           <DataProvider>{children}</DataProvider>
         </MantineProvider>
       </body>
