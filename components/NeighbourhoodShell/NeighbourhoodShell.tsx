@@ -22,6 +22,7 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
       localStorage.removeItem('currentUser');
       router.push('/');
       notifications.show({
+        radius: 'md',
         title: 'Logged out!',
         message: 'Log back in to continue using Neighborhood.',
       });

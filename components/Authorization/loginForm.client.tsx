@@ -52,10 +52,12 @@ const LoginForm: React.FC = () => {
       }
       router.push('/home');
       notifications.show({
-        title: 'Welcome back! 👋 ',
-        message: 'Logged in successfully.',
+        radius: 'md',
+        title: 'Hey, Neighbour! 👋 ',
+        message: `Logged in successfully. Welcome back, ${user.data.getUser?.firstName}!`,
       });
     } catch (error) {
+      handlers.close();
       console.log('Error signing in', error);
       setErrorMessage('Oops! Check your details and try again.');
     }

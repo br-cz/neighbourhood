@@ -16,6 +16,7 @@ export function useAuth(redirectUrl: string = '/') {
     } catch (err) {
       router.push(redirectUrl);
       notifications.show({
+        radius: 'md',
         title: 'You were logged out!',
         message: 'Please log in to continue to Neighbourhood.',
       });

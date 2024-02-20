@@ -75,6 +75,7 @@ const SignUpForm: React.FC = () => {
       console.log('Sign up success:', cognitoResponse.userId);
       setIsSignUpSuccessful(true);
       notifications.show({
+        radius: 'md',
         title: 'Signed up successfully!',
         message: 'You can now log in to continue to Neighbourhood.',
       });
