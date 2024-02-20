@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser, signIn, signOut, type SignInInput } from 'aws-amplify/auth';
-import { Box, Button, Group, PasswordInput, TextInput, Title } from '@mantine/core';
+import { Box, Button, Group, PasswordInput, Text, TextInput } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { getCommunity, getUser } from '@/src/graphql/queries';
 
 const client = generateClient({});
@@ -11,6 +12,7 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [open, handlers] = useDisclosure(false);
   const router = useRouter();
 
   async function handleSignOut() {
@@ -22,6 +24,7 @@ const LoginForm: React.FC = () => {
   }
 
   async function handleSignIn({ username, password }: SignInInput) {
+    await handleSignOut();
     try {
       // Sign in with cognito
       await signIn({ username, password });
@@ -49,38 +52,51 @@ const LoginForm: React.FC = () => {
       router.push('/home');
     } catch (error) {
       console.log('Error signing in', error);
-      setErrorMessage('Check your details and try again.');
+      setErrorMessage('Oops! Check your details and try again.');
     }
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleSignOut();
+    handlers.open();
     handleSignIn({ username: email, password: pass });
+  };
+
+  const handleSignUp = () => {
+    router.push('/signup');
   };
 
   return (
     <Box style={{ maxWidth: 300 }} mx="auto">
       <form onSubmit={handleSubmit}>
-        <Title order={2} style={{ textAlign: 'center' }} mb="lg">
-          Login
-        </Title>
-        {errorMessage && <div style={{ color: 'red', marginBottom: 10 }}>{errorMessage}</div>}
         <TextInput
           label="Email"
           value={email}
+          radius="md"
+          mt="sm"
           onChange={(e) => setEmail(e.currentTarget.value)}
-          required
         />
         <PasswordInput
           label="Password"
           value={pass}
+          radius="md"
           onChange={(e) => setPass(e.currentTarget.value)}
-          required
           mt="md"
         />
-        <Group align="center" mt="md">
-          <Button type="submit">Login</Button>
+        {errorMessage && (
+          <Text c="red" m="xs" size="sm">
+            {errorMessage}
+          </Text>
+        )}
+
+        <Group justify="center" mt="lg">
+          <Button variant="filled" radius="md" type="submit" loading={open}>
+            Log In
+          </Button>
+          <Text c="dimmed">or</Text>
+          <Button variant="outline" radius="md" onClick={handleSignUp}>
+            Get Started
+          </Button>
         </Group>
       </form>
     </Box>

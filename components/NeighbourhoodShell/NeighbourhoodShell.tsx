@@ -19,7 +19,7 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
     try {
       await signOut({ global: true });
       localStorage.removeItem('currentUser');
-      router.push('/login');
+      router.push('/');
       console.log('Signed out!');
     } catch (error) {
       console.log('error signing out: ', error);
