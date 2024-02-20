@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { signUp } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/api';
 import { TextInput, PasswordInput, Button, Box, Title } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { createUser } from '@/src/graphql/mutations';
 
 const client = generateClient({});
@@ -73,6 +74,10 @@ const SignUpForm: React.FC = () => {
 
       console.log('Sign up success:', cognitoResponse.userId);
       setIsSignUpSuccessful(true);
+      notifications.show({
+        title: 'Signed up successfully!',
+        message: 'You can now log in to continue to Neighbourhood.',
+      });
     } catch (error) {
       console.log('error signing up:', error);
       setSignUpError('An unexpected error occurred.');
