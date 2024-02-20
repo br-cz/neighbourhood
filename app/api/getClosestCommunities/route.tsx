@@ -52,7 +52,7 @@ try {
       { id: item.id,
         name: item.name,
         location: item.location,
-        coordinates: item.location,
+        coordinates: item.coordinates,
         image: item.image,
       },
       distanceKm: distanceResponse.distanceKm };
