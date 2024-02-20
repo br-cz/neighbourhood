@@ -3,6 +3,12 @@
   background-color: var(--mantine-color-body);
   border-radius: var(--mantine-radius-md);
   padding: var(--mantine-spacing-md);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--mantine-shadow-sm);
+  transform: translateY(-5px);
 }
 
 .image {
@@ -21,10 +27,9 @@
 
 .action {
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
-
-  @mixin hover {
-    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
-  }
+}
+.action:hover {
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
 }
 
 .footer {
