@@ -1,8 +1,9 @@
 'use client';
 
-import { SimpleGrid, Tabs } from '@mantine/core';
+import { SimpleGrid, Tabs, Indicator } from '@mantine/core';
 import { UserListItem } from '../UserListItem/UserListItem';
 import classes from './UserList.module.css';
+import { FriendRequestListItem } from '../FriendRequestListItem/FriendRequestListItem';
 
 //placeholder data
 const users = {
@@ -46,12 +47,24 @@ const friends = {
   },
 };
 
+const requests = {
+  1: {
+    name: 'Gurman Toor',
+    username: 'gtoor',
+    profilePic: 'https://avatar.iran.liara.run/public/3',
+  },
+};
+
 export function UserList() {
+  const numRequests = Object.keys(requests).length;
   return (
     <Tabs variant="outline" radius="md" defaultValue="all">
       <Tabs.List>
         <Tabs.Tab value="all">All</Tabs.Tab>
         <Tabs.Tab value="friends">Friends</Tabs.Tab>
+        <Indicator size="md" inline label={numRequests} color="blue">
+          <Tabs.Tab value="requests">Requests</Tabs.Tab>
+        </Indicator>
       </Tabs.List>
       <Tabs.Panel value="all">
         <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
@@ -64,6 +77,13 @@ export function UserList() {
         <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
           {Object.entries(friends).map(([id, friend]) => (
             <UserListItem key={id} user={friend} />
+          ))}
+        </SimpleGrid>
+      </Tabs.Panel>
+      <Tabs.Panel value="requests">
+        <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
+          {Object.entries(requests).map(([id, request]) => (
+            <FriendRequestListItem key={id} user={request} />
           ))}
         </SimpleGrid>
       </Tabs.Panel>
