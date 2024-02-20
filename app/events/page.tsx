@@ -8,11 +8,13 @@ import { EventCard } from '@/components/EventCard/EventCard';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { CreateEventDrawer } from '@/components/CreateEventDrawer/CreateEventDrawer';
 import { ViewEventModal } from '@/components/ViewEventModal/ViewEventModal';
+import { useAuth } from '@/components/Authorization/useAuth';
 
 export default function EventsPage() {
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const [viewEventModalOpened, setViewEventModalOpened] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const { user, loading } = useAuth();
 
   // Placeholder data until we have our data figured out
   const users = {
@@ -51,6 +53,8 @@ export default function EventsPage() {
     setSelectedEvent(event);
     setViewEventModalOpened(true);
   };
+
+  if (!user) return null; // or a message indicating the user is not signed in
 
   return (
     <NeighbourhoodShell>

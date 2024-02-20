@@ -6,11 +6,14 @@ import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { IconSearch } from '@tabler/icons-react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
+import { useAuth } from '@/components/Authorization/useAuth';
 import { getUser } from '@/src/graphql/queries';
 
 const client = generateClient({});
 
 export default function HomePage() {
+  const { user, loading } = useAuth();
+
   // This function is called when the "New Post..." button is clicked. Just testing the connection to the database.
   async function handleClick() {
     try {
@@ -30,6 +33,8 @@ export default function HomePage() {
       console.log(err);
     }
   }
+
+  if (!user) return null; // or a message indicating the user is not signed in
 
   return (
     <NeighbourhoodShell>
