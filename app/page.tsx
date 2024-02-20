@@ -1,17 +1,23 @@
 'use client';
 
 import React from 'react';
-import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
-import { useAuth } from '@/components/Authorization/useAuth';
+import { Box } from '@mantine/core';
+import Image from 'next/image';
+import LoginForm from '@/components/Authorization/loginForm.client';
 
+const containerStyling = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh',
+};
 export default function MainPage() {
-  const { user, loading } = useAuth();
-
-  if (!user) return null; // or a message indicating the user is not signed in
-
   return (
-    <NeighbourhoodShell>
-      <h1>landing page</h1>
-    </NeighbourhoodShell>
+    <div style={containerStyling}>
+      <Box>
+        <Image src="/logo.svg" width={450} height={100} alt="Neighbourhood Logo" />
+        <LoginForm />
+      </Box>
+    </div>
   );
 }

@@ -2,14 +2,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from 'aws-amplify/auth';
 
-export function useAuth(redirectUrl: string = '/login') {
+export function useAuth(redirectUrl: string = '/') {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-
-  useEffect(() => {
-    checkUser();
-  }, []);
 
   async function checkUser() {
     try {
@@ -20,6 +16,10 @@ export function useAuth(redirectUrl: string = '/login') {
       router.push(redirectUrl);
     }
   }
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   return { user, loading };
 }
