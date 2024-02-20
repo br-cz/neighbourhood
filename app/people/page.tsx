@@ -6,8 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { UserList } from '@/components/UserList/UserList';
+import { useAuth } from '@/components/Authorization/useAuth';
 
 export default function PeoplePage() {
+  const { user, loading } = useAuth();
+
+  if (!user) return null; // or a message indicating the user is not signed in
+
   return (
     <NeighbourhoodShell>
       <Group justify="space-between" m="20">
