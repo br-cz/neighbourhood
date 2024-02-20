@@ -1,3 +1,16 @@
+/**
+ * getDistanceFromCoordinates/route.tsx
+ *
+ * This API router will retrieve the distance in km and the travel time duration between two given coordinates.
+ *
+ * Inputs:
+ * - GET request with 'origin' and 'destination' query parameters representing coordinates as strings in decimal degrees format ("99.99999, -99.99999").
+ *
+ * Outputs:
+ * - Success: JSON object with `distanceKm` and `duration` and status code 200.
+ * - Error: JSON object with error message and error status code.
+ */
+
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 

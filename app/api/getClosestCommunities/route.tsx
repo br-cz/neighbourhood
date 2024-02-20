@@ -1,3 +1,16 @@
+/**
+ * getClosestCommunities/route.tsx
+ *
+ * This API router retrieves communities near a provided postal code.
+ *
+ * Inputs:
+ * - A GET request with a 'postalcode' query parameter.
+ *
+ * Outputs:
+ * - Success: An array of communities sorted by distance, including community details and distance in kilometers.
+ * - Error: A JSON error message with an HTTP status code, indicating the nature of the failure (invalid input, server error, etc.).
+ */
+
 import { generateClient } from 'aws-amplify/api';
 import { NextResponse } from 'next/server';
 import { configureAmplify } from '../utils/amplifyServerConfig';

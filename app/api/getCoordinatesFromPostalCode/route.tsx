@@ -1,3 +1,16 @@
+/**
+ * getCoordinatesFromPostalCode/route.tsx
+ *
+ * This API router will retrieve coordinates from a given postal code.
+ *
+ * Inputs:
+ * - GET request with a 'postalcode' query parameter.
+ *
+ * Outputs:
+ * - Success: JSON object with latitude and longitude (in decimal degrees format) and status code 200.
+ * - Error: JSON object containing error message and error status code.
+ */
+
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
