@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
-import { getCommunity } from '../graphql/queries';
 import { User } from '../models';
 
 const client = generateClient();
