@@ -1,6 +1,7 @@
 import React from 'react';
 import { signOut } from 'aws-amplify/auth';
 import { AppShell, Group, Burger, Button } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
@@ -20,6 +21,11 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
       await signOut({ global: true });
       localStorage.removeItem('currentUser');
       router.push('/');
+      notifications.show({
+        radius: 'md',
+        title: 'Logged out!',
+        message: 'Log back in to continue using Neighborhood.',
+      });
       console.log('Signed out!');
     } catch (error) {
       console.log('error signing out: ', error);
