@@ -59,7 +59,7 @@ const SignUpForm: React.FC = () => {
           email: parameters.email,
           firstName: parameters.name,
           lastName: parameters.family_name,
-          selectedCommunity: 'dcc7f7e2-f0a2-476c-9890-542006de6d20', // Hardcoded as Waverley for now, replace with ID of user selection
+          selectedCommunity: '17b85438-7fcf-4f78-b5ef-cee07c6dedae', // Hardcoded as U of M for now, replace with ID of user selection
           postalCode: '',
         };
 
