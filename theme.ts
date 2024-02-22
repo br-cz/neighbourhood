@@ -6,4 +6,5 @@ export const theme = createTheme({
   /* Put your mantine theme override here */
   fontFamily: 'Roboto Flex, sans-serif',
   primaryColor: 'dark',
+  defaultRadius: 'md',
 });

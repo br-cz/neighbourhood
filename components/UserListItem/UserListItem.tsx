@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Group, Avatar, Text, Button } from '@mantine/core';
+import { Group, Avatar, Text, Button, Title } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClock, faSmile, faUserPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import classes from './UserListItem.module.css';
@@ -13,25 +14,47 @@ interface UserListItemProps {
 
 export function UserListItem({ user, relationshipStatus }: UserListItemProps) {
   const [status, setStatus] = useState(relationshipStatus);
-  const handleAddFriend = () => {
-    // Add friend
-    setStatus('outgoing');
-  };
+
+  const handleAddFriend = () => setStatus('outgoing');
+
   const handleAcceptRequest = () => {
-    // Accept request
     setStatus('friend');
   };
+
   const handleDeclineRequest = () => {
-    // Decline request
-    setStatus('none');
+    modals.openConfirmModal({
+      title: <Title order={5}>Decline Friend Request?</Title>,
+      children: (
+        <Text size="sm">Are you sure you want to decline {user?.name}'s friend request?</Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md', color: 'red' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Decline', cancel: 'Back' },
+      onConfirm: () => setStatus('none'),
+    });
   };
+
   const handleRemoveFriend = () => {
-    // Remove friend
-    setStatus('none');
+    modals.openConfirmModal({
+      title: <Title order={5}>Remove Friend?</Title>,
+      children: <Text size="sm">Are you sure you want to remove {user?.name} as a friend?</Text>,
+      confirmProps: { size: 'xs', radius: 'md', color: 'red' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Remove', cancel: 'Back' },
+      onConfirm: () => setStatus('none'),
+    });
   };
   const handleCancelRequest = () => {
-    // Cancel request
-    setStatus('none');
+    modals.openConfirmModal({
+      title: <Title order={5}>Cancel Friend Request?</Title>,
+      children: (
+        <Text size="sm">Are you sure you cancel your outgoing friend request to {user?.name}?</Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md', color: 'red' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Cancel', cancel: 'Back' },
+      onConfirm: () => setStatus('none'),
+    });
   };
 
   // Decide the button based on the relationship status

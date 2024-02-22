@@ -1,6 +1,7 @@
 import React from 'react';
 import { signOut } from 'aws-amplify/auth';
-import { AppShell, Group, Burger, Button } from '@mantine/core';
+import { AppShell, Group, Burger, Button, Title, Text } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -32,6 +33,17 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
     }
   }
 
+  const openSignOutModal = () => {
+    modals.openConfirmModal({
+      title: <Title order={5}>Sign out?</Title>,
+      children: <Text size="sm">Are you sure you want to sign out of Neighbourhood?</Text>,
+      confirmProps: { size: 'xs', radius: 'md' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Confirm', cancel: 'Back' },
+      onConfirm: () => handleSignOut(),
+    });
+  };
+
   return (
     <AppShell
       header={{ height: 70 }}
@@ -49,7 +61,7 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
             <Image src="./logo.svg" alt="Neighbourhood Logo" width={200} height={37} priority />
           </Group>
-          <Button onClick={handleSignOut} radius="md" variant="default" color="red">
+          <Button onClick={openSignOutModal} radius="md" variant="default" color="red">
             Sign Out
           </Button>
         </Group>
