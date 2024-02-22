@@ -3,12 +3,6 @@
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
-enum FriendRequestStatus {
-  PENDING
-  ACCEPTED
-  DECLINED
-}
-
 enum PostType {
   THOUGHT
   EVENT_ANNOUNCEMENT
@@ -26,7 +20,6 @@ type FriendRequest @model {
   id: ID!
   sender: User! @belongsTo
   receiver: User! @belongsTo
-  status: FriendRequestStatus!
 }
 
 type User @model {
