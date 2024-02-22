@@ -39,6 +39,7 @@ const LoginForm: React.FC = () => {
         query: getUser,
         variables: { id: userId },
       });
+      localStorage.setItem('currentUserID', JSON.stringify(userId));
       localStorage.setItem('currentUser', JSON.stringify(user.data.getUser));
 
       // Initialize localStorage with corresponding community
@@ -48,6 +49,10 @@ const LoginForm: React.FC = () => {
           query: getCommunity,
           variables: { id: communityID },
         });
+        localStorage.setItem(
+          'currentCommunityID',
+          JSON.stringify(user.data.getUser.selectedCommunity)
+        );
         localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
       }
       router.push('/home');
