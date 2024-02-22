@@ -18,8 +18,10 @@ enum Visibility {
 
 type FriendRequest @model {
   id: ID!
-  sender: User! @belongsTo
-  receiver: User! @belongsTo
+  senderId: ID! # Explicit foreign key for the sender
+  receiverId: ID! # ditto
+  sender: User! @belongsTo(fields: ["senderId"])
+  receiver: User! @belongsTo(fields: ["receiverId"])
 }
 
 type User @model {
