@@ -34,7 +34,7 @@ type User @model {
   communities: [Community!]! @manyToMany(relationName: "UserCommunity")
   selectedCommunity: String! #Store selected community's id
   posts: [Post!]! @hasMany
-  friends: [User] @hasMany
+  friends: [String!]
   friendRequests: [FriendRequest!]! @hasMany
   events: [Event!]! @hasMany
   itemsForSale: [ItemForSale!]! @hasMany
