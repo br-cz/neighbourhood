@@ -74,7 +74,7 @@ export function CreatePostDrawer({ opened, onClose }: CreatePostDrawerProps) {
       position="right"
       title={<Title order={3}>New Post</Title>}
       padding="lg"
-      size="lg"
+      size="md"
     >
       <form
         onSubmit={form.onSubmit((values) => {
@@ -90,7 +90,6 @@ export function CreatePostDrawer({ opened, onClose }: CreatePostDrawerProps) {
           label="Content"
           placeholder="Share your thoughts..."
           {...form.getInputProps('content')}
-          mt="md"
         />
 
         <Select
@@ -187,7 +186,7 @@ export function CreatePostDrawer({ opened, onClose }: CreatePostDrawerProps) {
 
         <Group justify="center" mt="lg">
           <Button radius="md" type="submit" onClick={onClose}>
-            Post Event
+            Post
           </Button>
         </Group>
       </form>
