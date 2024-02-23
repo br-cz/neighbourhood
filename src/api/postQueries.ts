@@ -15,7 +15,7 @@ export const getPostByID = async (postId: string) => {
   return post.data.getPost;
 };
 
-export const useFetchPosts = () => {
+export const useFetchPosts = (refresh: boolean = false) => {
   const [posts, setPosts] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
@@ -73,7 +73,7 @@ export const useFetchPosts = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [refresh]);
 
   return { posts, loading, error };
 };

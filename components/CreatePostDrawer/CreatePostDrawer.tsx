@@ -1,23 +1,37 @@
 import React from 'react';
 import { Drawer, Textarea, Button, Group, Select, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
+import { useCreatePost } from '@/src/api/postQueries';
+import { Visibility } from '@/src/API';
 
 interface CreatePostDrawerProps {
   opened: boolean;
   onClose: () => void;
+  onPostCreated: () => void;
 }
 
-export function CreatePostDrawer({ opened, onClose }: CreatePostDrawerProps) {
+export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostDrawerProps) {
+  const [loading, handlers] = useDisclosure();
+  const { handleCreatePost } = useCreatePost();
   const form = useForm({
     initialValues: {
       content: '',
-      visibility: 'public',
+      visibility: Visibility.PUBLIC,
     },
   });
 
   const handleClose = () => {
     form.reset();
     onClose();
+  };
+
+  const handleSubmit = async (values: typeof form.values) => {
+    handlers.open();
+    await handleCreatePost(values);
+    onPostCreated();
+    handlers.close();
+    handleClose();
   };
 
   return (
@@ -31,12 +45,7 @@ export function CreatePostDrawer({ opened, onClose }: CreatePostDrawerProps) {
       padding="lg"
       size="md"
     >
-      <form
-        onSubmit={form.onSubmit((values) => {
-          console.log(values);
-          handleClose();
-        })}
-      >
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Textarea
           radius="md"
           autosize
@@ -48,20 +57,16 @@ export function CreatePostDrawer({ opened, onClose }: CreatePostDrawerProps) {
         />
 
         <Select
-          required
           radius="md"
           label="Visibility"
           placeholder="Choose visibility"
-          data={[
-            { value: 'public', label: 'Public' },
-            { value: 'friends_only', label: 'Friends Only' },
-          ]}
+          data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
           {...form.getInputProps('visibility')}
           mt="md"
         />
 
         <Group justify="center" mt="lg">
-          <Button radius="md" type="submit" onClick={onClose}>
+          <Button radius="md" type="submit" onClick={onClose} loading={loading}>
             Post
           </Button>
         </Group>

@@ -53,7 +53,7 @@ export const TestAllQueries = () => {
     console.log('Members:', members);
     console.log('Posts:', posts);
     await handleCreatePost(testPost);
-    console.log('Post by ID:', await getPostByID('229ec76e-eb8c-43eb-8f17-1416e5740ad5'));
+    console.log('Post by ID:', await getPostByID('229ec76e-eb8c-43eb-8f17-1416e5740ad5"'));
   };
 
   return <Button onClick={handleButtonClick}>Log App Queries</Button>;
