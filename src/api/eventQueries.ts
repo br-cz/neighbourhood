@@ -1,34 +1,18 @@
 import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { createEvent } from '@/src/graphql/mutations';
-import * as APITypes from '../API';
-import { User } from '../models';
+import { getCurrentCommunityID, getCurrentUserID } from '@/src/api/appQueries';
+import { getEvent } from '../graphql/queries';
+import { EventDataInput } from '@/types/types';
 
 const client = generateClient();
 
-export const useCreateEvent = () => {
-  const [events, setEvents] = useState<string>('');
-  const [error, setError] = useState('');
-
-  const handleCreateEvent = async (eventData: APITypes.CreateEventInput) => {
-    try {
-      const userData = localStorage.getItem('userData')!;
-      const parsedUserData: User = JSON.parse(userData);
-
-      eventData.userEventsId = parsedUserData.id;
-      eventData.communityEventsId = parsedUserData.selectedCommunity;
-
-      const event = await client.graphql({ query: createEvent, variables: { input: eventData } });
-      console.log('Event created:', event);
-
-      setEvents(JSON.stringify(event));
-    } catch (err: any) {
-      console.error('Error creating event:', err);
-      setError(err);
-    }
-  };
-
-  return { events, error, handleCreateEvent };
+export const getEventByID = async (eventId: string) => {
+  const event = await client.graphql({
+    query: getEvent,
+    variables: { id: eventId },
+  });
+  return event.data.getEvent;
 };
 
 export const useFetchEvents = () => {
@@ -76,15 +60,13 @@ export const useFetchEvents = () => {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-        const userData = localStorage.getItem('userData')!;
-        const parsedUserData: User = JSON.parse(userData);
-
-        const community = await client.graphql({
+        const communityId = getCurrentCommunityID();
+        const response = await client.graphql({
           query: getCommunityEvents,
-          variables: { id: parsedUserData.selectedCommunity },
+          variables: { id: communityId },
         });
-
-        setEvents(JSON.stringify(community));
+        const jsonEvents = JSON.parse(JSON.stringify(response));
+        setEvents(jsonEvents.data.getCommunity.events.items);
       } catch (err: any) {
         setError(err);
       } finally {
@@ -96,4 +78,27 @@ export const useFetchEvents = () => {
   }, []);
 
   return { events, loading, error };
+};
+
+export const useCreateEvent = () => {
+  const handleCreateEvent = async (eventData: EventDataInput) => {
+    try {
+      const newEventData = {
+        ...eventData,
+        userEventsId: getCurrentUserID(),
+        communityEventsId: getCurrentCommunityID(),
+      };
+      const event = await client.graphql({
+        query: createEvent,
+        variables: { input: newEventData },
+      });
+      console.log('Event created:', event.data.createEvent);
+
+      return event.data.createEvent;
+    } catch (err: any) {
+      console.error('Error creating event:', err);
+      return err;
+    }
+  };
+  return { handleCreateEvent };
 };
