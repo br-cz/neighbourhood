@@ -27,11 +27,7 @@ export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: 
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -78,7 +74,6 @@ export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: 
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -105,11 +100,7 @@ export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!,
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -156,7 +147,6 @@ export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!,
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -175,6 +165,7 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -186,7 +177,6 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -241,6 +231,7 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -252,7 +243,6 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -322,6 +312,7 @@ export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!,
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -333,7 +324,6 @@ export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!,
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     content
@@ -385,6 +375,7 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -396,7 +387,6 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -451,11 +441,7 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -502,7 +488,6 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -539,6 +524,7 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -550,7 +536,6 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -602,6 +587,7 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -613,7 +599,6 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -652,6 +637,7 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -663,7 +649,6 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -715,6 +700,7 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -726,7 +712,6 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -765,6 +750,8 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
 export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($senderId: ID!, $receiverId: ID!) {
   sendFriendRequest(senderId: $senderId, receiverId: $receiverId) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -773,6 +760,7 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -784,7 +772,6 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -795,6 +782,7 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -806,10 +794,8 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -826,6 +812,8 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
 export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($requestId: ID!) {
   acceptFriendRequest(requestId: $requestId) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -834,6 +822,7 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -845,7 +834,6 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -856,6 +844,7 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -867,10 +856,8 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -887,6 +874,8 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
 export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest($requestId: ID!) {
   declineFriendRequest(requestId: $requestId) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -895,6 +884,7 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -906,7 +896,6 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -917,6 +906,7 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -928,10 +918,8 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -951,6 +939,8 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
 ) {
   createFriendRequest(input: $input, condition: $condition) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -959,6 +949,7 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -970,7 +961,6 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -981,6 +971,7 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -992,10 +983,8 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -1015,6 +1004,8 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
 ) {
   updateFriendRequest(input: $input, condition: $condition) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -1023,6 +1014,7 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1034,7 +1026,6 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -1045,6 +1036,7 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1056,10 +1048,8 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -1079,6 +1069,8 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
 ) {
   deleteFriendRequest(input: $input, condition: $condition) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -1087,6 +1079,7 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1098,7 +1091,6 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -1109,6 +1101,7 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1120,10 +1113,8 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -1159,11 +1150,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -1210,7 +1197,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -1240,11 +1226,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -1291,7 +1273,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -1321,11 +1302,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -1372,7 +1349,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -1520,6 +1496,7 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1531,7 +1508,6 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1589,6 +1565,7 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1600,7 +1577,6 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1658,6 +1634,7 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1669,7 +1646,6 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1742,6 +1718,7 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1753,7 +1730,6 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     content
@@ -1800,6 +1776,7 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1811,7 +1788,6 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     content
@@ -1858,6 +1834,7 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1869,7 +1846,6 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     content
@@ -1919,6 +1895,7 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1930,7 +1907,6 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -1985,6 +1961,7 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1996,7 +1973,6 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -2051,6 +2027,7 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2062,7 +2039,6 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -2104,6 +2080,7 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2115,7 +2092,6 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -2170,6 +2146,7 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2181,7 +2158,6 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -2236,6 +2212,7 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2247,7 +2224,6 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -2299,6 +2275,7 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2310,7 +2287,6 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -2354,6 +2330,7 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2365,7 +2342,6 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -2409,6 +2385,7 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2420,7 +2397,6 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -2464,6 +2440,7 @@ export const createUserLikedPosts = /* GraphQL */ `mutation CreateUserLikedPosts
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2475,7 +2452,6 @@ export const createUserLikedPosts = /* GraphQL */ `mutation CreateUserLikedPosts
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     post {
@@ -2521,6 +2497,7 @@ export const updateUserLikedPosts = /* GraphQL */ `mutation UpdateUserLikedPosts
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2532,7 +2509,6 @@ export const updateUserLikedPosts = /* GraphQL */ `mutation UpdateUserLikedPosts
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     post {
@@ -2578,6 +2554,7 @@ export const deleteUserLikedPosts = /* GraphQL */ `mutation DeleteUserLikedPosts
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2589,7 +2566,6 @@ export const deleteUserLikedPosts = /* GraphQL */ `mutation DeleteUserLikedPosts
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     post {
@@ -2635,6 +2611,7 @@ export const createUserLikedEvents = /* GraphQL */ `mutation CreateUserLikedEven
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2646,7 +2623,6 @@ export const createUserLikedEvents = /* GraphQL */ `mutation CreateUserLikedEven
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     event {
@@ -2694,6 +2670,7 @@ export const updateUserLikedEvents = /* GraphQL */ `mutation UpdateUserLikedEven
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2705,7 +2682,6 @@ export const updateUserLikedEvents = /* GraphQL */ `mutation UpdateUserLikedEven
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     event {
@@ -2753,6 +2729,7 @@ export const deleteUserLikedEvents = /* GraphQL */ `mutation DeleteUserLikedEven
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2764,7 +2741,6 @@ export const deleteUserLikedEvents = /* GraphQL */ `mutation DeleteUserLikedEven
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     event {
@@ -2812,6 +2788,7 @@ export const createUserLikedItems = /* GraphQL */ `mutation CreateUserLikedItems
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2823,7 +2800,6 @@ export const createUserLikedItems = /* GraphQL */ `mutation CreateUserLikedItems
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     itemForSale {
@@ -2871,6 +2847,7 @@ export const updateUserLikedItems = /* GraphQL */ `mutation UpdateUserLikedItems
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2882,7 +2859,6 @@ export const updateUserLikedItems = /* GraphQL */ `mutation UpdateUserLikedItems
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     itemForSale {
@@ -2930,6 +2906,7 @@ export const deleteUserLikedItems = /* GraphQL */ `mutation DeleteUserLikedItems
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -2941,7 +2918,6 @@ export const deleteUserLikedItems = /* GraphQL */ `mutation DeleteUserLikedItems
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     itemForSale {

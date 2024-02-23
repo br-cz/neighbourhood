@@ -2,12 +2,6 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
 
-export enum FriendRequestStatus {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  DECLINED = "DECLINED"
-}
-
 export enum PostType {
   THOUGHT = "THOUGHT",
   EVENT_ANNOUNCEMENT = "EVENT_ANNOUNCEMENT",
@@ -29,12 +23,13 @@ type EagerFriendRequest = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly senderId: string;
+  readonly receiverId: string;
   readonly sender: User;
   readonly receiver: User;
-  readonly status: FriendRequestStatus | keyof typeof FriendRequestStatus;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly userFriendRequestsId: string;
+  readonly userFriendRequestsId?: string | null;
 }
 
 type LazyFriendRequest = {
@@ -43,12 +38,13 @@ type LazyFriendRequest = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly senderId: string;
+  readonly receiverId: string;
   readonly sender: AsyncItem<User>;
   readonly receiver: AsyncItem<User>;
-  readonly status: FriendRequestStatus | keyof typeof FriendRequestStatus;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly userFriendRequestsId: string;
+  readonly userFriendRequestsId?: string | null;
 }
 
 export declare type FriendRequest = LazyLoading extends LazyLoadingDisabled ? EagerFriendRequest : LazyFriendRequest
@@ -71,7 +67,7 @@ type EagerUser = {
   readonly communities: UserCommunity[];
   readonly selectedCommunity: string;
   readonly posts: Post[];
-  readonly friends?: (User | null)[] | null;
+  readonly friends?: string[] | null;
   readonly friendRequests: FriendRequest[];
   readonly events: Event[];
   readonly itemsForSale: ItemForSale[];
@@ -87,7 +83,6 @@ type EagerUser = {
   readonly comments?: (Comment | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly userFriendsId?: string | null;
 }
 
 type LazyUser = {
@@ -104,7 +99,7 @@ type LazyUser = {
   readonly communities: AsyncCollection<UserCommunity>;
   readonly selectedCommunity: string;
   readonly posts: AsyncCollection<Post>;
-  readonly friends: AsyncCollection<User>;
+  readonly friends?: string[] | null;
   readonly friendRequests: AsyncCollection<FriendRequest>;
   readonly events: AsyncCollection<Event>;
   readonly itemsForSale: AsyncCollection<ItemForSale>;
@@ -120,7 +115,6 @@ type LazyUser = {
   readonly comments: AsyncCollection<Comment>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly userFriendsId?: string | null;
 }
 
 export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser : LazyUser

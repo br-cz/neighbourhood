@@ -10,6 +10,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "senderId": {
+                    "name": "senderId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "receiverId": {
+                    "name": "receiverId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "sender": {
                     "name": "sender",
                     "isArray": false,
@@ -21,7 +35,7 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "userFriendRequestsId"
+                            "senderId"
                         ]
                     }
                 },
@@ -36,18 +50,9 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "userFriendRequestsId"
+                            "receiverId"
                         ]
                     }
-                },
-                "status": {
-                    "name": "status",
-                    "isArray": false,
-                    "type": {
-                        "enum": "FriendRequestStatus"
-                    },
-                    "isRequired": true,
-                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -69,7 +74,7 @@ export const schema = {
                     "name": "userFriendRequestsId",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 }
             },
@@ -169,18 +174,10 @@ export const schema = {
                 "friends": {
                     "name": "friends",
                     "isArray": true,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": false,
+                    "type": "String",
+                    "isRequired": true,
                     "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "userFriendsId"
-                        ]
-                    }
+                    "isArrayNullable": true
                 },
                 "friendRequests": {
                     "name": "friendRequests",
@@ -351,13 +348,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "userFriendsId": {
-                    "name": "userFriendsId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -366,15 +356,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "gsi-User.friends",
-                        "fields": [
-                            "userFriendsId"
-                        ]
-                    }
                 }
             ]
         },
@@ -1414,14 +1395,6 @@ export const schema = {
         }
     },
     "enums": {
-        "FriendRequestStatus": {
-            "name": "FriendRequestStatus",
-            "values": [
-                "PENDING",
-                "ACCEPTED",
-                "DECLINED"
-            ]
-        },
         "PostType": {
             "name": "PostType",
             "values": [
@@ -1442,5 +1415,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "ae964f518d3d6214e6e7479277715c79"
+    "version": "cf6f28b825416c6858a777811a31ab82"
 };
