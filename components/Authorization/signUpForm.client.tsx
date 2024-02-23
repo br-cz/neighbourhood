@@ -7,6 +7,8 @@ import { generateClient } from 'aws-amplify/api';
 import { TextInput, PasswordInput, Button, Box, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { createUser } from '@/src/graphql/mutations';
+import { signUpSchema } from './signUpValidation';
+import { useFormik } from 'formik';
 
 const client = generateClient({});
 
@@ -20,136 +22,172 @@ type SignUpParameters = {
 };
 
 const SignUpForm: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [familyName, setFamilyName] = useState('');
-  const [preferredUsername, setPreferredUsername] = useState('');
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
   const [step, setStep] = useState(1);
-  const [isSignUpSuccessful, setIsSignUpSuccessful] = useState(false);
-  const [signUpError, setSignUpError] = useState('');
-  const router = useRouter();
 
   const previousStep = () => setStep(step - 1);
   const nextStep = () => setStep(step + 1);
+  const navigateToLogin = () => router.push('/'); // Use the router to navigate to login
+  const [isSignUpSuccessful, setIsSignUpSuccessful] = useState(false);
 
-  async function handleSignUp(parameters: SignUpParameters) {
-    try {
-      // Sign up with cognito
-      const cognitoResponse = await signUp({
-        username: parameters.email,
-        password: parameters.password,
-        options: {
-          userAttributes: {
-            email: parameters.email,
-            name: parameters.name,
-            family_name: parameters.family_name,
-            preferred_username: parameters.preferred_username,
-            address: parameters.address,
-          },
-        },
-      });
-
-      // Create user entry in database
-      if (cognitoResponse.userId) {
-        const createUserInput = {
-          id: cognitoResponse.userId,
-          username: parameters.preferred_username,
-          email: parameters.email,
-          firstName: parameters.name,
-          lastName: parameters.family_name,
-          selectedCommunity: '17b85438-7fcf-4f78-b5ef-cee07c6dedae', // Hardcoded as U of M for now, replace with ID of user selection
-          postalCode: '',
-        };
-
-        await client.graphql({
-          query: createUser,
-          variables: {
-            input: createUserInput,
+  const router = useRouter();
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      name: '',
+      family_name: '',
+      preferred_username: '',
+      address: '',
+    },
+    validationSchema: signUpSchema,
+    onSubmit: async (parameters) => {
+      try {
+        // Sign up with cognito
+        const cognitoResponse = await signUp({
+          username: parameters.email,
+          password: parameters.password,
+          options: {
+            userAttributes: {
+              email: parameters.email,
+              name: parameters.name,
+              family_name: parameters.family_name,
+              preferred_username: parameters.preferred_username,
+              address: parameters.address,
+            },
           },
         });
+
+        // Create user entry in database
+        if (cognitoResponse.userId) {
+          const createUserInput = {
+            id: cognitoResponse.userId,
+            username: parameters.preferred_username,
+            email: parameters.email,
+            firstName: parameters.name,
+            lastName: parameters.family_name,
+            selectedCommunity: '17b85438-7fcf-4f78-b5ef-cee07c6dedae', // Hardcoded as U of M for now, replace with ID of user selection
+            postalCode: '',
+          };
+
+          await client.graphql({
+            query: createUser,
+            variables: {
+              input: createUserInput,
+            },
+          });
+        }
+
+        //console.log('Sign up success:', cognitoResponse.userId);
+        setIsSignUpSuccessful(true);
+        notifications.show({
+          radius: 'md',
+          title: 'Signed up successfully!',
+          message: 'You can now log in to continue to Neighbourhood.',
+        });
+      } catch (error) {
+        console.log('error signing up:', error);
+        //setSignUpError('An unexpected error occurred.');
       }
+    },
+  });
 
-      console.log('Sign up success:', cognitoResponse.userId);
-      setIsSignUpSuccessful(true);
-      notifications.show({
-        radius: 'md',
-        title: 'Signed up successfully!',
-        message: 'You can now log in to continue to Neighbourhood.',
-      });
-    } catch (error) {
-      console.log('error signing up:', error);
-      setSignUpError('An unexpected error occurred.');
-    }
-  }
+  // Render form fields based on the current step
+  const renderStep = (currentStep: number) => {
+    //Can make adjustments here to make the condition smaller, ideally since we are using it for sign up,
+    //the user must touch the password fields so having touch conditions just for that should suffice - even if autofill is used to fill up the rest
+    const isStep1Valid =
+      !formik.errors.email &&
+      !formik.errors.password &&
+      formik.touched.password &&
+      !formik.errors.confirmPassword &&
+      formik.touched.confirmPassword &&
+      !formik.errors.name &&
+      !formik.errors.family_name &&
+      !formik.errors.preferred_username;
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    const isStep2Valid = formik.touched.address && !formik.errors.address;
 
-    if (step === 1 && password !== confirmPassword) {
-      alert('Passwords do not match.');
-      return; // Prevent the form from proceeding
-    }
-
-    //Compile attributes and send to cognito
-    if (step === 2) {
-      handleSignUp({
-        email,
-        password,
-        name,
-        family_name: familyName,
-        preferred_username: preferredUsername,
-        address,
-      });
-    } else {
-      nextStep();
-    }
-  };
-
-  const renderStep = () => {
-    switch (step) {
+    switch (currentStep) {
       case 1:
         return (
           <>
             <TextInput
               label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
+              name="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              error={formik.touched.email && formik.errors.email ? formik.errors.email : undefined}
               required
             />
             <PasswordInput
               label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
+              name="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+              error={
+                formik.touched.password && formik.errors.password
+                  ? formik.errors.password
+                  : undefined
+              }
               required
             />
             <PasswordInput
               label="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+              name="confirmPassword"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.confirmPassword}
+              error={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+                  ? formik.errors.confirmPassword
+                  : undefined
+              }
               required
             />
             <TextInput
               label="First Name"
-              value={name}
-              onChange={(e) => setName(e.currentTarget.value)}
+              name="name"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+              error={formik.touched.name && formik.errors.name ? formik.errors.name : undefined}
               required
             />
             <TextInput
               label="Family Name"
-              value={familyName}
-              onChange={(e) => setFamilyName(e.currentTarget.value)}
+              name="family_name"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.family_name}
+              error={
+                formik.touched.family_name && formik.errors.family_name
+                  ? formik.errors.family_name
+                  : undefined
+              }
               required
             />
             <TextInput
               label="Preferred Username"
-              value={preferredUsername}
-              onChange={(e) => setPreferredUsername(e.currentTarget.value)}
+              name="preferred_username"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.preferred_username}
+              error={
+                formik.touched.preferred_username && formik.errors.preferred_username
+                  ? formik.errors.preferred_username
+                  : undefined
+              }
               required
             />
-            <Button onClick={nextStep}>Next</Button>
+            <Button onClick={navigateToLogin} style={{ marginRight: '1rem' }}>
+              Back
+            </Button>
+            <Button onClick={nextStep} disabled={!isStep1Valid}>
+              Next
+            </Button>
           </>
         );
       case 2:
@@ -157,20 +195,27 @@ const SignUpForm: React.FC = () => {
           <>
             <TextInput
               label="Address"
-              value={address}
-              onChange={(e) => setAddress(e.currentTarget.value)}
+              name="address"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.address}
+              error={
+                formik.touched.address && formik.errors.address ? formik.errors.address : undefined
+              }
               required
             />
-            <Button onClick={previousStep}>Previous</Button>
-            <Button type="submit">Sign Up</Button>
+            <Button onClick={previousStep} style={{ marginRight: '1rem' }}>
+              Back
+            </Button>
+            <Button type="submit" disabled={!isStep2Valid}>
+              Sign Up
+            </Button>
           </>
         );
       default:
-        return null; // For additional steps or confirmation screens
+        return null;
     }
   };
-
-  const navigateToLogin = () => router.push('/');
 
   return (
     <Box style={{ maxWidth: 300 }} mx="auto">
@@ -183,14 +228,13 @@ const SignUpForm: React.FC = () => {
           <Button onClick={navigateToLogin}>Login</Button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
           <Title order={2} style={{ textAlign: 'center' }} mb="lg">
             Sign Up
           </Title>
-          {signUpError && <p style={{ color: 'red' }}>{signUpError}</p>}
-          {renderStep()}
+          {renderStep(step)}
         </form>
-      )}
+      )}{' '}
     </Box>
   );
 };
