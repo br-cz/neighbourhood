@@ -3,12 +3,6 @@
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
-enum PostType {
-  THOUGHT
-  EVENT_ANNOUNCEMENT
-  ITEM_FOR_SALE
-}
-
 enum Visibility {
   PUBLIC
   FRIENDS_ONLY
@@ -68,7 +62,6 @@ type Post @model {
   community: Community! @belongsTo
   images: [String]
   content: String!
-  postType: PostType!
   likedBy: [User!]! @manyToMany(relationName: "UserLikedPosts")
   comments: [Comment!]! @hasMany
   visibility: Visibility!

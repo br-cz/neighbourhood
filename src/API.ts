@@ -87,7 +87,6 @@ export type Post = {
   community: Community,
   images?: Array< string | null > | null,
   content: string,
-  postType: PostType,
   likedBy?: ModelUserLikedPostsConnection | null,
   comments?: ModelCommentConnection | null,
   visibility: Visibility,
@@ -99,13 +98,6 @@ export type Post = {
   userPostsId: string,
   communityPostsId: string,
 };
-
-export enum PostType {
-  THOUGHT = "THOUGHT",
-  EVENT_ANNOUNCEMENT = "EVENT_ANNOUNCEMENT",
-  ITEM_FOR_SALE = "ITEM_FOR_SALE",
-}
-
 
 export type ModelUserLikedPostsConnection = {
   __typename: "ModelUserLikedPostsConnection",
@@ -483,7 +475,6 @@ export type CreatePostInput = {
   id?: string | null,
   images?: Array< string | null > | null,
   content: string,
-  postType: PostType,
   visibility: Visibility,
   _version?: number | null,
   userPostsId: string,
@@ -493,7 +484,6 @@ export type CreatePostInput = {
 export type ModelPostConditionInput = {
   images?: ModelStringInput | null,
   content?: ModelStringInput | null,
-  postType?: ModelPostTypeInput | null,
   visibility?: ModelVisibilityInput | null,
   and?: Array< ModelPostConditionInput | null > | null,
   or?: Array< ModelPostConditionInput | null > | null,
@@ -501,11 +491,6 @@ export type ModelPostConditionInput = {
   _deleted?: ModelBooleanInput | null,
   userPostsId?: ModelIDInput | null,
   communityPostsId?: ModelIDInput | null,
-};
-
-export type ModelPostTypeInput = {
-  eq?: PostType | null,
-  ne?: PostType | null,
 };
 
 export type ModelVisibilityInput = {
@@ -517,7 +502,6 @@ export type UpdatePostInput = {
   id: string,
   images?: Array< string | null > | null,
   content?: string | null,
-  postType?: PostType | null,
   visibility?: Visibility | null,
   _version?: number | null,
   userPostsId?: string | null,
@@ -838,7 +822,6 @@ export type ModelPostFilterInput = {
   id?: ModelIDInput | null,
   images?: ModelStringInput | null,
   content?: ModelStringInput | null,
-  postType?: ModelPostTypeInput | null,
   visibility?: ModelVisibilityInput | null,
   and?: Array< ModelPostFilterInput | null > | null,
   or?: Array< ModelPostFilterInput | null > | null,
@@ -1023,7 +1006,6 @@ export type ModelSubscriptionPostFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   images?: ModelSubscriptionStringInput | null,
   content?: ModelSubscriptionStringInput | null,
-  postType?: ModelSubscriptionStringInput | null,
   visibility?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionPostFilterInput | null > | null,
   or?: Array< ModelSubscriptionPostFilterInput | null > | null,
@@ -1307,7 +1289,6 @@ export type LikePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -1374,7 +1355,6 @@ export type UnlikePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -1411,7 +1391,6 @@ export type CommentOnPostMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -2636,7 +2615,6 @@ export type CreatePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -2704,7 +2682,6 @@ export type UpdatePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -2772,7 +2749,6 @@ export type DeletePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -2808,7 +2784,6 @@ export type CreateCommentMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -2865,7 +2840,6 @@ export type UpdateCommentMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -2922,7 +2896,6 @@ export type DeleteCommentMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -3555,7 +3528,6 @@ export type CreateUserLikedPostsMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -3611,7 +3583,6 @@ export type UpdateUserLikedPostsMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -3667,7 +3638,6 @@ export type DeleteUserLikedPostsMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -4079,7 +4049,6 @@ export type SearchPostsQuery = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -4221,7 +4190,6 @@ export type GetCommunityPostsQuery = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -4910,7 +4878,6 @@ export type GetPostQuery = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -4946,7 +4913,6 @@ export type ListPostsQuery = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -4976,7 +4942,6 @@ export type SyncPostsQuery = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -5004,7 +4969,6 @@ export type GetCommentQuery = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -5495,7 +5459,6 @@ export type GetUserLikedPostsQuery = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -6572,7 +6535,6 @@ export type OnCreatePostSubscription = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -6639,7 +6601,6 @@ export type OnUpdatePostSubscription = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -6706,7 +6667,6 @@ export type OnDeletePostSubscription = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -6741,7 +6701,6 @@ export type OnCreateCommentSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -6797,7 +6756,6 @@ export type OnUpdateCommentSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -6853,7 +6811,6 @@ export type OnDeleteCommentSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -7476,7 +7433,6 @@ export type OnCreateUserLikedPostsSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -7531,7 +7487,6 @@ export type OnUpdateUserLikedPostsSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -7586,7 +7541,6 @@ export type OnDeleteUserLikedPostsSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,

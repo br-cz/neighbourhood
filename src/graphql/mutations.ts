@@ -194,7 +194,6 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -260,7 +259,6 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -293,7 +291,6 @@ export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!,
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -1525,7 +1522,6 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -1594,7 +1590,6 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -1663,7 +1658,6 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -1699,7 +1693,6 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -1757,7 +1750,6 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -1815,7 +1807,6 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -2458,7 +2449,6 @@ export const createUserLikedPosts = /* GraphQL */ `mutation CreateUserLikedPosts
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -2515,7 +2505,6 @@ export const updateUserLikedPosts = /* GraphQL */ `mutation UpdateUserLikedPosts
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -2572,7 +2561,6 @@ export const deleteUserLikedPosts = /* GraphQL */ `mutation DeleteUserLikedPosts
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
