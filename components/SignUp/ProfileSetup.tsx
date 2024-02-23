@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Group, Stack, TextInput } from '@mantine/core';
+import { Box, Group, Stack, Text, TextInput } from '@mantine/core';
 
 interface ProfileSetupProps {
   formData: {
@@ -35,7 +35,18 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ formData, updateForm
         />
       </Group>
       <TextInput
-        label="Phone Number (optional)"
+        label={
+          <>
+            <Group gap="xs">
+              <Text size="sm" fw={500}>
+                Phone Number
+              </Text>
+              <Text size="sm" c="dimmed">
+                (optional)
+              </Text>
+            </Group>
+          </>
+        }
         value={formData.phoneNumber}
         onChange={(e) => updateFormData({ phoneNumber: e.currentTarget.value })}
         radius="md"
