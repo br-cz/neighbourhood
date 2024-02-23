@@ -7,8 +7,7 @@
 }
 
 .card:hover {
-  box-shadow: var(--mantine-shadow-sm);
-  transform: translateY(-5px);
+  transform: translateY(-5px) scale(1.02);
 }
 
 .image {

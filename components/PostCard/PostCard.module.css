@@ -1,0 +1,12 @@
+.post {
+  display: block;
+  width: 100%;
+  padding: var(--mantine-spacing-lg);
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: var(--mantine-radius-md);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.post:hover {
+  transform: translateY(-2px) scale(1.01);
+}
