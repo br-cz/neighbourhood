@@ -3,12 +3,6 @@
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
-enum FriendRequestStatus {
-  PENDING
-  ACCEPTED
-  DECLINED
-}
-
 enum PostType {
   THOUGHT
   EVENT_ANNOUNCEMENT
@@ -24,9 +18,10 @@ enum Visibility {
 
 type FriendRequest @model {
   id: ID!
-  sender: User! @belongsTo
-  receiver: User! @belongsTo
-  status: FriendRequestStatus!
+  senderId: ID! # Explicit foreign key for the sender
+  receiverId: ID! # ditto
+  sender: User! @belongsTo(fields: ["senderId"])
+  receiver: User! @belongsTo(fields: ["receiverId"])
 }
 
 type User @model {
@@ -39,7 +34,7 @@ type User @model {
   communities: [Community!]! @manyToMany(relationName: "UserCommunity")
   selectedCommunity: String! #Store selected community's id
   posts: [Post!]! @hasMany
-  friends: [User] @hasMany
+  friends: [String!]
   friendRequests: [FriendRequest!]! @hasMany
   events: [Event!]! @hasMany
   itemsForSale: [ItemForSale!]! @hasMany
