@@ -5,22 +5,51 @@ import { Group, Avatar, Text, Button } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClock, faSmile, faUserPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import classes from './UserListItem.module.css';
+import {
+  useCreateFriend,
+  useCreateFriendRequest,
+  useFetchIncomingFriendRequests,
+} from '@/src/api/friendQueries';
+import * as APITypes from '@/src/API';
 
 interface UserListItemProps {
   user: User;
   relationshipStatus: string;
+  onUpdate: () => void;
 }
 
-export function UserListItem({ user, relationshipStatus }: UserListItemProps) {
+export function UserListItem({ user, relationshipStatus, onUpdate }: UserListItemProps) {
   const [status, setStatus] = useState(relationshipStatus);
-  const handleAddFriend = () => {
-    // Add friend
-    setStatus('outgoing');
+  const { handleCreateFriendRequest, error } = useCreateFriendRequest();
+  const { handleCreateFriend, error: createFriendError } = useCreateFriend();
+  const { incomingFriendRequests, refetch } = useFetchIncomingFriendRequests();
+
+  const handleAddFriend = async () => {
+    try {
+      const friendRequestData: APITypes.CreateFriendRequestInput = {
+        senderId: '', // This will be set in handleCreateFriendRequest
+        receiverId: user.id,
+        userFriendRequestsId: user.id, // This is typically the receiverId
+      };
+
+      await handleCreateFriendRequest(friendRequestData);
+      setStatus('outgoing');
+    } catch (err) {
+      console.error('Failed to send friend request:', err);
+    }
   };
-  const handleAcceptRequest = () => {
-    // Accept request
-    setStatus('friend');
+
+  const handleAcceptRequest = async () => {
+    try {
+      await handleCreateFriend(user.id);
+      console.log(onUpdate);
+      onUpdate();
+      console.log(`Friend request sent to user: ${user.firstName}`);
+    } catch (err) {
+      console.error('Failed to add friend:', err);
+    }
   };
+
   const handleDeclineRequest = () => {
     // Decline request
     setStatus('none');
@@ -107,7 +136,7 @@ export function UserListItem({ user, relationshipStatus }: UserListItemProps) {
         <Avatar src={user?.profilePic} size="lg" radius="xl" />
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={600}>
-            {user?.name}
+            {user?.firstName} {user?.lastName}
           </Text>
 
           <Text c="dimmed" size="xs">
