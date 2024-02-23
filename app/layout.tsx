@@ -1,5 +1,6 @@
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import '@mantine/core/styles.css';
@@ -36,7 +37,13 @@ export default function RootLayout({ children }: { children: any }) {
         <ConfigureAmplifyClientSide />
         <MantineProvider theme={theme}>
           <Notifications />
-          <DataProvider>{children}</DataProvider>
+          <ModalsProvider
+            modalProps={{
+              radius: 'md',
+            }}
+          >
+            <DataProvider>{children}</DataProvider>
+          </ModalsProvider>
         </MantineProvider>
       </body>
     </html>
