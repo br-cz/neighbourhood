@@ -30,6 +30,7 @@ import { signUpSchema } from './signUpValidation'; // Adjust the import path as 
 const client = generateClient({});
 //17b85438-7fcf-4f78-b5ef-cee07c6dedae
 export const SignUp = () => {
+  const [verificationCode, setVerificationCode] = useState<string>('');
   const [nextAttempted, setNextAttempted] = useState(false);
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 5 ? current + 1 : current));
@@ -147,7 +148,7 @@ export const SignUp = () => {
     try {
       handlers.open();
       await confirmSignUp({
-        username: formData.email,
+        username: formik.values.email,
         confirmationCode: verificationCode,
       });
       notifications.show({
@@ -260,6 +261,7 @@ export const SignUp = () => {
               />
             </Stack>
           </Stepper.Step>
+
           <Stepper.Step
             label="Step 5"
             description="Verify email"
@@ -270,7 +272,7 @@ export const SignUp = () => {
                 Almost there!
               </Title>
               <Text c="dimmed" size="md">
-                We&apos;ve sent a verification code to your email at <u>{formData.email}</u>
+                We&apos;ve sent a verification code to your email at <u>{formik.values.email}</u>
               </Text>
               <EmailVerify verificationCode={(code: string) => setVerificationCode(code)} />
             </Stack>
