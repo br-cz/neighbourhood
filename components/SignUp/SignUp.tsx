@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { signUp } from 'aws-amplify/auth';
+import { signUp, confirmSignUp } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/api';
 import { Stepper, Button, Group, Stack, Title, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
@@ -20,7 +20,7 @@ import { AddressInput } from './AddressInput';
 import { SelectCommunity } from './SelectCommunity';
 import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
-import { createUser } from '@/src/graphql/mutations';
+import { createUser, createUserCommunity } from '@/src/graphql/mutations';
 
 //-------------
 import { useFormik } from 'formik';
@@ -84,14 +84,24 @@ export const SignUp = () => {
               input: createUserInput,
             },
           });
+
+          await client.graphql({
+            query: createUserCommunity,
+            variables: {
+              input: {
+                communityId: '17b85438-7fcf-4f78-b5ef-cee07c6dedae', // Hardcoded as U of M for now, replace with ID of user selection
+                userId: cognitoResponse.userId,
+              },
+            },
+          });
         }
 
         console.log('Sign up success:', cognitoResponse.userId);
         nextStep();
       } catch (error) {
-        handlers.close();
         console.log('error signing up:', error);
       }
+      handlers.close();
     },
   });
 
@@ -124,13 +134,35 @@ export const SignUp = () => {
     }
   };
 
-  const handleVerify = () => {
-    notifications.show({
-      radius: 'md',
-      title: 'Signed up successfully!',
-      message: 'You can now log in to continue to Neighbourhood.',
-    });
-    router.push('/');
+  const handleVerify = async () => {
+    if (!verificationCode) {
+      notifications.show({
+        title: 'Verification Error',
+        message: 'Failed to verify email. Please try again.',
+        color: 'red',
+      });
+      return;
+    }
+
+    try {
+      handlers.open();
+      await confirmSignUp({
+        username: formData.email,
+        confirmationCode: verificationCode,
+      });
+      notifications.show({
+        title: 'Signed up successfully!',
+        message: 'You can now log in to continue to Neighbourhood.',
+      });
+      router.push('/');
+    } catch (error) {
+      notifications.show({
+        title: 'Verification Error',
+        message: 'Failed to verify email. Please try again.',
+        color: 'red',
+      });
+    }
+    handlers.close();
   };
 
   const handleBack = () => (active === 0 ? router.push('/') : prevStep());
@@ -238,9 +270,9 @@ export const SignUp = () => {
                 Almost there!
               </Title>
               <Text c="dimmed" size="md">
-                We&apos;ve sent a verification code to your email at <u>alvisk1313@gmail.com.</u>
+                We&apos;ve sent a verification code to your email at <u>{formData.email}</u>
               </Text>
-              <EmailVerify />
+              <EmailVerify verificationCode={(code: string) => setVerificationCode(code)} />
             </Stack>
           </Stepper.Step>
           <Stepper.Completed>
@@ -288,7 +320,7 @@ export const SignUp = () => {
               Create Profile
             </Button>
           ) : active === 4 ? (
-            <Button radius="md" onClick={handleVerify}>
+            <Button radius="md" loading={loading} onClick={handleVerify}>
               Verify
             </Button>
           ) : (

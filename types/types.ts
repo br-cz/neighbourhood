@@ -1,23 +1,13 @@
-enum FriendRequestStatus {
-  PENDING = 'PENDING',
-  ACCEPTED = 'ACCEPTED',
-  DECLINED = 'DECLINED',
-}
+import { CreateEventInput, CreatePostInput } from '@/src/API';
 
-enum PostType {
-  THOUGHT = 'THOUGHT',
-  EVENT_ANNOUNCEMENT = 'EVENT_ANNOUNCEMENT',
-  ITEM_FOR_SALE = 'ITEM_FOR_SALE',
-}
-
-enum Visibility {
+export enum Visibility {
   PUBLIC = 'PUBLIC',
   FRIENDS_ONLY = 'FRIENDS_ONLY',
   FRIENDS_OF_FRIENDS = 'FRIENDS_OF_FRIENDS',
   PRIVATE = 'PRIVATE',
 }
 
-interface User {
+export interface User {
   id: string;
   username: string;
   email: string;
@@ -42,7 +32,7 @@ interface User {
   kids: number;
 }
 
-interface Community {
+export interface Community {
   id: string;
   name: string;
   location: string;
@@ -52,26 +42,25 @@ interface Community {
   posts: Post[];
 }
 
-interface Post {
+export interface Post {
   id: string;
   author: User;
   community: Community;
   images: string[];
   content: string;
-  postType: PostType;
   likedBy: User[];
   comments: Comment[];
   visibility: Visibility;
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   post: Post;
   author: User;
   content: string;
 }
 
-interface Event {
+export interface Event {
   id: string;
   name: string;
   description: string;
@@ -85,7 +74,7 @@ interface Event {
   visibility: Visibility;
 }
 
-interface ItemForSale {
+export interface ItemForSale {
   id: string;
   title: string;
   description: string;
@@ -98,9 +87,12 @@ interface ItemForSale {
   visibility: Visibility;
 }
 
-interface FriendRequest {
+export interface FriendRequest {
   id: string;
   sender: User;
   receiver: User;
   status: FriendRequestStatus;
 }
+
+export type EventDataInput = Omit<CreateEventInput, 'userEventsId' | 'communityEventsId'>;
+export type PostDataInput = Omit<CreatePostInput, 'userEventsId' | 'communityEventsId'>;

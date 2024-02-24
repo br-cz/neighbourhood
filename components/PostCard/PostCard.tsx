@@ -1,7 +1,9 @@
-import { Text, Avatar, Group, Button } from '@mantine/core';
-import classes from './PostCard.module.css';
+import { Text, Avatar, Group, Button, Box } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faCommentDots, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
+import classes from './PostCard.module.css';
+import { Post } from '@/src/API';
+import { timeAgo } from '@/utils/timeUtils';
 
 interface PostCardProps {
   post: Post;
@@ -9,14 +11,14 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <div className={classes.post}>
+    <Box className={classes.post}>
       <Group align="center" gap="xs">
         <Avatar src={post.author.profilePic} alt="Profile Pic" radius="xl" size={32} />
         <Text size="sm" fw={600}>
-          {post.author.name}
+          {post.author.firstName} {post.author.lastName}
         </Text>
         <Text size="xs" c="dimmed">
-          {post.postedAt}
+          {timeAgo(post.createdAt)}
         </Text>
       </Group>
       <Text mt="xs" size="sm">
@@ -30,6 +32,6 @@ export function PostCard({ post }: PostCardProps) {
           Comment
         </Button>
       </Group>
-    </div>
+    </Box>
   );
 }
