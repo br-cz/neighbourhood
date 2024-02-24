@@ -2,55 +2,99 @@ import React from 'react';
 import { Box, Group, Stack, Text, TextInput } from '@mantine/core';
 
 interface ProfileSetupProps {
-  formData: {
-    name: string;
-    familyName: string;
-    preferredUsername: string;
-    phoneNumber: string;
+  firstName: string;
+  familyName: string;
+  preferredUsername: string;
+  phoneNumber: string;
+  onChange: (e: React.ChangeEvent<any>) => void;
+  onBlur: (e: React.FocusEvent<any>) => void;
+  errors: {
+    firstName?: string;
+    familyName?: string;
+    preferredUsername?: string;
+    phoneNumber?: string;
   };
-  updateFormData: (fieldValues: Partial<any>) => void;
+  touched: {
+    firstName?: boolean;
+    familyName?: boolean;
+    preferredUsername?: boolean;
+    phoneNumber?: boolean;
+  };
 }
 
-export const ProfileSetup: React.FC<ProfileSetupProps> = ({ formData, updateFormData }) => (
-  <Box w={400}>
-    <Stack mt="lg" gap="md">
-      <TextInput
-        label="Username"
-        value={formData.preferredUsername}
-        onChange={(e) => updateFormData({ preferredUsername: e.currentTarget.value })}
-        radius="md"
-      />
-      <Group grow>
+export const ProfileSetup: React.FC<ProfileSetupProps> = ({
+  firstName,
+  familyName,
+  preferredUsername,
+  phoneNumber,
+  onChange,
+  onBlur,
+  errors,
+  touched,
+}) => {
+  // // Log the touched and errors state to debug
+  // React.useEffect(() => {
+  //   console.log('Touched:', touched);
+  //   console.log('Errors:', errors);
+  // }, [touched, errors]); // Only re-run the effect if touched or errors changes
+
+  return (
+    <Box w={400}>
+      <Stack mt="lg" gap="md">
         <TextInput
-          label="First Name"
-          value={formData.name}
-          onChange={(e) => updateFormData({ name: e.currentTarget.value })}
+          label="Username"
+          name="preferredUsername"
+          value={preferredUsername}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={
+            touched.preferredUsername && errors.preferredUsername
+              ? errors.preferredUsername
+              : undefined
+          }
           radius="md"
         />
+        <Group grow>
+          <TextInput
+            label="First Name"
+            name="firstName"
+            value={firstName}
+            onChange={onChange}
+            onBlur={onBlur}
+            error={touched.firstName && errors.firstName ? errors.firstName : undefined}
+            radius="md"
+          />
+          <TextInput
+            label="Last Name"
+            name="familyName"
+            value={familyName}
+            onChange={onChange}
+            onBlur={onBlur}
+            error={touched.familyName && errors.familyName ? errors.familyName : undefined}
+            radius="md"
+          />
+        </Group>
         <TextInput
-          label="Last Name"
-          value={formData.familyName}
-          onChange={(e) => updateFormData({ familyName: e.currentTarget.value })}
+          label={
+            <>
+              <Group gap="xs">
+                <Text size="sm" fw={500}>
+                  Phone Number
+                </Text>
+                <Text size="sm" c="dimmed">
+                  (optional)
+                </Text>
+              </Group>
+            </>
+          }
+          name="phoneNumber"
+          value={phoneNumber}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={touched.phoneNumber && errors.phoneNumber ? errors.phoneNumber : undefined}
           radius="md"
         />
-      </Group>
-      <TextInput
-        label={
-          <>
-            <Group gap="xs">
-              <Text size="sm" fw={500}>
-                Phone Number
-              </Text>
-              <Text size="sm" c="dimmed">
-                (optional)
-              </Text>
-            </Group>
-          </>
-        }
-        value={formData.phoneNumber}
-        onChange={(e) => updateFormData({ phoneNumber: e.currentTarget.value })}
-        radius="md"
-      />
-    </Stack>
-  </Box>
-);
+      </Stack>
+    </Box>
+  );
+};

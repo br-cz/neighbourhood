@@ -5,7 +5,9 @@
   color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
   border-radius: var(--mantine-radius-md);
   border: 1px solid var(--mantine-color-gray-2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 .community:hover {
   transform: translateY(-5px) scale(1.02);
@@ -13,5 +15,10 @@
 }
 
 .community.active {
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
+}
+
+/*//background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));*/
+.error-message {
+  color: red;
 }
