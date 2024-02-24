@@ -24,7 +24,7 @@ import { createUser, createUserCommunity } from '@/src/graphql/mutations';
 
 //-------------
 import { useFormik } from 'formik';
-import { signUpSchema } from './signUpValidation'; // Adjust the import path as necessary
+import { signUpSchema } from './signUpValidation';
 //--------------
 
 const client = generateClient({});
