@@ -19,7 +19,6 @@ const communities = {
 };
 
 interface SelectCommunityProps {
-  selectedCommunityId: string; // Adjust type as necessary
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   onChange?: (e: React.ChangeEvent<any>) => void;
   errors: {
@@ -31,7 +30,6 @@ interface SelectCommunityProps {
 }
 
 export const SelectCommunity: React.FC<SelectCommunityProps> = ({
-  selectedCommunityId,
   setFieldValue,
   onChange,
   errors,

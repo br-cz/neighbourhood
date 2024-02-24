@@ -1,10 +1,12 @@
 'import client';
 
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
+import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { signUp, confirmSignUp } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/api';
 import { Stepper, Button, Group, Stack, Title, Text } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,13 +23,11 @@ import { SelectCommunity } from './SelectCommunity';
 import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
 import { createUser, createUserCommunity } from '@/src/graphql/mutations';
-import { useFormik } from 'formik';
 import { signUpSchema } from './signUpValidation';
 
 const client = generateClient({});
 export const SignUp = () => {
   const [verificationCode, setVerificationCode] = useState<string>('');
-  const [nextAttempted, setNextAttempted] = useState(false);
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 5 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
@@ -97,38 +97,54 @@ export const SignUp = () => {
         nextStep();
       } catch (error) {
         console.log('error signing up:', error);
+        notifications.show({
+          title: 'Oops!',
+          message: 'Something went wrong. Please contact an administrator.',
+          color: 'red',
+        });
       }
-      handlers.close();
     },
   });
 
-  const handleNext = async () => {
-    //Define fields to validate for each step
+  const handleValidate = async (step: number): Promise<boolean> => {
     const stepFields: { [key: number]: string[] } = {
-      0: ['email', 'password', 'confirmPassword'], // Fields for step 1
-      1: ['address'], // Fields for step 2
-      2: ['selectedCommunity'], // Fields for step 2
+      0: ['email', 'password', 'confirmPassword'],
+      1: ['address'],
+      2: ['selectedCommunity'],
+      3: ['firstName', 'familyName', 'preferredUsername', 'phoneNumber'],
     };
-
-    // Identify fields for the current step
-    const currentStepFields = stepFields[active] || [];
-
-    // Trigger validation only for the current step's fields
+    const currentStepFields = stepFields[step] || [];
     const errors = await formik.validateForm();
-    const isCurrentStepValid = currentStepFields.every(
-      (field) => !errors[field as keyof typeof errors]
-    );
-    console.log('isCurrentStepValid:', isCurrentStepValid);
-    if (isCurrentStepValid) {
+    formik.setTouched(currentStepFields.reduce((acc, field) => ({ ...acc, [field]: true }), {}));
+    return currentStepFields.every((field) => !errors[field as keyof typeof formik.values]);
+  };
+
+  const handleNext = async () => {
+    const isValid = await handleValidate(active);
+    if (isValid) {
       nextStep();
     } else {
-      //Mark only the current step's fields as touched to show errors
-      const touchedFields = currentStepFields.reduce(
-        (acc, field) => ({ ...acc, [field]: true }),
-        {}
-      );
-      formik.setTouched(touchedFields);
+      notifications.show({
+        title: 'Oops!',
+        message: 'Please double-check your information and try again.',
+        color: 'red',
+      });
     }
+  };
+
+  const handleSubmit = async () => {
+    handlers.open();
+    const isValid = await handleValidate(active);
+    if (isValid) {
+      formik.submitForm();
+    } else {
+      notifications.show({
+        title: 'Oops!',
+        message: 'Please double-check your information and try again.',
+        color: 'red',
+      });
+    }
+    handlers.close();
   };
 
   const handleVerify = async () => {
@@ -140,7 +156,6 @@ export const SignUp = () => {
       });
       return;
     }
-
     try {
       handlers.open();
       await confirmSignUp({
@@ -158,11 +173,52 @@ export const SignUp = () => {
         message: 'Failed to verify email. Please try again.',
         color: 'red',
       });
+    } finally {
+      handlers.close();
     }
-    handlers.close();
   };
 
-  const handleBack = () => (active === 0 ? router.push('/') : prevStep());
+  const confirmSubmit = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Create your profile?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">Please ensure that your information is correct before proceeding.</Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Confirm', cancel: 'Back' },
+      onConfirm: () => {
+        handleSubmit();
+      },
+    });
+  };
+
+  const confirmCancel = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Return to login?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">
+          Are you sure you want to return to the login? All signup information will be lost.
+        </Text>
+      ),
+      confirmProps: { color: 'red', size: 'xs', radius: 'md' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Return to login', cancel: 'Nevermind' },
+      onConfirm: () => {
+        router.push('/');
+      },
+    });
+  };
+
+  const handleBack = () => (active === 0 ? confirmCancel() : prevStep());
 
   return (
     <>
@@ -225,7 +281,6 @@ export const SignUp = () => {
                 If you&apos;re in-between communities - don&apos;t worry, you can join more later.
               </Text>
               <SelectCommunity
-                selectedCommunityId={formik.values.selectedCommunity}
                 setFieldValue={formik.setFieldValue}
                 onChange={formik.handleChange}
                 errors={formik.errors}
@@ -285,36 +340,7 @@ export const SignUp = () => {
             </Button>
           )}
           {active === 3 ? (
-            <Button
-              radius="md"
-              loading={loading}
-              onClick={() => {
-                // Identify fields for the current step
-                const currentStepFields = [
-                  'firstName',
-                  'familyName',
-                  'preferredUsername',
-                  'phoneNumber',
-                ];
-
-                // Trigger validation only for the current step's fields
-                const errors = formik.validateForm();
-                const isCurrentStepValid = currentStepFields.every(
-                  (field) => !errors[field as keyof typeof errors]
-                );
-                console.log('isCurrentStepValid:', isCurrentStepValid);
-                if (isCurrentStepValid) {
-                  formik.submitForm();
-                } else {
-                  //Mark only the current step's fields as touched to show errors
-                  const touchedFields = currentStepFields.reduce(
-                    (acc, field) => ({ ...acc, [field]: true }),
-                    {}
-                  );
-                  formik.setTouched(touchedFields);
-                }
-              }}
-            >
+            <Button radius="md" loading={loading} onClick={confirmSubmit}>
               Create Profile
             </Button>
           ) : active === 4 ? (
