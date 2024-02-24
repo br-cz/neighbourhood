@@ -3,7 +3,6 @@
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
-
 enum Visibility {
   PUBLIC
   FRIENDS_ONLY
