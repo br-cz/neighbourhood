@@ -46,7 +46,21 @@ export const SignUp = () => {
       phoneNumber: '',
     },
     validationSchema: signUpSchema,
-    onSubmit: async (parameters) => {
+    onSubmit: async (values) => {
+      const parameters = { ...values };
+      parameters.email = parameters.email.toLowerCase().trim();
+      parameters.password = parameters.password.trim();
+      parameters.address = parameters.address.trim();
+      parameters.preferredUsername = parameters.preferredUsername.toLowerCase().trim();
+      parameters.firstName = parameters.firstName
+        .trim()
+        .toLowerCase()
+        .replace(/^\w/, (c) => c.toUpperCase());
+      parameters.familyName = parameters.familyName
+        .trim()
+        .toLowerCase()
+        .replace(/^\w/, (c) => c.toUpperCase());
+      parameters.phoneNumber = parameters.phoneNumber.trim();
       try {
         // Step 1: Sign Up with AWS Cognito
         const cognitoResponse = await signUp({
@@ -133,7 +147,6 @@ export const SignUp = () => {
   };
 
   const handleSubmit = async () => {
-    handlers.open();
     const isValid = await handleValidate(active);
     if (isValid) {
       formik.submitForm();
@@ -144,7 +157,6 @@ export const SignUp = () => {
         color: 'red',
       });
     }
-    handlers.close();
   };
 
   const handleVerify = async () => {
@@ -157,7 +169,6 @@ export const SignUp = () => {
       return;
     }
     try {
-      handlers.open();
       await confirmSignUp({
         username: formik.values.email,
         confirmationCode: verificationCode,
@@ -173,8 +184,6 @@ export const SignUp = () => {
         message: 'Failed to verify email. Please try again.',
         color: 'red',
       });
-    } finally {
-      handlers.close();
     }
   };
 
@@ -323,7 +332,8 @@ export const SignUp = () => {
                 Almost there!
               </Title>
               <Text c="dimmed" size="md">
-                We&apos;ve sent a verification code to your email at <u>{formik.values.email}</u>
+                We&apos;ve sent a verification code to your email at{' '}
+                <u>{formik.values.email.toLowerCase()}</u>
               </Text>
               <EmailVerify verificationCode={(code: string) => setVerificationCode(code)} />
             </Stack>
