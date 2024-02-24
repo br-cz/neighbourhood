@@ -542,15 +542,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "postType": {
-                    "name": "postType",
-                    "isArray": false,
-                    "type": {
-                        "enum": "PostType"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "likedBy": {
                     "name": "likedBy",
                     "isArray": true,
@@ -1395,14 +1386,6 @@ export const schema = {
         }
     },
     "enums": {
-        "PostType": {
-            "name": "PostType",
-            "values": [
-                "THOUGHT",
-                "EVENT_ANNOUNCEMENT",
-                "ITEM_FOR_SALE"
-            ]
-        },
         "Visibility": {
             "name": "Visibility",
             "values": [
@@ -1415,5 +1398,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "cf6f28b825416c6858a777811a31ab82"
+    "version": "3aacab33a91910d4911697b15d9d9c8c"
 };

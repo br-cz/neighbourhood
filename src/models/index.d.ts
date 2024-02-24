@@ -2,12 +2,6 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
 
-export enum PostType {
-  THOUGHT = "THOUGHT",
-  EVENT_ANNOUNCEMENT = "EVENT_ANNOUNCEMENT",
-  ITEM_FOR_SALE = "ITEM_FOR_SALE"
-}
-
 export enum Visibility {
   PUBLIC = "PUBLIC",
   FRIENDS_ONLY = "FRIENDS_ONLY",
@@ -175,7 +169,6 @@ type EagerPost = {
   readonly community: Community;
   readonly images?: (string | null)[] | null;
   readonly content: string;
-  readonly postType: PostType | keyof typeof PostType;
   readonly likedBy: UserLikedPosts[];
   readonly comments: Comment[];
   readonly visibility: Visibility | keyof typeof Visibility;
@@ -195,7 +188,6 @@ type LazyPost = {
   readonly community: AsyncItem<Community>;
   readonly images?: (string | null)[] | null;
   readonly content: string;
-  readonly postType: PostType | keyof typeof PostType;
   readonly likedBy: AsyncCollection<UserLikedPosts>;
   readonly comments: AsyncCollection<Comment>;
   readonly visibility: Visibility | keyof typeof Visibility;

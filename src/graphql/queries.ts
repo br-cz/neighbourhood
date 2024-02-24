@@ -48,7 +48,6 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -187,7 +186,6 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -880,7 +878,6 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -913,7 +910,6 @@ export const listPosts = /* GraphQL */ `query ListPosts(
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -946,7 +942,6 @@ export const syncPosts = /* GraphQL */ `query SyncPosts(
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -970,7 +965,6 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -1482,7 +1476,6 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
