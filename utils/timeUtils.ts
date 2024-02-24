@@ -1,4 +1,20 @@
-export function timeAgo(isoDate: string): string {
+export function formatDate(isoDate: string): string {
+  return new Date(isoDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+export function formatTime(isoDate: string): string {
+  return new Date(isoDate).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+}
+
+export function formatPostedAt(isoDate: string): string {
   const now = new Date();
   const postedAt = new Date(isoDate);
   const diffInSeconds = Math.floor((now.getTime() - postedAt.getTime()) / 1000);
@@ -23,4 +39,11 @@ export function timeAgo(isoDate: string): string {
   }
 
   return result;
+}
+
+export function combineDateTime(date: Date, time: string): string {
+  const datetime = new Date(date);
+  const [hours, minutes] = time.split(':').map(Number);
+  datetime.setHours(hours, minutes);
+  return datetime.toISOString();
 }
