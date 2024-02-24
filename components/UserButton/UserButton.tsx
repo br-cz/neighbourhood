@@ -3,13 +3,14 @@ import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useData } from '@/contexts/DataContext';
 import classes from './UserButton.module.css';
+import { getCurrentUser, useCurrentUser } from '@/src/api/appQueries';
 
 interface UserButtonProps {
   active: boolean;
 }
 
 export function UserButton({ active }: UserButtonProps) {
-  const { user } = useData();
+  const { user } = useCurrentUser();
   return (
     <Link href="/profile" passHref className={classes.link}>
       <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>

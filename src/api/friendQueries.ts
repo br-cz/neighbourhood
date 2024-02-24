@@ -15,7 +15,7 @@ export const useCreateFriendRequest = () => {
     friendRequestData: APITypes.CreateFriendRequestInput
   ) => {
     try {
-      const userData = localStorage.getItem('userData')!;
+      const userData = localStorage.getItem('currentUser')!;
       const parsedUserData: User = JSON.parse(userData);
 
       friendRequestData.senderId = parsedUserData.id;
@@ -72,7 +72,7 @@ export const useFetchIncomingFriendRequests = () => {
     const fetchedFriendRequests = async () => {
       try {
         setLoading(true);
-        const userData = localStorage.getItem('userData')!;
+        const userData = localStorage.getItem('currentUser')!;
         const parsedUserData: User = JSON.parse(userData);
 
         const fetchedFriendRequest = await client.graphql({
@@ -136,7 +136,7 @@ export const useFetchOutgoingFriendRequests = () => {
     const fetchedFriendRequests = async () => {
       try {
         setLoading(true);
-        const userData = localStorage.getItem('userData')!;
+        const userData = localStorage.getItem('currentUser')!;
         const parsedUserData: User = JSON.parse(userData);
 
         const fetchedFriendRequest = await client.graphql({
@@ -171,7 +171,7 @@ export const useCreateFriend = () => {
 
   const handleCreateFriend = async (newFriendId: string) => {
     try {
-      const localUserData = localStorage.getItem('userData')!;
+      const localUserData = localStorage.getItem('currentUser')!;
       const parsedLocalUserData = JSON.parse(localUserData);
 
       const user = await addFriend(parsedLocalUserData.id, newFriendId);
@@ -269,33 +269,37 @@ export const useCreateFriend = () => {
 };
 
 const addFriend = async (userId: string, newFriendId: string) => {
-  const userResponse = await client.graphql({
-    query: getUser,
-    variables: { id: userId },
-  });
-  const user = userResponse.data.getUser!;
+  try {
+    const userResponse = await client.graphql({
+      query: getUser,
+      variables: { id: userId },
+    });
+    const user = userResponse.data.getUser;
 
-  // Initialize friends list if it doesn't exist, otherwise, create a copy!
-  const currentFriendsList = user.friends ? [...user.friends] : [];
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-  // Check for duplicate friend ID
-  if (!currentFriendsList.includes(newFriendId)) {
-    currentFriendsList.push(newFriendId);
+    // const currentFriendsSet = new Set(user.friends || []);
+    // currentFriendsSet.add(newFriendId); // Set.add ignores duplicates
 
-    const input = {
-      id: userId,
-      friends: currentFriendsList,
-    };
+    // console.log('curr friend set');
+    // console.log(currentFriendsSet);
+    // // Convert the Set back to an array for the GraphQL mutation
+    // const updatedFriendsList = Array.from(currentFriendsSet);
 
     const updateResponse = await client.graphql({
       query: updateUser,
-      variables: { input },
+      variables: {
+        input: {
+          id: userId,
+          friends: [newFriendId],
+        },
+      },
     });
-
     return updateResponse;
-  } else {
-    console.log('Friend ID already in friends list.');
-    return user;
+  } catch (error) {
+    console.error('Error in addFriend:', error);
   }
 };
 
@@ -316,7 +320,7 @@ export const useFetchFriends = () => {
     const fetchFriends = async () => {
       try {
         setLoading(true);
-        const userData = localStorage.getItem('userData')!;
+        const userData = localStorage.getItem('currentUser');
         const parsedUserData: User = JSON.parse(userData);
 
         const friendsIds = await client.graphql({
@@ -365,6 +369,8 @@ export const useFetchNonFriends = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { members } = useFetchMembers();
+  const { incomingFriendRequests } = useFetchIncomingFriendRequests();
+  const { outgoingFriendRequests } = useFetchOutgoingFriendRequests();
   // console.log('mebers');
   // console.log(members);
   const getFriends = /* GraphQL */ `
@@ -376,10 +382,13 @@ export const useFetchNonFriends = () => {
   `;
 
   useEffect(() => {
+    // Ensure members is defined and not empty before proceeding
+    if (!members || members.length === 0) return;
+
     const fetchFriends = async () => {
       try {
         setLoading(true);
-        const userData = localStorage.getItem('userData')!;
+        const userData = localStorage.getItem('currentUser')!;
         const parsedUserData = JSON.parse(userData);
 
         const friendsIds = await client.graphql({
@@ -388,26 +397,71 @@ export const useFetchNonFriends = () => {
         });
 
         const parsedFriendIds = JSON.parse(JSON.stringify(friendsIds));
-
+        console.log('user id:', parsedUserData.id);
+        const membersWithoutUser = members.filter(
+          (member: any) => member.user.id != parsedUserData.id
+        );
+        // console.log('memebrs with user');
+        // console.log(members);
+        // console.log('memebrs without user');
+        // console.log(membersWithoutUser);
         const friendIdsLookup = new Map();
         parsedFriendIds.data.getUser.friends.forEach((friendId: string) => {
           friendIdsLookup.set(friendId, true); // Set each friend ID as a key in the map
         });
+        // console.log(friendIdsLookup);
 
-        console.log('friedn id lookup');
-        console.log(friendIdsLookup);
+        // console.log('friedn id lookup');
+        // console.log(friendIdsLookup);
+
+        // console.log(parsedFriendIds.data.getUser.friends);
+        // console.log(outgoingFriendRequests.map((member: any) => member.id));
+        const outgoingIdsLookup = new Map();
+        outgoingFriendRequests
+          .map((member: any) => member.id)
+          .forEach((outgoingId: string) => {
+            outgoingIdsLookup.set(outgoingId, true); // Set each friend ID as a key in the map
+          });
+
+        const incomingIdsLookup = new Map();
+        incomingFriendRequests
+          .map((member: any) => member.id)
+          .forEach((incomingId: string) => {
+            incomingIdsLookup.set(incomingId, true); // Set each friend ID as a key in the map
+          });
+
+        console.log('incoming id lookup');
+        console.log(incomingIdsLookup);
+        console.log('outgoin id lookup');
+        console.log(outgoingIdsLookup);
 
         // console.log(members[0].user.id);
-        const nonFriendMembers = members
+        var nonFriendMembers = membersWithoutUser
           .filter((member: any) => !friendIdsLookup.has(member.user.id))
           .map((member: any) => member.user);
 
         console.log('non friend memberse');
         console.log(nonFriendMembers);
 
+        const incomingMembers = nonFriendMembers.filter(
+          (member: any) => !incomingIdsLookup.has(member.id)
+        );
+
+        console.log('non incoming memberse');
+        console.log(incomingMembers);
+
+        // console.log(outgoingIdsLookup.has(nonFriendMembers[2].id));
+        // console.log(outgoingIdsLookup.get);
+        const outgoingMembers = incomingMembers.filter(
+          (member: any) => !outgoingIdsLookup.has(member.id)
+        );
+
+        console.log('non outgoing memberse');
+        console.log(outgoingMembers);
+
         // const mapped = nonFriendMembers.map((member: any) => member.user);
         // console.log(mapped);
-        setNonFriends(nonFriendMembers);
+        setNonFriends(outgoingMembers);
       } catch (err: any) {
         setError(err);
       } finally {
@@ -416,7 +470,7 @@ export const useFetchNonFriends = () => {
     };
 
     fetchFriends();
-  }, []);
+  }, [members]);
 
   return { nonFriends, loading, error };
 };

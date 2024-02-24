@@ -92,14 +92,15 @@ export function UserList() {
               onUpdate={refetch}
             />
           ))}
-          {friends.map((user: any) => (
-            <UserListItem
-              key={user.id}
-              user={user}
-              relationshipStatus={'friend'}
-              onUpdate={doNothing}
-            />
-          ))}
+          {friends &&
+            friends.map((user: any) => (
+              <UserListItem
+                key={user.id}
+                user={user}
+                relationshipStatus={'friend'}
+                onUpdate={doNothing}
+              />
+            ))}
           {outgoingRequests.map((user: any) => (
             <UserListItem
               key={user.id}
@@ -120,14 +121,15 @@ export function UserList() {
       </Tabs.Panel>
       <Tabs.Panel value="friends">
         <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
-          {friends.map((user) => (
-            <UserListItem
-              key={user.id}
-              user={user}
-              relationshipStatus={'friend'}
-              onUpdate={doNothing}
-            />
-          ))}
+          {friends &&
+            friends.map((user) => (
+              <UserListItem
+                key={user.id}
+                user={user}
+                relationshipStatus={'friend'}
+                onUpdate={doNothing}
+              />
+            ))}
         </SimpleGrid>
       </Tabs.Panel>
       <Tabs.Panel value="requests">

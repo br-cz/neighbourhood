@@ -59,7 +59,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       await handleCreateFriend(user.id);
       console.log(onUpdate);
       onUpdate();
-      console.log(`Friend request sent to user: ${user.firstName}`);
+      console.log(`Friend request accepted from: ${user.firstName}`);
     } catch (err) {
       console.error('Failed to add friend:', err);
     }
