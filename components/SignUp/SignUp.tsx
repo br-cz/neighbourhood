@@ -21,14 +21,10 @@ import { SelectCommunity } from './SelectCommunity';
 import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
 import { createUser, createUserCommunity } from '@/src/graphql/mutations';
-
-//-------------
 import { useFormik } from 'formik';
 import { signUpSchema } from './signUpValidation';
-//--------------
 
 const client = generateClient({});
-//17b85438-7fcf-4f78-b5ef-cee07c6dedae
 export const SignUp = () => {
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [nextAttempted, setNextAttempted] = useState(false);

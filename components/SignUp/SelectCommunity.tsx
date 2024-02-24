@@ -52,7 +52,6 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
             <CommunityListItem
               key={community.id}
               community={community}
-              // selected={community.id === selectedCommunityId}
               onSelect={() => handleSelectCommunity(community.id)}
             />
           ))}

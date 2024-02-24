@@ -28,11 +28,11 @@ export const LoginDetails: React.FC<LoginDetailsProps> = ({
   errors,
   touched,
 }) => {
-  // // Log the touched and errors state to debug
-  // React.useEffect(() => {
-  //   console.log('Touched:', touched);
-  //   console.log('Errors:', errors);
-  // }, [touched, errors]); // Only re-run the effect if touched or errors changes
+  // Log the touched and errors state to debug
+  React.useEffect(() => {
+    console.log('Touched:', touched);
+    console.log('Errors:', errors);
+  }, [touched, errors]); // Only re-run the effect if touched or errors changes
 
   return (
     <Box w={350}>
