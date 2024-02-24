@@ -3,12 +3,7 @@
 import { SimpleGrid, Tabs, Indicator } from '@mantine/core';
 import { UserListItem } from '../UserListItem/UserListItem';
 import classes from './UserList.module.css';
-import {
-  useFetchFriends,
-  useFetchIncomingFriendRequests,
-  useFetchNonFriends,
-  useFetchOutgoingFriendRequests,
-} from '@/src/api/friendQueries';
+import { useFetchCommunityMembers } from '@/src/api/friendQueries';
 
 // placeholder data
 const users = {
@@ -46,15 +41,13 @@ const users = {
 };
 
 export function UserList() {
-  const { incomingFriendRequests, refetch } = useFetchIncomingFriendRequests();
-  // console.log(incomingFriendRequests);
-  const { friends: userFriends } = useFetchFriends();
-  // console.log(userFriends);
-  const { outgoingFriendRequests } = useFetchOutgoingFriendRequests();
-  // console.log(outgoingFriendRequests);
-  const { nonFriends: userNonFriends } = useFetchNonFriends();
-  // console.log('user lsit non friends');
-  // console.log(userNonFriends);
+  const {
+    friends: userFriends,
+    incomingFriendRequests,
+    outgoingFriendRequests,
+    noneFriends,
+    refetch,
+  } = useFetchCommunityMembers();
 
   //temp function for onUpdate remove when no longer needed!
   const doNothing = () => {
@@ -62,10 +55,10 @@ export function UserList() {
   };
 
   // Filter users based on their relationshipStatus
-  const incomingRequests = incomingFriendRequests;
   const friends = userFriends;
+  const incomingRequests = incomingFriendRequests;
   const outgoingRequests = outgoingFriendRequests;
-  const nonFriends = userNonFriends;
+  const noRelationshipFriends = noneFriends;
 
   const numRequests = incomingRequests.length;
   return (
@@ -98,7 +91,7 @@ export function UserList() {
                 key={user.id}
                 user={user}
                 relationshipStatus={'friend'}
-                onUpdate={doNothing}
+                onUpdate={refetch}
               />
             ))}
           {outgoingRequests.map((user: any) => (
@@ -106,15 +99,15 @@ export function UserList() {
               key={user.id}
               user={user}
               relationshipStatus={'outgoing'}
-              onUpdate={doNothing}
+              onUpdate={refetch}
             />
           ))}
-          {nonFriends.map((user: any) => (
+          {noRelationshipFriends.map((user: any) => (
             <UserListItem
               key={user.id}
               user={user}
               relationshipStatus={'none'}
-              onUpdate={doNothing}
+              onUpdate={refetch}
             />
           ))}
         </SimpleGrid>
@@ -122,12 +115,12 @@ export function UserList() {
       <Tabs.Panel value="friends">
         <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
           {friends &&
-            friends.map((user) => (
+            friends.map((user: any) => (
               <UserListItem
                 key={user.id}
                 user={user}
                 relationshipStatus={'friend'}
-                onUpdate={doNothing}
+                onUpdate={refetch}
               />
             ))}
         </SimpleGrid>
