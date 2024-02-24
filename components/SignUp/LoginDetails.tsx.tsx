@@ -2,35 +2,71 @@ import React from 'react';
 import { Stack, TextInput, PasswordInput, Box } from '@mantine/core';
 
 interface LoginDetailsProps {
-  formData: {
-    email: string;
-    password: string;
-    confirmPassword: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  onChange: (e: React.ChangeEvent<any>) => void;
+  onBlur: (e: React.FocusEvent<any>) => void;
+  errors: {
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
   };
-  updateFormData: (fieldValues: Partial<any>) => void;
+  touched: {
+    email?: boolean;
+    password?: boolean;
+    confirmPassword?: boolean;
+  };
 }
 
-export const LoginDetails: React.FC<LoginDetailsProps> = ({ formData, updateFormData }) => (
-  <Box w={350}>
-    <Stack mt="lg" gap="md">
-      <TextInput
-        label="Email"
-        value={formData.email}
-        onChange={(e) => updateFormData({ email: e.currentTarget.value })}
-        radius="md"
-      />
-      <PasswordInput
-        label="Password"
-        value={formData.password}
-        onChange={(e) => updateFormData({ password: e.currentTarget.value })}
-        radius="md"
-      />
-      <PasswordInput
-        label="Confirm Password"
-        value={formData.confirmPassword}
-        onChange={(e) => updateFormData({ confirmPassword: e.currentTarget.value })}
-        radius="md"
-      />
-    </Stack>
-  </Box>
-);
+export const LoginDetails: React.FC<LoginDetailsProps> = ({
+  email,
+  password,
+  confirmPassword,
+  onChange,
+  onBlur,
+  errors,
+  touched,
+}) => {
+  // Log the touched and errors state to debug
+  React.useEffect(() => {
+    console.log('Touched:', touched);
+    console.log('Errors:', errors);
+  }, [touched, errors]); // Only re-run the effect if touched or errors changes
+
+  return (
+    <Box w={350}>
+      <Stack mt="lg" gap="md">
+        <TextInput
+          label="Email"
+          name="email"
+          value={email}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={touched.email && errors.email ? errors.email : undefined}
+          radius="md"
+        />
+        <PasswordInput
+          label="Password"
+          name="password"
+          value={password}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={touched.password && errors.password ? errors.password : undefined}
+          radius="md"
+        />
+        <PasswordInput
+          label="Confirm Password"
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={
+            touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined
+          }
+          radius="md"
+        />
+      </Stack>
+    </Box>
+  );
+};
