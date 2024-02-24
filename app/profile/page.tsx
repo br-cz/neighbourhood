@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { useAuth } from '@/components/Authorization/useAuth';
 import { Button, Group, Box, PasswordInput, TextInput, Title, Text } from '@mantine/core';
-import { getCurrentUser } from '@/src/api/memberQueries';
+import { getCurrentUser } from '@/src/api/appQueries';
 import { updateUserEmail } from '@/src/api/userQueries';
 
 import { updatePassword, updateUserAttributes } from 'aws-amplify/auth';
@@ -50,7 +50,7 @@ export default function ProfilePage() {
       setErrorMessage(error.message || 'Failed to update profile.');
     }
   };
-  
+
   if (!loggedIn) return null; // or a message indicating the user is not signed in
 
   return (

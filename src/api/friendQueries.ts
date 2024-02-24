@@ -300,7 +300,7 @@ const addFriend = async (userId: string, newFriendId: string) => {
 };
 
 export const useFetchFriends = () => {
-  const [friends, setFriend] = useState<any[]>([]);
+  const [friends, setFriend] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -327,7 +327,7 @@ export const useFetchFriends = () => {
 
         const friendsInfo = await fetchFriendsInfo(parsedFriendIds.data.getUser.friends); // Assuming parsedUserData.friends is your array of friend IDs
 
-        setFriend([friendsInfo]);
+        setFriend(friendsInfo);
       } catch (err: any) {
         setError(err);
       } finally {
@@ -365,6 +365,8 @@ export const useFetchNonFriends = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { members } = useFetchMembers();
+  // console.log('mebers');
+  // console.log(members);
   const getFriends = /* GraphQL */ `
     query GetFriends($id: ID!) {
       getUser(id: $id) {
@@ -378,7 +380,7 @@ export const useFetchNonFriends = () => {
       try {
         setLoading(true);
         const userData = localStorage.getItem('userData')!;
-        const parsedUserData: User = JSON.parse(userData);
+        const parsedUserData = JSON.parse(userData);
 
         const friendsIds = await client.graphql({
           query: getFriends,
@@ -392,11 +394,20 @@ export const useFetchNonFriends = () => {
           friendIdsLookup.set(friendId, true); // Set each friend ID as a key in the map
         });
 
-        const nonFriendMembers = members.filter(
-          (member: any) => !friendIdsLookup.has(member.user.id)
-        );
+        console.log('friedn id lookup');
+        console.log(friendIdsLookup);
 
-        setNonFriends([nonFriendMembers]);
+        // console.log(members[0].user.id);
+        const nonFriendMembers = members
+          .filter((member: any) => !friendIdsLookup.has(member.user.id))
+          .map((member: any) => member.user);
+
+        console.log('non friend memberse');
+        console.log(nonFriendMembers);
+
+        // const mapped = nonFriendMembers.map((member: any) => member.user);
+        // console.log(mapped);
+        setNonFriends(nonFriendMembers);
       } catch (err: any) {
         setError(err);
       } finally {

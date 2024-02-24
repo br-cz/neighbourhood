@@ -47,9 +47,14 @@ const users = {
 
 export function UserList() {
   const { incomingFriendRequests, refetch } = useFetchIncomingFriendRequests();
+  // console.log(incomingFriendRequests);
   const { friends: userFriends } = useFetchFriends();
+  // console.log(userFriends);
   const { outgoingFriendRequests } = useFetchOutgoingFriendRequests();
+  // console.log(outgoingFriendRequests);
   const { nonFriends: userNonFriends } = useFetchNonFriends();
+  // console.log('user lsit non friends');
+  // console.log(userNonFriends);
 
   //temp function for onUpdate remove when no longer needed!
   const doNothing = () => {
@@ -107,7 +112,7 @@ export function UserList() {
             <UserListItem
               key={user.id}
               user={user}
-              relationshipStatus={user.relationshipStatus}
+              relationshipStatus={'none'}
               onUpdate={doNothing}
             />
           ))}

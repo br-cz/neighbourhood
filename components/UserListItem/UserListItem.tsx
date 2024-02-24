@@ -25,6 +25,20 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const { handleCreateFriend, error: createFriendError } = useCreateFriend();
   const { incomingFriendRequests, refetch } = useFetchIncomingFriendRequests();
 
+  //user = user[0];
+
+  // if (relationshipStatus === 'friend') {
+  //   console.log('user');
+  //   console.log(user);
+  //   console.log(user.username);
+  // }
+
+  // if (relationshipStatus === 'none') {
+  //   console.log('user');
+  //   console.log(user);
+  //   // console.log(user.username);
+  // }
+
   const handleAddFriend = async () => {
     try {
       const friendRequestData: APITypes.CreateFriendRequestInput = {
