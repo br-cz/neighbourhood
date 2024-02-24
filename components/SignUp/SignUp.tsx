@@ -20,7 +20,7 @@ import { AddressInput } from './AddressInput';
 import { SelectCommunity } from './SelectCommunity';
 import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
-import { createUser } from '@/src/graphql/mutations';
+import { createUser, createUserCommunity } from '@/src/graphql/mutations';
 
 const client = generateClient({});
 
@@ -82,6 +82,16 @@ export const SignUp = () => {
           query: createUser,
           variables: {
             input: createUserInput,
+          },
+        });
+
+        await client.graphql({
+          query: createUserCommunity,
+          variables: {
+            input: {
+              communityId: '17b85438-7fcf-4f78-b5ef-cee07c6dedae', // Hardcoded as U of M for now, replace with ID of user selection
+              userId: cognitoResponse.userId,
+            },
           },
         });
       }
