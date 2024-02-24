@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Group, Avatar, Text, Button, Title } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,21 +23,6 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const [status, setStatus] = useState(relationshipStatus);
   const { handleCreateFriendRequest, error } = useCreateFriendRequest();
   const { handleCreateFriend, error: createFriendError } = useCreateFriend();
-  const { incomingFriendRequests, refetch } = useFetchIncomingFriendRequests();
-
-  //user = user[0];
-
-  // if (relationshipStatus === 'friend') {
-  //   console.log('user');
-  //   console.log(user);
-  //   console.log(user.username);
-  // }
-
-  // if (relationshipStatus === 'none') {
-  //   console.log('user');
-  //   console.log(user);
-  //   // console.log(user.username);
-  // }
 
   const handleAddFriend = async () => {
     try {
@@ -57,8 +42,6 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const handleAcceptRequest = async () => {
     try {
       await handleCreateFriend(user.id);
-      console.log(onUpdate);
-      onUpdate();
       console.log(`Friend request accepted from: ${user.firstName}`);
     } catch (err) {
       console.error('Failed to add friend:', err);

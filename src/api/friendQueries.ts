@@ -4,6 +4,7 @@ import { getCommunity, getUser } from '@/src/graphql/queries';
 import * as APITypes from '../API';
 import { createFriendRequest, deleteFriendRequest, updateUser } from '../graphql/mutations';
 import { useFetchMembers } from '@/src/api/memberQueries';
+import { colorResolver } from '@mantine/core/lib/core/Box/style-props/resolvers/color-resolver/color-resolver';
 
 const client = generateClient();
 
@@ -183,6 +184,7 @@ export const useCreateFriend = () => {
             items {
               id
               _version
+              _deleted
               receiver {
                 id
                 firstName
@@ -207,6 +209,8 @@ export const useCreateFriend = () => {
       });
 
       const jsonFriendRequests = JSON.parse(JSON.stringify(fetchedFriendRequest));
+      console.log('json friend rewquests');
+      console.log(jsonFriendRequests);
       const filteredUserFriendRequests = jsonFriendRequests.data.listFriendRequests.items.filter(
         (item: any) => {
           return (
@@ -229,6 +233,7 @@ export const useCreateFriend = () => {
 
       if (filteredUserFriendRequests.length > 0) {
         try {
+          console.log('firned reqwuest id:', filteredUserFriendRequests[0].id);
           const deletedFriendRequest = await client.graphql({
             query: deleteFriendRequest,
             variables: {
@@ -238,6 +243,8 @@ export const useCreateFriend = () => {
               },
             },
           });
+          console.log('deltede friedn reuqest');
+          console.log(deletedFriendRequest);
         } catch (error) {
           console.error('Error deleting friend request:', error);
         }
@@ -321,7 +328,7 @@ export const useFetchFriends = () => {
         });
         const parsedFriendIds = JSON.parse(JSON.stringify(friendsIds));
 
-        const friendsInfo = await fetchFriendsInfo(parsedFriendIds.data.getUser.friends); // Assuming parsedUserData.friends is your array of friend IDs
+        const friendsInfo = await fetchFriendsInfo(parsedFriendIds.data.getUser.friends);
 
         setFriend(friendsInfo);
       } catch (err: any) {
