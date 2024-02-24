@@ -13,6 +13,8 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
 ) {
   onCreateFriendRequest(filter: $filter) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -21,6 +23,7 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -32,7 +35,6 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -43,6 +45,7 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -54,10 +57,8 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -76,6 +77,8 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
 ) {
   onUpdateFriendRequest(filter: $filter) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -84,6 +87,7 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -95,7 +99,6 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -106,6 +109,7 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -117,10 +121,8 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -139,6 +141,8 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
 ) {
   onDeleteFriendRequest(filter: $filter) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -147,6 +151,7 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -158,7 +163,6 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -169,6 +173,7 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -180,10 +185,8 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -216,11 +219,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -267,7 +266,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -294,11 +292,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -345,7 +339,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -372,11 +365,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -423,7 +412,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -559,6 +547,7 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -570,7 +559,6 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -625,6 +613,7 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -636,7 +625,6 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -691,6 +679,7 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -702,7 +691,6 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -772,6 +760,7 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -783,7 +772,6 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     content
@@ -827,6 +815,7 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -838,7 +827,6 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     content
@@ -882,6 +870,7 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -893,7 +882,6 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     content
@@ -940,6 +928,7 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -951,7 +940,6 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -1003,6 +991,7 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1014,7 +1003,6 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -1066,6 +1054,7 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1077,7 +1066,6 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -1118,6 +1106,7 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1129,7 +1118,6 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1183,6 +1171,7 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1194,7 +1183,6 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1248,6 +1236,7 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1259,7 +1248,6 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1310,6 +1298,7 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1321,7 +1310,6 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1364,6 +1352,7 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1375,7 +1364,6 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1418,6 +1406,7 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1429,7 +1418,6 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1472,6 +1460,7 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1483,7 +1472,6 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     post {
@@ -1528,6 +1516,7 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1539,7 +1528,6 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     post {
@@ -1584,6 +1572,7 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1595,7 +1584,6 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     post {
@@ -1640,6 +1628,7 @@ export const onCreateUserLikedEvents = /* GraphQL */ `subscription OnCreateUserL
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1651,7 +1640,6 @@ export const onCreateUserLikedEvents = /* GraphQL */ `subscription OnCreateUserL
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     event {
@@ -1698,6 +1686,7 @@ export const onUpdateUserLikedEvents = /* GraphQL */ `subscription OnUpdateUserL
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1709,7 +1698,6 @@ export const onUpdateUserLikedEvents = /* GraphQL */ `subscription OnUpdateUserL
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     event {
@@ -1756,6 +1744,7 @@ export const onDeleteUserLikedEvents = /* GraphQL */ `subscription OnDeleteUserL
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1767,7 +1756,6 @@ export const onDeleteUserLikedEvents = /* GraphQL */ `subscription OnDeleteUserL
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     event {
@@ -1814,6 +1802,7 @@ export const onCreateUserLikedItems = /* GraphQL */ `subscription OnCreateUserLi
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1825,7 +1814,6 @@ export const onCreateUserLikedItems = /* GraphQL */ `subscription OnCreateUserLi
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     itemForSale {
@@ -1872,6 +1860,7 @@ export const onUpdateUserLikedItems = /* GraphQL */ `subscription OnUpdateUserLi
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1883,7 +1872,6 @@ export const onUpdateUserLikedItems = /* GraphQL */ `subscription OnUpdateUserLi
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     itemForSale {
@@ -1930,6 +1918,7 @@ export const onDeleteUserLikedItems = /* GraphQL */ `subscription OnDeleteUserLi
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1941,7 +1930,6 @@ export const onDeleteUserLikedItems = /* GraphQL */ `subscription OnDeleteUserLi
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     itemForSale {

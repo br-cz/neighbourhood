@@ -2,12 +2,6 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
-const FriendRequestStatus = {
-  "PENDING": "PENDING",
-  "ACCEPTED": "ACCEPTED",
-  "DECLINED": "DECLINED"
-};
-
 const PostType = {
   "THOUGHT": "THOUGHT",
   "EVENT_ANNOUNCEMENT": "EVENT_ANNOUNCEMENT",
@@ -35,7 +29,6 @@ export {
   UserLikedPosts,
   UserLikedEvents,
   UserLikedItems,
-  FriendRequestStatus,
   PostType,
   Visibility
 };
