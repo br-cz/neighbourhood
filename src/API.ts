@@ -13,7 +13,7 @@ export type User = {
   communities?: ModelUserCommunityConnection | null,
   selectedCommunity: string,
   posts?: ModelPostConnection | null,
-  friends?: ModelUserConnection | null,
+  friends?: Array< string > | null,
   friendRequests?: ModelFriendRequestConnection | null,
   events?: ModelEventConnection | null,
   itemsForSale?: ModelItemForSaleConnection | null,
@@ -32,7 +32,6 @@ export type User = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
-  userFriendsId?: string | null,
 };
 
 export type ModelUserCommunityConnection = {
@@ -88,7 +87,6 @@ export type Post = {
   community: Community,
   images?: Array< string | null > | null,
   content: string,
-  postType: PostType,
   likedBy?: ModelUserLikedPostsConnection | null,
   comments?: ModelCommentConnection | null,
   visibility: Visibility,
@@ -100,13 +98,6 @@ export type Post = {
   userPostsId: string,
   communityPostsId: string,
 };
-
-export enum PostType {
-  THOUGHT = "THOUGHT",
-  EVENT_ANNOUNCEMENT = "EVENT_ANNOUNCEMENT",
-  ITEM_FOR_SALE = "ITEM_FOR_SALE",
-}
-
 
 export type ModelUserLikedPostsConnection = {
   __typename: "ModelUserLikedPostsConnection",
@@ -257,13 +248,6 @@ export type UserLikedItems = {
   _lastChangedAt: number,
 };
 
-export type ModelUserConnection = {
-  __typename: "ModelUserConnection",
-  items:  Array<User | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
-};
-
 export type ModelFriendRequestConnection = {
   __typename: "ModelFriendRequestConnection",
   items:  Array<FriendRequest | null >,
@@ -274,9 +258,10 @@ export type ModelFriendRequestConnection = {
 export type FriendRequest = {
   __typename: "FriendRequest",
   id: string,
+  senderId: string,
+  receiverId: string,
   sender: User,
   receiver: User,
-  status: FriendRequestStatus,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -285,54 +270,23 @@ export type FriendRequest = {
   userFriendRequestsId: string,
 };
 
-export enum FriendRequestStatus {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  DECLINED = "DECLINED",
-}
-
-
 export type CreateFriendRequestInput = {
   id?: string | null,
-  status: FriendRequestStatus,
+  senderId: string,
+  receiverId: string,
   _version?: number | null,
   userFriendRequestsId: string,
 };
 
 export type ModelFriendRequestConditionInput = {
-  status?: ModelFriendRequestStatusInput | null,
+  senderId?: ModelIDInput | null,
+  receiverId?: ModelIDInput | null,
   and?: Array< ModelFriendRequestConditionInput | null > | null,
   or?: Array< ModelFriendRequestConditionInput | null > | null,
   not?: ModelFriendRequestConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   userFriendRequestsId?: ModelIDInput | null,
 };
-
-export type ModelFriendRequestStatusInput = {
-  eq?: FriendRequestStatus | null,
-  ne?: FriendRequestStatus | null,
-};
-
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export enum ModelAttributeTypes {
-  binary = "binary",
-  binarySet = "binarySet",
-  bool = "bool",
-  list = "list",
-  map = "map",
-  number = "number",
-  numberSet = "numberSet",
-  string = "string",
-  stringSet = "stringSet",
-  _null = "_null",
-}
-
 
 export type ModelIDInput = {
   ne?: string | null,
@@ -350,6 +304,20 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
+export enum ModelAttributeTypes {
+  binary = "binary",
+  binarySet = "binarySet",
+  bool = "bool",
+  list = "list",
+  map = "map",
+  number = "number",
+  numberSet = "numberSet",
+  string = "string",
+  stringSet = "stringSet",
+  _null = "_null",
+}
+
+
 export type ModelSizeInput = {
   ne?: number | null,
   eq?: number | null,
@@ -360,9 +328,17 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type UpdateFriendRequestInput = {
   id: string,
-  status?: FriendRequestStatus | null,
+  senderId?: string | null,
+  receiverId?: string | null,
   _version?: number | null,
   userFriendRequestsId?: string | null,
 };
@@ -380,6 +356,7 @@ export type CreateUserInput = {
   firstName: string,
   lastName: string,
   selectedCommunity: string,
+  friends?: Array< string > | null,
   location?: string | null,
   age?: number | null,
   bio?: string | null,
@@ -387,7 +364,6 @@ export type CreateUserInput = {
   pets?: number | null,
   kids?: number | null,
   _version?: number | null,
-  userFriendsId?: string | null,
 };
 
 export type ModelUserConditionInput = {
@@ -397,6 +373,7 @@ export type ModelUserConditionInput = {
   firstName?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
   selectedCommunity?: ModelStringInput | null,
+  friends?: ModelStringInput | null,
   location?: ModelStringInput | null,
   age?: ModelIntInput | null,
   bio?: ModelStringInput | null,
@@ -407,7 +384,6 @@ export type ModelUserConditionInput = {
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
   _deleted?: ModelBooleanInput | null,
-  userFriendsId?: ModelIDInput | null,
 };
 
 export type ModelStringInput = {
@@ -446,6 +422,7 @@ export type UpdateUserInput = {
   firstName?: string | null,
   lastName?: string | null,
   selectedCommunity?: string | null,
+  friends?: Array< string > | null,
   location?: string | null,
   age?: number | null,
   bio?: string | null,
@@ -453,7 +430,6 @@ export type UpdateUserInput = {
   pets?: number | null,
   kids?: number | null,
   _version?: number | null,
-  userFriendsId?: string | null,
 };
 
 export type DeleteUserInput = {
@@ -499,7 +475,6 @@ export type CreatePostInput = {
   id?: string | null,
   images?: Array< string | null > | null,
   content: string,
-  postType: PostType,
   visibility: Visibility,
   _version?: number | null,
   userPostsId: string,
@@ -509,7 +484,6 @@ export type CreatePostInput = {
 export type ModelPostConditionInput = {
   images?: ModelStringInput | null,
   content?: ModelStringInput | null,
-  postType?: ModelPostTypeInput | null,
   visibility?: ModelVisibilityInput | null,
   and?: Array< ModelPostConditionInput | null > | null,
   or?: Array< ModelPostConditionInput | null > | null,
@@ -517,11 +491,6 @@ export type ModelPostConditionInput = {
   _deleted?: ModelBooleanInput | null,
   userPostsId?: ModelIDInput | null,
   communityPostsId?: ModelIDInput | null,
-};
-
-export type ModelPostTypeInput = {
-  eq?: PostType | null,
-  ne?: PostType | null,
 };
 
 export type ModelVisibilityInput = {
@@ -533,7 +502,6 @@ export type UpdatePostInput = {
   id: string,
   images?: Array< string | null > | null,
   content?: string | null,
-  postType?: PostType | null,
   visibility?: Visibility | null,
   _version?: number | null,
   userPostsId?: string | null,
@@ -794,7 +762,8 @@ export type DeleteUserLikedItemsInput = {
 
 export type ModelFriendRequestFilterInput = {
   id?: ModelIDInput | null,
-  status?: ModelFriendRequestStatusInput | null,
+  senderId?: ModelIDInput | null,
+  receiverId?: ModelIDInput | null,
   and?: Array< ModelFriendRequestFilterInput | null > | null,
   or?: Array< ModelFriendRequestFilterInput | null > | null,
   not?: ModelFriendRequestFilterInput | null,
@@ -810,6 +779,7 @@ export type ModelUserFilterInput = {
   firstName?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
   selectedCommunity?: ModelStringInput | null,
+  friends?: ModelStringInput | null,
   location?: ModelStringInput | null,
   age?: ModelIntInput | null,
   bio?: ModelStringInput | null,
@@ -820,7 +790,13 @@ export type ModelUserFilterInput = {
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
   _deleted?: ModelBooleanInput | null,
-  userFriendsId?: ModelIDInput | null,
+};
+
+export type ModelUserConnection = {
+  __typename: "ModelUserConnection",
+  items:  Array<User | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelCommunityFilterInput = {
@@ -846,7 +822,6 @@ export type ModelPostFilterInput = {
   id?: ModelIDInput | null,
   images?: ModelStringInput | null,
   content?: ModelStringInput | null,
-  postType?: ModelPostTypeInput | null,
   visibility?: ModelVisibilityInput | null,
   and?: Array< ModelPostFilterInput | null > | null,
   or?: Array< ModelPostFilterInput | null > | null,
@@ -947,28 +922,14 @@ export enum ModelSortDirection {
 
 export type ModelSubscriptionFriendRequestFilterInput = {
   id?: ModelSubscriptionIDInput | null,
-  status?: ModelSubscriptionStringInput | null,
+  senderId?: ModelSubscriptionIDInput | null,
+  receiverId?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionFriendRequestFilterInput | null > | null,
   or?: Array< ModelSubscriptionFriendRequestFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
-};
-
-export type ModelSubscriptionStringInput = {
   ne?: string | null,
   eq?: string | null,
   le?: string | null,
@@ -991,6 +952,7 @@ export type ModelSubscriptionUserFilterInput = {
   firstName?: ModelSubscriptionStringInput | null,
   lastName?: ModelSubscriptionStringInput | null,
   selectedCommunity?: ModelSubscriptionStringInput | null,
+  friends?: ModelSubscriptionStringInput | null,
   location?: ModelSubscriptionStringInput | null,
   age?: ModelSubscriptionIntInput | null,
   bio?: ModelSubscriptionStringInput | null,
@@ -1000,6 +962,21 @@ export type ModelSubscriptionUserFilterInput = {
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
 };
 
 export type ModelSubscriptionIntInput = {
@@ -1029,7 +1006,6 @@ export type ModelSubscriptionPostFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   images?: ModelSubscriptionStringInput | null,
   content?: ModelSubscriptionStringInput | null,
-  postType?: ModelSubscriptionStringInput | null,
   visibility?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionPostFilterInput | null > | null,
   or?: Array< ModelSubscriptionPostFilterInput | null > | null,
@@ -1143,11 +1119,7 @@ export type SwitchCommunityMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -1194,7 +1166,6 @@ export type SwitchCommunityMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -1223,11 +1194,7 @@ export type JoinCommunityMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -1274,7 +1241,6 @@ export type JoinCommunityMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -1295,6 +1261,7 @@ export type LikePostMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1306,7 +1273,6 @@ export type LikePostMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -1323,7 +1289,6 @@ export type LikePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -1362,6 +1327,7 @@ export type UnlikePostMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1373,7 +1339,6 @@ export type UnlikePostMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -1390,7 +1355,6 @@ export type UnlikePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -1427,7 +1391,6 @@ export type CommentOnPostMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -1446,6 +1409,7 @@ export type CommentOnPostMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1457,7 +1421,6 @@ export type CommentOnPostMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -1499,6 +1462,7 @@ export type SellItemMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1510,7 +1474,6 @@ export type SellItemMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -1566,11 +1529,7 @@ export type AddFriendMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -1617,7 +1576,6 @@ export type AddFriendMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -1657,6 +1615,7 @@ export type LikeEventMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1668,7 +1627,6 @@ export type LikeEventMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -1722,6 +1680,7 @@ export type UnlikeEventMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1733,7 +1692,6 @@ export type UnlikeEventMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -1774,6 +1732,7 @@ export type LikeItemForSaleMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1785,7 +1744,6 @@ export type LikeItemForSaleMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -1839,6 +1797,7 @@ export type UnlikeItemForSaleMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1850,7 +1809,6 @@ export type UnlikeItemForSaleMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -1890,6 +1848,8 @@ export type SendFriendRequestMutation = {
   sendFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -1899,6 +1859,7 @@ export type SendFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1910,7 +1871,6 @@ export type SendFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -1921,6 +1881,7 @@ export type SendFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1932,9 +1893,7 @@ export type SendFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1952,6 +1911,8 @@ export type AcceptFriendRequestMutation = {
   acceptFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -1961,6 +1922,7 @@ export type AcceptFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1972,7 +1934,6 @@ export type AcceptFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -1983,6 +1944,7 @@ export type AcceptFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -1994,9 +1956,7 @@ export type AcceptFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2014,6 +1974,8 @@ export type DeclineFriendRequestMutation = {
   declineFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -2023,6 +1985,7 @@ export type DeclineFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2034,7 +1997,6 @@ export type DeclineFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -2045,6 +2007,7 @@ export type DeclineFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2056,9 +2019,7 @@ export type DeclineFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2077,6 +2038,8 @@ export type CreateFriendRequestMutation = {
   createFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -2086,6 +2049,7 @@ export type CreateFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2097,7 +2061,6 @@ export type CreateFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -2108,6 +2071,7 @@ export type CreateFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2119,9 +2083,7 @@ export type CreateFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2140,6 +2102,8 @@ export type UpdateFriendRequestMutation = {
   updateFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -2149,6 +2113,7 @@ export type UpdateFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2160,7 +2125,6 @@ export type UpdateFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -2171,6 +2135,7 @@ export type UpdateFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2182,9 +2147,7 @@ export type UpdateFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2203,6 +2166,8 @@ export type DeleteFriendRequestMutation = {
   deleteFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -2212,6 +2177,7 @@ export type DeleteFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2223,7 +2189,6 @@ export type DeleteFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -2234,6 +2199,7 @@ export type DeleteFriendRequestMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2245,9 +2211,7 @@ export type DeleteFriendRequestMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2282,11 +2246,7 @@ export type CreateUserMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -2333,7 +2293,6 @@ export type CreateUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -2362,11 +2321,7 @@ export type UpdateUserMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -2413,7 +2368,6 @@ export type UpdateUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -2442,11 +2396,7 @@ export type DeleteUserMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -2493,7 +2443,6 @@ export type DeleteUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -2638,6 +2587,7 @@ export type CreatePostMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2649,7 +2599,6 @@ export type CreatePostMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -2666,7 +2615,6 @@ export type CreatePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -2706,6 +2654,7 @@ export type UpdatePostMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2717,7 +2666,6 @@ export type UpdatePostMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -2734,7 +2682,6 @@ export type UpdatePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -2774,6 +2721,7 @@ export type DeletePostMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2785,7 +2733,6 @@ export type DeletePostMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -2802,7 +2749,6 @@ export type DeletePostMutation = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -2838,7 +2784,6 @@ export type CreateCommentMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -2857,6 +2802,7 @@ export type CreateCommentMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2868,7 +2814,6 @@ export type CreateCommentMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -2895,7 +2840,6 @@ export type UpdateCommentMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -2914,6 +2858,7 @@ export type UpdateCommentMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2925,7 +2870,6 @@ export type UpdateCommentMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -2952,7 +2896,6 @@ export type DeleteCommentMutation = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -2971,6 +2914,7 @@ export type DeleteCommentMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -2982,7 +2926,6 @@ export type DeleteCommentMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -3031,6 +2974,7 @@ export type CreateEventMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3042,7 +2986,6 @@ export type CreateEventMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -3096,6 +3039,7 @@ export type UpdateEventMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3107,7 +3051,6 @@ export type UpdateEventMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -3161,6 +3104,7 @@ export type DeleteEventMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3172,7 +3116,6 @@ export type DeleteEventMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -3213,6 +3156,7 @@ export type CreateItemForSaleMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3224,7 +3168,6 @@ export type CreateItemForSaleMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -3278,6 +3221,7 @@ export type UpdateItemForSaleMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3289,7 +3233,6 @@ export type UpdateItemForSaleMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -3343,6 +3286,7 @@ export type DeleteItemForSaleMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3354,7 +3298,6 @@ export type DeleteItemForSaleMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -3405,6 +3348,7 @@ export type CreateUserCommunityMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3416,7 +3360,6 @@ export type CreateUserCommunityMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -3459,6 +3402,7 @@ export type UpdateUserCommunityMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3470,7 +3414,6 @@ export type UpdateUserCommunityMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -3513,6 +3456,7 @@ export type DeleteUserCommunityMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3524,7 +3468,6 @@ export type DeleteUserCommunityMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -3567,6 +3510,7 @@ export type CreateUserLikedPostsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3578,14 +3522,12 @@ export type CreateUserLikedPostsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     post:  {
       __typename: "Post",
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -3623,6 +3565,7 @@ export type UpdateUserLikedPostsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3634,14 +3577,12 @@ export type UpdateUserLikedPostsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     post:  {
       __typename: "Post",
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -3679,6 +3620,7 @@ export type DeleteUserLikedPostsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3690,14 +3632,12 @@ export type DeleteUserLikedPostsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     post:  {
       __typename: "Post",
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -3735,6 +3675,7 @@ export type CreateUserLikedEventsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3746,7 +3687,6 @@ export type CreateUserLikedEventsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     event:  {
       __typename: "Event",
@@ -3793,6 +3733,7 @@ export type UpdateUserLikedEventsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3804,7 +3745,6 @@ export type UpdateUserLikedEventsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     event:  {
       __typename: "Event",
@@ -3851,6 +3791,7 @@ export type DeleteUserLikedEventsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3862,7 +3803,6 @@ export type DeleteUserLikedEventsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     event:  {
       __typename: "Event",
@@ -3909,6 +3849,7 @@ export type CreateUserLikedItemsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3920,7 +3861,6 @@ export type CreateUserLikedItemsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     itemForSale:  {
       __typename: "ItemForSale",
@@ -3967,6 +3907,7 @@ export type UpdateUserLikedItemsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -3978,7 +3919,6 @@ export type UpdateUserLikedItemsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     itemForSale:  {
       __typename: "ItemForSale",
@@ -4025,6 +3965,7 @@ export type DeleteUserLikedItemsMutation = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4036,7 +3977,6 @@ export type DeleteUserLikedItemsMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     itemForSale:  {
       __typename: "ItemForSale",
@@ -4069,7 +4009,7 @@ export type SearchPostsQueryVariables = {
 };
 
 export type SearchPostsQuery = {
-  searchPosts:  Array< {
+  searchPosts?:  Array< {
     __typename: "Post",
     id: string,
     author:  {
@@ -4081,6 +4021,7 @@ export type SearchPostsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4092,7 +4033,6 @@ export type SearchPostsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -4109,7 +4049,6 @@ export type SearchPostsQuery = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -4128,7 +4067,7 @@ export type SearchPostsQuery = {
     _lastChangedAt: number,
     userPostsId: string,
     communityPostsId: string,
-  } >,
+  } > | null,
 };
 
 export type SearchPeopleQueryVariables = {
@@ -4137,7 +4076,7 @@ export type SearchPeopleQueryVariables = {
 };
 
 export type SearchPeopleQuery = {
-  searchPeople:  Array< {
+  searchPeople?:  Array< {
     __typename: "User",
     id: string,
     username: string,
@@ -4156,11 +4095,7 @@ export type SearchPeopleQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -4207,8 +4142,7 @@ export type SearchPeopleQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
-  } >,
+  } > | null,
 };
 
 export type GetCommunityPostsQueryVariables = {
@@ -4216,7 +4150,7 @@ export type GetCommunityPostsQueryVariables = {
 };
 
 export type GetCommunityPostsQuery = {
-  getCommunityPosts:  Array< {
+  getCommunityPosts?:  Array< {
     __typename: "Post",
     id: string,
     author:  {
@@ -4228,6 +4162,7 @@ export type GetCommunityPostsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4239,7 +4174,6 @@ export type GetCommunityPostsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -4256,7 +4190,6 @@ export type GetCommunityPostsQuery = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -4275,7 +4208,7 @@ export type GetCommunityPostsQuery = {
     _lastChangedAt: number,
     userPostsId: string,
     communityPostsId: string,
-  } >,
+  } > | null,
 };
 
 export type GetCommunityEventsQueryVariables = {
@@ -4283,7 +4216,7 @@ export type GetCommunityEventsQueryVariables = {
 };
 
 export type GetCommunityEventsQuery = {
-  getCommunityEvents:  Array< {
+  getCommunityEvents?:  Array< {
     __typename: "Event",
     id: string,
     name: string,
@@ -4313,6 +4246,7 @@ export type GetCommunityEventsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4324,7 +4258,6 @@ export type GetCommunityEventsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -4339,7 +4272,7 @@ export type GetCommunityEventsQuery = {
     _lastChangedAt: number,
     userEventsId: string,
     communityEventsId?: string | null,
-  } >,
+  } > | null,
 };
 
 export type GetUserFriendsQueryVariables = {
@@ -4347,7 +4280,7 @@ export type GetUserFriendsQueryVariables = {
 };
 
 export type GetUserFriendsQuery = {
-  getUserFriends:  Array< {
+  getUserFriends?:  Array< {
     __typename: "User",
     id: string,
     username: string,
@@ -4366,11 +4299,7 @@ export type GetUserFriendsQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -4417,8 +4346,7 @@ export type GetUserFriendsQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
-  } >,
+  } > | null,
 };
 
 export type PendingFriendRequestsQueryVariables = {
@@ -4426,9 +4354,11 @@ export type PendingFriendRequestsQueryVariables = {
 };
 
 export type PendingFriendRequestsQuery = {
-  pendingFriendRequests:  Array< {
+  pendingFriendRequests?:  Array< {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -4438,6 +4368,7 @@ export type PendingFriendRequestsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4449,7 +4380,6 @@ export type PendingFriendRequestsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -4460,6 +4390,7 @@ export type PendingFriendRequestsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4471,16 +4402,14 @@ export type PendingFriendRequestsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     userFriendRequestsId: string,
-  } >,
+  } > | null,
 };
 
 export type SentFriendRequestsQueryVariables = {
@@ -4488,9 +4417,11 @@ export type SentFriendRequestsQueryVariables = {
 };
 
 export type SentFriendRequestsQuery = {
-  sentFriendRequests:  Array< {
+  sentFriendRequests?:  Array< {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -4500,6 +4431,7 @@ export type SentFriendRequestsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4511,7 +4443,6 @@ export type SentFriendRequestsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -4522,6 +4453,7 @@ export type SentFriendRequestsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4533,16 +4465,14 @@ export type SentFriendRequestsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     userFriendRequestsId: string,
-  } >,
+  } > | null,
 };
 
 export type GetFriendRequestQueryVariables = {
@@ -4553,6 +4483,8 @@ export type GetFriendRequestQuery = {
   getFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -4562,6 +4494,7 @@ export type GetFriendRequestQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4573,7 +4506,6 @@ export type GetFriendRequestQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -4584,6 +4516,7 @@ export type GetFriendRequestQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4595,9 +4528,7 @@ export type GetFriendRequestQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -4619,7 +4550,8 @@ export type ListFriendRequestsQuery = {
     items:  Array< {
       __typename: "FriendRequest",
       id: string,
-      status: FriendRequestStatus,
+      senderId: string,
+      receiverId: string,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4645,7 +4577,8 @@ export type SyncFriendRequestsQuery = {
     items:  Array< {
       __typename: "FriendRequest",
       id: string,
-      status: FriendRequestStatus,
+      senderId: string,
+      receiverId: string,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4682,11 +4615,7 @@ export type GetUserQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -4733,7 +4662,6 @@ export type GetUserQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -4755,6 +4683,7 @@ export type ListUsersQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4766,7 +4695,6 @@ export type ListUsersQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -4792,6 +4720,7 @@ export type SyncUsersQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4803,7 +4732,6 @@ export type SyncUsersQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -4922,6 +4850,7 @@ export type GetPostQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -4933,7 +4862,6 @@ export type GetPostQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -4950,7 +4878,6 @@ export type GetPostQuery = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -4986,7 +4913,6 @@ export type ListPostsQuery = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -5016,7 +4942,6 @@ export type SyncPostsQuery = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -5044,7 +4969,6 @@ export type GetCommentQuery = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -5063,6 +4987,7 @@ export type GetCommentQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -5074,7 +4999,6 @@ export type GetCommentQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -5175,6 +5099,7 @@ export type GetEventQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -5186,7 +5111,6 @@ export type GetEventQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -5289,6 +5213,7 @@ export type GetItemForSaleQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -5300,7 +5225,6 @@ export type GetItemForSaleQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -5413,6 +5337,7 @@ export type GetUserCommunityQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -5424,7 +5349,6 @@ export type GetUserCommunityQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -5517,6 +5441,7 @@ export type GetUserLikedPostsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -5528,14 +5453,12 @@ export type GetUserLikedPostsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     post:  {
       __typename: "Post",
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -5623,6 +5546,7 @@ export type GetUserLikedEventsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -5634,7 +5558,6 @@ export type GetUserLikedEventsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     event:  {
       __typename: "Event",
@@ -5731,6 +5654,7 @@ export type GetUserLikedItemsQuery = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -5742,7 +5666,6 @@ export type GetUserLikedItemsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     itemForSale:  {
       __typename: "ItemForSale",
@@ -6044,6 +5967,8 @@ export type OnCreateFriendRequestSubscription = {
   onCreateFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -6053,6 +5978,7 @@ export type OnCreateFriendRequestSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6064,7 +5990,6 @@ export type OnCreateFriendRequestSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -6075,6 +6000,7 @@ export type OnCreateFriendRequestSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6086,9 +6012,7 @@ export type OnCreateFriendRequestSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -6106,6 +6030,8 @@ export type OnUpdateFriendRequestSubscription = {
   onUpdateFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -6115,6 +6041,7 @@ export type OnUpdateFriendRequestSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6126,7 +6053,6 @@ export type OnUpdateFriendRequestSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -6137,6 +6063,7 @@ export type OnUpdateFriendRequestSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6148,9 +6075,7 @@ export type OnUpdateFriendRequestSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -6168,6 +6093,8 @@ export type OnDeleteFriendRequestSubscription = {
   onDeleteFriendRequest?:  {
     __typename: "FriendRequest",
     id: string,
+    senderId: string,
+    receiverId: string,
     sender:  {
       __typename: "User",
       id: string,
@@ -6177,6 +6104,7 @@ export type OnDeleteFriendRequestSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6188,7 +6116,6 @@ export type OnDeleteFriendRequestSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     receiver:  {
       __typename: "User",
@@ -6199,6 +6126,7 @@ export type OnDeleteFriendRequestSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6210,9 +6138,7 @@ export type OnDeleteFriendRequestSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
-    status: FriendRequestStatus,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -6246,11 +6172,7 @@ export type OnCreateUserSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -6297,7 +6219,6 @@ export type OnCreateUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -6325,11 +6246,7 @@ export type OnUpdateUserSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -6376,7 +6293,6 @@ export type OnUpdateUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -6404,11 +6320,7 @@ export type OnDeleteUserSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    friends?:  {
-      __typename: "ModelUserConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    friends?: Array< string > | null,
     friendRequests?:  {
       __typename: "ModelFriendRequestConnection",
       nextToken?: string | null,
@@ -6455,7 +6367,6 @@ export type OnDeleteUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userFriendsId?: string | null,
   } | null,
 };
 
@@ -6596,6 +6507,7 @@ export type OnCreatePostSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6607,7 +6519,6 @@ export type OnCreatePostSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -6624,7 +6535,6 @@ export type OnCreatePostSubscription = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -6663,6 +6573,7 @@ export type OnUpdatePostSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6674,7 +6585,6 @@ export type OnUpdatePostSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -6691,7 +6601,6 @@ export type OnUpdatePostSubscription = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -6730,6 +6639,7 @@ export type OnDeletePostSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6741,7 +6651,6 @@ export type OnDeletePostSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -6758,7 +6667,6 @@ export type OnDeletePostSubscription = {
     },
     images?: Array< string | null > | null,
     content: string,
-    postType: PostType,
     likedBy?:  {
       __typename: "ModelUserLikedPostsConnection",
       nextToken?: string | null,
@@ -6793,7 +6701,6 @@ export type OnCreateCommentSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -6812,6 +6719,7 @@ export type OnCreateCommentSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6823,7 +6731,6 @@ export type OnCreateCommentSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -6849,7 +6756,6 @@ export type OnUpdateCommentSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -6868,6 +6774,7 @@ export type OnUpdateCommentSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6879,7 +6786,6 @@ export type OnUpdateCommentSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -6905,7 +6811,6 @@ export type OnDeleteCommentSubscription = {
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -6924,6 +6829,7 @@ export type OnDeleteCommentSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6935,7 +6841,6 @@ export type OnDeleteCommentSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -6983,6 +6888,7 @@ export type OnCreateEventSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -6994,7 +6900,6 @@ export type OnCreateEventSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -7047,6 +6952,7 @@ export type OnUpdateEventSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7058,7 +6964,6 @@ export type OnUpdateEventSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -7111,6 +7016,7 @@ export type OnDeleteEventSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7122,7 +7028,6 @@ export type OnDeleteEventSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     likedBy?:  {
       __typename: "ModelUserLikedEventsConnection",
@@ -7162,6 +7067,7 @@ export type OnCreateItemForSaleSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7173,7 +7079,6 @@ export type OnCreateItemForSaleSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -7226,6 +7131,7 @@ export type OnUpdateItemForSaleSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7237,7 +7143,6 @@ export type OnUpdateItemForSaleSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -7290,6 +7195,7 @@ export type OnDeleteItemForSaleSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7301,7 +7207,6 @@ export type OnDeleteItemForSaleSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -7351,6 +7256,7 @@ export type OnCreateUserCommunitySubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7362,7 +7268,6 @@ export type OnCreateUserCommunitySubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -7404,6 +7309,7 @@ export type OnUpdateUserCommunitySubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7415,7 +7321,6 @@ export type OnUpdateUserCommunitySubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -7457,6 +7362,7 @@ export type OnDeleteUserCommunitySubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7468,7 +7374,6 @@ export type OnDeleteUserCommunitySubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     community:  {
       __typename: "Community",
@@ -7510,6 +7415,7 @@ export type OnCreateUserLikedPostsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7521,14 +7427,12 @@ export type OnCreateUserLikedPostsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     post:  {
       __typename: "Post",
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -7565,6 +7469,7 @@ export type OnUpdateUserLikedPostsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7576,14 +7481,12 @@ export type OnUpdateUserLikedPostsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     post:  {
       __typename: "Post",
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -7620,6 +7523,7 @@ export type OnDeleteUserLikedPostsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7631,14 +7535,12 @@ export type OnDeleteUserLikedPostsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     post:  {
       __typename: "Post",
       id: string,
       images?: Array< string | null > | null,
       content: string,
-      postType: PostType,
       visibility: Visibility,
       createdAt: string,
       updatedAt: string,
@@ -7675,6 +7577,7 @@ export type OnCreateUserLikedEventsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7686,7 +7589,6 @@ export type OnCreateUserLikedEventsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     event:  {
       __typename: "Event",
@@ -7732,6 +7634,7 @@ export type OnUpdateUserLikedEventsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7743,7 +7646,6 @@ export type OnUpdateUserLikedEventsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     event:  {
       __typename: "Event",
@@ -7789,6 +7691,7 @@ export type OnDeleteUserLikedEventsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7800,7 +7703,6 @@ export type OnDeleteUserLikedEventsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     event:  {
       __typename: "Event",
@@ -7846,6 +7748,7 @@ export type OnCreateUserLikedItemsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7857,7 +7760,6 @@ export type OnCreateUserLikedItemsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     itemForSale:  {
       __typename: "ItemForSale",
@@ -7903,6 +7805,7 @@ export type OnUpdateUserLikedItemsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7914,7 +7817,6 @@ export type OnUpdateUserLikedItemsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     itemForSale:  {
       __typename: "ItemForSale",
@@ -7960,6 +7862,7 @@ export type OnDeleteUserLikedItemsSubscription = {
       firstName: string,
       lastName: string,
       selectedCommunity: string,
+      friends?: Array< string > | null,
       location?: string | null,
       age?: number | null,
       bio?: string | null,
@@ -7971,7 +7874,6 @@ export type OnDeleteUserLikedItemsSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userFriendsId?: string | null,
     },
     itemForSale:  {
       __typename: "ItemForSale",

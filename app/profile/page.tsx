@@ -50,7 +50,7 @@ export default function ProfilePage() {
       setErrorMessage(error.message || 'Failed to update profile.');
     }
   };
-
+  
   if (!loggedIn) return null; // or a message indicating the user is not signed in
 
   return (

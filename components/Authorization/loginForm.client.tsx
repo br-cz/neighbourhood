@@ -13,7 +13,7 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [open, handlers] = useDisclosure(false);
+  const [loading, handlers] = useDisclosure(false);
   const router = useRouter();
 
   async function handleSignOut() {
@@ -75,7 +75,7 @@ const LoginForm: React.FC = () => {
   };
 
   const handleSignUp = () => {
-    router.push('/signup');
+    router.push('/get-started');
   };
 
   return (
@@ -102,7 +102,7 @@ const LoginForm: React.FC = () => {
         )}
 
         <Group justify="center" mt="lg">
-          <Button variant="filled" radius="md" type="submit" loading={open}>
+          <Button variant="filled" radius="md" type="submit" loading={loading}>
             Log In
           </Button>
           <Text c="dimmed">or</Text>

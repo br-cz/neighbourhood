@@ -19,6 +19,7 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -30,7 +31,6 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -48,7 +48,6 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -93,11 +92,7 @@ export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!,
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -144,7 +139,6 @@ export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!,
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -163,6 +157,7 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -174,7 +169,6 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -192,7 +186,6 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -247,6 +240,7 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -258,7 +252,6 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -300,11 +293,7 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -351,7 +340,6 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -362,6 +350,8 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
 export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests($userId: ID!) {
   pendingFriendRequests(userId: $userId) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -370,6 +360,7 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -381,7 +372,6 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -392,6 +382,7 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -403,10 +394,8 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -423,6 +412,8 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
 export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userId: ID!) {
   sentFriendRequests(userId: $userId) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -431,6 +422,7 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -442,7 +434,6 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -453,6 +444,7 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -464,10 +456,8 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -484,6 +474,8 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
 export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) {
   getFriendRequest(id: $id) {
     id
+    senderId
+    receiverId
     sender {
       id
       username
@@ -492,6 +484,7 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -503,7 +496,6 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     receiver {
@@ -514,6 +506,7 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -525,10 +518,8 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
-    status
     createdAt
     updatedAt
     _version
@@ -550,7 +541,8 @@ export const listFriendRequests = /* GraphQL */ `query ListFriendRequests(
   listFriendRequests(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      status
+      senderId
+      receiverId
       createdAt
       updatedAt
       _version
@@ -582,7 +574,8 @@ export const syncFriendRequests = /* GraphQL */ `query SyncFriendRequests(
   ) {
     items {
       id
-      status
+      senderId
+      receiverId
       createdAt
       updatedAt
       _version
@@ -619,11 +612,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
       startedAt
       __typename
     }
-    friends {
-      nextToken
-      startedAt
-      __typename
-    }
+    friends
     friendRequests {
       nextToken
       startedAt
@@ -670,7 +659,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     _version
     _deleted
     _lastChangedAt
-    userFriendsId
     __typename
   }
 }
@@ -689,6 +677,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -700,7 +689,6 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     nextToken
@@ -729,6 +717,7 @@ export const syncUsers = /* GraphQL */ `query SyncUsers(
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -740,7 +729,6 @@ export const syncUsers = /* GraphQL */ `query SyncUsers(
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     nextToken
@@ -861,6 +849,7 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -872,7 +861,6 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -890,7 +878,6 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
     }
     images
     content
-    postType
     likedBy {
       nextToken
       startedAt
@@ -923,7 +910,6 @@ export const listPosts = /* GraphQL */ `query ListPosts(
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -956,7 +942,6 @@ export const syncPosts = /* GraphQL */ `query SyncPosts(
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -980,7 +965,6 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -999,6 +983,7 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1010,7 +995,6 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     content
@@ -1117,6 +1101,7 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1128,7 +1113,6 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     likedBy {
@@ -1234,6 +1218,7 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1245,7 +1230,6 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1364,6 +1348,7 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1375,7 +1360,6 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     community {
@@ -1474,6 +1458,7 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1485,14 +1470,12 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     post {
       id
       images
       content
-      postType
       visibility
       createdAt
       updatedAt
@@ -1586,6 +1569,7 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1597,7 +1581,6 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     event {
@@ -1700,6 +1683,7 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       firstName
       lastName
       selectedCommunity
+      friends
       location
       age
       bio
@@ -1711,7 +1695,6 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       _version
       _deleted
       _lastChangedAt
-      userFriendsId
       __typename
     }
     itemForSale {
