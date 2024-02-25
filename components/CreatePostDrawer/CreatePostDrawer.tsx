@@ -1,11 +1,11 @@
 import React from 'react';
+import { useFormik } from 'formik';
 import { Drawer, Textarea, Button, Group, Select, Title } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { useCreatePost } from '@/src/api/postQueries';
 import { Visibility } from '@/src/API';
-import { useFormik } from 'formik';
 import { createPostSchema } from './createPostValidation';
-import classes from './CreatePostDrawer.module.css';
 
 interface CreatePostDrawerProps {
   opened: boolean;
@@ -48,9 +48,6 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
       size="md"
     >
       <form onSubmit={formik.handleSubmit}>
-        {formik.touched.content && formik.errors.content ? (
-          <div className={`${classes.errorMessage}`}>{formik.errors.content}</div>
-        ) : null}
         <Textarea
           radius="md"
           autosize
@@ -59,7 +56,6 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
           label="Content"
           placeholder="Share your thoughts..."
           {...formik.getFieldProps('content')}
-          required
         />
 
         <Select
@@ -77,10 +73,15 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
             radius="md"
             type="button"
             onClick={() => {
-              formik.setFieldTouched('content', true, false);
-              formik.setFieldTouched('visibility', true, false);
               if (formik.isValid && !loading) {
                 formik.submitForm();
+              } else {
+                notifications.show({
+                  radius: 'md',
+                  color: 'red',
+                  title: 'Oops!',
+                  message: "Couldn't create your post - please fill out all the fields.",
+                });
               }
             }}
             loading={loading}
