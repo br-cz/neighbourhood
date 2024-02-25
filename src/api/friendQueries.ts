@@ -131,7 +131,6 @@ export const useDeleteIncomingFriendRequest = () => {
 
       if (filteredUserFriendRequests.length > 0) {
         try {
-          console.log('firned reqwuest id:', filteredUserFriendRequests[0].id);
           const deletedFriendRequest = await client.graphql({
             query: deleteFriendRequest,
             variables: {
@@ -141,8 +140,6 @@ export const useDeleteIncomingFriendRequest = () => {
               },
             },
           });
-          console.log('deltede friedn reuqest');
-          console.log(deletedFriendRequest);
           setDeletedRequest(JSON.stringify(deletedFriendRequest));
         } catch (error) {
           console.error('Error deleting friend request:', error);
