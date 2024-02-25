@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
 import classes from './PostCard.module.css';
 import { Post } from '@/src/API';
-import { timeAgo } from '@/utils/timeUtils';
+import { formatPostedAt } from '@/utils/timeUtils';
 
 interface PostCardProps {
   post: Post;
@@ -18,7 +18,7 @@ export function PostCard({ post }: PostCardProps) {
           {post.author.firstName} {post.author.lastName}
         </Text>
         <Text size="xs" c="dimmed">
-          {timeAgo(post.createdAt)}
+          {formatPostedAt(post.createdAt)}
         </Text>
       </Group>
       <Text mt="xs" size="sm">
