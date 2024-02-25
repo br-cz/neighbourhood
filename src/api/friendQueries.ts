@@ -2,9 +2,13 @@ import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { getCommunity, getUser } from '@/src/graphql/queries';
 import * as APITypes from '../API';
-import { createFriendRequest, deleteFriendRequest, updateUser } from '../graphql/mutations';
+import {
+  createFriendRequest,
+  deleteFriendRequest,
+  removeFriend,
+  updateUser,
+} from '../graphql/mutations';
 import { useFetchMembers } from '@/src/api/memberQueries';
-import { colorResolver } from '@mantine/core/lib/core/Box/style-props/resolvers/color-resolver/color-resolver';
 
 const client = generateClient();
 
@@ -256,7 +260,43 @@ export const useCreateFriend = () => {
       setError(err);
     }
   };
+
   return { friend, error, handleCreateFriend };
+};
+
+export const useDeleteFriend = () => {
+  const [deletedFriend, setDeletedFriend] = useState<string>('');
+  const [error, setError] = useState('');
+
+  const handleDeleteFriend = async (newFriendId: string) => {
+    try {
+      const userData = localStorage.getItem('currentUser')!;
+      const parsedUserData = JSON.parse(userData);
+
+      const res = await client.graphql({
+        query: removeFriend,
+        variables: {
+          userId: parsedUserData.id,
+          friendId: newFriendId,
+        },
+      });
+      await client.graphql({
+        query: removeFriend,
+        variables: {
+          userId: newFriendId,
+          friendId: parsedUserData.id,
+        },
+      });
+
+      setDeletedFriend(JSON.parse(JSON.stringify(res)));
+      console.log('Friendship deleted successfully');
+    } catch (error) {
+      console.error('Error deleting friend:', error);
+      throw error;
+    }
+  };
+
+  return { deletedFriend, error, handleDeleteFriend };
 };
 
 const addFriend = async (userId: string, newFriendId: string) => {

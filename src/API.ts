@@ -1579,6 +1579,15 @@ export type AddFriendMutation = {
   } | null,
 };
 
+export type RemoveFriendMutationVariables = {
+  userId: string,
+  friendId: string,
+};
+
+export type RemoveFriendMutation = {
+  removeFriend?: string | null,
+};
+
 export type LikeEventMutationVariables = {
   userId: string,
   eventId: string,

@@ -492,6 +492,13 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
   APITypes.AddFriendMutationVariables,
   APITypes.AddFriendMutation
 >;
+export const removeFriend = /* GraphQL */ `mutation RemoveFriend($userId: ID!, $friendId: ID!) {
+  removeFriend(userId: $userId, friendId: $friendId)
+}
+` as GeneratedMutation<
+  APITypes.RemoveFriendMutationVariables,
+  APITypes.RemoveFriendMutation
+>;
 export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventId: ID!) {
   likeEvent(userId: $userId, eventId: $eventId) {
     id

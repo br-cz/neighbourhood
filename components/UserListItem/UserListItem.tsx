@@ -12,6 +12,7 @@ import {
   useFetchIncomingFriendRequests,
   useDeleteIncomingFriendRequest,
   useDeleteOutgoingFriendRequest,
+  useDeleteFriend,
 } from '@/src/api/friendQueries';
 import * as APITypes from '@/src/API';
 
@@ -25,6 +26,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const [status, setStatus] = useState(relationshipStatus);
   const { handleCreateFriendRequest, error } = useCreateFriendRequest();
   const { handleCreateFriend, error: createFriendError } = useCreateFriend();
+  const { handleDeleteFriend } = useDeleteFriend();
   const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
   const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
 
@@ -82,7 +84,14 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       confirmProps: { size: 'xs', radius: 'md', color: 'red' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Remove', cancel: 'Back' },
-      onConfirm: () => setStatus('none'),
+      onConfirm: async () => {
+        try {
+          await handleDeleteFriend(user.id);
+          setStatus('none');
+        } catch (error) {
+          console.error('Failed to delete friend:', error);
+        }
+      },
     });
   };
   const handleCancelRequest = () => {
