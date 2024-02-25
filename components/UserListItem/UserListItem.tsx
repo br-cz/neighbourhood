@@ -10,6 +10,8 @@ import {
   useCreateFriend,
   useCreateFriendRequest,
   useFetchIncomingFriendRequests,
+  useDeleteIncomingFriendRequest,
+  useDeleteOutgoingFriendRequest,
 } from '@/src/api/friendQueries';
 import * as APITypes from '@/src/API';
 
@@ -23,6 +25,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const [status, setStatus] = useState(relationshipStatus);
   const { handleCreateFriendRequest, error } = useCreateFriendRequest();
   const { handleCreateFriend, error: createFriendError } = useCreateFriend();
+  const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
+  const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
 
   const handleAddFriend = async () => {
     try {
@@ -48,23 +52,32 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
     }
   };
 
-  const handleDeclineRequest = () => {
+  const handleDeclineRequest = async () => {
     modals.openConfirmModal({
       title: <Title order={5}>Decline Friend Request?</Title>,
       children: (
-        <Text size="sm">Are you sure you want to decline {user?.name}'s friend request?</Text>
+        <Text size="sm">Are you sure you want to decline {user?.firstName}'s friend request?</Text>
       ),
       confirmProps: { size: 'xs', radius: 'md', color: 'red' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Decline', cancel: 'Back' },
-      onConfirm: () => setStatus('none'),
+      onConfirm: async () => {
+        try {
+          await handleDeleteIncomingFriendRequest(user.id);
+          setStatus('none');
+        } catch (error) {
+          console.error('Failed to decline friend request:', error);
+        }
+      },
     });
   };
 
   const handleRemoveFriend = () => {
     modals.openConfirmModal({
       title: <Title order={5}>Remove Friend?</Title>,
-      children: <Text size="sm">Are you sure you want to remove {user?.name} as a friend?</Text>,
+      children: (
+        <Text size="sm">Are you sure you want to remove {user?.firstName} as a friend?</Text>
+      ),
       confirmProps: { size: 'xs', radius: 'md', color: 'red' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Remove', cancel: 'Back' },
@@ -72,15 +85,25 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
     });
   };
   const handleCancelRequest = () => {
+    console.log(user);
     modals.openConfirmModal({
       title: <Title order={5}>Cancel Friend Request?</Title>,
       children: (
-        <Text size="sm">Are you sure you cancel your outgoing friend request to {user?.name}?</Text>
+        <Text size="sm">
+          Are you sure you cancel your outgoing friend request to {user?.firstName}?
+        </Text>
       ),
       confirmProps: { size: 'xs', radius: 'md', color: 'red' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Cancel', cancel: 'Back' },
-      onConfirm: () => setStatus('none'),
+      onConfirm: async () => {
+        try {
+          await handleDeleteOutgoingFriendRequest(user.id);
+          setStatus('none');
+        } catch (error) {
+          console.error('Failed to decline friend request:', error);
+        }
+      },
     });
   };
 

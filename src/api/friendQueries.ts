@@ -37,19 +37,14 @@ export const useCreateFriendRequest = () => {
   return { friendRequest, error, handleCreateFriendRequest };
 };
 
-export const useFetchIncomingFriendRequests = () => {
-  const [incomingFriendRequests, setIncomingFriendRequests] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [reload, setReload] = useState(false); // Add a state to trigger re-fetch
-
-  const refetch = () => setReload(!reload); // Function to toggle the reload state
-
+const fetchAllFriendRequests = async () => {
   const ListFriendRequests = /* GraphQL */ `
     query ListFriendRequests {
       listFriendRequests {
         items {
+          id
           _deleted
+          _version
           receiver {
             id
             firstName
@@ -69,6 +64,26 @@ export const useFetchIncomingFriendRequests = () => {
     }
   `;
 
+  try {
+    const fetchedFriendRequest = await client.graphql({
+      query: ListFriendRequests,
+    });
+
+    const jsonFriendRequests = JSON.parse(JSON.stringify(fetchedFriendRequest));
+    return jsonFriendRequests.data.listFriendRequests;
+  } catch (error) {
+    console.error('Error listing all friend requests:', error);
+  }
+};
+
+export const useFetchIncomingFriendRequests = () => {
+  const [incomingFriendRequests, setIncomingFriendRequests] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [reload, setReload] = useState(false); // Add a state to trigger re-fetch
+
+  const refetch = () => setReload(!reload); // Function to toggle the reload state
+
   useEffect(() => {
     const fetchedFriendRequests = async () => {
       try {
@@ -76,12 +91,8 @@ export const useFetchIncomingFriendRequests = () => {
         const userData = localStorage.getItem('currentUser')!;
         const parsedUserData = JSON.parse(userData);
 
-        const fetchedFriendRequest = await client.graphql({
-          query: ListFriendRequests,
-        });
-
-        const jsonFriendRequests = JSON.parse(JSON.stringify(fetchedFriendRequest));
-        const filteredFriendRequests = jsonFriendRequests.data.listFriendRequests.items
+        const jsonFriendRequests = await fetchAllFriendRequests();
+        const filteredFriendRequests = jsonFriendRequests.items
           .filter((item: any) => {
             return item.receiver.id === parsedUserData.id && !item._deleted;
           })
@@ -101,6 +112,51 @@ export const useFetchIncomingFriendRequests = () => {
   return { incomingFriendRequests, loading, error, refetch };
 };
 
+export const useDeleteIncomingFriendRequest = () => {
+  const [deletedRequest, setDeletedRequest] = useState<string>('');
+  const [error, setError] = useState('');
+
+  const handleDeleteIncomingFriendRequest = async (friendId: string) => {
+    try {
+      const userData = localStorage.getItem('currentUser')!;
+      const parsedUserData = JSON.parse(userData);
+
+      const jsonFriendRequests = await fetchAllFriendRequests();
+
+      const filteredUserFriendRequests = jsonFriendRequests.items.filter((item: any) => {
+        return (
+          item.receiver.id === parsedUserData.id && item.sender.id === friendId && !item._deleted
+        );
+      });
+
+      if (filteredUserFriendRequests.length > 0) {
+        try {
+          console.log('firned reqwuest id:', filteredUserFriendRequests[0].id);
+          const deletedFriendRequest = await client.graphql({
+            query: deleteFriendRequest,
+            variables: {
+              input: {
+                id: filteredUserFriendRequests[0].id,
+                _version: filteredUserFriendRequests[0]._version,
+              },
+            },
+          });
+          console.log('deltede friedn reuqest');
+          console.log(deletedFriendRequest);
+          setDeletedRequest(JSON.stringify(deletedFriendRequest));
+        } catch (error) {
+          console.error('Error deleting friend request:', error);
+        }
+      }
+    } catch (err: any) {
+      console.error('Error deleting friendRequest:', err);
+      setError(err);
+    }
+  };
+
+  return { deletedRequest, error, handleDeleteIncomingFriendRequest };
+};
+
 export const useFetchOutgoingFriendRequests = () => {
   const [outgoingFriendRequests, setOutgoingFriendRequests] = useState<any>([]);
   const [loading, setLoading] = useState(true);
@@ -109,30 +165,6 @@ export const useFetchOutgoingFriendRequests = () => {
 
   const refetch = () => setReload(!reload); // Function to toggle the reload state
 
-  const ListFriendRequests = /* GraphQL */ `
-    query ListFriendRequests {
-      listFriendRequests {
-        items {
-          _deleted
-          receiver {
-            id
-            firstName
-            lastName
-            username
-            profilePic
-          }
-          sender {
-            id
-            firstName
-            lastName
-            username
-            profilePic
-          }
-        }
-      }
-    }
-  `;
-
   useEffect(() => {
     const fetchedFriendRequests = async () => {
       try {
@@ -140,13 +172,9 @@ export const useFetchOutgoingFriendRequests = () => {
         const userData = localStorage.getItem('currentUser')!;
         const parsedUserData = JSON.parse(userData);
 
-        const fetchedFriendRequest = await client.graphql({
-          query: ListFriendRequests,
-        });
+        const jsonFriendRequests = await fetchAllFriendRequests();
 
-        const jsonFriendRequests = JSON.parse(JSON.stringify(fetchedFriendRequest));
-
-        const filteredFriendRequests = jsonFriendRequests.data.listFriendRequests.items
+        const filteredFriendRequests = jsonFriendRequests.items
           .filter((item: any) => {
             return item.sender.id === parsedUserData.id && !item._deleted;
           })
@@ -166,90 +194,24 @@ export const useFetchOutgoingFriendRequests = () => {
   return { outgoingFriendRequests, loading, error, refetch };
 };
 
-export const useCreateFriend = () => {
-  const [friend, setFriend] = useState<string>('');
+export const useDeleteOutgoingFriendRequest = () => {
+  const [deletedRequest, setDeletedRequest] = useState<string>('');
   const [error, setError] = useState('');
 
-  const handleCreateFriend = async (newFriendId: string) => {
+  const handleDeleteOutgoingFriendRequest = async (friendId: string) => {
     try {
-      const localUserData = localStorage.getItem('currentUser')!;
-      const parsedLocalUserData = JSON.parse(localUserData);
+      const userData = localStorage.getItem('currentUser')!;
+      const parsedUserData = JSON.parse(userData);
 
-      const user = await addFriend(parsedLocalUserData.id, newFriendId);
-      await addFriend(newFriendId, parsedLocalUserData.id);
+      const jsonFriendRequests = await fetchAllFriendRequests();
 
-      const ListFriendRequests = /* GraphQL */ `
-        query ListFriendRequests {
-          listFriendRequests {
-            items {
-              id
-              _version
-              _deleted
-              receiver {
-                id
-                firstName
-                lastName
-                username
-                profilePic
-              }
-              sender {
-                id
-                firstName
-                lastName
-                username
-                profilePic
-              }
-            }
-          }
-        }
-      `;
-
-      const fetchedFriendRequest = await client.graphql({
-        query: ListFriendRequests,
+      const filteredFriendUserRequests = jsonFriendRequests.items.filter((item: any) => {
+        return (
+          item.receiver.id === friendId && item.sender.id === parsedUserData.id && !item._deleted
+        );
       });
 
-      const jsonFriendRequests = JSON.parse(JSON.stringify(fetchedFriendRequest));
-      console.log('json friend rewquests');
-      console.log(jsonFriendRequests);
-      const filteredUserFriendRequests = jsonFriendRequests.data.listFriendRequests.items.filter(
-        (item: any) => {
-          return (
-            item.receiver.id === parsedLocalUserData.id &&
-            item.sender.id === newFriendId &&
-            !item._deleted
-          );
-        }
-      );
-
-      const filteredFriendUserRequests = jsonFriendRequests.data.listFriendRequests.items.filter(
-        (item: any) => {
-          return (
-            item.receiver.id === newFriendId &&
-            item.sender.id === parsedLocalUserData.id &&
-            !item._deleted
-          );
-        }
-      );
-
-      if (filteredUserFriendRequests.length > 0) {
-        try {
-          console.log('firned reqwuest id:', filteredUserFriendRequests[0].id);
-          const deletedFriendRequest = await client.graphql({
-            query: deleteFriendRequest,
-            variables: {
-              input: {
-                id: filteredUserFriendRequests[0].id,
-                _version: filteredUserFriendRequests[0]._version,
-              },
-            },
-          });
-          console.log('deltede friedn reuqest');
-          console.log(deletedFriendRequest);
-        } catch (error) {
-          console.error('Error deleting friend request:', error);
-        }
-      }
-      if (filteredFriendUserRequests.length != 0) {
+      if (filteredFriendUserRequests.length > 0) {
         try {
           const deletedFriendRequest = await client.graphql({
             query: deleteFriendRequest,
@@ -260,10 +222,36 @@ export const useCreateFriend = () => {
               },
             },
           });
+          setDeletedRequest(JSON.stringify(deletedFriendRequest));
         } catch (error) {
           console.error('Error deleting friend request:', error);
         }
       }
+    } catch (err: any) {
+      console.error('Error deleting friendRequest:', err);
+      setError(err);
+    }
+  };
+
+  return { deletedRequest, error, handleDeleteOutgoingFriendRequest };
+};
+
+export const useCreateFriend = () => {
+  const [friend, setFriend] = useState<string>('');
+  const [error, setError] = useState('');
+  const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
+  const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
+
+  const handleCreateFriend = async (newFriendId: string) => {
+    try {
+      const localUserData = localStorage.getItem('currentUser')!;
+      const parsedLocalUserData = JSON.parse(localUserData);
+
+      const user = await addFriend(parsedLocalUserData.id, newFriendId);
+      await addFriend(newFriendId, parsedLocalUserData.id);
+
+      handleDeleteIncomingFriendRequest(newFriendId);
+      handleDeleteOutgoingFriendRequest(newFriendId);
 
       setFriend(JSON.stringify(user));
     } catch (err: any) {
@@ -274,6 +262,33 @@ export const useCreateFriend = () => {
 
   return { friend, error, handleCreateFriend };
 };
+
+// export const useCreateFriend = () => {
+//   const [friend, setFriend] = useState<string>('');
+//   const [error, setError] = useState('');
+//   const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
+//   const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
+
+//   const handleCreateFriend = async (newFriendId: string) => {
+//     try {
+//       const localUserData = localStorage.getItem('currentUser')!;
+//       const parsedLocalUserData = JSON.parse(localUserData);
+
+//       const user = await addFriend(parsedLocalUserData.id, newFriendId);
+//       await addFriend(newFriendId, parsedLocalUserData.id);
+
+//       handleDeleteIncomingFriendRequest(newFriendId);
+//       handleDeleteOutgoingFriendRequest(newFriendId);
+
+//       setFriend(JSON.stringify(user));
+//     } catch (err: any) {
+//       console.error('Error creating friend:', err);
+//       setError(err);
+//     }
+//   };
+
+//   return { friend, error, handleCreateFriend };
+// };
 
 const addFriend = async (userId: string, newFriendId: string) => {
   try {
