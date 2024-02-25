@@ -1,7 +1,6 @@
 import React from 'react';
 import { Drawer, Textarea, Button, Group, Select, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useForm } from '@mantine/form';
 import { useCreatePost } from '@/src/api/postQueries';
 import { Visibility } from '@/src/API';
 import { useFormik } from 'formik';
