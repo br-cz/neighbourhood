@@ -256,36 +256,8 @@ export const useCreateFriend = () => {
       setError(err);
     }
   };
-
   return { friend, error, handleCreateFriend };
 };
-
-// export const useCreateFriend = () => {
-//   const [friend, setFriend] = useState<string>('');
-//   const [error, setError] = useState('');
-//   const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
-//   const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
-
-//   const handleCreateFriend = async (newFriendId: string) => {
-//     try {
-//       const localUserData = localStorage.getItem('currentUser')!;
-//       const parsedLocalUserData = JSON.parse(localUserData);
-
-//       const user = await addFriend(parsedLocalUserData.id, newFriendId);
-//       await addFriend(newFriendId, parsedLocalUserData.id);
-
-//       handleDeleteIncomingFriendRequest(newFriendId);
-//       handleDeleteOutgoingFriendRequest(newFriendId);
-
-//       setFriend(JSON.stringify(user));
-//     } catch (err: any) {
-//       console.error('Error creating friend:', err);
-//       setError(err);
-//     }
-//   };
-
-//   return { friend, error, handleCreateFriend };
-// };
 
 const addFriend = async (userId: string, newFriendId: string) => {
   try {
