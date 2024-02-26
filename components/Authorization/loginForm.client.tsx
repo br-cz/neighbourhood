@@ -1,13 +1,64 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { generateClient } from 'aws-amplify/api';
-import { getCurrentUser, signIn, signOut, type SignInInput } from 'aws-amplify/auth';
+import { getCurrentUser, signIn, signOut } from 'aws-amplify/auth';
 import { Box, Button, Group, PasswordInput, Text, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { getCommunity, getUser } from '@/src/graphql/queries';
 
 const client = generateClient({});
+
+interface SignInParams {
+  username: string;
+  password: string;
+  clientInput: any;
+  router: any;
+  notificationsInput: any;
+  handlers: any;
+  setErrorMessage: (message: string) => void;
+}
+
+export async function handleSignIn({
+  username,
+  password,
+  clientInput,
+  router,
+  notificationsInput,
+  handlers,
+  setErrorMessage,
+}: SignInParams): Promise<void> {
+  await signOut({ global: true });
+  try {
+    await signIn({ username, password });
+    const { userId } = await getCurrentUser();
+
+    const user = await clientInput.graphql({ query: getUser, variables: { id: userId } });
+    localStorage.setItem('currentUserID', JSON.stringify(userId));
+    localStorage.setItem('currentUser', JSON.stringify(user.data.getUser));
+
+    if (user.data.getUser) {
+      const communityID = user.data.getUser.selectedCommunity;
+      const community = await clientInput.graphql({
+        query: getCommunity,
+        variables: { id: communityID },
+      });
+      localStorage.setItem('currentCommunityID', JSON.stringify(communityID));
+      localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
+    }
+
+    router.push('/home');
+    notificationsInput.show({
+      radius: 'md',
+      title: 'Hey, Neighbour! 👋 ',
+      message: `Logged in successfully. Welcome back, ${user.data.getUser?.firstName}!`,
+    });
+  } catch (error) {
+    handlers.close();
+    console.log('Error signing in', error);
+    setErrorMessage('Oops! Check your details and try again.');
+  }
+}
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -16,62 +67,18 @@ const LoginForm: React.FC = () => {
   const [loading, handlers] = useDisclosure(false);
   const router = useRouter();
 
-  async function handleSignOut() {
-    try {
-      await signOut({ global: true });
-    } catch (error) {
-      console.log('error signing out: ', error);
-    }
-  }
-
-  async function handleSignIn({ username, password }: SignInInput) {
-    await handleSignOut();
-    try {
-      // Sign in with cognito
-      await signIn({ username, password });
-
-      // Get user ID from cognito
-      const { userId } = await getCurrentUser();
-      console.log('Currently logged in user ID from Cognito:', userId);
-
-      // Initialize localStorage with corresponding user
-      const user = await client.graphql({
-        query: getUser,
-        variables: { id: userId },
-      });
-      localStorage.setItem('currentUserID', JSON.stringify(userId));
-      localStorage.setItem('currentUser', JSON.stringify(user.data.getUser));
-
-      // Initialize localStorage with corresponding community
-      if (user.data.getUser) {
-        const communityID = user.data.getUser.selectedCommunity;
-        const community = await client.graphql({
-          query: getCommunity,
-          variables: { id: communityID },
-        });
-        localStorage.setItem(
-          'currentCommunityID',
-          JSON.stringify(user.data.getUser.selectedCommunity)
-        );
-        localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
-      }
-      router.push('/home');
-      notifications.show({
-        radius: 'md',
-        title: 'Hey, Neighbour! 👋 ',
-        message: `Logged in successfully. Welcome back, ${user.data.getUser?.firstName}!`,
-      });
-    } catch (error) {
-      handlers.close();
-      console.log('Error signing in', error);
-      setErrorMessage('Oops! Check your details and try again.');
-    }
-  }
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handlers.open();
-    handleSignIn({ username: email, password: pass });
+    handleSignIn({
+      username: email,
+      password: pass,
+      clientInput: client,
+      router,
+      notificationsInput: notifications,
+      handlers,
+      setErrorMessage,
+    });
   };
 
   const handleSignUp = () => {
