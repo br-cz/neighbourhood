@@ -2,6 +2,7 @@ import React from 'react';
 import { Group, Avatar, Text } from '@mantine/core';
 import classes from './CommunityListItem.module.css';
 import { useToggle } from '@mantine/hooks';
+import { Community } from '@/types/types';
 
 interface CommunityListItemProps {
   community: Community;
