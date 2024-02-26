@@ -91,7 +91,6 @@ export interface FriendRequest {
   id: string;
   sender: User;
   receiver: User;
-  status: FriendRequestStatus;
 }
 
 export type EventDataInput = Omit<CreateEventInput, 'userEventsId' | 'communityEventsId'>;
