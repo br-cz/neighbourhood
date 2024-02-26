@@ -34,22 +34,20 @@ export async function getCoordinates(postalCode: string) {
   }
 }
 
-export async function GET(
-  request: Request
-) {
-    const { searchParams } = new URL(request.url);
-    const postalCode = searchParams.get('postalcode');
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const postalCode = searchParams.get('postalcode');
 
-    if (typeof postalCode !== 'string') {
-      return NextResponse.json({ error: 'Postal code must be a string.' }, { status: 400 });
-    }
-
-    const result = await getCoordinates(postalCode);
-
-    if ('lat' in result && 'lng' in result) {
-      // Success: Coordinates were found
-      return NextResponse.json(result, { status: 200 });
-    }
-    // Error: No coordinates found or an internal error occurred
-    return NextResponse.json({ error: result.error }, { status: result.status });
+  if (typeof postalCode !== 'string') {
+    return NextResponse.json({ error: 'Postal code must be a string.' }, { status: 400 });
   }
+
+  const result = await getCoordinates(postalCode);
+
+  if ('lat' in result && 'lng' in result) {
+    // Success: Coordinates were found
+    return NextResponse.json(result, { status: 200 });
+  }
+  // Error: No coordinates found or an internal error occurred
+  return NextResponse.json({ error: result.error }, { status: result.status });
+}
