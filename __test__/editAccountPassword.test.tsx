@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ProfilePage from '@/app/profile/page';
 import { MantineProvider } from '@mantine/core';
@@ -84,6 +84,14 @@ jest.mock('next/router', () => ({
   usePathname: jest.fn(() => '/mocked-path'),
 }));
 
+jest.mock('@mantine/modals', () => ({
+  modals: {
+    openConfirmModal: jest.fn(({ onConfirm }) => {
+      onConfirm();
+    }),
+  },
+}));
+
 // Test case
 describe('ProfilePage - Change Password', () => {
   it('allows the user to change their password', async () => {
@@ -101,9 +109,9 @@ describe('ProfilePage - Change Password', () => {
       _version: 1,
     });
 
-    userEvent.type(getByLabelText(/Old Password/i), 'oldPassword');
-    userEvent.type(getByLabelText(/New Password/i), 'newPassword');
-    userEvent.click(getByText(/Submit Changes/i));
+    await userEvent.type(getByLabelText(/Old Password/i), 'oldPassword');
+    await userEvent.type(getByLabelText(/New Password/i), 'newPassword');
+    await userEvent.click(getByText(/Submit Changes/i));
 
     await waitFor(() => {
       expect(require('aws-amplify/auth').updatePassword).toHaveBeenCalledWith({
