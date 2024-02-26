@@ -12,8 +12,14 @@ import { updateUserEmail } from '@/src/api/userQueries';
 import { getCurrentUser } from '@/src/api/appQueries';
 
 export async function handleProfileUpdate(
-  oldPassword: string, newPassword: string, newEmail: string, setErrorMessage: any,
-  setNewEmail: any, setOldPassword: any, setNewPassword: any, handlers: any
+  oldPassword: string,
+  newPassword: string,
+  newEmail: string,
+  setErrorMessage: any,
+  setNewEmail: any,
+  setOldPassword: any,
+  setNewPassword: any,
+  handlers: any
 ) {
   try {
     const user = await getCurrentUser();
@@ -55,7 +61,11 @@ export default function ProfilePage() {
 
   const confirmSubmit = () => {
     modals.openConfirmModal({
-      title: <Title order={5} component="p">Save changes?</Title>,
+      title: (
+        <Title order={5} component="p">
+          Save changes?
+        </Title>
+      ),
       children: <Text size="sm">Are you wish to update your login details?</Text>,
       confirmProps: { size: 'xs', radius: 'md' },
       cancelProps: { size: 'xs', radius: 'md' },

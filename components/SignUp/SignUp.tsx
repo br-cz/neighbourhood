@@ -31,8 +31,8 @@ export const submitSignUpForm = async (
   parameters: any,
   clientInput: any,
   nextStep: any,
-  handlers: any,
-  ) => {
+  handlers: any
+) => {
   try {
     // Step 1: Sign Up with AWS Cognito
     const cognitoResponse = await signUp({
