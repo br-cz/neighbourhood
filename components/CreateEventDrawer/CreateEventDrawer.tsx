@@ -7,33 +7,41 @@ import {
   Group,
   Select,
   Text,
-  rem,
   Stack,
   Title,
   Image,
   ActionIcon,
 } from '@mantine/core';
-import { IconUpload, IconPhoto, IconX, IconTrashFilled } from '@tabler/icons-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
+import { faCloudUpload, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { DatePickerInput, TimeInput } from '@mantine/dates';
+import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
+import { Visibility } from '@/src/API';
+import { useCreateEvent } from '@/src/api/eventQueries';
+import { combineDateTime } from '@/utils/timeUtils';
 
 interface CreateEventDrawerProps {
   opened: boolean;
   onClose: () => void;
+  onPostCreated: () => void;
 }
 
-export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
+export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEventDrawerProps) {
+  const [loading, handlers] = useDisclosure();
+  const { handleCreateEvent } = useCreateEvent();
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const form = useForm({
     initialValues: {
-      eventName: '',
-      eventDescription: '',
+      name: '',
+      description: '',
       location: '',
       date: new Date(),
       time: '',
-      visibility: 'public',
-      eventImage: null as File | null,
+      visibility: Visibility.PUBLIC,
+      images: null as File | null,
     },
   });
 
@@ -50,7 +58,11 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
     );
   });
 
-  const handleDrop = (acceptedFiles: FileWithPath[]) => {
+  const uploadImage = (file: FileWithPath) => {
+    // TODO: Upload image to S3 so that we can get a URL to store in the database
+  };
+
+  const handleDropImage = (acceptedFiles: FileWithPath[]) => {
     const file = acceptedFiles[0];
     if (file) {
       setFiles([file]);
@@ -58,7 +70,7 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
     }
   };
 
-  const handleRemove = () => {
+  const handleRemoveImage = () => {
     setFiles([]);
     form.setFieldValue('eventImage', null);
   };
@@ -69,6 +81,24 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
     onClose();
   };
 
+  const handleSubmit = async (values: typeof form.values) => {
+    handlers.open();
+    const eventData = {
+      name: values.name,
+      description: values.description,
+      location: values.location,
+      visibility: values.visibility,
+      datetime: combineDateTime(values.date, values.time),
+      // TODO: Set images to the URL returned from the S3 upload, I think this is how it works
+      // images: values.eventImage ? [uploadImage(values.eventImage)] : [],
+    };
+    console.log(eventData);
+    await handleCreateEvent(eventData);
+    onPostCreated();
+    handlers.close();
+    handleClose();
+  };
+
   return (
     <Drawer
       offset={8}
@@ -76,22 +106,20 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
       opened={opened}
       onClose={handleClose}
       position="right"
-      title={<Title order={3}>New Event</Title>}
+      title={
+        <Title order={3} component="p">
+          New Event
+        </Title>
+      }
       padding="lg"
       size="md"
     >
-      <form
-        onSubmit={form.onSubmit((values) => {
-          console.log(values);
-          handleClose();
-        })}
-      >
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
-          required
           radius="md"
           label="Event Name"
-          placeholder="Enter event name"
-          {...form.getInputProps('eventName')}
+          placeholder="What are you hosting?"
+          {...form.getInputProps('name')}
         />
 
         <Textarea
@@ -99,24 +127,33 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
           autosize
           minRows={4}
           maxRows={4}
-          label="Event Description"
-          placeholder="Describe your event"
-          {...form.getInputProps('eventDescription')}
+          label={
+            <>
+              <Group gap={5} align="center">
+                <Text fz="sm" fw={500}>
+                  Event Description
+                </Text>
+                <Text fz="sm" c="dimmed">
+                  (optional)
+                </Text>
+              </Group>
+            </>
+          }
+          placeholder="Describe your event..."
+          {...form.getInputProps('description')}
           mt="md"
         />
 
         <TextInput
-          required
           radius="md"
           label="Location"
-          placeholder="Event location"
+          placeholder="Where should people go?"
           {...form.getInputProps('location')}
           mt="md"
         />
 
         <Group grow>
           <DatePickerInput
-            required
             radius="md"
             label="Date"
             placeholder="Pick a date"
@@ -125,7 +162,6 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
           />
 
           <TimeInput
-            required
             radius="md"
             label="Time"
             placeholder="Select time"
@@ -135,43 +171,43 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
         </Group>
 
         <Select
-          required
           radius="md"
           label="Visibility"
           placeholder="Choose visibility"
-          data={[
-            { value: 'public', label: 'Public' },
-            { value: 'friends_only', label: 'Friends Only' },
-          ]}
+          data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
           {...form.getInputProps('visibility')}
           mt="md"
         />
 
         <div>
-          <Group gap="sm" align="center" mt="lg">
+          <Group gap={5} align="center" mt="lg">
             <Text fz="sm" fw={500}>
               Cover Photo
+            </Text>
+            <Text size="sm" c="dimmed">
+              (optional)
             </Text>
             <ActionIcon
               color="red"
               radius="md"
               variant="subtle"
-              size="xs"
-              onClick={handleRemove}
+              size={16}
+              onClick={handleRemoveImage}
               disabled={previews.length === 0}
+              ml={5}
             >
-              <IconTrashFilled size={16} />
+              <FontAwesomeIcon icon={faTrash} size="xs" />
             </ActionIcon>
           </Group>
           {previews.length === 0 ? (
             <Dropzone
-              onDrop={handleDrop}
+              onDrop={handleDropImage}
               onReject={(rejected) => console.log('rejected files', rejected)}
               maxSize={5 * 1024 ** 2}
               maxFiles={1}
               accept={IMAGE_MIME_TYPE}
               radius="md"
-              mt="xs"
+              mt={5}
             >
               <Stack
                 align="center"
@@ -179,30 +215,17 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
                 style={{ minHeight: 220, pointerEvents: 'none' }}
               >
                 <Dropzone.Accept>
-                  <IconUpload
-                    style={{
-                      width: rem(52),
-                      height: rem(52),
-                      color: 'var(--mantine-color-blue-6)',
-                    }}
-                    stroke={1.5}
+                  <FontAwesomeIcon
+                    icon={faCloudUpload}
+                    size="3x"
+                    color="var(--mantine-color-blue-6)"
                   />
                 </Dropzone.Accept>
                 <Dropzone.Reject>
-                  <IconX
-                    style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
-                    stroke={1.5}
-                  />
+                  <FontAwesomeIcon icon={faXmark} size="3x" color="var(--mantine-color-red-6)" />
                 </Dropzone.Reject>
                 <Dropzone.Idle>
-                  <IconPhoto
-                    style={{
-                      width: rem(52),
-                      height: rem(52),
-                      color: 'var(--mantine-color-dimmed)',
-                    }}
-                    stroke={1.5}
-                  />
+                  <FontAwesomeIcon icon={faImage} size="3x" color="var(--mantine-color-dimmed)" />
                 </Dropzone.Idle>
 
                 <div>
@@ -221,7 +244,7 @@ export function CreateEventDrawer({ opened, onClose }: CreateEventDrawerProps) {
         </div>
 
         <Group justify="center" mt="lg">
-          <Button radius="md" type="submit" onClick={onClose}>
+          <Button radius="md" type="submit" onClick={onClose} loading={loading}>
             Post Event
           </Button>
         </Group>

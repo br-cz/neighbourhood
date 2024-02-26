@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Group, Avatar, Text, Button, Title } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,8 +10,12 @@ import {
   useCreateFriend,
   useCreateFriendRequest,
   useFetchIncomingFriendRequests,
+  useDeleteIncomingFriendRequest,
+  useDeleteOutgoingFriendRequest,
+  useDeleteFriend,
 } from '@/src/api/friendQueries';
 import * as APITypes from '@/src/API';
+import { User } from '@/types/types';
 
 interface UserListItemProps {
   user: User;
@@ -23,7 +27,9 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const [status, setStatus] = useState(relationshipStatus);
   const { handleCreateFriendRequest, error } = useCreateFriendRequest();
   const { handleCreateFriend, error: createFriendError } = useCreateFriend();
-  const { incomingFriendRequests, refetch } = useFetchIncomingFriendRequests();
+  const { handleDeleteFriend } = useDeleteFriend();
+  const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
+  const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
 
   const handleAddFriend = async () => {
     try {
@@ -43,47 +49,72 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const handleAcceptRequest = async () => {
     try {
       await handleCreateFriend(user.id);
-      console.log(onUpdate);
-      onUpdate();
-      console.log(`Friend request sent to user: ${user.firstName}`);
+      console.log(`Friend request accepted from: ${user.firstName}`);
+      setStatus('friend');
     } catch (err) {
       console.error('Failed to add friend:', err);
     }
   };
 
-  const handleDeclineRequest = () => {
+  const handleDeclineRequest = async () => {
     modals.openConfirmModal({
       title: <Title order={5}>Decline Friend Request?</Title>,
       children: (
-        <Text size="sm">Are you sure you want to decline {user?.name}'s friend request?</Text>
+        <Text size="sm">Are you sure you want to decline {user?.firstName}'s friend request?</Text>
       ),
       confirmProps: { size: 'xs', radius: 'md', color: 'red' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Decline', cancel: 'Back' },
-      onConfirm: () => setStatus('none'),
+      onConfirm: async () => {
+        try {
+          await handleDeleteIncomingFriendRequest(user.id);
+          setStatus('none');
+        } catch (error) {
+          console.error('Failed to decline friend request:', error);
+        }
+      },
     });
   };
 
   const handleRemoveFriend = () => {
     modals.openConfirmModal({
       title: <Title order={5}>Remove Friend?</Title>,
-      children: <Text size="sm">Are you sure you want to remove {user?.name} as a friend?</Text>,
+      children: (
+        <Text size="sm">Are you sure you want to remove {user?.firstName} as a friend?</Text>
+      ),
       confirmProps: { size: 'xs', radius: 'md', color: 'red' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Remove', cancel: 'Back' },
-      onConfirm: () => setStatus('none'),
+      onConfirm: async () => {
+        try {
+          await handleDeleteFriend(user.id);
+          setStatus('none');
+        } catch (error) {
+          console.error('Failed to delete friend:', error);
+        }
+      },
     });
   };
   const handleCancelRequest = () => {
+    console.log(user);
     modals.openConfirmModal({
       title: <Title order={5}>Cancel Friend Request?</Title>,
       children: (
-        <Text size="sm">Are you sure you cancel your outgoing friend request to {user?.name}?</Text>
+        <Text size="sm">
+          Are you sure you cancel your outgoing friend request to {user?.firstName}?
+        </Text>
       ),
       confirmProps: { size: 'xs', radius: 'md', color: 'red' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Cancel', cancel: 'Back' },
-      onConfirm: () => setStatus('none'),
+      onConfirm: async () => {
+        try {
+          await handleDeleteOutgoingFriendRequest(user.id);
+          setStatus('none');
+        } catch (error) {
+          console.error('Failed to decline friend request:', error);
+        }
+      },
     });
   };
 

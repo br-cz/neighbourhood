@@ -128,6 +128,7 @@ type Mutation {
     visibility: Visibility!
   ): ItemForSale
   addFriend(userId: ID!, friendId: ID!): User
+  removeFriend(userId: ID!, friendId: ID!): String
   likeEvent(userId: ID!, eventId: ID!): Event
   unlikeEvent(userId: ID!, eventId: ID!): Event
   likeItemForSale(userId: ID!, itemId: ID!): ItemForSale

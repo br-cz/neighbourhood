@@ -15,7 +15,7 @@ export const getEventByID = async (eventId: string) => {
   return event.data.getEvent;
 };
 
-export const useFetchEvents = () => {
+export const useFetchEvents = (refresh: boolean = false) => {
   const [events, setEvents] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,6 +48,8 @@ export const useFetchEvents = () => {
             visibility
             organizer {
               username
+              firstName
+              lastName
               profilePic
             }
           }
@@ -75,7 +77,7 @@ export const useFetchEvents = () => {
     };
 
     fetchEvents();
-  }, []);
+  }, [refresh]);
 
   return { events, loading, error };
 };

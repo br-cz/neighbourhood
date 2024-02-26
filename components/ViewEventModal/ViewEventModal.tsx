@@ -1,8 +1,8 @@
-// ViewEventModal.tsx
 import React from 'react';
-import { Modal, Text, Group, Avatar, Image, Stack, Title, Button } from '@mantine/core';
-import { IconBookmark, IconMoodSmileBeam } from '@tabler/icons-react';
+import { Modal, Text, Group, Avatar, Image, Stack, Title } from '@mantine/core';
 import classes from './ViewEventModal.module.css';
+import { Event } from '@/src/API';
+import { formatDate, formatTime } from '@/utils/timeUtils';
 
 interface ViewEventModalProps {
   opened: boolean;
@@ -23,7 +23,11 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
     >
       <Stack gap="sm">
         <Group justify="center" mb={15}>
-          <Image src={event?.image} alt={event?.name} className={classes.image} />
+          <Image
+            src={event?.images?.[0] ?? './img/placeholder-img.jpg'}
+            alt={event?.name}
+            className={classes.image}
+          />
         </Group>
 
         <div>
@@ -33,16 +37,12 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
 
         <Title order={6}>Organizer</Title>
         <Group gap="xs" align="center">
-          <Avatar src={event.organizer.profilePic} alt={event.organizer.name} radius="xl" />
+          <Avatar src={event.organizer.profilePic} alt={event.organizer.firstName} radius="xl" />
           <Text size="sm" c="dimmed">
-            {event.organizer.name}
+            {event.organizer.firstName} {event.organizer.lastName}
           </Text>
         </Group>
-        <Text size="sm" c="dimmed">
-          {event.attendees.length} attending
-        </Text>
-
-        <Group gap={25}>
+        <Group gap={25} mt="xs">
           <div>
             <Title order={6}>Location</Title>
             <Text fz="sm">{event?.location}</Text>
@@ -50,44 +50,13 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
 
           <div>
             <Title order={6}>Date</Title>
-            <Text fz="sm">
-              {event?.datetime.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </Text>
+            <Text fz="sm">{formatDate(event?.datetime)}</Text>
           </div>
 
           <div>
             <Title order={6}>Time</Title>
-            <Text fz="sm">
-              {event?.datetime.toLocaleTimeString('en-US', {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true,
-              })}
-            </Text>
+            <Text fz="sm">{formatTime(event?.datetime)}</Text>
           </div>
-
-          <Group gap={20} mt={10}>
-            <Button
-              radius="md"
-              size="compact-md"
-              leftSection={<IconMoodSmileBeam size={14} />}
-              variant="outline"
-            >
-              RSVP
-            </Button>
-            <Button
-              radius="md"
-              size="compact-md"
-              leftSection={<IconBookmark size={14} />}
-              variant="outline"
-            >
-              Save
-            </Button>
-          </Group>
         </Group>
       </Stack>
     </Modal>

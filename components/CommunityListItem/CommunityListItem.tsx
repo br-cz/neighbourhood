@@ -1,8 +1,10 @@
 import React from 'react';
 import { useToggle } from '@mantine/hooks';
-import { Group, Avatar, Text } from '@mantine/core';
+import { Group, Avatar, Text } from '@mantine/core
+import { useToggle } from '@mantine/hooks';
 import classes from './CommunityListItem.module.css';
 import { Community } from '@/src/API';
+
 
 interface CommunityListItemProps {
   community: Community;

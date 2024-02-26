@@ -41,9 +41,7 @@ export async function getDistanceFromCoordinates(origin: string, destination: st
   }
 }
 
-export async function GET(
-  request: Request
-) {
+export async function GET(request: Request) {
   // Validate HTTP method
   if (request.method !== 'GET') {
     return NextResponse.json({ error: 'Method not allowed.' }, { status: 405 });
