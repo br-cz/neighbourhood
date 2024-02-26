@@ -1,15 +1,18 @@
-import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from '@aws-amplify/datastore';
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
+import {
+  LazyLoading,
+  LazyLoadingDisabled,
+  AsyncItem,
+  AsyncCollection,
+} from '@aws-amplify/datastore';
 
 export enum Visibility {
-  PUBLIC = "PUBLIC",
-  FRIENDS_ONLY = "FRIENDS_ONLY",
-  FRIENDS_OF_FRIENDS = "FRIENDS_OF_FRIENDS",
-  PRIVATE = "PRIVATE"
+  PUBLIC = 'PUBLIC',
+  FRIENDS_ONLY = 'FRIENDS_ONLY',
+  FRIENDS_OF_FRIENDS = 'FRIENDS_OF_FRIENDS',
+  PRIVATE = 'PRIVATE',
 }
-
-
 
 type EagerFriendRequest = {
   readonly [__modelMeta__]: {
@@ -24,7 +27,7 @@ type EagerFriendRequest = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly userFriendRequestsId?: string | null;
-}
+};
 
 type LazyFriendRequest = {
   readonly [__modelMeta__]: {
@@ -39,13 +42,18 @@ type LazyFriendRequest = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly userFriendRequestsId?: string | null;
-}
+};
 
-export declare type FriendRequest = LazyLoading extends LazyLoadingDisabled ? EagerFriendRequest : LazyFriendRequest
+export declare type FriendRequest = LazyLoading extends LazyLoadingDisabled
+  ? EagerFriendRequest
+  : LazyFriendRequest;
 
 export declare const FriendRequest: (new (init: ModelInit<FriendRequest>) => FriendRequest) & {
-  copyOf(source: FriendRequest, mutator: (draft: MutableModel<FriendRequest>) => MutableModel<FriendRequest> | void): FriendRequest;
-}
+  copyOf(
+    source: FriendRequest,
+    mutator: (draft: MutableModel<FriendRequest>) => MutableModel<FriendRequest> | void
+  ): FriendRequest;
+};
 
 type EagerUser = {
   readonly [__modelMeta__]: {
@@ -77,7 +85,7 @@ type EagerUser = {
   readonly comments?: (Comment | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyUser = {
   readonly [__modelMeta__]: {
@@ -109,13 +117,13 @@ type LazyUser = {
   readonly comments: AsyncCollection<Comment>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser : LazyUser
+export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser : LazyUser;
 
 export declare const User: (new (init: ModelInit<User>) => User) & {
   copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
-}
+};
 
 type EagerCommunity = {
   readonly [__modelMeta__]: {
@@ -133,7 +141,7 @@ type EagerCommunity = {
   readonly itemsForSale?: (ItemForSale | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyCommunity = {
   readonly [__modelMeta__]: {
@@ -151,13 +159,18 @@ type LazyCommunity = {
   readonly itemsForSale: AsyncCollection<ItemForSale>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Community = LazyLoading extends LazyLoadingDisabled ? EagerCommunity : LazyCommunity
+export declare type Community = LazyLoading extends LazyLoadingDisabled
+  ? EagerCommunity
+  : LazyCommunity;
 
 export declare const Community: (new (init: ModelInit<Community>) => Community) & {
-  copyOf(source: Community, mutator: (draft: MutableModel<Community>) => MutableModel<Community> | void): Community;
-}
+  copyOf(
+    source: Community,
+    mutator: (draft: MutableModel<Community>) => MutableModel<Community> | void
+  ): Community;
+};
 
 type EagerPost = {
   readonly [__modelMeta__]: {
@@ -176,7 +189,7 @@ type EagerPost = {
   readonly updatedAt?: string | null;
   readonly userPostsId?: string | null;
   readonly communityPostsId?: string | null;
-}
+};
 
 type LazyPost = {
   readonly [__modelMeta__]: {
@@ -195,13 +208,13 @@ type LazyPost = {
   readonly updatedAt?: string | null;
   readonly userPostsId?: string | null;
   readonly communityPostsId?: string | null;
-}
+};
 
-export declare type Post = LazyLoading extends LazyLoadingDisabled ? EagerPost : LazyPost
+export declare type Post = LazyLoading extends LazyLoadingDisabled ? EagerPost : LazyPost;
 
 export declare const Post: (new (init: ModelInit<Post>) => Post) & {
   copyOf(source: Post, mutator: (draft: MutableModel<Post>) => MutableModel<Post> | void): Post;
-}
+};
 
 type EagerComment = {
   readonly [__modelMeta__]: {
@@ -216,7 +229,7 @@ type EagerComment = {
   readonly updatedAt?: string | null;
   readonly userCommentsId?: string | null;
   readonly postCommentsId?: string | null;
-}
+};
 
 type LazyComment = {
   readonly [__modelMeta__]: {
@@ -231,13 +244,16 @@ type LazyComment = {
   readonly updatedAt?: string | null;
   readonly userCommentsId?: string | null;
   readonly postCommentsId?: string | null;
-}
+};
 
-export declare type Comment = LazyLoading extends LazyLoadingDisabled ? EagerComment : LazyComment
+export declare type Comment = LazyLoading extends LazyLoadingDisabled ? EagerComment : LazyComment;
 
 export declare const Comment: (new (init: ModelInit<Comment>) => Comment) & {
-  copyOf(source: Comment, mutator: (draft: MutableModel<Comment>) => MutableModel<Comment> | void): Comment;
-}
+  copyOf(
+    source: Comment,
+    mutator: (draft: MutableModel<Comment>) => MutableModel<Comment> | void
+  ): Comment;
+};
 
 type EagerEvent = {
   readonly [__modelMeta__]: {
@@ -258,7 +274,7 @@ type EagerEvent = {
   readonly updatedAt?: string | null;
   readonly userEventsId?: string | null;
   readonly communityEventsId?: string | null;
-}
+};
 
 type LazyEvent = {
   readonly [__modelMeta__]: {
@@ -279,13 +295,13 @@ type LazyEvent = {
   readonly updatedAt?: string | null;
   readonly userEventsId?: string | null;
   readonly communityEventsId?: string | null;
-}
+};
 
-export declare type Event = LazyLoading extends LazyLoadingDisabled ? EagerEvent : LazyEvent
+export declare type Event = LazyLoading extends LazyLoadingDisabled ? EagerEvent : LazyEvent;
 
 export declare const Event: (new (init: ModelInit<Event>) => Event) & {
   copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;
-}
+};
 
 type EagerItemForSale = {
   readonly [__modelMeta__]: {
@@ -306,7 +322,7 @@ type EagerItemForSale = {
   readonly updatedAt?: string | null;
   readonly userItemsForSaleId?: string | null;
   readonly communityItemsForSaleId?: string | null;
-}
+};
 
 type LazyItemForSale = {
   readonly [__modelMeta__]: {
@@ -327,13 +343,18 @@ type LazyItemForSale = {
   readonly updatedAt?: string | null;
   readonly userItemsForSaleId?: string | null;
   readonly communityItemsForSaleId?: string | null;
-}
+};
 
-export declare type ItemForSale = LazyLoading extends LazyLoadingDisabled ? EagerItemForSale : LazyItemForSale
+export declare type ItemForSale = LazyLoading extends LazyLoadingDisabled
+  ? EagerItemForSale
+  : LazyItemForSale;
 
 export declare const ItemForSale: (new (init: ModelInit<ItemForSale>) => ItemForSale) & {
-  copyOf(source: ItemForSale, mutator: (draft: MutableModel<ItemForSale>) => MutableModel<ItemForSale> | void): ItemForSale;
-}
+  copyOf(
+    source: ItemForSale,
+    mutator: (draft: MutableModel<ItemForSale>) => MutableModel<ItemForSale> | void
+  ): ItemForSale;
+};
 
 type EagerUserCommunity = {
   readonly [__modelMeta__]: {
@@ -347,7 +368,7 @@ type EagerUserCommunity = {
   readonly community: Community;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyUserCommunity = {
   readonly [__modelMeta__]: {
@@ -361,13 +382,18 @@ type LazyUserCommunity = {
   readonly community: AsyncItem<Community>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type UserCommunity = LazyLoading extends LazyLoadingDisabled ? EagerUserCommunity : LazyUserCommunity
+export declare type UserCommunity = LazyLoading extends LazyLoadingDisabled
+  ? EagerUserCommunity
+  : LazyUserCommunity;
 
 export declare const UserCommunity: (new (init: ModelInit<UserCommunity>) => UserCommunity) & {
-  copyOf(source: UserCommunity, mutator: (draft: MutableModel<UserCommunity>) => MutableModel<UserCommunity> | void): UserCommunity;
-}
+  copyOf(
+    source: UserCommunity,
+    mutator: (draft: MutableModel<UserCommunity>) => MutableModel<UserCommunity> | void
+  ): UserCommunity;
+};
 
 type EagerUserLikedPosts = {
   readonly [__modelMeta__]: {
@@ -381,7 +407,7 @@ type EagerUserLikedPosts = {
   readonly post: Post;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyUserLikedPosts = {
   readonly [__modelMeta__]: {
@@ -395,13 +421,18 @@ type LazyUserLikedPosts = {
   readonly post: AsyncItem<Post>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type UserLikedPosts = LazyLoading extends LazyLoadingDisabled ? EagerUserLikedPosts : LazyUserLikedPosts
+export declare type UserLikedPosts = LazyLoading extends LazyLoadingDisabled
+  ? EagerUserLikedPosts
+  : LazyUserLikedPosts;
 
 export declare const UserLikedPosts: (new (init: ModelInit<UserLikedPosts>) => UserLikedPosts) & {
-  copyOf(source: UserLikedPosts, mutator: (draft: MutableModel<UserLikedPosts>) => MutableModel<UserLikedPosts> | void): UserLikedPosts;
-}
+  copyOf(
+    source: UserLikedPosts,
+    mutator: (draft: MutableModel<UserLikedPosts>) => MutableModel<UserLikedPosts> | void
+  ): UserLikedPosts;
+};
 
 type EagerUserLikedEvents = {
   readonly [__modelMeta__]: {
@@ -415,7 +446,7 @@ type EagerUserLikedEvents = {
   readonly event: Event;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyUserLikedEvents = {
   readonly [__modelMeta__]: {
@@ -429,13 +460,20 @@ type LazyUserLikedEvents = {
   readonly event: AsyncItem<Event>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type UserLikedEvents = LazyLoading extends LazyLoadingDisabled ? EagerUserLikedEvents : LazyUserLikedEvents
+export declare type UserLikedEvents = LazyLoading extends LazyLoadingDisabled
+  ? EagerUserLikedEvents
+  : LazyUserLikedEvents;
 
-export declare const UserLikedEvents: (new (init: ModelInit<UserLikedEvents>) => UserLikedEvents) & {
-  copyOf(source: UserLikedEvents, mutator: (draft: MutableModel<UserLikedEvents>) => MutableModel<UserLikedEvents> | void): UserLikedEvents;
-}
+export declare const UserLikedEvents: (new (
+  init: ModelInit<UserLikedEvents>
+) => UserLikedEvents) & {
+  copyOf(
+    source: UserLikedEvents,
+    mutator: (draft: MutableModel<UserLikedEvents>) => MutableModel<UserLikedEvents> | void
+  ): UserLikedEvents;
+};
 
 type EagerUserLikedItems = {
   readonly [__modelMeta__]: {
@@ -449,7 +487,7 @@ type EagerUserLikedItems = {
   readonly itemForSale: ItemForSale;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyUserLikedItems = {
   readonly [__modelMeta__]: {
@@ -463,10 +501,15 @@ type LazyUserLikedItems = {
   readonly itemForSale: AsyncItem<ItemForSale>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type UserLikedItems = LazyLoading extends LazyLoadingDisabled ? EagerUserLikedItems : LazyUserLikedItems
+export declare type UserLikedItems = LazyLoading extends LazyLoadingDisabled
+  ? EagerUserLikedItems
+  : LazyUserLikedItems;
 
 export declare const UserLikedItems: (new (init: ModelInit<UserLikedItems>) => UserLikedItems) & {
-  copyOf(source: UserLikedItems, mutator: (draft: MutableModel<UserLikedItems>) => MutableModel<UserLikedItems> | void): UserLikedItems;
-}
+  copyOf(
+    source: UserLikedItems,
+    mutator: (draft: MutableModel<UserLikedItems>) => MutableModel<UserLikedItems> | void
+  ): UserLikedItems;
+};

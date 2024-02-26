@@ -55,7 +55,6 @@ export default function ProfilePage() {
     }
   };
 
-
   const confirmSubmit = () => {
     modals.openConfirmModal({
       title: (

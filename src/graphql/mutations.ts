@@ -2,13 +2,14 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from '../API';
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
 };
 
-export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: ID!, $communityId: ID!) {
+export const switchCommunity =
+  /* GraphQL */ `mutation SwitchCommunity($userId: ID!, $communityId: ID!) {
   switchCommunity(userId: $userId, communityId: $communityId) {
     id
     username
@@ -77,11 +78,9 @@ export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: 
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.SwitchCommunityMutationVariables,
-  APITypes.SwitchCommunityMutation
->;
-export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!, $communityId: ID!) {
+` as GeneratedMutation<APITypes.SwitchCommunityMutationVariables, APITypes.SwitchCommunityMutation>;
+export const joinCommunity =
+  /* GraphQL */ `mutation JoinCommunity($userId: ID!, $communityId: ID!) {
   joinCommunity(userId: $userId, communityId: $communityId) {
     id
     username
@@ -150,10 +149,7 @@ export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!,
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.JoinCommunityMutationVariables,
-  APITypes.JoinCommunityMutation
->;
+` as GeneratedMutation<APITypes.JoinCommunityMutationVariables, APITypes.JoinCommunityMutation>;
 export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
   likePost(postId: $postId) {
     id
@@ -215,10 +211,7 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.LikePostMutationVariables,
-  APITypes.LikePostMutation
->;
+` as GeneratedMutation<APITypes.LikePostMutationVariables, APITypes.LikePostMutation>;
 export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
   unlikePost(postId: $postId) {
     id
@@ -280,11 +273,9 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.UnlikePostMutationVariables,
-  APITypes.UnlikePostMutation
->;
-export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!, $authorId: ID!, $content: String!) {
+` as GeneratedMutation<APITypes.UnlikePostMutationVariables, APITypes.UnlikePostMutation>;
+export const commentOnPost =
+  /* GraphQL */ `mutation CommentOnPost($postId: ID!, $authorId: ID!, $content: String!) {
   commentOnPost(postId: $postId, authorId: $authorId, content: $content) {
     id
     post {
@@ -334,10 +325,7 @@ export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!,
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.CommentOnPostMutationVariables,
-  APITypes.CommentOnPostMutation
->;
+` as GeneratedMutation<APITypes.CommentOnPostMutationVariables, APITypes.CommentOnPostMutation>;
 export const sellItem = /* GraphQL */ `mutation SellItem(
   $title: String!
   $description: String!
@@ -415,10 +403,7 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.SellItemMutationVariables,
-  APITypes.SellItemMutation
->;
+` as GeneratedMutation<APITypes.SellItemMutationVariables, APITypes.SellItemMutation>;
 export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friendId: ID!) {
   addFriend(userId: $userId, friendId: $friendId) {
     id
@@ -488,17 +473,11 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.AddFriendMutationVariables,
-  APITypes.AddFriendMutation
->;
+` as GeneratedMutation<APITypes.AddFriendMutationVariables, APITypes.AddFriendMutation>;
 export const removeFriend = /* GraphQL */ `mutation RemoveFriend($userId: ID!, $friendId: ID!) {
   removeFriend(userId: $userId, friendId: $friendId)
 }
-` as GeneratedMutation<
-  APITypes.RemoveFriendMutationVariables,
-  APITypes.RemoveFriendMutation
->;
+` as GeneratedMutation<APITypes.RemoveFriendMutationVariables, APITypes.RemoveFriendMutation>;
 export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventId: ID!) {
   likeEvent(userId: $userId, eventId: $eventId) {
     id
@@ -558,10 +537,7 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.LikeEventMutationVariables,
-  APITypes.LikeEventMutation
->;
+` as GeneratedMutation<APITypes.LikeEventMutationVariables, APITypes.LikeEventMutation>;
 export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $eventId: ID!) {
   unlikeEvent(userId: $userId, eventId: $eventId) {
     id
@@ -621,10 +597,7 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.UnlikeEventMutationVariables,
-  APITypes.UnlikeEventMutation
->;
+` as GeneratedMutation<APITypes.UnlikeEventMutationVariables, APITypes.UnlikeEventMutation>;
 export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: ID!, $itemId: ID!) {
   likeItemForSale(userId: $userId, itemId: $itemId) {
     id
@@ -684,11 +657,9 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.LikeItemForSaleMutationVariables,
-  APITypes.LikeItemForSaleMutation
->;
-export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($userId: ID!, $itemId: ID!) {
+` as GeneratedMutation<APITypes.LikeItemForSaleMutationVariables, APITypes.LikeItemForSaleMutation>;
+export const unlikeItemForSale =
+  /* GraphQL */ `mutation UnlikeItemForSale($userId: ID!, $itemId: ID!) {
   unlikeItemForSale(userId: $userId, itemId: $itemId) {
     id
     title
@@ -748,10 +719,11 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
   }
 }
 ` as GeneratedMutation<
-  APITypes.UnlikeItemForSaleMutationVariables,
-  APITypes.UnlikeItemForSaleMutation
->;
-export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($senderId: ID!, $receiverId: ID!) {
+    APITypes.UnlikeItemForSaleMutationVariables,
+    APITypes.UnlikeItemForSaleMutation
+  >;
+export const sendFriendRequest =
+  /* GraphQL */ `mutation SendFriendRequest($senderId: ID!, $receiverId: ID!) {
   sendFriendRequest(senderId: $senderId, receiverId: $receiverId) {
     id
     senderId
@@ -810,9 +782,9 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
   }
 }
 ` as GeneratedMutation<
-  APITypes.SendFriendRequestMutationVariables,
-  APITypes.SendFriendRequestMutation
->;
+    APITypes.SendFriendRequestMutationVariables,
+    APITypes.SendFriendRequestMutation
+  >;
 export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($requestId: ID!) {
   acceptFriendRequest(requestId: $requestId) {
     id
@@ -1204,10 +1176,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.CreateUserMutationVariables,
-  APITypes.CreateUserMutation
->;
+` as GeneratedMutation<APITypes.CreateUserMutationVariables, APITypes.CreateUserMutation>;
 export const updateUser = /* GraphQL */ `mutation UpdateUser(
   $input: UpdateUserInput!
   $condition: ModelUserConditionInput
@@ -1280,10 +1249,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.UpdateUserMutationVariables,
-  APITypes.UpdateUserMutation
->;
+` as GeneratedMutation<APITypes.UpdateUserMutationVariables, APITypes.UpdateUserMutation>;
 export const deleteUser = /* GraphQL */ `mutation DeleteUser(
   $input: DeleteUserInput!
   $condition: ModelUserConditionInput
@@ -1356,10 +1322,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.DeleteUserMutationVariables,
-  APITypes.DeleteUserMutation
->;
+` as GeneratedMutation<APITypes.DeleteUserMutationVariables, APITypes.DeleteUserMutation>;
 export const createCommunity = /* GraphQL */ `mutation CreateCommunity(
   $input: CreateCommunityInput!
   $condition: ModelCommunityConditionInput
@@ -1398,10 +1361,7 @@ export const createCommunity = /* GraphQL */ `mutation CreateCommunity(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.CreateCommunityMutationVariables,
-  APITypes.CreateCommunityMutation
->;
+` as GeneratedMutation<APITypes.CreateCommunityMutationVariables, APITypes.CreateCommunityMutation>;
 export const updateCommunity = /* GraphQL */ `mutation UpdateCommunity(
   $input: UpdateCommunityInput!
   $condition: ModelCommunityConditionInput
@@ -1440,10 +1400,7 @@ export const updateCommunity = /* GraphQL */ `mutation UpdateCommunity(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.UpdateCommunityMutationVariables,
-  APITypes.UpdateCommunityMutation
->;
+` as GeneratedMutation<APITypes.UpdateCommunityMutationVariables, APITypes.UpdateCommunityMutation>;
 export const deleteCommunity = /* GraphQL */ `mutation DeleteCommunity(
   $input: DeleteCommunityInput!
   $condition: ModelCommunityConditionInput
@@ -1482,10 +1439,7 @@ export const deleteCommunity = /* GraphQL */ `mutation DeleteCommunity(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.DeleteCommunityMutationVariables,
-  APITypes.DeleteCommunityMutation
->;
+` as GeneratedMutation<APITypes.DeleteCommunityMutationVariables, APITypes.DeleteCommunityMutation>;
 export const createPost = /* GraphQL */ `mutation CreatePost(
   $input: CreatePostInput!
   $condition: ModelPostConditionInput
@@ -1550,10 +1504,7 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.CreatePostMutationVariables,
-  APITypes.CreatePostMutation
->;
+` as GeneratedMutation<APITypes.CreatePostMutationVariables, APITypes.CreatePostMutation>;
 export const updatePost = /* GraphQL */ `mutation UpdatePost(
   $input: UpdatePostInput!
   $condition: ModelPostConditionInput
@@ -1618,10 +1569,7 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.UpdatePostMutationVariables,
-  APITypes.UpdatePostMutation
->;
+` as GeneratedMutation<APITypes.UpdatePostMutationVariables, APITypes.UpdatePostMutation>;
 export const deletePost = /* GraphQL */ `mutation DeletePost(
   $input: DeletePostInput!
   $condition: ModelPostConditionInput
@@ -1686,10 +1634,7 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.DeletePostMutationVariables,
-  APITypes.DeletePostMutation
->;
+` as GeneratedMutation<APITypes.DeletePostMutationVariables, APITypes.DeletePostMutation>;
 export const createComment = /* GraphQL */ `mutation CreateComment(
   $input: CreateCommentInput!
   $condition: ModelCommentConditionInput
@@ -1743,10 +1688,7 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.CreateCommentMutationVariables,
-  APITypes.CreateCommentMutation
->;
+` as GeneratedMutation<APITypes.CreateCommentMutationVariables, APITypes.CreateCommentMutation>;
 export const updateComment = /* GraphQL */ `mutation UpdateComment(
   $input: UpdateCommentInput!
   $condition: ModelCommentConditionInput
@@ -1800,10 +1742,7 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.UpdateCommentMutationVariables,
-  APITypes.UpdateCommentMutation
->;
+` as GeneratedMutation<APITypes.UpdateCommentMutationVariables, APITypes.UpdateCommentMutation>;
 export const deleteComment = /* GraphQL */ `mutation DeleteComment(
   $input: DeleteCommentInput!
   $condition: ModelCommentConditionInput
@@ -1857,10 +1796,7 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.DeleteCommentMutationVariables,
-  APITypes.DeleteCommentMutation
->;
+` as GeneratedMutation<APITypes.DeleteCommentMutationVariables, APITypes.DeleteCommentMutation>;
 export const createEvent = /* GraphQL */ `mutation CreateEvent(
   $input: CreateEventInput!
   $condition: ModelEventConditionInput
@@ -1923,10 +1859,7 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.CreateEventMutationVariables,
-  APITypes.CreateEventMutation
->;
+` as GeneratedMutation<APITypes.CreateEventMutationVariables, APITypes.CreateEventMutation>;
 export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
   $input: UpdateEventInput!
   $condition: ModelEventConditionInput
@@ -1989,10 +1922,7 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.UpdateEventMutationVariables,
-  APITypes.UpdateEventMutation
->;
+` as GeneratedMutation<APITypes.UpdateEventMutationVariables, APITypes.UpdateEventMutation>;
 export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
   $input: DeleteEventInput!
   $condition: ModelEventConditionInput
@@ -2055,10 +1985,7 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
     __typename
   }
 }
-` as GeneratedMutation<
-  APITypes.DeleteEventMutationVariables,
-  APITypes.DeleteEventMutation
->;
+` as GeneratedMutation<APITypes.DeleteEventMutationVariables, APITypes.DeleteEventMutation>;
 export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
   $input: CreateItemForSaleInput!
   $condition: ModelItemForSaleConditionInput
