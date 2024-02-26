@@ -1,6 +1,6 @@
 'import client';
 
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signUp, confirmSignUp } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/api';
@@ -15,19 +15,80 @@ import {
   faLocationDot,
   faPeopleGroup,
 } from '@fortawesome/free-solid-svg-icons';
+import { useFormik } from 'formik';
 import { LoginDetails } from '@/components/SignUp/LoginDetails.tsx';
 import { AddressInput } from './AddressInput';
 import { SelectCommunity } from './SelectCommunity';
 import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
 import { createUser, createUserCommunity } from '@/src/graphql/mutations';
-import { useFormik } from 'formik';
 import { signUpSchema } from './signUpValidation';
 
 const client = generateClient({});
+
+// External function to handle form submission
+export const submitSignUpForm = async (
+  parameters: any,
+  clientInput: any,
+  nextStep: any,
+  handlers: any,
+  ) => {
+  try {
+    // Step 1: Sign Up with AWS Cognito
+    const cognitoResponse = await signUp({
+      username: parameters.email,
+      password: parameters.password,
+      options: {
+        userAttributes: {
+          email: parameters.email,
+          name: parameters.firstName,
+          family_name: parameters.familyName,
+          preferred_username: parameters.preferredUsername,
+          address: parameters.address,
+        },
+      },
+    });
+
+    // Step 2: Create user entry in your database
+    if (cognitoResponse.userId) {
+      const createUserInput = {
+        id: cognitoResponse.userId,
+        username: parameters.preferredUsername,
+        email: parameters.email,
+        firstName: parameters.firstName,
+        lastName: parameters.familyName,
+        selectedCommunity: parameters.selectedCommunity,
+        postalCode: '',
+      };
+
+      await clientInput.graphql({
+        query: createUser,
+        variables: {
+          input: createUserInput,
+        },
+      });
+
+      await clientInput.graphql({
+        query: createUserCommunity,
+        variables: {
+          input: {
+            communityId: '17b85438-7fcf-4f78-b5ef-cee07c6dedae',
+            userId: cognitoResponse.userId,
+          },
+        },
+      });
+    }
+
+    console.log('Sign up success:', cognitoResponse.userId);
+    nextStep();
+  } catch (error) {
+    console.log('error signing up:', error);
+  }
+  handlers.close();
+};
+
 export const SignUp = () => {
   const [verificationCode, setVerificationCode] = useState<string>('');
-  const [nextAttempted, setNextAttempted] = useState(false);
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 5 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
@@ -47,58 +108,7 @@ export const SignUp = () => {
     },
     validationSchema: signUpSchema,
     onSubmit: async (parameters) => {
-      try {
-        // Step 1: Sign Up with AWS Cognito
-        const cognitoResponse = await signUp({
-          username: parameters.email,
-          password: parameters.password,
-          options: {
-            userAttributes: {
-              email: parameters.email,
-              name: parameters.firstName,
-              family_name: parameters.familyName,
-              preferred_username: parameters.preferredUsername,
-              address: parameters.address,
-            },
-          },
-        });
-
-        // Step 2: Create user entry in your database
-        if (cognitoResponse.userId) {
-          const createUserInput = {
-            id: cognitoResponse.userId,
-            username: parameters.preferredUsername,
-            email: parameters.email,
-            firstName: parameters.firstName,
-            lastName: parameters.familyName,
-            selectedCommunity: parameters.selectedCommunity, // Removed hard-code to see if it works
-            postalCode: '',
-          };
-
-          await client.graphql({
-            query: createUser,
-            variables: {
-              input: createUserInput,
-            },
-          });
-
-          await client.graphql({
-            query: createUserCommunity,
-            variables: {
-              input: {
-                communityId: '17b85438-7fcf-4f78-b5ef-cee07c6dedae', // Hardcoded as U of M for now, replace with ID of user selection
-                userId: cognitoResponse.userId,
-              },
-            },
-          });
-        }
-
-        console.log('Sign up success:', cognitoResponse.userId);
-        nextStep();
-      } catch (error) {
-        console.log('error signing up:', error);
-      }
-      handlers.close();
+      await submitSignUpForm(parameters, client, nextStep, handlers);
     },
   });
 
