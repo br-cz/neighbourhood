@@ -15,6 +15,7 @@ import {
   useDeleteFriend,
 } from '@/src/api/friendQueries';
 import * as APITypes from '@/src/API';
+import { User } from '@/types/types';
 
 interface UserListItemProps {
   user: User;
