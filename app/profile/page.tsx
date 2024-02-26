@@ -11,70 +11,72 @@ import { useAuth } from '@/components/Authorization/useAuth';
 import { updateUserEmail } from '@/src/api/userQueries';
 import { getCurrentUser } from '@/src/api/appQueries';
 
+export async function handleProfileUpdate(
+  oldPassword: string, newPassword: string, newEmail: string, setErrorMessage: any,
+  setNewEmail: any, setOldPassword: any, setNewPassword: any, handlers: any
+) {
+  try {
+    const user = await getCurrentUser();
+    console.log('User info update:', oldPassword, newPassword, newEmail);
+    if (newEmail && user!.email !== newEmail) {
+      const userAttributes = { email: newEmail };
+      await updateUserAttributes({ userAttributes });
+      await updateUserEmail(user!.id, newEmail, user!._version);
+    }
+
+    if (oldPassword && newPassword && oldPassword !== newPassword) {
+      await updatePassword({ oldPassword, newPassword });
+    }
+
+    setErrorMessage('');
+    setNewEmail('');
+    setOldPassword('');
+    setNewPassword('');
+    notifications.show({
+      radius: 'md',
+      title: 'Your login details have been updated!',
+      message: "Please don't forget to keep track of these new changes",
+    });
+  } catch (error: any) {
+    console.error('Error updating user info:', error);
+    setErrorMessage(error.message || 'Failed to update profile.');
+  } finally {
+    handlers.close();
+  }
+}
+
 export default function ProfilePage() {
   const { user: loggedIn } = useAuth();
   const [loading, handlers] = useDisclosure();
-  const [oldPassword, setOldPassword] = useState(''); // For the current password
-  const [newPassword, setNewPassword] = useState(''); // For the new password
-  const [newEmail, setNewEmail] = useState(''); // If you want to allow changing email
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [newEmail, setNewEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubmit = async () => {
-    try {
-      const user = await getCurrentUser();
-      console.log('User info update:', oldPassword, newPassword, newEmail);
-      // Update email if it's different from the current email and not empty
-      if (newEmail && user!.email !== newEmail) {
-        const userAttributes = {
-          email: newEmail,
-        };
-
-        await updateUserAttributes({ userAttributes });
-        await updateUserEmail(user!.id, newEmail, user!._version);
-      }
-
-      // Update password if oldPassword, newPassword are provided and not empty
-      if (oldPassword && newPassword && oldPassword !== newPassword) {
-        await updatePassword({ oldPassword, newPassword });
-      }
-
-      setErrorMessage('');
-      setNewEmail('');
-      setOldPassword('');
-      setNewPassword('');
-      notifications.show({
-        radius: 'md',
-        title: 'Your login details have been updated!',
-        message: "Please don't forget to keep track of these new changes",
-      });
-    } catch (error: any) {
-      console.error('Error updating user info:', error);
-      setErrorMessage(error.message || 'Failed to update profile.');
-    } finally {
-      handlers.close();
-    }
-  };
-
 
   const confirmSubmit = () => {
     modals.openConfirmModal({
-      title: (
-        <Title order={5} component="p">
-          Save changes?
-        </Title>
-      ),
+      title: <Title order={5} component="p">Save changes?</Title>,
       children: <Text size="sm">Are you wish to update your login details?</Text>,
       confirmProps: { size: 'xs', radius: 'md' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Confirm', cancel: 'Back' },
       onConfirm: () => {
         handlers.open();
-        handleSubmit();
+        handleProfileUpdate(
+          oldPassword,
+          newPassword,
+          newEmail,
+          setErrorMessage,
+          setNewEmail,
+          setOldPassword,
+          setNewPassword,
+          handlers
+        );
       },
     });
   };
 
-  if (!loggedIn) return null; // or a message indicating the user is not signed in
+  if (!loggedIn) return null;
 
   return (
     <NeighbourhoodShell>
