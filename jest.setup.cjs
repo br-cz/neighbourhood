@@ -80,6 +80,11 @@ jest.mock('@/src/api/appQueries', () => ({
   })),
 }));
 
+jest.mock('@/src/api/userQueries', () => ({
+  updateUserEmail: jest.fn(),
+}));
+
+
 jest.mock('@mantine/notifications', () => ({
   notifications: {
     show: jest.fn(),
