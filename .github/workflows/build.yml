@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+      - name: Setup Amplify Configuration
+        run: |
+          echo '${{ secrets.AMPLIFY_CONFIGURATION }}' > src/amplifyconfiguration.json
       - name: Install dependencies
         run: npm install
       - name: Build
