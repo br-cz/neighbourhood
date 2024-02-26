@@ -1,7 +1,7 @@
 import React from 'react';
 import { Group, Avatar, Text } from '@mantine/core';
-import classes from './CommunityListItem.module.css';
 import { useToggle } from '@mantine/hooks';
+import classes from './CommunityListItem.module.css';
 import { Community } from '@/types/types';
 
 interface CommunityListItemProps {
@@ -22,6 +22,7 @@ export function CommunityListItem({ community, onSelect }: CommunityListItemProp
       onKeyDown={onSelect}
       role="button"
       tabIndex={0}
+      data-testid="communities-item"
     >
       <Group>
         <Avatar src={community.image} size="lg" radius="xl" />

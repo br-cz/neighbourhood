@@ -44,7 +44,7 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
   return (
     <Box w={400}>
       <Stack mt="lg" gap="md">
-        <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange}>
+        <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange} data-testid="communities">
           {touched.selectedCommunity && errors.selectedCommunity && (
             <div style={{ color: 'red' }}>{errors.selectedCommunity}</div>
           )}
