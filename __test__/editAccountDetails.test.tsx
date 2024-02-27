@@ -16,7 +16,7 @@ describe('ProfilePage - Change Password', () => {
       </MantineProvider>
     );
 
-    require('@/src/api/appQueries').getCurrentUser.mockResolvedValue({
+    require('@/src/hooks/usersCustomHooks').getCurrentUser.mockResolvedValue({
       id: 'userId',
       email: 'user@example.com',
       _version: 1,
@@ -50,13 +50,13 @@ describe('ProfilePage - Change Password', () => {
       </MantineProvider>
     );
 
-    require('@/src/api/appQueries').getCurrentUser.mockResolvedValue({
+    require('@/src/hooks/usersCustomHooks').getCurrentUser.mockResolvedValue({
       id: 'userId',
       email: 'user@example.com',
       _version: 1,
     });
 
-    const updateUserEmailMock = require('@/src/api/userQueries').updateUserEmail;
+    const updateUserEmailMock = require('@/src/api/services/user').updateUserEmail;
     updateUserEmailMock.mockResolvedValue(true);
 
     const updateUserAttributesMock = require('aws-amplify/auth').updateUserAttributes;

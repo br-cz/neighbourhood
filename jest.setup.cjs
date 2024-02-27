@@ -50,7 +50,7 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(() => '/mocked-path'),
 }));
 
-jest.mock('@/src/api/appQueries', () => ({
+jest.mock('@/src/hooks/usersCustomHooks', () => ({
   getCurrentUser: jest.fn(),
   useCurrentUser: jest.fn(() => ({
     user: {
@@ -69,6 +69,9 @@ jest.mock('@/src/api/appQueries', () => ({
       // kids: 2,
     },
   })),
+}));
+
+jest.mock('@/src/hooks/communityCustomHooks', () => ({
   useCurrentCommunity: jest.fn(() => ({
     community: {
       id: 'community1',
@@ -80,7 +83,7 @@ jest.mock('@/src/api/appQueries', () => ({
   })),
 }));
 
-jest.mock('@/src/api/userQueries', () => ({
+jest.mock('@/src/api/services/user', () => ({
   updateUserEmail: jest.fn(),
 }));
 
