@@ -92,14 +92,14 @@ describe('Feed Page', () => {
   });
 
   //1.4
-  test('Renders an appropriate # of post cards to events in the community', async () => {
+  test('Renders an appropriate # of post cards to posts in the community', async () => {
     renderComponent();
     await waitFor(() => {
       expect(screen.getAllByTestId('post-card').length).toBe(mockData.posts.length);
     });
   });
 
-  test('Renders event card content correctly', async () => {
+  test('Renders post card content correctly', async () => {
     renderComponent();
     await waitFor(() => {
       expect(screen.getByText('This is a test post!')).toBeInTheDocument();
