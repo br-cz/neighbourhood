@@ -11,7 +11,7 @@ import { useCreatePost, useFetchPosts } from '@/src/hooks/postsCustomHooks';
 import { Visibility } from '@/src/API';
 
 export const TestAllQueries = () => {
-  const { user } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { community } = useCurrentCommunity();
   const { events } = useFetchEvents();
   const { members } = useFetchMembers();
@@ -40,7 +40,7 @@ export const TestAllQueries = () => {
     console.log('Current Community:', await getCurrentCommunity());
     console.log('User by ID:', await getUserAPI(getCurrentUserID()));
     console.log('Community by ID:', await getCommunityAPI(getCurrentCommunityID()));
-    console.log('User by useCurrentUser:', user);
+    console.log('User by useCurrentUser:', currentUser);
     console.log('Community by useCurrentCommunity:', community);
     console.log('Events:', events);
     await handleCreateEvent(testEvent);

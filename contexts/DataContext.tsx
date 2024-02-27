@@ -6,7 +6,7 @@ import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { Community, User } from '@/src/API';
 
 interface DataContextType {
-  user: User | null;
+  currentUser: User | null;
   community: Community | null;
 }
 
@@ -17,13 +17,13 @@ interface DataProviderProps {
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-  const { user } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { community } = useCurrentCommunity();
 
   return (
     <DataContext.Provider
       value={{
-        user,
+        currentUser,
         community,
       }}
     >
