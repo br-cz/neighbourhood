@@ -11,7 +11,7 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Box className={classes.post}>
+    <Box className={classes.post} data-testid="post-card">
       <Group align="center" gap="xs">
         <Avatar src={post.author.profilePic} alt="Profile Pic" radius="xl" size={32} />
         <Text size="sm" fw={600}>
