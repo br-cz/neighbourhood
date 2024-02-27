@@ -1,12 +1,11 @@
 import React from 'react';
-import { Group, Avatar, Text } from '@mantine/core';
 import { useToggle } from '@mantine/hooks';
+import { Group, Avatar, Text } from '@mantine/core';
 import classes from './CommunityListItem.module.css';
 import { Community } from '@/types/types';
 
 interface CommunityListItemProps {
   community: Community;
-  //selected: boolean;
   onSelect: () => void;
 }
 
