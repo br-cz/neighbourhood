@@ -53,15 +53,29 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
       padding="md"
+      data-testid="shell"
     >
       <AppShell.Header>
         <Group px="md" style={{ width: '100%', height: '100%', justifyContent: 'space-between' }}>
           <Group align="center" justify="space-between">
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-            <Image src="./logo.svg" alt="Neighbourhood Logo" width={200} height={37} priority />
+            <Image
+              src="./logo.svg"
+              alt="Neighbourhood Logo"
+              width={200}
+              height={37}
+              priority
+              data-testid="logo"
+            />
           </Group>
-          <Button onClick={openSignOutModal} radius="md" variant="default" color="red">
+          <Button
+            onClick={openSignOutModal}
+            radius="md"
+            variant="default"
+            color="red"
+            data-testid="logout"
+          >
             Sign Out
           </Button>
         </Group>

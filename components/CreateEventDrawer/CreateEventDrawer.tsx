@@ -35,7 +35,7 @@ interface CreateEventDrawerProps {
 export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEventDrawerProps) {
   const [loading, handlers] = useDisclosure();
   const { handleCreateEvent } = useCreateEvent();
-  const [files, setFiles] = useState<FileWithPath[]>([]);
+  //const [files, setFiles] = useState<FileWithPath[]>([]);
 
   const formik = useFormik({
     initialValues: {
@@ -45,7 +45,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
       date: new Date(),
       time: '',
       visibility: Visibility.PUBLIC,
-      images: null as File | null,
+      //images: null as File | null,
     },
     validationSchema: createEventSchema,
     onSubmit: async (parameters) => {
@@ -68,36 +68,6 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
     },
   });
 
-  const previews = files.map((file, index) => {
-    const imageUrl = URL.createObjectURL(file);
-    return (
-      <Image
-        key={index}
-        src={imageUrl}
-        radius="md"
-        mt="xs"
-        onLoad={() => URL.revokeObjectURL(imageUrl)}
-      />
-    );
-  });
-
-  const uploadImage = (file: FileWithPath) => {
-    // TODO: Upload image to S3 so that we can get a URL to store in the database
-  };
-
-  const handleDropImage = (acceptedFiles: FileWithPath[]) => {
-    const file = acceptedFiles[0];
-    if (file) {
-      setFiles([file]);
-      formik.setFieldValue('eventImage', file);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setFiles([]);
-    formik.setFieldValue('eventImage', null);
-  };
-
   return (
     <Drawer
       offset={8}
@@ -109,7 +79,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
       }}
       position="right"
       title={
-        <Title order={3} component="p">
+        <Title order={3} component="p" data-testid="New Event">
           New Event
         </Title>
       }
@@ -122,6 +92,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           label="Event Name"
           placeholder="What are you hosting?"
           {...formik.getFieldProps('name')}
+          data-testid="create-event-name-input"
           required
         />
 
@@ -145,6 +116,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           placeholder="Describe your event..."
           {...formik.getFieldProps('description')}
           mt="md"
+          data-testid="description"
         />
 
         <TextInput
@@ -153,6 +125,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           placeholder="Where should people go?"
           {...formik.getFieldProps('location')}
           mt="md"
+          data-testid="location"
           required
         />
 
@@ -163,6 +136,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             placeholder="Pick a date"
             {...formik.getFieldProps('date')}
             mt="md"
+            data-testid="date"
           />
 
           <TimeInput
@@ -171,6 +145,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             placeholder="Pick a time"
             {...formik.getFieldProps('time')}
             mt="md"
+            data-testid="time"
             required
           />
         </Group>
@@ -182,9 +157,44 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
           {...formik.getFieldProps('visibility')}
           mt="md"
+          data-testid="visibility"
         />
 
-        <div>
+        <Group justify="center" mt="lg">
+          <Button
+            radius="md"
+            type="button"
+            data-testid="submit button"
+            onClick={() => {
+              formik.validateForm().then((errors) => {
+                console.log(errors); // For logging
+                if (Object.keys(errors).length === 0 && !loading) {
+                  // No errors, form is valid so we submit
+                  formik.submitForm();
+                } else {
+                  notifications.show({
+                    radius: 'md',
+                    color: 'red',
+                    title: 'Oops!',
+                    message:
+                      "Couldn't create your event - please fill out all the required fields.",
+                  });
+                }
+              });
+            }}
+            loading={loading}
+          >
+            Post Event
+          </Button>
+        </Group>
+      </form>
+    </Drawer>
+  );
+}
+
+//Clean up later, this is the image upload section for our next sprint
+{
+  /* <div>
           <Group gap={5} align="center" mt="lg">
             <Text fz="sm" fw={500}>
               Cover Photo
@@ -246,35 +256,35 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           ) : (
             <>{previews}</>
           )}
-        </div>
-
-        <Group justify="center" mt="lg">
-          <Button
-            radius="md"
-            type="button"
-            onClick={() => {
-              formik.validateForm().then((errors) => {
-                console.log(errors); // For logging
-                if (Object.keys(errors).length === 0 && !loading) {
-                  // No errors, form is valid so we submit
-                  formik.submitForm();
-                } else {
-                  notifications.show({
-                    radius: 'md',
-                    color: 'red',
-                    title: 'Oops!',
-                    message:
-                      "Couldn't create your event - please fill out all the required fields.",
-                  });
-                }
-              });
-            }}
-            loading={loading}
-          >
-            Post Event
-          </Button>
-        </Group>
-      </form>
-    </Drawer>
-  );
+        </div> */
 }
+
+// const previews = files.map((file, index) => {
+//   const imageUrl = URL.createObjectURL(file);
+//   return (
+//     <Image
+//       key={index}
+//       src={imageUrl}
+//       radius="md"
+//       mt="xs"
+//       onLoad={() => URL.revokeObjectURL(imageUrl)}
+//     />
+//   );
+// });
+
+// const uploadImage = (file: FileWithPath) => {
+//   // TODO: Upload image to S3 so that we can get a URL to store in the database
+// };
+
+// const handleDropImage = (acceptedFiles: FileWithPath[]) => {
+//   const file = acceptedFiles[0];
+//   if (file) {
+//     setFiles([file]);
+//     formik.setFieldValue('eventImage', file);
+//   }
+// };
+
+// const handleRemoveImage = () => {
+//   setFiles([]);
+//   formik.setFieldValue('eventImage', null);
+// };

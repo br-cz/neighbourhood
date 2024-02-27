@@ -31,64 +31,66 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   onBlur,
   errors,
   touched,
-}) => {
-  return (
-    <Box w={400}>
-      <Stack mt="lg" gap="md">
+}) => (
+  <Box w={400}>
+    <Stack mt="lg" gap="md">
+      <TextInput
+        label="Username"
+        name="preferredUsername"
+        value={preferredUsername}
+        onChange={onChange}
+        onBlur={onBlur}
+        error={
+          touched.preferredUsername && errors.preferredUsername
+            ? errors.preferredUsername
+            : undefined
+        }
+        radius="md"
+        data-testid="username"
+      />
+      <Group grow>
         <TextInput
-          label="Username"
-          name="preferredUsername"
-          value={preferredUsername}
+          label="First Name"
+          name="firstName"
+          value={firstName}
           onChange={onChange}
           onBlur={onBlur}
-          error={
-            touched.preferredUsername && errors.preferredUsername
-              ? errors.preferredUsername
-              : undefined
-          }
+          error={touched.firstName && errors.firstName ? errors.firstName : undefined}
           radius="md"
+          data-testid="firstName"
         />
-        <Group grow>
-          <TextInput
-            label="First Name"
-            name="firstName"
-            value={firstName}
-            onChange={onChange}
-            onBlur={onBlur}
-            error={touched.firstName && errors.firstName ? errors.firstName : undefined}
-            radius="md"
-          />
-          <TextInput
-            label="Last Name"
-            name="familyName"
-            value={familyName}
-            onChange={onChange}
-            onBlur={onBlur}
-            error={touched.familyName && errors.familyName ? errors.familyName : undefined}
-            radius="md"
-          />
-        </Group>
         <TextInput
-          label={
-            <>
-              <Group gap="xs">
-                <Text size="sm" fw={500}>
-                  Phone Number
-                </Text>
-                <Text size="sm" c="dimmed">
-                  (optional)
-                </Text>
-              </Group>
-            </>
-          }
-          name="phoneNumber"
-          value={phoneNumber}
+          label="Last Name"
+          name="familyName"
+          value={familyName}
           onChange={onChange}
           onBlur={onBlur}
-          error={touched.phoneNumber && errors.phoneNumber ? errors.phoneNumber : undefined}
+          error={touched.familyName && errors.familyName ? errors.familyName : undefined}
           radius="md"
+          data-testid="lastName"
         />
-      </Stack>
-    </Box>
-  );
-};
+      </Group>
+      <TextInput
+        label={
+          <>
+            <Group gap={5}>
+              <Text size="sm" fw={500}>
+                Phone Number
+              </Text>
+              <Text size="sm" c="dimmed">
+                (optional)
+              </Text>
+            </Group>
+          </>
+        }
+        name="phoneNumber"
+        value={phoneNumber}
+        onChange={onChange}
+        onBlur={onBlur}
+        error={touched.phoneNumber && errors.phoneNumber ? errors.phoneNumber : undefined}
+        radius="md"
+        data-testid="phone"
+      />
+    </Stack>
+  </Box>
+);
