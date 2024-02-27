@@ -35,7 +35,7 @@ describe('ProfilePage - Change Password', () => {
     await userEvent.click(getByText(/Submit Changes/i));
 
     await waitFor(() => {
-      expect(require('aws-amplify/auth').updatePassword).toHaveBeenCalledWith({
+      expect(require('@aws-amplify/auth').updatePassword).toHaveBeenCalledWith({
         oldPassword: 'oldPassword',
         newPassword: 'newPassword',
       });
@@ -64,10 +64,10 @@ describe('ProfilePage - Change Password', () => {
       _version: 1,
     });
 
-    const updateUserEmailMock = require('@/src/api/services/user').updateUserEmail;
+    const updateUserEmailMock = require('@/src/api/services/user').updateUserEmailAPI;
     updateUserEmailMock.mockResolvedValue(true);
 
-    const updateUserAttributesMock = require('aws-amplify/auth').updateUserAttributes;
+    const updateUserAttributesMock = require('@aws-amplify/auth').updateUserAttributes;
     updateUserAttributesMock.mockResolvedValue(true);
 
     // Simulate typing a new email

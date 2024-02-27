@@ -1,6 +1,6 @@
 import { generateClient } from '@aws-amplify/api';
 import { getUser } from '@/src/graphql/queries';
-import { updateUser } from '@/src/graphql/mutations';
+import { createUser, updateUser, createUserCommunity } from '@/src/graphql/mutations';
 import { HttpError } from '@/src/models/error/HttpError';
 
 const client = generateClient();
@@ -40,5 +40,44 @@ const input = { id: userId, email: newEmail, _version };
         return updatedUser.data.updateUser;
     } catch (error: any) {
         throw new HttpError(`Error updating user email: ${error.message}`, error.statusCode || 500);
+    }
+};
+
+export const createUserAPI = async (user: any) => {
+    try {
+        const createUserResponse = await client.graphql({
+            query: createUser,
+            variables: {
+                input: {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    selectedCommunity: user.selectedCommunity,
+                    postalCode: user.postalCode,
+                },
+            },
+        });
+        return createUserResponse.data.createUser;
+    } catch (error: any) {
+        throw new HttpError(`Error creating new user: ${error.message}`, error.statusCode || 500);
+    }
+};
+
+export const createUserCommunityAPI = async (userId: string, communityId: string) => {
+    try {
+        const createUserCommunityResponse = await client.graphql({
+            query: createUserCommunity,
+            variables: {
+                input: {
+                    communityId,
+                    userId,
+                },
+            },
+        });
+        return createUserCommunityResponse.data.createUserCommunity;
+    } catch (error: any) {
+        throw new HttpError(`Error creating user community connection: ${error.message}`, error.statusCode || 500);
     }
 };

@@ -32,11 +32,14 @@ jest.mock('@/components/Authorization/useAuth', () => ({
   useAuth: () => ({ user: { loggedIn: true } }),
 }));
 
-jest.mock('aws-amplify/auth', () => ({
+jest.mock('@aws-amplify/auth', () => ({
   updateUserAttributes: jest.fn(),
   updatePassword: jest.fn().mockResolvedValue(true),
   signIn: jest.fn(),
   signOut: jest.fn(),
+  signUp: jest.fn(() => ({
+    userId: jest.fn(),
+  })),
 }));
 
 jest.mock('@mantine/notifications', () => ({
@@ -86,7 +89,9 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
 }));
 
 jest.mock('@/src/api/services/user', () => ({
-  updateUserEmail: jest.fn(),
+  updateUserEmailAPI: jest.fn(),
+  createUserAPI: jest.fn(),
+  createUserCommunityAPI: jest.fn(),
 }));
 
 jest.mock('@/src/hooks/eventsCustomHooks', () => ({

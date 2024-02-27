@@ -55,7 +55,7 @@ const mockData = {
   ],
 };
 
-jest.mock('@/src/api/friendQueries', () => ({
+jest.mock('@/src/hooks/friendsCustomHooks', () => ({
   useFetchCommunityMembers: jest.fn(() => ({
     ...mockData,
     refetch: jest.fn(),

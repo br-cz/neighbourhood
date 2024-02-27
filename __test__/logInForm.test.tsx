@@ -5,7 +5,7 @@ import { MantineProvider } from '@mantine/core';
 import userEvent from '@testing-library/user-event';
 import LoginForm from '../components/Authorization/loginForm.client';
 
-const mockedSignIn = require('aws-amplify/auth').signIn;
+const mockedSignIn = require('@aws-amplify/auth').signIn;
 
 const renderComponent = () =>
   render(

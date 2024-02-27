@@ -35,7 +35,7 @@ const mockData = {
   ],
 };
 
-jest.mock('@/src/api/postQueries', () => ({
+jest.mock('@/src/hooks/postsCustomHooks', () => ({
   useFetchPosts: jest.fn(() => ({
     ...mockData,
     refetch: jest.fn(),
