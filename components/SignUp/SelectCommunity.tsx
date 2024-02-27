@@ -1,7 +1,7 @@
 'import client';
 
-import React, { useState } from 'react';
-import { Box, SimpleGrid, Stack } from '@mantine/core';
+import React from 'react';
+import { Box, SimpleGrid, Stack, Text } from '@mantine/core';
 import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 
 // placeholder data
@@ -19,7 +19,6 @@ const communities = {
 };
 
 interface SelectCommunityProps {
-  selectedCommunityId: string; // Adjust type as necessary
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   onChange?: (e: React.ChangeEvent<any>) => void;
   errors: {
@@ -31,7 +30,6 @@ interface SelectCommunityProps {
 }
 
 export const SelectCommunity: React.FC<SelectCommunityProps> = ({
-  selectedCommunityId,
   setFieldValue,
   onChange,
   errors,
@@ -44,9 +42,11 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
   return (
     <Box w={400}>
       <Stack mt="lg" gap="md">
-        <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange}>
+        <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange} data-testid="communities">
           {touched.selectedCommunity && errors.selectedCommunity && (
-            <div style={{ color: 'red' }}>{errors.selectedCommunity}</div>
+            <Text c="red" fz="xs">
+              {errors.selectedCommunity}
+            </Text>
           )}
           {Object.values(communities).map((community) => (
             <CommunityListItem
