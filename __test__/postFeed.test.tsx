@@ -4,7 +4,7 @@ import { render, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
 import HomePage from '@/app/home/page';
 
-const AppQueries = require('@/src/api/appQueries');
+const userHooks = require('@/src/hooks/usersCustomHooks');
 
 const mockData = {
   posts: [
@@ -59,7 +59,7 @@ const renderComponent = () =>
   );
 
 describe('Feed Page', () => {
-  AppQueries.getCurrentUser.mockResolvedValue({
+  userHooks.getCurrentUser.mockResolvedValue({
     id: '10',
     email: 'user@email.com',
     _version: 1,

@@ -6,6 +6,14 @@ import { DataProvider } from '@/contexts/DataContext';
 
 // Test cases for the ProfilePage component
 describe('ProfilePage - Change Password', () => {
+  jest.mock('@aws-amplify/auth', () => ({
+    Auth: {
+      configure: jest.fn(),
+      updatePassword: jest.fn(() => Promise.resolve()),
+      updateUserAttributes: jest.fn(() => Promise.resolve()),
+      // Add other methods you use and want to mock
+    },
+  }));
   // Test case 1: Allows the user to change their password
   test('Allows the user to change their password', async () => {
     const { getByLabelText, getByText } = render(

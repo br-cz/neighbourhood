@@ -10,9 +10,9 @@ import {
   useDeleteFriend,
   useDeleteIncomingFriendRequest,
   useDeleteOutgoingFriendRequest,
-} from '@/src/api/friendQueries';
+} from '@/src/hooks/friendsCustomHooks';
 
-const AppQueries = require('@/src/api/appQueries');
+const userHooks = require('@/src/hooks/usersCustomHooks');
 
 const mockData = {
   friends: [
@@ -99,7 +99,7 @@ describe('People Page', () => {
   const expectedUserCards =
     numFriendCards + numIncomingRequestCards + numOutgoingRequestCards + numRegularCards;
 
-  AppQueries.getCurrentUser.mockResolvedValue({
+  userHooks.getCurrentUser.mockResolvedValue({
     id: '10',
     email: 'user@email.com',
     friends: [],

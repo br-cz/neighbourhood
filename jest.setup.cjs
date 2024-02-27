@@ -89,7 +89,7 @@ jest.mock('@/src/api/services/user', () => ({
   updateUserEmail: jest.fn(),
 }));
 
-jest.mock('@/src/api/eventQueries', () => ({
+jest.mock('@/src/hooks/eventsCustomHooks', () => ({
   useFetchEvents: jest.fn(() => ({
     events: [],
     loading: true,

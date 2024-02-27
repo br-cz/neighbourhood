@@ -5,7 +5,7 @@ import { modals } from '@mantine/modals';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
 import CommunitiesPage from '@/app/communities/page';
-import { useCurrentUser } from '@/src/api/appQueries';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 const renderComponent = () =>
   render(
