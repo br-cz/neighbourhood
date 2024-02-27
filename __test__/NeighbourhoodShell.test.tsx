@@ -2,10 +2,13 @@
 import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
 import CommunitiesPage from '@/app/communities/page';
 import { useCurrentUser } from '@/src/api/appQueries';
+
+const { signOut } = require('aws-amplify/auth');
 
 const renderComponent = () =>
   render(
@@ -76,6 +79,25 @@ describe('Neighbourhood Shell', () => {
     fireEvent.click(screen.getByTestId('logout'));
     await waitFor(() => {
       expect(modals.openConfirmModal).toHaveBeenCalled();
+    });
+  });
+
+  test('Displays an error notification when sign out fails', async () => {
+    signOut.mockRejectedValue(new Error('Failed to sign out'));
+    renderComponent();
+
+    fireEvent.click(screen.getByTestId('logout'));
+    await waitFor(() => {
+      expect(modals.openConfirmModal).toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
+      expect(notifications.show).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'Oops!',
+          message: 'Failed to sign out, please try again.',
+        })
+      );
     });
   });
 });
