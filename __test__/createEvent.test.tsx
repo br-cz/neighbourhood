@@ -6,6 +6,7 @@ import EventsPage from '@/app/events/page';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
 import userEvent from '@testing-library/user-event';
+import { cleanup } from '@testing-library/react';
 
 jest.mock('formik', () => ({
   ...jest.requireActual('formik'),
@@ -39,10 +40,6 @@ jest.mock('formik', () => ({
   })),
 }));
 
-afterEach(() => {
-  jest.clearAllMocks();
-});
-
 const renderComponent = () =>
   render(
     <MantineProvider>
@@ -56,9 +53,14 @@ const renderComponent = () =>
 
 describe('EventsPage - Create Event', () => {
   //reset mocks before each test: apparently it works even without it
+  //   beforeEach(() => {
+  //     jest.clearAllMocks();
+  //   });
   beforeEach(() => {
     jest.clearAllMocks();
-  });
+    cleanup();
+});
+
   //1.1
   test('Render Event Page', async () => {
     renderComponent();
