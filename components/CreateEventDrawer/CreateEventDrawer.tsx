@@ -122,6 +122,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           label="Event Name"
           placeholder="What are you hosting?"
           {...formik.getFieldProps('name')}
+          data-testid="name"
           required
         />
 
@@ -145,6 +146,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           placeholder="Describe your event..."
           {...formik.getFieldProps('description')}
           mt="md"
+          data-testid="description"
         />
 
         <TextInput
@@ -153,6 +155,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           placeholder="Where should people go?"
           {...formik.getFieldProps('location')}
           mt="md"
+          data-testid="location"
           required
         />
 
@@ -163,6 +166,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             placeholder="Pick a date"
             {...formik.getFieldProps('date')}
             mt="md"
+            data-testid="date"
           />
 
           <TimeInput
@@ -171,6 +175,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             placeholder="Pick a time"
             {...formik.getFieldProps('time')}
             mt="md"
+            data-testid="time"
             required
           />
         </Group>
@@ -179,9 +184,10 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           radius="md"
           label="Visibility"
           placeholder="Choose visibility"
-          data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
+          data={[{ value: Visibility.PUBLIC, label: 'Public'}]}
           {...formik.getFieldProps('visibility')}
           mt="md"
+          data-testid="visibility"
         />
 
         <div>

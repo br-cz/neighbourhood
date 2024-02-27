@@ -43,9 +43,10 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
         onClose();
       }}
       position="right"
-      title={<Title order={3}>New Post</Title>}
+      title={<Title order={3} data-testid="new-post">New Post</Title>}
       padding="lg"
       size="md"
+      data-testid="create-post-drawer"
     >
       <form onSubmit={formik.handleSubmit}>
         <Textarea
@@ -56,6 +57,7 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
           label="Content"
           placeholder="Share your thoughts..."
           {...formik.getFieldProps('content')}
+          data-testid="content"
         />
 
         <Select
@@ -70,6 +72,7 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
 
         <Group justify="center" mt="lg">
           <Button
+            data-testid="post-button"
             radius="md"
             type="button"
             onClick={() => {

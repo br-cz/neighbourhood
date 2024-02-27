@@ -78,12 +78,26 @@ jest.mock('@/src/api/appQueries', () => ({
       image: 'path/to/communityImage.jpg',
     },
   })),
+  getCurrentCommunity: jest.fn(),
+  getCurrentCommunityID: jest.fn(() => {
+    // return what you want this function to return during tests
+    return 'community1';
+  }),
 }));
 
 jest.mock('@/src/api/userQueries', () => ({
   updateUserEmail: jest.fn(),
 }));
 
+// jest.mock('@/src/api/postQueries', () => ({
+//   useFetchPosts: jest.fn(() => ({
+//     events: [],
+//     loading: true,
+//   })),
+//   useCreatePost: () => ({
+//     handleCreatePost: jest.fn().mockResolvedValue(true)
+//   }),
+// }));
 
 jest.mock('@mantine/notifications', () => ({
   notifications: {
