@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { generateClient } from 'aws-amplify/api';
-import { getCurrentUser, signIn, signOut } from 'aws-amplify/auth';
+import { generateClient } from '@aws-amplify/api';
+import { getCurrentUser, signIn, signOut } from '@aws-amplify/auth';
 import { Box, Button, Group, PasswordInput, Text, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';

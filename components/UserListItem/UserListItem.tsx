@@ -13,7 +13,7 @@ import {
   useDeleteIncomingFriendRequest,
   useDeleteOutgoingFriendRequest,
   useDeleteFriend,
-} from '@/src/api/friendQueries';
+} from '@/src/hooks/friendsCustomHooks';
 import * as APITypes from '@/src/API';
 import { User } from '@/types/types';
 

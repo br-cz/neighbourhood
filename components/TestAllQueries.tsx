@@ -1,18 +1,13 @@
 import React from 'react';
 import { Button } from '@mantine/core';
-import {
-  getCurrentUserID,
-  getCurrentCommunityID,
-  getUserByID,
-  getCommunityByID,
-  getCurrentUser,
-  getCurrentCommunity,
-  useCurrentUser,
-  useCurrentCommunity,
-} from '@/src/api/appQueries';
-import { getEventByID, useFetchEvents, useCreateEvent } from '@/src/api/eventQueries';
-import { getPostByID, useCreatePost, useFetchPosts } from '@/src/api/postQueries';
-import { useFetchMembers } from '@/src/api/memberQueries';
+import { getUserAPI } from '@/src/api/services/user';
+import { getCommunityAPI } from '@/src/api/services/community';
+import { getCurrentUserID, getCurrentUser, useCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { getCurrentCommunityID, getCurrentCommunity, useCurrentCommunity, useFetchMembers } from '@/src/hooks/communityCustomHooks';
+import { getEventAPI } from '@/src/api/services/event';
+import { useFetchEvents, useCreateEvent } from '@/src/hooks/eventsCustomHooks';
+import { getPostAPI } from '@/src/api/services/post';
+import { useCreatePost, useFetchPosts } from '@/src/hooks/postsCustomHooks';
 import { Visibility } from '@/src/API';
 
 export const TestAllQueries = () => {
@@ -43,17 +38,17 @@ export const TestAllQueries = () => {
     console.log('Current CommunityID:', getCurrentCommunityID());
     console.log('Current User:', await getCurrentUser());
     console.log('Current Community:', await getCurrentCommunity());
-    console.log('User by ID:', await getUserByID(getCurrentUserID()));
-    console.log('Community by ID:', await getCommunityByID(getCurrentCommunityID()));
+    console.log('User by ID:', await getUserAPI(getCurrentUserID()));
+    console.log('Community by ID:', await getCommunityAPI(getCurrentCommunityID()));
     console.log('User by useCurrentUser:', user);
     console.log('Community by useCurrentCommunity:', community);
     console.log('Events:', events);
     await handleCreateEvent(testEvent);
-    console.log('Event by ID:', await getEventByID('4fa83df7-482e-402f-9eac-97ad2f220a9e'));
+    console.log('Event by ID:', await getEventAPI('4fa83df7-482e-402f-9eac-97ad2f220a9e'));
     console.log('Members:', members);
     console.log('Posts:', posts);
     await handleCreatePost(testPost);
-    console.log('Post by ID:', await getPostByID('229ec76e-eb8c-43eb-8f17-1416e5740ad5"'));
+    console.log('Post by ID:', await getPostAPI('229ec76e-eb8c-43eb-8f17-1416e5740ad5"'));
   };
 
   return <Button onClick={handleButtonClick}>Log App Queries</Button>;

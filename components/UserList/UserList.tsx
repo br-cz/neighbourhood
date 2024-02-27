@@ -3,7 +3,7 @@
 import { SimpleGrid, Tabs, Indicator } from '@mantine/core';
 import { UserListItem } from '../UserListItem/UserListItem';
 import classes from './UserList.module.css';
-import { useFetchCommunityMembers } from '@/src/api/friendQueries';
+import { useFetchCommunityMembers } from '@/src/hooks/friendsCustomHooks';
 
 // placeholder data
 const users = {

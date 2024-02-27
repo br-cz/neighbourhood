@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signUp, confirmSignUp } from 'aws-amplify/auth';
-import { generateClient } from 'aws-amplify/api';
+import { signUp, confirmSignUp } from '@aws-amplify/auth';
+import { generateClient } from '@aws-amplify/api';
 import { Stepper, Button, Group, Stack, Title, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';

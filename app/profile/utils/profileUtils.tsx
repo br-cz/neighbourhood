@@ -1,7 +1,7 @@
-import { updatePassword, updateUserAttributes } from 'aws-amplify/auth';
+import { updatePassword, updateUserAttributes } from '@aws-amplify/auth';
 import { notifications } from '@mantine/notifications';
-import { updateUserEmail } from '@/src/api/userQueries';
-import { getCurrentUser } from '@/src/api/appQueries';
+import { updateUserEmailAPI } from '@/src/api/services/user';
+import { getCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 export async function handleProfileUpdate(
   oldPassword: string,
@@ -19,7 +19,7 @@ export async function handleProfileUpdate(
     if (newEmail && user!.email !== newEmail) {
       const userAttributes = { email: newEmail };
       await updateUserAttributes({ userAttributes });
-      await updateUserEmail(user!.id, newEmail, user!._version);
+      await updateUserEmailAPI(user!.id, newEmail, user!._version);
     }
 
     if (oldPassword && newPassword && oldPassword !== newPassword) {

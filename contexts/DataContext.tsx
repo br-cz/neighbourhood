@@ -1,7 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useCurrentCommunity, useCurrentUser } from '@/src/api/appQueries';
+import { useCurrentCommunity } from '@/src/hooks/communityCustomHooks';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { Community, User } from '@/src/API';
 
 interface DataContextType {

@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { Drawer, Textarea, Button, Group, Select, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
-import { useCreatePost } from '@/src/api/postQueries';
+import { useCreatePost } from '@/src/hooks/postsCustomHooks';
 import { Visibility } from '@/src/API';
 import { createPostSchema } from './createPostValidation';
 

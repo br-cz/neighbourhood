@@ -20,7 +20,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { Visibility } from '@/src/API';
-import { useCreateEvent } from '@/src/api/eventQueries';
+import { useCreateEvent } from '@/src/hooks/eventsCustomHooks';
 import { combineDateTime } from '@/utils/timeUtils';
 
 interface CreateEventDrawerProps {
