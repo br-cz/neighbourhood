@@ -11,17 +11,20 @@ import {
   Title,
   Image,
   ActionIcon,
+  rem,
 } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { faCloudUpload, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { DatePickerInput, TimeInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
-import { useForm } from '@mantine/form';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { Visibility } from '@/src/API';
 import { useCreateEvent } from '@/src/hooks/eventsCustomHooks';
 import { combineDateTime } from '@/utils/timeUtils';
+import { useFormik } from 'formik';
+import { createEventSchema } from './createEventValidation';
+import { notifications } from '@mantine/notifications';
 
 interface CreateEventDrawerProps {
   opened: boolean;
@@ -33,7 +36,8 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
   const [loading, handlers] = useDisclosure();
   const { handleCreateEvent } = useCreateEvent();
   const [files, setFiles] = useState<FileWithPath[]>([]);
-  const form = useForm({
+
+  const formik = useFormik({
     initialValues: {
       name: '',
       description: '',
@@ -42,6 +46,25 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
       time: '',
       visibility: Visibility.PUBLIC,
       images: null as File | null,
+    },
+    validationSchema: createEventSchema,
+    onSubmit: async (parameters) => {
+      handlers.open();
+      const eventData = {
+        name: parameters.name,
+        description: parameters.description,
+        location: parameters.location,
+        visibility: parameters.visibility,
+        datetime: combineDateTime(parameters.date, parameters.time),
+        // TODO: Set images to the URL returned from the S3 upload, I think this is how it works
+        //images: parameters.images ? [uploadImage(parameters.images)] : [],
+      };
+
+      await handleCreateEvent(eventData);
+      onPostCreated();
+      handlers.close();
+      onClose();
+      formik.resetForm();
     },
   });
 
@@ -66,37 +89,13 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
     const file = acceptedFiles[0];
     if (file) {
       setFiles([file]);
-      form.setFieldValue('eventImage', file);
+      formik.setFieldValue('eventImage', file);
     }
   };
 
   const handleRemoveImage = () => {
     setFiles([]);
-    form.setFieldValue('eventImage', null);
-  };
-
-  const handleClose = () => {
-    form.reset();
-    setFiles([]);
-    onClose();
-  };
-
-  const handleSubmit = async (values: typeof form.values) => {
-    handlers.open();
-    const eventData = {
-      name: values.name,
-      description: values.description,
-      location: values.location,
-      visibility: values.visibility,
-      datetime: combineDateTime(values.date, values.time),
-      // TODO: Set images to the URL returned from the S3 upload, I think this is how it works
-      // images: values.eventImage ? [uploadImage(values.eventImage)] : [],
-    };
-    console.log(eventData);
-    await handleCreateEvent(eventData);
-    onPostCreated();
-    handlers.close();
-    handleClose();
+    formik.setFieldValue('eventImage', null);
   };
 
   return (
@@ -104,7 +103,10 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
       offset={8}
       radius="md"
       opened={opened}
-      onClose={handleClose}
+      onClose={() => {
+        formik.resetForm();
+        onClose();
+      }}
       position="right"
       title={
         <Title order={3} component="p">
@@ -114,12 +116,13 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
       padding="lg"
       size="md"
     >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={formik.handleSubmit}>
         <TextInput
           radius="md"
           label="Event Name"
           placeholder="What are you hosting?"
-          {...form.getInputProps('name')}
+          {...formik.getFieldProps('name')}
+          required
         />
 
         <Textarea
@@ -140,7 +143,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             </>
           }
           placeholder="Describe your event..."
-          {...form.getInputProps('description')}
+          {...formik.getFieldProps('description')}
           mt="md"
         />
 
@@ -148,8 +151,9 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           radius="md"
           label="Location"
           placeholder="Where should people go?"
-          {...form.getInputProps('location')}
+          {...formik.getFieldProps('location')}
           mt="md"
+          required
         />
 
         <Group grow>
@@ -157,16 +161,17 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             radius="md"
             label="Date"
             placeholder="Pick a date"
-            {...form.getInputProps('date')}
+            {...formik.getFieldProps('date')}
             mt="md"
           />
 
           <TimeInput
             radius="md"
             label="Time"
-            placeholder="Select time"
-            {...form.getInputProps('time')}
+            placeholder="Pick a time"
+            {...formik.getFieldProps('time')}
             mt="md"
+            required
           />
         </Group>
 
@@ -175,7 +180,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           label="Visibility"
           placeholder="Choose visibility"
           data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
-          {...form.getInputProps('visibility')}
+          {...formik.getFieldProps('visibility')}
           mt="md"
         />
 
@@ -244,7 +249,28 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
         </div>
 
         <Group justify="center" mt="lg">
-          <Button radius="md" type="submit" onClick={onClose} loading={loading}>
+          <Button
+            radius="md"
+            type="button"
+            onClick={() => {
+              formik.validateForm().then((errors) => {
+                console.log(errors); // For logging
+                if (Object.keys(errors).length === 0 && !loading) {
+                  // No errors, form is valid so we submit
+                  formik.submitForm();
+                } else {
+                  notifications.show({
+                    radius: 'md',
+                    color: 'red',
+                    title: 'Oops!',
+                    message:
+                      "Couldn't create your event - please fill out all the required fields.",
+                  });
+                }
+              });
+            }}
+            loading={loading}
+          >
             Post Event
           </Button>
         </Group>
