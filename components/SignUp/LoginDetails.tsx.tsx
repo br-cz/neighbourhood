@@ -27,46 +27,41 @@ export const LoginDetails: React.FC<LoginDetailsProps> = ({
   onBlur,
   errors,
   touched,
-}) => {
-  // Log the touched and errors state to debug
-  React.useEffect(() => {
-    console.log('Touched:', touched);
-    console.log('Errors:', errors);
-  }, [touched, errors]); // Only re-run the effect if touched or errors changes
-
-  return (
-    <Box w={350}>
-      <Stack mt="lg" gap="md">
-        <TextInput
-          label="Email"
-          name="email"
-          value={email}
-          onChange={onChange}
-          onBlur={onBlur}
-          error={touched.email && errors.email ? errors.email : undefined}
-          radius="md"
-        />
-        <PasswordInput
-          label="Password"
-          name="password"
-          value={password}
-          onChange={onChange}
-          onBlur={onBlur}
-          error={touched.password && errors.password ? errors.password : undefined}
-          radius="md"
-        />
-        <PasswordInput
-          label="Confirm Password"
-          name="confirmPassword"
-          value={confirmPassword}
-          onChange={onChange}
-          onBlur={onBlur}
-          error={
-            touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined
-          }
-          radius="md"
-        />
-      </Stack>
-    </Box>
-  );
-};
+}) => (
+  <Box w={350}>
+    <Stack mt="lg" gap="md">
+      <TextInput
+        label="Email"
+        name="email"
+        value={email}
+        onChange={onChange}
+        onBlur={onBlur}
+        error={touched.email && errors.email ? errors.email : undefined}
+        radius="md"
+        data-testid="email"
+      />
+      <PasswordInput
+        label="Password"
+        name="password"
+        value={password}
+        onChange={onChange}
+        onBlur={onBlur}
+        error={touched.password && errors.password ? errors.password : undefined}
+        radius="md"
+        data-testid="password"
+      />
+      <PasswordInput
+        label="Confirm Password"
+        name="confirmPassword"
+        value={confirmPassword}
+        onChange={onChange}
+        onBlur={onBlur}
+        error={
+          touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined
+        }
+        radius="md"
+        data-testid="confirmPassword"
+      />
+    </Stack>
+  </Box>
+);

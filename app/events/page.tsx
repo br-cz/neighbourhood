@@ -53,6 +53,7 @@ export default function EventsPage() {
           cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
           spacing={{ base: 5, sm: 'lg' }}
           verticalSpacing={{ base: 'md', sm: 'lg' }}
+          data-testid="event-feed"
         >
           {sortedEvents.map((event: Event) => (
             <EventCard key={event.id} event={event} onView={() => handleViewEvent(event)} />

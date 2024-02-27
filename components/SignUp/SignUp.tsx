@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signUp, confirmSignUp } from 'aws-amplify/auth';
-import { generateClient } from 'aws-amplify/api';
+import { confirmSignUp } from 'aws-amplify/auth';
 import { Stepper, Button, Group, Stack, Title, Text } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,71 +21,8 @@ import { AddressInput } from './AddressInput';
 import { SelectCommunity } from './SelectCommunity';
 import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
-import { createUser, createUserCommunity } from '@/src/graphql/mutations';
 import { signUpSchema } from './signUpValidation';
-
-const client = generateClient({});
-
-// External function to handle form submission
-export const submitSignUpForm = async (
-  parameters: any,
-  clientInput: any,
-  nextStep: any,
-  handlers: any
-) => {
-  try {
-    // Step 1: Sign Up with AWS Cognito
-    const cognitoResponse = await signUp({
-      username: parameters.email,
-      password: parameters.password,
-      options: {
-        userAttributes: {
-          email: parameters.email,
-          name: parameters.firstName,
-          family_name: parameters.familyName,
-          preferred_username: parameters.preferredUsername,
-          address: parameters.address,
-        },
-      },
-    });
-
-    // Step 2: Create user entry in your database
-    if (cognitoResponse.userId) {
-      const createUserInput = {
-        id: cognitoResponse.userId,
-        username: parameters.preferredUsername,
-        email: parameters.email,
-        firstName: parameters.firstName,
-        lastName: parameters.familyName,
-        selectedCommunity: parameters.selectedCommunity,
-        postalCode: '',
-      };
-
-      await clientInput.graphql({
-        query: createUser,
-        variables: {
-          input: createUserInput,
-        },
-      });
-
-      await clientInput.graphql({
-        query: createUserCommunity,
-        variables: {
-          input: {
-            communityId: '17b85438-7fcf-4f78-b5ef-cee07c6dedae',
-            userId: cognitoResponse.userId,
-          },
-        },
-      });
-    }
-
-    console.log('Sign up success:', cognitoResponse.userId);
-    nextStep();
-  } catch (error) {
-    console.log('error signing up:', error);
-  }
-  handlers.close();
-};
+import { processSignUp } from './signUpLogic';
 
 export const SignUp = () => {
   const [verificationCode, setVerificationCode] = useState<string>('');
@@ -108,36 +45,46 @@ export const SignUp = () => {
     },
     validationSchema: signUpSchema,
     onSubmit: async (parameters) => {
-      await submitSignUpForm(parameters, client, nextStep, handlers);
+      await processSignUp(parameters, nextStep, handlers);
     },
   });
 
-  const handleNext = async () => {
-    //Define fields to validate for each step
+  const handleValidate = async (step: number): Promise<boolean> => {
     const stepFields: { [key: number]: string[] } = {
-      0: ['email', 'password', 'confirmPassword'], // Fields for step 1
-      1: ['address'], // Fields for step 2
-      2: ['selectedCommunity'], // Fields for step 2
+      0: ['email', 'password', 'confirmPassword'],
+      1: ['address'],
+      2: ['selectedCommunity'],
+      3: ['firstName', 'familyName', 'preferredUsername', 'phoneNumber'],
     };
-
-    // Identify fields for the current step
-    const currentStepFields = stepFields[active] || [];
-
-    // Trigger validation only for the current step's fields
+    const currentStepFields = stepFields[step] || [];
     const errors = await formik.validateForm();
-    const isCurrentStepValid = currentStepFields.every(
-      (field) => !errors[field as keyof typeof errors]
-    );
-    console.log('isCurrentStepValid:', isCurrentStepValid);
-    if (isCurrentStepValid) {
+    formik.setTouched(currentStepFields.reduce((acc, field) => ({ ...acc, [field]: true }), {}));
+    return currentStepFields.every((field) => !errors[field as keyof typeof formik.values]);
+  };
+
+  const handleNext = async () => {
+    const isValid = await handleValidate(active);
+    if (isValid) {
       nextStep();
     } else {
-      //Mark only the current step's fields as touched to show errors
-      const touchedFields = currentStepFields.reduce(
-        (acc, field) => ({ ...acc, [field]: true }),
-        {}
-      );
-      formik.setTouched(touchedFields);
+      notifications.show({
+        title: 'Oops!',
+        message: 'Please double-check your inputs and try again.',
+        color: 'red',
+      });
+    }
+  };
+
+  const handleSubmit = async () => {
+    const isValid = await handleValidate(active);
+    if (isValid) {
+      formik.submitForm();
+    } else {
+      notifications.show({
+        title: 'Oops!',
+        message: 'Please double-check your inputs and try again.',
+        color: 'red',
+      });
     }
   };
 
@@ -150,9 +97,7 @@ export const SignUp = () => {
       });
       return;
     }
-
     try {
-      handlers.open();
       await confirmSignUp({
         username: formik.values.email,
         confirmationCode: verificationCode,
@@ -169,15 +114,60 @@ export const SignUp = () => {
         color: 'red',
       });
     }
-    handlers.close();
   };
 
-  const handleBack = () => (active === 0 ? router.push('/') : prevStep());
+  const confirmSubmit = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Create your profile?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">Please ensure that your information is correct before proceeding.</Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Confirm', cancel: 'Back' },
+      onConfirm: () => {
+        handleSubmit();
+      },
+    });
+  };
+
+  const confirmCancel = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Return to login?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">
+          Are you sure you want to return to the login? All signup information will be lost.
+        </Text>
+      ),
+      confirmProps: { color: 'red', size: 'xs', radius: 'md' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Return to login', cancel: 'Nevermind' },
+      onConfirm: () => {
+        router.push('/');
+      },
+    });
+  };
+
+  const handleBack = () => (active === 0 ? confirmCancel() : prevStep());
 
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <Stepper active={active} size="md" onStepClick={setActive} allowNextStepsSelect={false}>
+        <Stepper
+          active={active}
+          size="md"
+          onStepClick={setActive}
+          allowNextStepsSelect={false}
+          data-testid="stepper"
+        >
           <Stepper.Step
             label="Step 1"
             description="Login details"
@@ -235,7 +225,6 @@ export const SignUp = () => {
                 If you&apos;re in-between communities - don&apos;t worry, you can join more later.
               </Text>
               <SelectCommunity
-                selectedCommunityId={formik.values.selectedCommunity}
                 setFieldValue={formik.setFieldValue}
                 onChange={formik.handleChange}
                 errors={formik.errors}
@@ -278,7 +267,8 @@ export const SignUp = () => {
                 Almost there!
               </Title>
               <Text c="dimmed" size="md">
-                We&apos;ve sent a verification code to your email at <u>{formik.values.email}</u>
+                We&apos;ve sent a verification code to your email at{' '}
+                <u>{formik.values.email.toLowerCase()}</u>
               </Text>
               <EmailVerify verificationCode={(code: string) => setVerificationCode(code)} />
             </Stack>
@@ -295,36 +285,7 @@ export const SignUp = () => {
             </Button>
           )}
           {active === 3 ? (
-            <Button
-              radius="md"
-              loading={loading}
-              onClick={() => {
-                // Identify fields for the current step
-                const currentStepFields = [
-                  'firstName',
-                  'familyName',
-                  'preferredUsername',
-                  'phoneNumber',
-                ];
-
-                // Trigger validation only for the current step's fields
-                const errors = formik.validateForm();
-                const isCurrentStepValid = currentStepFields.every(
-                  (field) => !errors[field as keyof typeof errors]
-                );
-                console.log('isCurrentStepValid:', isCurrentStepValid);
-                if (isCurrentStepValid) {
-                  formik.submitForm();
-                } else {
-                  //Mark only the current step's fields as touched to show errors
-                  const touchedFields = currentStepFields.reduce(
-                    (acc, field) => ({ ...acc, [field]: true }),
-                    {}
-                  );
-                  formik.setTouched(touchedFields);
-                }
-              }}
-            >
+            <Button radius="md" loading={loading} onClick={confirmSubmit}>
               Create Profile
             </Button>
           ) : active === 4 ? (

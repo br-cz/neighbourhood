@@ -35,6 +35,8 @@ jest.mock('@/components/Authorization/useAuth', () => ({
 jest.mock('aws-amplify/auth', () => ({
   updateUserAttributes: jest.fn(),
   updatePassword: jest.fn().mockResolvedValue(true),
+  signIn: jest.fn(),
+  signOut: jest.fn(),
 }));
 
 jest.mock('@mantine/notifications', () => ({
@@ -82,6 +84,14 @@ jest.mock('@/src/api/appQueries', () => ({
 
 jest.mock('@/src/api/userQueries', () => ({
   updateUserEmail: jest.fn(),
+}));
+
+jest.mock('@/src/api/eventQueries', () => ({
+  useFetchEvents: jest.fn(() => ({
+    events: [],
+    loading: true,
+  })),
+  useCreateEvent: () => ({ handleCreateEvent: jest.fn().mockResolvedValue(true) }),
 }));
 
 
