@@ -1,5 +1,5 @@
 .navbar {
-  height: rem(100vh);
+  height: rem(100%);
   width: rem(230px);
   padding: 0;
   display: flex;
