@@ -11,10 +11,11 @@ describe('LoginForm', () => {
   //Not necessary in this case, but could have been useful if we had like multiple test where
   //all of them needed to mock the same function but with different return values
 
-  //   beforeEach(() => {
-  //     // Reset mocks before each test
-  //     mockedSignIn.mockClear();
-  //   });
+  // beforeEach(() => {
+  //   // Reset mocks before each test
+  //   mockedSignIn.mockClear();
+  //   jest.
+  // });
 
   test('tries to log-in a non-existent user and displays an error message', async () => {
     //mockedSignIn.mockResolvedValue(true);
