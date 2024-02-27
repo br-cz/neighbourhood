@@ -12,7 +12,7 @@ interface UserButtonProps {
 export function UserButton({ active }: UserButtonProps) {
   const { user } = useCurrentUser();
   return (
-    <Link href="/profile" passHref className={classes.link}>
+    <Link href="/profile" passHref className={classes.link} data-testid="profile">
       <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
         <Group>
           <Avatar src={user?.profilePic} size="md" radius="xl" />

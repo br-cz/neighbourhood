@@ -15,10 +15,9 @@
 }
 
 .community.active {
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
 }
 
-/*//background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));*/
 .error-message {
-  color: red;
+  color: var(--mantine-color-red-6);
 }

@@ -11,7 +11,7 @@ interface CommunityButtonProps {
 export function CommunityButton({ active }: CommunityButtonProps) {
   const { community } = useData();
   return (
-    <Link href="/communities" passHref className={classes.link}>
+    <Link href="/communities" passHref className={classes.link} data-testid="community">
       <UnstyledButton className={`${classes.community} ${active ? classes.active : ''}`}>
         <Group>
           <Avatar src={community?.image} size="md" radius="xl" />
