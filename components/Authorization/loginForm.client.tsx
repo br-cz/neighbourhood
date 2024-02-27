@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { generateClient } from 'aws-amplify/api';
@@ -60,7 +61,7 @@ export async function handleSignIn({
   }
 }
 
-const LoginForm: React.FC = () => {
+export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -120,6 +121,4 @@ const LoginForm: React.FC = () => {
       </form>
     </Box>
   );
-};
-
-export default LoginForm;
+}

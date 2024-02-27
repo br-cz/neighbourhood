@@ -1,12 +1,11 @@
 import React from 'react';
+import { useToggle } from '@mantine/hooks';
 import { Group, Avatar, Text } from '@mantine/core';
 import classes from './CommunityListItem.module.css';
-import { useToggle } from '@mantine/hooks';
 import { Community } from '@/types/types';
 
 interface CommunityListItemProps {
   community: Community;
-  //selected: boolean;
   onSelect: () => void;
 }
 
@@ -22,6 +21,7 @@ export function CommunityListItem({ community, onSelect }: CommunityListItemProp
       onKeyDown={onSelect}
       role="button"
       tabIndex={0}
+      data-testid="communities-item"
     >
       <Group>
         <Avatar src={community.image} size="lg" radius="xl" />
