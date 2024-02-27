@@ -2,58 +2,19 @@
 
 import React, { useState } from 'react';
 import { Button, Group, Box, PasswordInput, TextInput, Title, Text } from '@mantine/core';
-import { updatePassword, updateUserAttributes } from 'aws-amplify/auth';
-import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
 import { useDisclosure } from '@mantine/hooks';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { useAuth } from '@/components/Authorization/useAuth';
-import { updateUserEmail } from '@/src/api/userQueries';
-import { getCurrentUser } from '@/src/api/appQueries';
+import { handleProfileUpdate } from './utils/profileUtils';
 
 export default function ProfilePage() {
   const { user: loggedIn } = useAuth();
   const [loading, handlers] = useDisclosure();
-  const [oldPassword, setOldPassword] = useState(''); // For the current password
-  const [newPassword, setNewPassword] = useState(''); // For the new password
-  const [newEmail, setNewEmail] = useState(''); // If you want to allow changing email
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [newEmail, setNewEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubmit = async () => {
-    try {
-      const user = await getCurrentUser();
-      console.log('User info update:', oldPassword, newPassword, newEmail);
-      // Update email if it's different from the current email and not empty
-      if (newEmail && user!.email !== newEmail) {
-        const userAttributes = {
-          email: newEmail,
-        };
-
-        await updateUserAttributes({ userAttributes });
-        await updateUserEmail(user!.id, newEmail, user!._version);
-      }
-
-      // Update password if oldPassword, newPassword are provided and not empty
-      if (oldPassword && newPassword && oldPassword !== newPassword) {
-        await updatePassword({ oldPassword, newPassword });
-      }
-
-      setErrorMessage('');
-      setNewEmail('');
-      setOldPassword('');
-      setNewPassword('');
-      notifications.show({
-        radius: 'md',
-        title: 'Your login details have been updated!',
-        message: "Please don't forget to keep track of these new changes",
-      });
-    } catch (error: any) {
-      console.error('Error updating user info:', error);
-      setErrorMessage(error.message || 'Failed to update profile.');
-    } finally {
-      handlers.close();
-    }
-  };
 
   const confirmSubmit = () => {
     modals.openConfirmModal({
@@ -68,12 +29,21 @@ export default function ProfilePage() {
       labels: { confirm: 'Confirm', cancel: 'Back' },
       onConfirm: () => {
         handlers.open();
-        handleSubmit();
+        handleProfileUpdate(
+          oldPassword,
+          newPassword,
+          newEmail,
+          setErrorMessage,
+          setNewEmail,
+          setOldPassword,
+          setNewPassword,
+          handlers
+        );
       },
     });
   };
 
-  if (!loggedIn) return null; // or a message indicating the user is not signed in
+  if (!loggedIn) return null;
 
   return (
     <NeighbourhoodShell>
