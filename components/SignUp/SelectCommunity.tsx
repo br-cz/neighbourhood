@@ -1,7 +1,7 @@
 'import client';
 
-import React, { useState } from 'react';
-import { Box, SimpleGrid, Stack } from '@mantine/core';
+import React from 'react';
+import { Box, SimpleGrid, Stack, Text } from '@mantine/core';
 import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 
 // placeholder data
@@ -44,7 +44,9 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
       <Stack mt="lg" gap="md">
         <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange}>
           {touched.selectedCommunity && errors.selectedCommunity && (
-            <div style={{ color: 'red' }}>{errors.selectedCommunity}</div>
+            <Text c="red" fz="xs">
+              {errors.selectedCommunity}
+            </Text>
           )}
           {Object.values(communities).map((community) => (
             <CommunityListItem
