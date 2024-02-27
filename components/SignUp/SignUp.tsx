@@ -69,7 +69,7 @@ export const SignUp = () => {
     } else {
       notifications.show({
         title: 'Oops!',
-        message: 'Please double-check your information and try again.',
+        message: 'Please double-check your inputs and try again.',
         color: 'red',
       });
     }
@@ -82,7 +82,7 @@ export const SignUp = () => {
     } else {
       notifications.show({
         title: 'Oops!',
-        message: 'Please double-check your information and try again.',
+        message: 'Please double-check your inputs and try again.',
         color: 'red',
       });
     }
