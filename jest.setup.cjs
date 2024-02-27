@@ -86,6 +86,14 @@ jest.mock('@/src/api/userQueries', () => ({
   updateUserEmail: jest.fn(),
 }));
 
+jest.mock('@/src/api/eventQueries', () => ({
+  useFetchEvents: jest.fn(() => ({
+    events: [],
+    loading: true,
+  })),
+  useCreateEvent: () => ({ handleCreateEvent: jest.fn().mockResolvedValue(true) }),
+}));
+
 
 jest.mock('@mantine/notifications', () => ({
   notifications: {
