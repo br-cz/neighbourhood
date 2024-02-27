@@ -12,7 +12,7 @@ interface EventCardProps {
 
 export function EventCard({ event, onView }: EventCardProps) {
   return (
-    <Card withBorder radius="md" className={classes.card}>
+    <Card withBorder radius="md" className={classes.card} data-testid="event-card">
       <a>
         <Image
           src={event?.images?.[0] ?? './img/placeholder-img.jpg'}

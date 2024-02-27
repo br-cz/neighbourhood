@@ -20,6 +20,7 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
       radius="md"
       padding={30}
       transitionProps={{ transition: 'rotate-left' }}
+      data-testid="view-event-modal"
     >
       <Stack gap="sm">
         <Group justify="center" mb={15}>
