@@ -73,16 +73,20 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
             radius="md"
             type="button"
             onClick={() => {
-              if (formik.isValid && !loading) {
-                formik.submitForm();
-              } else {
-                notifications.show({
-                  radius: 'md',
-                  color: 'red',
-                  title: 'Oops!',
-                  message: "Couldn't create your post - please fill out all the fields.",
-                });
-              }
+              formik.validateForm().then((errors) => {
+                console.log(errors); // For logging
+                if (Object.keys(errors).length === 0 && !loading) {
+                  // No errors, form is valid so we submit
+                  formik.submitForm();
+                } else {
+                  notifications.show({
+                    radius: 'md',
+                    color: 'red',
+                    title: 'Oops!',
+                    message: "Couldn't create your post - please type something in.",
+                  });
+                }
+              });
             }}
             loading={loading}
           >
