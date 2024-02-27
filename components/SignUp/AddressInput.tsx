@@ -30,6 +30,7 @@ export const AddressInput: React.FC<AddressInputProps> = ({
         onBlur={onBlur}
         error={touched.address && error.address ? error.address : undefined} // Display validation error if the field was touched
         radius="md"
+        data-testid="address"
       />
     </Stack>
   </Box>

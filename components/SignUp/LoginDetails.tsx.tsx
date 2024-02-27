@@ -38,6 +38,7 @@ export const LoginDetails: React.FC<LoginDetailsProps> = ({
         onBlur={onBlur}
         error={touched.email && errors.email ? errors.email : undefined}
         radius="md"
+        data-testid="email"
       />
       <PasswordInput
         label="Password"
@@ -47,6 +48,7 @@ export const LoginDetails: React.FC<LoginDetailsProps> = ({
         onBlur={onBlur}
         error={touched.password && errors.password ? errors.password : undefined}
         radius="md"
+        data-testid="password"
       />
       <PasswordInput
         label="Confirm Password"
@@ -58,6 +60,7 @@ export const LoginDetails: React.FC<LoginDetailsProps> = ({
           touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined
         }
         radius="md"
+        data-testid="confirmPassword"
       />
     </Stack>
   </Box>

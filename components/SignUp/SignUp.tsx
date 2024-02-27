@@ -161,7 +161,13 @@ export const SignUp = () => {
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <Stepper active={active} size="md" onStepClick={setActive} allowNextStepsSelect={false}>
+        <Stepper
+          active={active}
+          size="md"
+          onStepClick={setActive}
+          allowNextStepsSelect={false}
+          data-testid="stepper"
+        >
           <Stepper.Step
             label="Step 1"
             description="Login details"

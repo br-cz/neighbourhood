@@ -21,6 +21,7 @@ export function CommunityListItem({ community, onSelect }: CommunityListItemProp
       onKeyDown={onSelect}
       role="button"
       tabIndex={0}
+      data-testid="communities-item"
     >
       <Group>
         <Avatar src={community.image} size="lg" radius="xl" />

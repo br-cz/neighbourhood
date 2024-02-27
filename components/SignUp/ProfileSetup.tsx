@@ -46,6 +46,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
             : undefined
         }
         radius="md"
+        data-testid="username"
       />
       <Group grow>
         <TextInput
@@ -56,6 +57,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
           onBlur={onBlur}
           error={touched.firstName && errors.firstName ? errors.firstName : undefined}
           radius="md"
+          data-testid="firstName"
         />
         <TextInput
           label="Last Name"
@@ -65,6 +67,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
           onBlur={onBlur}
           error={touched.familyName && errors.familyName ? errors.familyName : undefined}
           radius="md"
+          data-testid="lastName"
         />
       </Group>
       <TextInput
@@ -86,6 +89,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
         onBlur={onBlur}
         error={touched.phoneNumber && errors.phoneNumber ? errors.phoneNumber : undefined}
         radius="md"
+        data-testid="phone"
       />
     </Stack>
   </Box>
