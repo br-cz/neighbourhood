@@ -260,12 +260,14 @@ export const useFetchOutgoingFriendRequests = () => {
 
           const friendsIds = await getFriendsAPI(parsedUserData.id);
           const parsedFriendIds = JSON.parse(JSON.stringify(friendsIds));
+          console.log(parsedFriendIds);
 
-          const friendsInfo = await fetchFriendsInfo(parsedFriendIds.data.getUser.friends);
-
+          const friendsInfo = await fetchFriendsInfo(parsedFriendIds);
+          console.log(friendsInfo);
           setFriend(friendsInfo);
         } catch (err: any) {
           setError(err);
+          console.log(err);
         } finally {
           setLoading(false);
         }

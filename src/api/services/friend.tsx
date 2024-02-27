@@ -41,7 +41,8 @@ export const fetchAllFriendRequestsAPI = async () => {
       const fetchedFriendRequest = await client.graphql({
         query: ListFriendRequests,
       });
-      return fetchedFriendRequest.data.listFriendRequests;
+      const friendRequestJSON = JSON.parse(JSON.stringify(fetchedFriendRequest));
+      return friendRequestJSON.data.listFriendRequests;
     } catch (error: any) {
         throw new HttpError(`Error listing all friend requests: ${error.message}`, error.statusCode || 500);
     }
@@ -58,7 +59,7 @@ export const fetchAllFriendRequestsAPI = async () => {
     }
   };
 
-  export const deleteFriendRequestAPI = async (requestId: string, version: string) => {
+  export const deleteFriendRequestAPI = async (requestId: string, version: any) => {
     try {
       return await client.graphql({
         query: deleteFriendRequest,
@@ -81,7 +82,7 @@ export const fetchAllFriendRequestsAPI = async () => {
         variables: {
           input: {
             id: userId,
-            friendIds: [newFriendId],
+            friends: [newFriendId],
           },
         },
       });
@@ -119,7 +120,8 @@ export const fetchAllFriendRequestsAPI = async () => {
             query: getFriends,
             variables: { id: userId },
         });
-        return friends.data.getUser.friends;
+        const friendsJSON = JSON.parse(JSON.stringify(friends));
+        return friendsJSON.data.getUser.friends;
     } catch (error: any) {
         throw new HttpError(`Error getting friends: ${error.message}`, error.statusCode || 500);
     }

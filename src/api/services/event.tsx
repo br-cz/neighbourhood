@@ -60,7 +60,8 @@ export const getCommunityEventsAPI = async (communityId: string) => {
             query: getCommunityEvents,
             variables: { id: communityId },
         });
-        return response.data.getCommunity.events.items;
+        const jsonResponse = JSON.parse(JSON.stringify(response));
+        return jsonResponse.data.getCommunity.events.items;
     } catch (error: any) {
         throw new HttpError(`Error retrieving community events: ${error.message}`, error.statusCode || 500);
     }
