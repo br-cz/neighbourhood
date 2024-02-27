@@ -129,6 +129,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           variant="outline"
           leftSection={<FontAwesomeIcon icon={faSmile} />}
           onClick={handleRemoveFriend}
+          data-testid="friends-btn"
         >
           Friends
         </Button>
@@ -142,6 +143,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           variant="outline"
           leftSection={<FontAwesomeIcon icon={faClock} />}
           onClick={handleCancelRequest}
+          data-testid="outgoing-request-btn"
         >
           Pending
         </Button>
@@ -155,6 +157,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             size="xs"
             leftSection={<FontAwesomeIcon icon={faCheck} />}
             onClick={handleAcceptRequest}
+            data-testid="accept-request-btn"
           >
             Accept
           </Button>
@@ -164,6 +167,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             color="red"
             leftSection={<FontAwesomeIcon icon={faXmark} />}
             onClick={handleDeclineRequest}
+            data-testid="decline-request-btn"
           >
             Decline
           </Button>
@@ -178,6 +182,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           size="xs"
           leftSection={<FontAwesomeIcon icon={faUserPlus} />}
           onClick={handleAddFriend}
+          data-testid="add-friend-btn"
         >
           Add Friend
         </Button>
@@ -186,7 +191,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   }
 
   return (
-    <div className={classes.user}>
+    <div className={classes.user} data-testid="user-item">
       <Group>
         <Avatar src={user?.profilePic} size="lg" radius="xl" />
         <div style={{ flex: 1 }}>

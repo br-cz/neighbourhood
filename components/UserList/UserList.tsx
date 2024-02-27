@@ -62,7 +62,7 @@ export function UserList() {
 
   const numRequests = incomingRequests.length;
   return (
-    <Tabs variant="outline" radius="md" defaultValue="all">
+    <Tabs variant="outline" radius="md" defaultValue="all" data-testid="user-list">
       <Tabs.List>
         <Tabs.Tab value="all">All</Tabs.Tab>
         <Tabs.Tab value="friends">Friends</Tabs.Tab>
