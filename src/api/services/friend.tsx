@@ -48,7 +48,7 @@ export const fetchAllFriendRequestsAPI = async () => {
     }
   };
 
-  export const createFriendRequestAPI = async (friendRequestData: APITypes.createFriendRequestInput) => {
+  export const createFriendRequestAPI = async (friendRequestData: APITypes.CreateFriendRequestInput) => {
     try {
       return await client.graphql({
         query: createFriendRequest,
