@@ -352,7 +352,11 @@ export const useFetchFriends = () => {
         });
         const parsedFriendIds = JSON.parse(JSON.stringify(friendsIds));
 
-        const friendsInfo = await fetchFriendsInfo(parsedFriendIds.data.getUser.friends);
+        //account for non initialized array before adding friends
+        const friendsIdArray = parsedFriendIds.data.getUser.friend
+          ? parsedFriendIds.data.getUser.friend
+          : [];
+        const friendsInfo = await fetchFriendsInfo(friendsIdArray);
 
         setFriend(friendsInfo);
       } catch (err: any) {
