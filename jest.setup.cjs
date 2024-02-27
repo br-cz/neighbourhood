@@ -35,6 +35,8 @@ jest.mock('@/components/Authorization/useAuth', () => ({
 jest.mock('aws-amplify/auth', () => ({
   updateUserAttributes: jest.fn(),
   updatePassword: jest.fn().mockResolvedValue(true),
+  signIn: jest.fn(),
+  signOut: jest.fn(),
 }));
 
 jest.mock('@mantine/notifications', () => ({
@@ -79,29 +81,41 @@ jest.mock('@/src/api/appQueries', () => ({
     },
   })),
   getCurrentCommunity: jest.fn(),
-  getCurrentCommunityID: jest.fn(() => {
-    // return what you want this function to return during tests
-    return 'community1';
-  }),
 }));
 
 jest.mock('@/src/api/userQueries', () => ({
   updateUserEmail: jest.fn(),
 }));
 
-// jest.mock('@/src/api/postQueries', () => ({
-//   useFetchPosts: jest.fn(() => ({
-//     events: [],
-//     loading: true,
-//   })),
-//   useCreatePost: () => ({
-//     handleCreatePost: jest.fn().mockResolvedValue(true)
-//   }),
-// }));
+jest.mock('@/src/api/eventQueries', () => ({
+  useFetchEvents: jest.fn(() => ({
+    events: [],
+    loading: true,
+  })),
+  useCreateEvent: () => ({ handleCreateEvent: jest.fn().mockResolvedValue(true) }),
+}));
+
+jest.mock('@/src/api/postQueries', () => ({
+  useFetchPosts: jest.fn(() => ({
+    posts: [],
+    loading: true,
+  })),
+  useCreatePost: () => ({
+    handleCreatePost: jest.fn().mockResolvedValue(true)
+  }),
+}));
 
 jest.mock('@mantine/notifications', () => ({
   notifications: {
     show: jest.fn(),
+  },
+}));
+
+jest.mock('@mantine/modals', () => ({
+  modals: {
+    openConfirmModal: jest.fn(({ onConfirm }) => {
+      onConfirm();
+    }),
   },
 }));
 

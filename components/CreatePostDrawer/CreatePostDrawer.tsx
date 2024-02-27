@@ -43,7 +43,11 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
         onClose();
       }}
       position="right"
-      title={<Title order={3} data-testid="new-post">New Post</Title>}
+      title={
+        <Title order={3} component="p" data-testid="new-post">
+          New Post
+        </Title>
+      }
       padding="lg"
       size="md"
       data-testid="create-post-drawer"
@@ -57,7 +61,7 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
           label="Content"
           placeholder="Share your thoughts..."
           {...formik.getFieldProps('content')}
-          data-testid="content"
+          data-testid="post-content"
         />
 
         <Select
