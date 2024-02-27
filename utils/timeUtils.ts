@@ -41,9 +41,20 @@ export function formatPostedAt(isoDate: string): string {
   return result;
 }
 
-export function combineDateTime(date: Date, time: string): string {
-  const datetime = new Date(date);
-  const [hours, minutes] = time.split(':').map(Number);
-  datetime.setHours(hours, minutes);
-  return datetime.toISOString();
+export function combineDateTime(date: Date, time: string) {
+  const dateTime = new Date(date);
+
+  //Time is '' if user doesnt put a specific time
+  if (time === '') {
+    time = '00:00';
+  }
+
+  //Given the HH:MM format, we parse each into a proper number
+  const [hours, minutes] = time.split(':').map((num) => parseInt(num, 10));
+
+  dateTime.setHours(hours);
+  dateTime.setMinutes(minutes);
+  dateTime.setSeconds(0); // Reset seconds to 0, not necessary but makes things more consistent
+
+  return dateTime.toISOString();
 }
