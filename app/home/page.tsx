@@ -50,7 +50,12 @@ export default function HomePage() {
           <Loader />
         </Group>
       ) : (
-        <SimpleGrid cols={1} spacing="lg" verticalSpacing={{ base: 'md', sm: 'lg' }}>
+        <SimpleGrid
+          cols={1}
+          spacing="lg"
+          verticalSpacing={{ base: 'md', sm: 'lg' }}
+          data-testid="post-feed"
+        >
           {sortedPosts.map((post: Post) => (
             <PostCard key={post.id} post={post} />
           ))}
