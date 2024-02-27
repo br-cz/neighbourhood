@@ -32,7 +32,7 @@ export function Navbar() {
   ));
 
   return (
-    <nav className={classes.navbar}>
+    <nav className={classes.navbar} data-testid="navbar">
       <div className={classes.navbarMain}>{links}</div>
 
       <div className={classes.footer}>
