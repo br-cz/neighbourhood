@@ -91,6 +91,14 @@ jest.mock('@mantine/notifications', () => ({
   },
 }));
 
+jest.mock('@mantine/modals', () => ({
+  modals: {
+    openConfirmModal: jest.fn(({ onConfirm }) => {
+      onConfirm();
+    }),
+  },
+}));
+
 jest.mock('next/router', () => ({
   useRouter: jest.fn().mockImplementation(() => ({
     push: jest.fn(),

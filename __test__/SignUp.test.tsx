@@ -1,5 +1,6 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import { MantineProvider } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { SignUp } from '@/components/SignUp/SignUp';
 import { DataProvider } from '@/contexts/DataContext';
@@ -60,6 +61,20 @@ const completeStep3 = async () => {
   });
   fireEvent.click(screen.getByTestId('communities-item'));
   fireEvent.click(screen.getByText(/Continue/i));
+};
+
+const completeStep4 = async () => {
+  await waitFor(() => {
+    expect(screen.getByTestId('firstName')).toBeInTheDocument();
+    expect(screen.getByTestId('lastName')).toBeInTheDocument();
+    expect(screen.getByTestId('username')).toBeInTheDocument();
+    expect(screen.getByTestId('phone')).toBeInTheDocument();
+  });
+  fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
+  fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
+  fireEvent.change(screen.getByTestId('username'), { target: { value: 'grunk' } });
+  fireEvent.change(screen.getByTestId('phone'), { target: { value: '9999999999' } });
+  fireEvent.click(screen.getByText(/Create Profile/i));
 };
 
 // Step 1: Test the initial signup component
@@ -172,6 +187,15 @@ describe('Initial Component & Step 1: Login Details', () => {
       { timeout: 1000 }
     );
   });
+
+  //1.7
+  test('Clicking back on step 1 opens a confirm modal to return to login', async () => {
+    renderComponent();
+    fireEvent.click(screen.getByText(/Back/i));
+    await waitFor(() => {
+      expect(modals.openConfirmModal).toHaveBeenCalled();
+    });
+  });
 });
 
 // Step 2: Test the address input component
@@ -184,6 +208,7 @@ describe('Step 2: Address Input', () => {
       expect(screen.getByTestId('address')).toBeInTheDocument();
     });
   });
+
   //2.2
   test('Step 2 fields are selectable and changeable', async () => {
     renderComponent();
@@ -242,6 +267,7 @@ describe('Step 3: Community Select', () => {
       expect(screen.getByTestId('communities-item')).toBeInTheDocument();
     });
   });
+
   //3.2
   test('Step 3 community items are selectable', async () => {
     renderComponent();
@@ -255,6 +281,7 @@ describe('Step 3: Community Select', () => {
       expect(screen.getByTestId('communities-item')).toHaveClass('active');
     });
   });
+
   //3.3
   test('Navigates to Step 4 on valid community selection', async () => {
     renderComponent();
@@ -269,22 +296,23 @@ describe('Step 3: Community Select', () => {
       { timeout: 1000 }
     );
   });
-  //3.4 - Commented for now since community is hardcoded currently
-  //   test('Doesnt navigate to Step 4 if community not selected', async () => {
-  //     renderComponent();
-  //     await completeStep1();
-  //     await completeStep2();
-  //     await waitFor(() => {
-  //       expect(screen.getByTestId('communities-item')).toBeInTheDocument();
-  //     });
-  //     fireEvent.click(screen.getByText(/Continue/i));
-  //     await waitFor(
-  //       () => {
-  //         expect(screen.getByTestId('communities-item')).toBeInTheDocument();
-  //       },
-  //       { timeout: 1000 }
-  //     );
-  //   });
+
+  //3.4
+  test('Doesnt navigate to Step 4 if community not selected', async () => {
+    renderComponent();
+    await completeStep1();
+    await completeStep2();
+    await waitFor(() => {
+      expect(screen.getByTestId('communities-item')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText(/Continue/i));
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('communities-item')).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+  });
 });
 
 // Step 4: Test the profile page
@@ -330,135 +358,135 @@ describe('Step 4: Profile Setup', () => {
       expect(phoneInput.value).toBe('9999999999');
     });
   });
-  // Tests below are commented out until confirmation modal is merged
-  //   //4.3
-  //   test('Opens profile creation confirmation on valid Step 4 inputs', async () => {
-  //     renderComponent();
-  //     await completeStep1();
-  //     await completeStep2();
-  //     await completeStep3();
-  //     await completeStep4();
-  //     await waitFor(() => {
-  //       expect(screen.getByTestId('confirmation')).toBeInTheDocument();
-  //     });
-  //   });
-  //   //4.4
-  //   test('Doesnt create profile if Step 4 required fields are missing', async () => {
-  //     renderComponent();
-  //     await completeStep1();
-  //     await completeStep2();
-  //     await completeStep3();
-  //     await waitFor(() => {
-  //       expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('username')).toBeInTheDocument();
-  //     });
-  //     fireEvent.click(screen.getByText(/Continue/i));
-  //     await waitFor(
-  //       () => {
-  //         expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('username')).toBeInTheDocument();
-  //       },
-  //       { timeout: 1000 }
-  //     );
-  //   });
-  //   //4.5
-  //   test('Opens confirmation if Step 4 required fields are filled out but not optional fields', async () => {
-  //     renderComponent();
-  //     await completeStep1();
-  //     await completeStep2();
-  //     await completeStep3();
-  //     await waitFor(() => {
-  //       expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('username')).toBeInTheDocument();
-  //     });
-  //     fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
-  //     fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
-  //     fireEvent.change(screen.getByTestId('username'), { target: { value: 'grunk' } });
-  //     fireEvent.click(screen.getByText(/Continue/i));
-  //     await waitFor(
-  //       () => {
-  //         expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('username')).toBeInTheDocument();
-  //       },
-  //       { timeout: 1000 }
-  //     );
-  //   });
-  //   //4.6
-  //   test('Doesnt open confirmation if username is filled out but invalid', async () => {
-  //     renderComponent();
-  //     await completeStep1();
-  //     await completeStep2();
-  //     await completeStep3();
-  //     await waitFor(() => {
-  //       expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('username')).toBeInTheDocument();
-  //     });
-  //     fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
-  //     fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
-  //     fireEvent.change(screen.getByTestId('username'), { target: { value: '%' } });
-  //     fireEvent.click(screen.getByText(/Continue/i));
-  //     await waitFor(
-  //       () => {
-  //         expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('username')).toBeInTheDocument();
-  //       },
-  //       { timeout: 1000 }
-  //     );
-  //   });
-  //   //4.7
-  //   test('Doesnt open confirmation if names are filled out but invalid', async () => {
-  //     renderComponent();
-  //     await completeStep1();
-  //     await completeStep2();
-  //     await completeStep3();
-  //     await waitFor(() => {
-  //       expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('username')).toBeInTheDocument();
-  //     });
-  //     fireEvent.change(screen.getByTestId('firstName'), { target: { value: '!!!!' } });
-  //     fireEvent.change(screen.getByTestId('lastName'), { target: { value: '+>,dA<d28' } });
-  //     fireEvent.change(screen.getByTestId('username'), { target: { value: 'grunkle' } });
-  //     fireEvent.click(screen.getByText(/Continue/i));
-  //     await waitFor(
-  //       () => {
-  //         expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('username')).toBeInTheDocument();
-  //       },
-  //       { timeout: 1000 }
-  //     );
-  //   });
-  //   //4.8
-  //   test('Doesnt open confirmation if required fields are filled out correctly but optional fields are invalid', async () => {
-  //     renderComponent();
-  //     await completeStep1();
-  //     await completeStep2();
-  //     await completeStep3();
-  //     await waitFor(() => {
-  //       expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //       expect(screen.getByTestId('username')).toBeInTheDocument();
-  //     });
-  //     fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
-  //     fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
-  //     fireEvent.change(screen.getByTestId('username'), { target: { value: 'grunkle' } });
-  //     fireEvent.change(screen.getByTestId('phone'), { target: { value: '!!#*3A81' } });
-  //     fireEvent.click(screen.getByText(/Continue/i));
-  //     await waitFor(
-  //       () => {
-  //         expect(screen.getByTestId('firstName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('lastName')).toBeInTheDocument();
-  //         expect(screen.getByTestId('username')).toBeInTheDocument();
-  //         expect(screen.getByTestId('phone')).toBeInTheDocument();
-  //       },
-  //       { timeout: 1000 }
-  //     );
-  //   });
+
+  //4.3
+  test('Opens profile creation confirmation on valid Step 4 inputs', async () => {
+    renderComponent();
+    await completeStep1();
+    await completeStep2();
+    await completeStep3();
+    await completeStep4();
+    await waitFor(() => {
+      expect(modals.openConfirmModal).toHaveBeenCalled();
+    });
+  });
+
+  //4.4
+  test('Doesnt create profile if Step 4 required fields are missing', async () => {
+    renderComponent();
+    await completeStep1();
+    await completeStep2();
+    await completeStep3();
+    await waitFor(() => {
+      expect(screen.getByTestId('firstName')).toBeInTheDocument();
+      expect(screen.getByTestId('lastName')).toBeInTheDocument();
+      expect(screen.getByTestId('username')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText(/Create Profile/i));
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('firstName')).toBeInTheDocument();
+        expect(screen.getByTestId('lastName')).toBeInTheDocument();
+        expect(screen.getByTestId('username')).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+  });
+
+  //4.5
+  test('Opens confirmation if Step 4 required fields are filled out but not optional fields', async () => {
+    renderComponent();
+    await completeStep1();
+    await completeStep2();
+    await completeStep3();
+    await waitFor(() => {
+      expect(screen.getByTestId('firstName')).toBeInTheDocument();
+      expect(screen.getByTestId('lastName')).toBeInTheDocument();
+      expect(screen.getByTestId('username')).toBeInTheDocument();
+    });
+    fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
+    fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
+    fireEvent.change(screen.getByTestId('username'), { target: { value: 'grunk' } });
+    fireEvent.click(screen.getByText(/Create Profile/i));
+    await waitFor(() => {
+      expect(modals.openConfirmModal).toHaveBeenCalled();
+    });
+  });
+
+  //4.6
+  test('Doesnt open confirmation if username is filled out but invalid', async () => {
+    renderComponent();
+    await completeStep1();
+    await completeStep2();
+    await completeStep3();
+    await waitFor(() => {
+      expect(screen.getByTestId('firstName')).toBeInTheDocument();
+      expect(screen.getByTestId('lastName')).toBeInTheDocument();
+      expect(screen.getByTestId('username')).toBeInTheDocument();
+    });
+    fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
+    fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
+    fireEvent.change(screen.getByTestId('username'), { target: { value: '%' } });
+    fireEvent.click(screen.getByText(/Create Profile/i));
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('firstName')).toBeInTheDocument();
+        expect(screen.getByTestId('lastName')).toBeInTheDocument();
+        expect(screen.getByTestId('username')).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+  });
+
+  //4.7
+  test('Doesnt open confirmation if names are filled out but invalid', async () => {
+    renderComponent();
+    await completeStep1();
+    await completeStep2();
+    await completeStep3();
+    await waitFor(() => {
+      expect(screen.getByTestId('firstName')).toBeInTheDocument();
+      expect(screen.getByTestId('lastName')).toBeInTheDocument();
+      expect(screen.getByTestId('username')).toBeInTheDocument();
+    });
+    fireEvent.change(screen.getByTestId('firstName'), { target: { value: '!!!!' } });
+    fireEvent.change(screen.getByTestId('lastName'), { target: { value: '+>,dA<d28' } });
+    fireEvent.change(screen.getByTestId('username'), { target: { value: 'grunkle' } });
+    fireEvent.click(screen.getByText(/Create Profile/i));
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('firstName')).toBeInTheDocument();
+        expect(screen.getByTestId('lastName')).toBeInTheDocument();
+        expect(screen.getByTestId('username')).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+  });
+
+  //4.8
+  test('Doesnt open confirmation if required fields are filled out correctly but optional fields are invalid', async () => {
+    renderComponent();
+    await completeStep1();
+    await completeStep2();
+    await completeStep3();
+    await waitFor(() => {
+      expect(screen.getByTestId('firstName')).toBeInTheDocument();
+      expect(screen.getByTestId('lastName')).toBeInTheDocument();
+      expect(screen.getByTestId('username')).toBeInTheDocument();
+    });
+    fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
+    fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
+    fireEvent.change(screen.getByTestId('username'), { target: { value: 'grunkle' } });
+    fireEvent.change(screen.getByTestId('phone'), { target: { value: '!!#*3A81' } });
+    fireEvent.click(screen.getByText(/Create Profile/i));
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('firstName')).toBeInTheDocument();
+        expect(screen.getByTestId('lastName')).toBeInTheDocument();
+        expect(screen.getByTestId('username')).toBeInTheDocument();
+        expect(screen.getByTestId('phone')).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+  });
 });
