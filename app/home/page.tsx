@@ -8,7 +8,7 @@ import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/Neighbourhoo
 import { useAuth } from '@/components/Authorization/useAuth';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
 import { PostCard } from '@/components/PostCard/PostCard';
-import { useFetchPosts } from '@/src/api/postQueries';
+import { useFetchPosts } from '@/src/hooks/postsCustomHooks';
 import { Post } from '@/src/API';
 
 export default function HomePage() {
