@@ -4,7 +4,7 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
 import EventsPage from '@/app/events/page';
 
-const AppQueries = require('@/src/api/appQueries');
+const userHooks = require('@/src/hooks/usersCustomHooks');
 
 const mockData = {
   events: [
@@ -41,7 +41,7 @@ const mockData = {
   ],
 };
 
-jest.mock('@/src/api/eventQueries', () => ({
+jest.mock('@/src/hooks/eventsCustomHooks', () => ({
   useFetchEvents: jest.fn(() => ({
     ...mockData,
     refetch: jest.fn(),
@@ -65,7 +65,7 @@ const renderComponent = () =>
   );
 
 describe('Events Page', () => {
-  AppQueries.getCurrentUser.mockResolvedValue({
+  userHooks.getCurrentUser.mockResolvedValue({
     id: '10',
     email: 'user@email.com',
     _version: 1,

@@ -8,7 +8,7 @@ import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/Neighbourhoo
 import { CreateEventDrawer } from '@/components/CreateEventDrawer/CreateEventDrawer';
 import { ViewEventModal } from '@/components/ViewEventModal/ViewEventModal';
 import { useAuth } from '@/components/Authorization/useAuth';
-import { useFetchEvents } from '@/src/api/eventQueries';
+import { useFetchEvents } from '@/src/hooks/eventsCustomHooks';
 import { Event } from '@/src/API';
 
 export default function EventsPage() {

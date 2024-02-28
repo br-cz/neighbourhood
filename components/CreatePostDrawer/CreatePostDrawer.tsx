@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { Drawer, Textarea, Button, Group, Select, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
-import { useCreatePost } from '@/src/api/postQueries';
+import { useCreatePost } from '@/src/hooks/postsCustomHooks';
 import { Visibility } from '@/src/API';
 import { createPostSchema } from './createPostValidation';
 
@@ -43,9 +43,14 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
         onClose();
       }}
       position="right"
-      title={<Title order={3}>New Post</Title>}
+      title={
+        <Title order={3} component="p" data-testid="new-post">
+          New Post
+        </Title>
+      }
       padding="lg"
       size="md"
+      data-testid="create-post-drawer"
     >
       <form onSubmit={formik.handleSubmit}>
         <Textarea
@@ -56,6 +61,7 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
           label="Content"
           placeholder="Share your thoughts..."
           {...formik.getFieldProps('content')}
+          data-testid="post-content"
         />
 
         <Select
@@ -70,6 +76,7 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
 
         <Group justify="center" mt="lg">
           <Button
+            data-testid="post-button"
             radius="md"
             type="button"
             onClick={() => {

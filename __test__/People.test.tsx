@@ -10,9 +10,9 @@ import {
   useDeleteFriend,
   useDeleteIncomingFriendRequest,
   useDeleteOutgoingFriendRequest,
-} from '@/src/api/friendQueries';
+} from '@/src/hooks/friendsCustomHooks';
 
-const AppQueries = require('@/src/api/appQueries');
+const userHooks = require('@/src/hooks/usersCustomHooks');
 
 const mockData = {
   friends: [
@@ -55,7 +55,7 @@ const mockData = {
   ],
 };
 
-jest.mock('@/src/api/friendQueries', () => ({
+jest.mock('@/src/hooks/friendsCustomHooks', () => ({
   useFetchCommunityMembers: jest.fn(() => ({
     ...mockData,
     refetch: jest.fn(),
@@ -99,7 +99,7 @@ describe('People Page', () => {
   const expectedUserCards =
     numFriendCards + numIncomingRequestCards + numOutgoingRequestCards + numRegularCards;
 
-  AppQueries.getCurrentUser.mockResolvedValue({
+  userHooks.getCurrentUser.mockResolvedValue({
     id: '10',
     email: 'user@email.com',
     friends: [],

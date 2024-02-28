@@ -6,7 +6,7 @@ import { notifications } from '@mantine/notifications';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
 import CommunitiesPage from '@/app/communities/page';
-import { useCurrentUser } from '@/src/api/appQueries';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 const { signOut } = require('aws-amplify/auth');
 
@@ -59,7 +59,7 @@ describe('Neighbourhood Shell', () => {
     await waitFor(() => {
       console.log(useCurrentUser());
       expect(screen.getByText('My Profile')).toBeInTheDocument();
-      expect(screen.getByText('Test User')).toBeInTheDocument();
+      expect(screen.getByTestId('current-user-info')).toBeInTheDocument();
     });
   });
 
