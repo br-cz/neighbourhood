@@ -6,6 +6,42 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
 import CommunitiesPage from '@/app/communities/page';
 import { useCurrentUser } from '@/src/api/appQueries';
+import { utilSignOut } from '@/utils/signOutUtils';
+import { notifications } from '@mantine/notifications';
+import { signOut } from 'aws-amplify/auth';
+import { NextRouter } from 'next/router';
+
+jest.mock('@mantine/notifications', () => ({
+  notifications: {
+    show: jest.fn(),
+  },
+}));
+
+const localStorageMock = (() => {
+  let store: { [key: string]: string } = {};
+  return {
+    getItem: jest.fn((key: string) => {
+      return store[key] || null;
+    }),
+    setItem: jest.fn((key: string, value: string) => {
+      store[key] = value.toString();
+    }),
+    removeItem: jest.fn((key: string) => {
+      delete store[key];
+    }),
+    clear: jest.fn(() => {
+      store = {};
+    }),
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+const routerMock: Partial<NextRouter> = {
+  push: jest.fn(),
+};
 
 const renderComponent = () =>
   render(
@@ -76,6 +112,22 @@ describe('Neighbourhood Shell', () => {
     fireEvent.click(screen.getByTestId('logout'));
     await waitFor(() => {
       expect(modals.openConfirmModal).toHaveBeenCalled();
+    });
+  });
+
+  //1.8
+  it('utilSingOUt should ign out the user, clear localStorage, navigate to home, and show a notification', async () => {
+    // Call the utility function with the mocked router
+    await utilSignOut({ router: routerMock as NextRouter });
+
+    // Assertions to ensure all expected actions were called
+    expect(signOut).toHaveBeenCalledWith({ global: true });
+    expect(localStorageMock.removeItem).toHaveBeenCalledWith('currentUser');
+    expect(routerMock.push).toHaveBeenCalledWith('/');
+    expect(notifications.show).toHaveBeenCalledWith({
+      radius: 'md',
+      title: 'Logged out!',
+      message: 'Log back in to continue using Neighborhood.',
     });
   });
 });
