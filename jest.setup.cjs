@@ -94,6 +94,15 @@ jest.mock('@/src/api/eventQueries', () => ({
   useCreateEvent: () => ({ handleCreateEvent: jest.fn().mockResolvedValue(true) }),
 }));
 
+jest.mock('@/src/api/postQueries', () => ({
+  useFetchPosts: jest.fn(() => ({
+    posts: [],
+    loading: true,
+  })),
+  useCreatePost: () => ({
+    handleCreatePost: jest.fn().mockResolvedValue(true)
+  }),
+}));
 
 jest.mock('@mantine/notifications', () => ({
   notifications: {
