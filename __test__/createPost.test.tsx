@@ -16,8 +16,8 @@ jest.mock('formik', () => ({
       handleBlur: jest.fn(),
       values: {
         author: {
-            fname: 'John',
-            lname: 'Doe',
+            firstName: 'John',
+            lastName: 'Doe',
         },
         content: '',
         visibility: Visibility.PUBLIC,
@@ -56,20 +56,14 @@ describe('Home page - Create Post', () => {
         jest.clearAllMocks();
         cleanup();
     });
-
-    //1.1 (not needed)
-    // test('Render the initial home page correctly', async () => {
-    //     renderComponent();  
-    //     expect(screen.getByText(/New Post.../i)).toBeInTheDocument();
-    // });
     
-    //1.2
+    //1.1
     test('Renders the create post button correctly', async () => {
         renderComponent();
         expect(screen.getByText(/New Post.../i)).toBeInTheDocument();
     });
     
-    //1.3
+    //1.2
     test('Render post drawer when button is clicked', async () => {
         renderComponent();
         await userEvent.click(screen.getByText(/New Post.../i));
@@ -78,7 +72,7 @@ describe('Home page - Create Post', () => {
         expect(screen.getByTestId(/post-content/i)).toBeInTheDocument();
     });
 
-    //1.4
+    //1.3
     test('Drawer does not close if post-content is missing', async () => {
         renderComponent();
         await userEvent.click(screen.getByText(/New Post.../i));
@@ -98,7 +92,7 @@ describe('Home page - Create Post', () => {
         { timeout: 2000 });
     });
 
-    //1.5
+    //1.4
     test('Drawer closes on valid form submission', async () => {
         renderComponent();
         
@@ -115,26 +109,7 @@ describe('Home page - Create Post', () => {
         );
     });
     
-    // //1.6
-    // test('Drawer fields are selectable and change to proper inputted values', async () => {
-    //     renderComponent();
-    //     await userEvent.click(screen.getByText(/New Post.../i));
-
-    //     await waitFor(() => {
-    //         expect(screen.getByTestId('post-content')).toBeInTheDocument();
-    //     });
-
-    //     await userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
-
-    //     await waitFor(() => {
-    //         expect(screen.getByTestId('post-content')).toBeInTheDocument();
-    //         expect(screen.getByTestId('post-content')).toHaveValue('This is a test post');
-            
-    //     },
-    //     { timeout: 2000 });
-    // });
-    
-    //1.7
+    //1.5
     test('Drawer does not close if post-content is too short', async () => {
         renderComponent();
         await userEvent.click(screen.getByText(/New Post.../i));
@@ -156,4 +131,23 @@ describe('Home page - Create Post', () => {
             timeout: 2000,
         });
     });
+
+    // //1.6
+    // test('Drawer fields are selectable and change to proper inputted values', async () => {
+    //     renderComponent();
+    //     await userEvent.click(screen.getByText(/New Post.../i));
+
+    //     await waitFor(() => {
+    //         expect(screen.getByTestId('post-content')).toBeInTheDocument();
+    //     });
+
+    //     await userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
+
+    //     await waitFor(() => {
+    //         expect(screen.getByTestId('post-content')).toBeInTheDocument();
+    //         expect(screen.getByTestId('post-content')).toHaveValue('This is a test post');
+            
+    //     },
+    //     { timeout: 2000 });
+    // });
 });
