@@ -40,7 +40,11 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
 
   const openSignOutModal = () => {
     modals.openConfirmModal({
-      title: <Title order={5}>Sign out?</Title>,
+      title: (
+        <Title order={5} component="p">
+          Sign out?
+        </Title>
+      ),
       children: <Text size="sm">Are you sure you want to sign out of Neighbourhood?</Text>,
       confirmProps: { size: 'xs', radius: 'md' },
       cancelProps: { size: 'xs', radius: 'md' },
