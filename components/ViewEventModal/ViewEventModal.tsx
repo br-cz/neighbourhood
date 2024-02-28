@@ -15,7 +15,11 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
     <Modal
       opened={opened}
       onClose={onClose}
-      title={<Title order={2}>{event?.name}</Title>}
+      title={
+        <Title order={2} component="p">
+          {event?.name}
+        </Title>
+      }
       size="md"
       radius="md"
       padding={30}

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Group, Avatar, Text, Button, Title } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClock, faSmile, faUserPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -42,6 +43,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       setStatus('outgoing');
     } catch (err) {
       console.error('Failed to send friend request:', err);
+      notifications.show({
+        radius: 'md',
+        color: 'red',
+        title: 'Oops!',
+        message: 'Failed to add friend, please try again.',
+      });
     }
   };
 
@@ -52,12 +59,22 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       setStatus('friend');
     } catch (err) {
       console.error('Failed to add friend:', err);
+      notifications.show({
+        radius: 'md',
+        color: 'red',
+        title: 'Oops!',
+        message: 'Failed to accept friend request, please try again.',
+      });
     }
   };
 
   const handleDeclineRequest = async () => {
     modals.openConfirmModal({
-      title: <Title order={5}>Decline Friend Request?</Title>,
+      title: (
+        <Title order={5} component="p">
+          Decline Friend Request?
+        </Title>
+      ),
       children: (
         <Text size="sm">Are you sure you want to decline {user?.firstName}'s friend request?</Text>
       ),
@@ -70,6 +87,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           setStatus('none');
         } catch (error) {
           console.error('Failed to decline friend request:', error);
+          notifications.show({
+            radius: 'md',
+            color: 'red',
+            title: 'Oops!',
+            message: 'Failed to decline friend request, please try again.',
+          });
         }
       },
     });
@@ -77,7 +100,11 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
 
   const handleRemoveFriend = () => {
     modals.openConfirmModal({
-      title: <Title order={5}>Remove Friend?</Title>,
+      title: (
+        <Title order={5} component="p">
+          Remove Friend?
+        </Title>
+      ),
       children: (
         <Text size="sm">Are you sure you want to remove {user?.firstName} as a friend?</Text>
       ),
@@ -90,6 +117,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           setStatus('none');
         } catch (error) {
           console.error('Failed to delete friend:', error);
+          notifications.show({
+            radius: 'md',
+            color: 'red',
+            title: 'Oops!',
+            message: 'Failed to remove friend, please try again.',
+          });
         }
       },
     });
@@ -97,7 +130,11 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const handleCancelRequest = () => {
     console.log(user);
     modals.openConfirmModal({
-      title: <Title order={5}>Cancel Friend Request?</Title>,
+      title: (
+        <Title order={5} component="p">
+          Cancel Friend Request?
+        </Title>
+      ),
       children: (
         <Text size="sm">
           Are you sure you cancel your outgoing friend request to {user?.firstName}?
@@ -112,6 +149,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           setStatus('none');
         } catch (error) {
           console.error('Failed to decline friend request:', error);
+          notifications.show({
+            radius: 'md',
+            color: 'red',
+            title: 'Oops!',
+            message: 'Failed to cancel friend request, please try again.',
+          });
         }
       },
     });
