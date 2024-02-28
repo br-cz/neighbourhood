@@ -1,29 +1,28 @@
 import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useData } from '@/contexts/DataContext';
 import classes from './UserButton.module.css';
-import { getCurrentUser, useCurrentUser } from '@/src/api/appQueries';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 interface UserButtonProps {
   active: boolean;
 }
 
 export function UserButton({ active }: UserButtonProps) {
-  const { user } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   return (
     <Link href="/profile" passHref className={classes.link} data-testid="profile">
       <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
         <Group>
-          <Avatar src={user?.profilePic} size="md" radius="xl" />
+          <Avatar src={currentUser?.profilePic} size="md" radius="xl" />
 
           <div style={{ flex: 1 }}>
             <Text size="sm" fw={600}>
               My Profile
             </Text>
 
-            <Text c="dimmed" size="xs">
-              {user?.firstName} {user?.lastName}
+            <Text c="dimmed" size="xs" data-testid="current-user-info">
+              {currentUser?.firstName} {currentUser?.lastName}
             </Text>
           </div>
 
