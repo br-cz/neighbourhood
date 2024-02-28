@@ -13,6 +13,7 @@ const mockData = {
       name: 'Pizza Party',
       location: '1234 Pizza St',
       datetime: new Date('2022-12-12T19:00:00'),
+      description: 'Come eat pizza with us!',
       organizer: {
         firstName: 'Bojangle',
         lastName: 'Williams',
@@ -23,6 +24,7 @@ const mockData = {
       name: 'BBQ',
       location: '1234 BBQ St',
       datetime: new Date('2022-11-11T18:00:00'),
+      description: 'Come eat BBQ with us!',
       organizer: {
         firstName: 'Grunkle',
         lastName: 'Williams',
@@ -32,6 +34,7 @@ const mockData = {
       id: '3',
       name: 'Birthday Party',
       location: '1234 Birthday St',
+      description: 'Come celebrate with us!',
       datetime: new Date('2022-10-10T17:00:00'),
       organizer: {
         firstName: 'LeJon',

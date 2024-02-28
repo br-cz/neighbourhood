@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title } from '@mantine/core';
+import { Button, Group, Loader, Select, SimpleGrid, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconSearch } from '@tabler/icons-react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { useAuth } from '@/components/Authorization/useAuth';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
@@ -29,17 +28,7 @@ export default function HomePage() {
       <Group justify="space-between" m="20">
         <Title order={1}>Feed</Title>
         <Group>
-          <Select
-            radius="md"
-            placeholder="Chronological"
-            data={['Chronological', 'Popular Today', 'Popular This Week', 'Friends Only']}
-          />
-          <TextInput
-            radius="md"
-            rightSectionPointerEvents="none"
-            rightSection={<IconSearch />}
-            placeholder="Search..."
-          />
+          <Select radius="md" placeholder="Chronological" data={['Chronological']} />
           <Button radius="md" variant="filled" onClick={drawerHandlers.open}>
             New Post...
           </Button>
