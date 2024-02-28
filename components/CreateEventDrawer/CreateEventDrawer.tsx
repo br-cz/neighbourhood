@@ -138,6 +138,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           {...formik.getFieldProps('visibility')}
           mt="md"
           data-testid="visibility"
+          comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
         />
 
         <Group justify="center" mt="lg">
