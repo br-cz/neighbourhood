@@ -29,7 +29,12 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
       });
       console.log('Signed out!');
     } catch (error) {
-      console.log('error signing out: ', error);
+      console.error('Error signing out:', error);
+      notifications.show({
+        radius: 'md',
+        title: 'Oops!',
+        message: 'Failed to sign out, please try again.',
+      });
     }
   }
 

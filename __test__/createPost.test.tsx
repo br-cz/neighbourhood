@@ -52,102 +52,115 @@ const renderComponent = () =>
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 describe('Home page - Create Post', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-    });
-    
-    //1.1
-    test('Renders the create post button correctly', async () => {
-        renderComponent();
-        expect(screen.getByText(/New Post.../i)).toBeInTheDocument();
-    });
-    
-    //1.2
-    test('Render post drawer when button is clicked', async () => {
-        renderComponent();
-        await userEvent.click(screen.getByText(/New Post.../i));
-        expect(screen.getByTestId(/create-post-drawer/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/new-post/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/post-content/i)).toBeInTheDocument();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    cleanup();
+  });
 
-    //1.3
-    test('Drawer does not close if post-content is missing', async () => {
-        renderComponent();
-        await userEvent.click(screen.getByText(/New Post.../i));
-        
-        userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
-        
-        await userEvent.click(screen.getByTestId('post-button'));
-        
-        await waitFor(() => {
-            expect(screen.queryByTestId('post-content')).toBeInTheDocument();
-            expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
-            expect.objectContaining({
-                title: 'Oops!',
-            })
-            );
-        },
-        { timeout: 2000 });
+  //1.1
+  test('Renders the create post button correctly', async () => {
+    renderComponent();
+    expect(screen.getByText(/New Post.../i)).toBeInTheDocument();
+  });
+
+  //1.2
+  test('Render post drawer when button is clicked', async () => {
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Post.../i));
+    expect(screen.getByTestId(/create-post-drawer/i)).toBeInTheDocument();
+  });
+
+  //1.3
+  test('Render post drawer with the correct fields', async () => {
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Post.../i));
+    await waitFor(() => {
+      expect(screen.getByTestId(/new-post/i)).toBeInTheDocument();
+      expect(screen.getByTestId(/post-content/i)).toBeInTheDocument();
+    });
+  });
+
+  //1.4
+  test('Drawer fields are selectable and change to proper inputted values', async () => {
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Post.../i));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('post-content')).toBeInTheDocument();
     });
 
-    //1.4
-    test('Drawer closes on valid form submission', async () => {
-        renderComponent();
-        
-        await userEvent.click(screen.getByText(/New Post.../i));
+    await userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
 
-        userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('post-content')).toHaveValue('This is a test post');
+      },
+      { timeout: 2000 }
+    );
+  });
 
-        await userEvent.click(screen.getByTestId(/post-button/i));
-        
-        await waitFor(() => {
-            expect(screen.queryByTestId('post-content')).not.toBeInTheDocument();
-            },
-            {timeout: 2000}
+  //1.5
+  test('Drawer does not close if post-content is missing', async () => {
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Post.../i));
+
+    userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
+
+    await userEvent.click(screen.getByTestId('post-button'));
+
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('post-content')).toBeInTheDocument();
+        expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Oops!',
+          })
         );
-    });
-    
-    //1.5
-    test('Drawer does not close if post-content is too short', async () => {
-        renderComponent();
-        await userEvent.click(screen.getByText(/New Post.../i));
-        
-        userEvent.type(screen.getByTestId(/post-content/i), 'Hi');
-        
-        await userEvent.click(screen.getByTestId(/post-button/i));
-        
-        await waitFor(() => {
-            expect(screen.queryByTestId(/post-content/i)).toBeInTheDocument();
-            
-            expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
-            expect.objectContaining({
-                title: 'Oops!',
-            })
-            );
-        },
-        {
-            timeout: 2000,
-        });
-    });
+      },
+      { timeout: 2000 }
+    );
+  });
 
-    // //1.6
-    // test('Drawer fields are selectable and change to proper inputted values', async () => {
-    //     renderComponent();
-    //     await userEvent.click(screen.getByText(/New Post.../i));
+  //1.6
+  test('Drawer closes on valid form submission', async () => {
+    renderComponent();
 
-    //     await waitFor(() => {
-    //         expect(screen.getByTestId('post-content')).toBeInTheDocument();
-    //     });
+    await userEvent.click(screen.getByText(/New Post.../i));
 
-    //     await userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
+    userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
 
-    //     await waitFor(() => {
-    //         expect(screen.getByTestId('post-content')).toBeInTheDocument();
-    //         expect(screen.getByTestId('post-content')).toHaveValue('This is a test post');
-            
-    //     },
-    //     { timeout: 2000 });
-    // });
+    await userEvent.click(screen.getByTestId(/post-button/i));
+
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('post-content')).not.toBeInTheDocument();
+      },
+      { timeout: 2000 }
+    );
+  });
+
+  //1.7
+  test('Drawer does not close if post-content is too short', async () => {
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Post.../i));
+
+    userEvent.type(screen.getByTestId(/post-content/i), 'Hi');
+
+    await userEvent.click(screen.getByTestId(/post-button/i));
+
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId(/post-content/i)).toBeInTheDocument();
+
+        expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Oops!',
+          })
+        );
+      },
+      {
+        timeout: 2000,
+      }
+    );
+  });
 });

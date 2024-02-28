@@ -2,8 +2,12 @@
 import { MantineProvider } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { SignUp } from '@/components/SignUp/SignUp';
 import { DataProvider } from '@/contexts/DataContext';
+import { EmailVerify } from '@/components/SignUp/EmailVerify';
+
+const mockVerificationCode = jest.fn();
 
 beforeEach(() => {
   jest.mock('formik', () => ({
@@ -35,6 +39,15 @@ const renderComponent = () =>
     <MantineProvider>
       <DataProvider>
         <SignUp />
+      </DataProvider>
+    </MantineProvider>
+  );
+
+const renderEmailVerify = () =>
+  render(
+    <MantineProvider>
+      <DataProvider>
+        <EmailVerify verificationCode={mockVerificationCode} />
       </DataProvider>
     </MantineProvider>
   );
@@ -132,6 +145,9 @@ describe('Initial Component & Step 1: Login Details', () => {
         expect(screen.getByTestId('email')).toBeInTheDocument();
         expect(screen.getByTestId('password')).toBeInTheDocument();
         expect(screen.getByTestId('confirmPassword')).toBeInTheDocument();
+        expect(screen.getByText('Password is required')).toBeInTheDocument();
+        expect(screen.getByText('Email is required')).toBeInTheDocument();
+        expect(screen.getByText('Confirm password is required')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -149,6 +165,7 @@ describe('Initial Component & Step 1: Login Details', () => {
         expect(screen.getByTestId('email')).toBeInTheDocument();
         expect(screen.getByTestId('password')).toBeInTheDocument();
         expect(screen.getByTestId('confirmPassword')).toBeInTheDocument();
+        expect(screen.getByText('Invalid email format')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -166,6 +183,7 @@ describe('Initial Component & Step 1: Login Details', () => {
         expect(screen.getByTestId('email')).toBeInTheDocument();
         expect(screen.getByTestId('password')).toBeInTheDocument();
         expect(screen.getByTestId('confirmPassword')).toBeInTheDocument();
+        expect(screen.getByText('Password must be 8 characters or more.')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -183,6 +201,7 @@ describe('Initial Component & Step 1: Login Details', () => {
         expect(screen.getByTestId('email')).toBeInTheDocument();
         expect(screen.getByTestId('password')).toBeInTheDocument();
         expect(screen.getByTestId('confirmPassword')).toBeInTheDocument();
+        expect(screen.getByText('Passwords must match')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -246,7 +265,7 @@ describe('Step 2: Address Input', () => {
     fireEvent.click(screen.getByText(/Continue/i));
     await waitFor(
       () => {
-        expect(screen.getByTestId('address')).toBeInTheDocument();
+        expect(screen.getByText('Address is required')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -308,7 +327,7 @@ describe('Step 3: Community Select', () => {
     fireEvent.click(screen.getByText(/Continue/i));
     await waitFor(
       () => {
-        expect(screen.getByTestId('communities-item')).toBeInTheDocument();
+        expect(screen.getByText('Selecting a community is required.')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -385,9 +404,9 @@ describe('Step 4: Profile Setup', () => {
     fireEvent.click(screen.getByText(/Create Profile/i));
     await waitFor(
       () => {
-        expect(screen.getByTestId('firstName')).toBeInTheDocument();
-        expect(screen.getByTestId('lastName')).toBeInTheDocument();
-        expect(screen.getByTestId('username')).toBeInTheDocument();
+        expect(screen.getByText('First name is required')).toBeInTheDocument();
+        expect(screen.getByText('Last name is required')).toBeInTheDocument();
+        expect(screen.getByText('Username is required')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -426,13 +445,11 @@ describe('Step 4: Profile Setup', () => {
     });
     fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
     fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
-    fireEvent.change(screen.getByTestId('username'), { target: { value: '%' } });
+    fireEvent.change(screen.getByTestId('username'), { target: { value: 'gw' } });
     fireEvent.click(screen.getByText(/Create Profile/i));
     await waitFor(
       () => {
-        expect(screen.getByTestId('firstName')).toBeInTheDocument();
-        expect(screen.getByTestId('lastName')).toBeInTheDocument();
-        expect(screen.getByTestId('username')).toBeInTheDocument();
+        expect(screen.getByText('Username must be 3 characters or more.')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -455,9 +472,8 @@ describe('Step 4: Profile Setup', () => {
     fireEvent.click(screen.getByText(/Create Profile/i));
     await waitFor(
       () => {
-        expect(screen.getByTestId('firstName')).toBeInTheDocument();
-        expect(screen.getByTestId('lastName')).toBeInTheDocument();
-        expect(screen.getByTestId('username')).toBeInTheDocument();
+        expect(screen.getByText('First name must be valid')).toBeInTheDocument();
+        expect(screen.getByText('Last name must be valid')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -481,12 +497,37 @@ describe('Step 4: Profile Setup', () => {
     fireEvent.click(screen.getByText(/Create Profile/i));
     await waitFor(
       () => {
-        expect(screen.getByTestId('firstName')).toBeInTheDocument();
-        expect(screen.getByTestId('lastName')).toBeInTheDocument();
-        expect(screen.getByTestId('username')).toBeInTheDocument();
-        expect(screen.getByTestId('phone')).toBeInTheDocument();
+        expect(screen.getByText('Phone number must be valid.')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
+  });
+});
+
+// Step 5: Test the Email Verification component
+describe('Step 5: Email Verification', () => {
+  //1.1
+  test('Renders email verification step correctly', async () => {
+    renderEmailVerify();
+    const pinInputs = screen.getAllByLabelText('PinInput');
+    expect(pinInputs.length).toBe(6);
+  });
+
+  //5.2
+  test('Successfully selects and changes input fields', async () => {
+    renderEmailVerify();
+    const pinInputs = screen.getAllByLabelText('PinInput');
+    await userEvent.type(pinInputs[0], '1');
+    await userEvent.type(pinInputs[1], '2');
+    await userEvent.type(pinInputs[2], '3');
+    await userEvent.type(pinInputs[3], '4');
+    await userEvent.type(pinInputs[4], '5');
+    await userEvent.type(pinInputs[5], '6');
+    expect(pinInputs[0]).toHaveValue('1');
+    expect(pinInputs[1]).toHaveValue('2');
+    expect(pinInputs[2]).toHaveValue('3');
+    expect(pinInputs[3]).toHaveValue('4');
+    expect(pinInputs[4]).toHaveValue('5');
+    expect(pinInputs[5]).toHaveValue('6');
   });
 });
