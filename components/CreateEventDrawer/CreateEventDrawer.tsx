@@ -157,8 +157,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
                     radius: 'md',
                     color: 'red',
                     title: 'Oops!',
-                    message:
-                      "Couldn't create your event - please fill out all the required fields.",
+                    message: "Couldn't create your event - please check your inputs and try again.",
                   });
                 }
               });
