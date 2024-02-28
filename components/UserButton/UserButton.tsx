@@ -21,7 +21,7 @@ export function UserButton({ active }: UserButtonProps) {
               My Profile
             </Text>
 
-            <Text c="dimmed" size="xs">
+            <Text c="dimmed" size="xs" data-testid="current-user-info">
               {currentUser?.firstName} {currentUser?.lastName}
             </Text>
           </div>
