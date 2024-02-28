@@ -71,7 +71,11 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
 
   const handleDeclineRequest = async () => {
     modals.openConfirmModal({
-      title: <Title order={5}>Decline Friend Request?</Title>,
+      title: (
+        <Title order={5} component="p">
+          Decline Friend Request?
+        </Title>
+      ),
       children: (
         <Text size="sm">Are you sure you want to decline {user?.firstName}'s friend request?</Text>
       ),
@@ -97,7 +101,11 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
 
   const handleRemoveFriend = () => {
     modals.openConfirmModal({
-      title: <Title order={5}>Remove Friend?</Title>,
+      title: (
+        <Title order={5} component="p">
+          Remove Friend?
+        </Title>
+      ),
       children: (
         <Text size="sm">Are you sure you want to remove {user?.firstName} as a friend?</Text>
       ),
@@ -123,7 +131,11 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const handleCancelRequest = () => {
     console.log(user);
     modals.openConfirmModal({
-      title: <Title order={5}>Cancel Friend Request?</Title>,
+      title: (
+        <Title order={5} component="p">
+          Cancel Friend Request?
+        </Title>
+      ),
       children: (
         <Text size="sm">
           Are you sure you cancel your outgoing friend request to {user?.firstName}?
