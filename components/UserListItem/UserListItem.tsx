@@ -2,6 +2,7 @@
 
 import React, { useState, useReducer } from 'react';
 import { Group, Avatar, Text, Button, Title } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClock, faSmile, faUserPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -43,6 +44,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       setStatus('outgoing');
     } catch (err) {
       console.error('Failed to send friend request:', err);
+      notifications.show({
+        radius: 'md',
+        color: 'red',
+        title: 'Oops!',
+        message: 'Failed to add friend, please try again.',
+      });
     }
   };
 
@@ -53,6 +60,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       setStatus('friend');
     } catch (err) {
       console.error('Failed to add friend:', err);
+      notifications.show({
+        radius: 'md',
+        color: 'red',
+        title: 'Oops!',
+        message: 'Failed to accept friend request, please try again.',
+      });
     }
   };
 
@@ -71,6 +84,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           setStatus('none');
         } catch (error) {
           console.error('Failed to decline friend request:', error);
+          notifications.show({
+            radius: 'md',
+            color: 'red',
+            title: 'Oops!',
+            message: 'Failed to decline friend request, please try again.',
+          });
         }
       },
     });
@@ -91,6 +110,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           setStatus('none');
         } catch (error) {
           console.error('Failed to delete friend:', error);
+          notifications.show({
+            radius: 'md',
+            color: 'red',
+            title: 'Oops!',
+            message: 'Failed to remove friend, please try again.',
+          });
         }
       },
     });
@@ -113,6 +138,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           setStatus('none');
         } catch (error) {
           console.error('Failed to decline friend request:', error);
+          notifications.show({
+            radius: 'md',
+            color: 'red',
+            title: 'Oops!',
+            message: 'Failed to cancel friend request, please try again.',
+          });
         }
       },
     });
