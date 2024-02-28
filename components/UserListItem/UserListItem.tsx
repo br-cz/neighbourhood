@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import { Group, Avatar, Text, Button, Title } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,6 @@ import classes from './UserListItem.module.css';
 import {
   useCreateFriend,
   useCreateFriendRequest,
-  useFetchIncomingFriendRequests,
   useDeleteIncomingFriendRequest,
   useDeleteOutgoingFriendRequest,
   useDeleteFriend,

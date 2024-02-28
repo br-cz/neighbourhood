@@ -32,10 +32,12 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
           />
         </Group>
 
-        <div>
-          <Title order={6}>Description</Title>
-          <Text fz="sm">{event?.description}</Text>
-        </div>
+        {event.description && (
+          <div>
+            <Title order={6}>Description</Title>
+            <Text fz="sm">{event?.description}</Text>
+          </div>
+        )}
 
         <Title order={6}>Organizer</Title>
         <Group gap="xs" align="center">

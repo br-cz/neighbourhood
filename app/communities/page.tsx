@@ -11,7 +11,7 @@ export default function CommunitiesPage() {
 
   return (
     <NeighbourhoodShell>
-      <p>Communities</p>
+      <p>This page is still under construction - please check back soon!</p>
     </NeighbourhoodShell>
   );
 }

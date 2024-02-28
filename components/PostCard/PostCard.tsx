@@ -1,6 +1,4 @@
-import { Text, Avatar, Group, Button, Box } from '@mantine/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { Text, Avatar, Group, Box } from '@mantine/core';
 import classes from './PostCard.module.css';
 import { Post } from '@/src/API';
 import { formatPostedAt } from '@/utils/timeUtils';
@@ -24,14 +22,6 @@ export function PostCard({ post }: PostCardProps) {
       <Text mt="xs" size="sm">
         {post.content}
       </Text>
-      <Group mt="sm">
-        <Button size="compact-xs" radius="md" leftSection={<FontAwesomeIcon icon={faHeart} />}>
-          Like
-        </Button>
-        <Button size="compact-xs" radius="md" leftSection={<FontAwesomeIcon icon={faComment} />}>
-          Comment
-        </Button>
-      </Group>
     </Box>
   );
 }

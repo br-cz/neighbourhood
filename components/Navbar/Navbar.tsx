@@ -7,13 +7,11 @@ import classes from '@/components/Navbar/Navbar.module.css';
 //Icons
 import { SolarHomeSmileBold } from '@/public/icon/SolarHomeSmileBold';
 import { SolarCalendarBold } from '@/public/icon/SolarCalendarBold';
-import { SolarShop2Bold } from '@/public/icon/SolarShop2Bold';
 import { SolarUsersGroupTwoRoundedBold } from '@/public/icon/SolarUsersGroupTwoRoundedBold';
 
 const data = [
   { link: '/home', label: 'Home', icon: SolarHomeSmileBold },
   { link: '/events', label: 'Events', icon: SolarCalendarBold },
-  { link: '/marketplace', label: 'Marketplace', icon: SolarShop2Bold },
   { link: '/people', label: 'People', icon: SolarUsersGroupTwoRoundedBold },
 ];
 
