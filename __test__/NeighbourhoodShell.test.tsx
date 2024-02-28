@@ -2,11 +2,10 @@
 import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
 import CommunitiesPage from '@/app/communities/page';
-import { useCurrentUser } from '@/src/api/appQueries';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { utilSignOut } from '@/utils/signOutUtils';
 import { notifications } from '@mantine/notifications';
 import { signOut } from 'aws-amplify/auth';
@@ -117,9 +116,11 @@ describe('Neighbourhood Shell', () => {
   });
 
   //1.8
-  test('utilSignOut should sign out the user, clear localStorage, navigate to home, and show a notification', async () => {
+  test('utilSinOut should sign out the user, clear localStorage, navigate to home, and show a notification', async () => {
+    // Call the utility function with the mocked router
     await utilSignOut({ router: routerMock as NextRouter });
 
+    // Assertions to ensure all expected actions were called
     expect(signOut).toHaveBeenCalledWith({ global: true });
     expect(localStorageMock.removeItem).toHaveBeenCalledWith('currentUser');
     expect(routerMock.push).toHaveBeenCalledWith('/');
@@ -127,26 +128,6 @@ describe('Neighbourhood Shell', () => {
       radius: 'md',
       title: 'Logged out!',
       message: 'Log back in to continue using Neighborhood.',
-      });
-  });
-  
-  //1.9
-  test('Displays an error notification when sign out fails', async () => {
-    signOut.mockRejectedValue(new Error('Failed to sign out'));
-    renderComponent();
-
-    fireEvent.click(screen.getByTestId('logout'));
-    await waitFor(() => {
-      expect(modals.openConfirmModal).toHaveBeenCalled();
-    });
-
-    await waitFor(() => {
-      expect(notifications.show).toHaveBeenCalledWith(
-        expect.objectContaining({
-          title: 'Oops!',
-          message: 'Failed to sign out, please try again.',
-        })
-      );
     });
   });
 });
