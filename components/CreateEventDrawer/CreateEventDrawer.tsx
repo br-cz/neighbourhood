@@ -138,6 +138,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           {...formik.getFieldProps('visibility')}
           mt="md"
           data-testid="visibility"
+          comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
         />
 
         <Group justify="center" mt="lg">
@@ -156,8 +157,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
                     radius: 'md',
                     color: 'red',
                     title: 'Oops!',
-                    message:
-                      "Couldn't create your event - please fill out all the required fields.",
+                    message: "Couldn't create your event - please check your inputs and try again.",
                   });
                 }
               });
