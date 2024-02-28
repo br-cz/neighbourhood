@@ -16,7 +16,8 @@
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "npm run typecheck && npm run jest",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.3",
