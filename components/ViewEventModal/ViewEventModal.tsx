@@ -21,6 +21,7 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
       padding={30}
       transitionProps={{ transition: 'rotate-left' }}
       data-testid="view-event-modal"
+      closeButtonProps={{ 'aria-label': 'Close Modal' }}
     >
       <Stack gap="sm">
         <Group justify="center" mb={15}>
