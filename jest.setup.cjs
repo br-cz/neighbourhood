@@ -102,7 +102,7 @@ jest.mock('@/src/hooks/eventsCustomHooks', () => ({
   useCreateEvent: () => ({ handleCreateEvent: jest.fn().mockResolvedValue(true) }),
 }));
 
-jest.mock('@/src/api/postQueries', () => ({
+jest.mock('@/src/hooks/postsCustomHooks', () => ({
   useFetchPosts: jest.fn(() => ({
     posts: [],
     loading: true,
