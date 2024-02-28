@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser } from 'aws-amplify/auth';
+import { getCurrentUser } from '@aws-amplify/auth';
 import { notifications } from '@mantine/notifications';
 
 export function useAuth(redirectUrl: string = '/') {

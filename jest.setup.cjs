@@ -32,11 +32,14 @@ jest.mock('@/components/Authorization/useAuth', () => ({
   useAuth: () => ({ user: { loggedIn: true } }),
 }));
 
-jest.mock('aws-amplify/auth', () => ({
+jest.mock('@aws-amplify/auth', () => ({
   updateUserAttributes: jest.fn(),
   updatePassword: jest.fn().mockResolvedValue(true),
   signIn: jest.fn(),
   signOut: jest.fn(),
+  signUp: jest.fn(() => ({
+    userId: jest.fn(),
+  })),
 }));
 
 jest.mock('@mantine/notifications', () => ({
@@ -52,7 +55,7 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(() => '/mocked-path'),
 }));
 
-jest.mock('@/src/api/appQueries', () => ({
+jest.mock('@/src/hooks/usersCustomHooks', () => ({
   getCurrentUser: jest.fn(),
   useCurrentUser: jest.fn(() => ({
     user: {
@@ -71,6 +74,9 @@ jest.mock('@/src/api/appQueries', () => ({
       // kids: 2,
     },
   })),
+}));
+
+jest.mock('@/src/hooks/communityCustomHooks', () => ({
   useCurrentCommunity: jest.fn(() => ({
     community: {
       id: 'community1',
@@ -82,11 +88,13 @@ jest.mock('@/src/api/appQueries', () => ({
   })),
 }));
 
-jest.mock('@/src/api/userQueries', () => ({
-  updateUserEmail: jest.fn(),
+jest.mock('@/src/api/services/user', () => ({
+  updateUserEmailAPI: jest.fn(),
+  createUserAPI: jest.fn(),
+  createUserCommunityAPI: jest.fn(),
 }));
 
-jest.mock('@/src/api/eventQueries', () => ({
+jest.mock('@/src/hooks/eventsCustomHooks', () => ({
   useFetchEvents: jest.fn(() => ({
     events: [],
     loading: true,
@@ -94,7 +102,7 @@ jest.mock('@/src/api/eventQueries', () => ({
   useCreateEvent: () => ({ handleCreateEvent: jest.fn().mockResolvedValue(true) }),
 }));
 
-jest.mock('@/src/api/postQueries', () => ({
+jest.mock('@/src/hooks/postsCustomHooks', () => ({
   useFetchPosts: jest.fn(() => ({
     posts: [],
     loading: true,

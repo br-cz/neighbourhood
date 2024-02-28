@@ -1,5 +1,5 @@
 import React from 'react';
-import { signOut } from 'aws-amplify/auth';
+import { signOut } from '@aws-amplify/auth';
 import { AppShell, Group, Burger, Button, Title, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';

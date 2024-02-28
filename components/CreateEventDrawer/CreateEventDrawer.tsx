@@ -1,26 +1,9 @@
-import React, { useState } from 'react';
-import {
-  Drawer,
-  TextInput,
-  Textarea,
-  Button,
-  Group,
-  Select,
-  Text,
-  Stack,
-  Title,
-  Image,
-  ActionIcon,
-  rem,
-} from '@mantine/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage } from '@fortawesome/free-regular-svg-icons';
-import { faCloudUpload, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
+import { Drawer, TextInput, Textarea, Button, Group, Select, Text, Title } from '@mantine/core';
 import { DatePickerInput, TimeInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
-import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { Visibility } from '@/src/API';
-import { useCreateEvent } from '@/src/api/eventQueries';
+import { useCreateEvent } from '@/src/hooks/eventsCustomHooks';
 import { combineDateTime } from '@/utils/timeUtils';
 import { useFormik } from 'formik';
 import { createEventSchema } from './createEventValidation';
@@ -35,29 +18,25 @@ interface CreateEventDrawerProps {
 export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEventDrawerProps) {
   const [loading, handlers] = useDisclosure();
   const { handleCreateEvent } = useCreateEvent();
-  //const [files, setFiles] = useState<FileWithPath[]>([]);
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      eventName: '',
       description: '',
       location: '',
       date: new Date(),
       time: '',
       visibility: Visibility.PUBLIC,
-      //images: null as File | null,
     },
     validationSchema: createEventSchema,
     onSubmit: async (parameters) => {
       handlers.open();
       const eventData = {
-        name: parameters.name,
+        name: parameters.eventName,
         description: parameters.description,
         location: parameters.location,
         visibility: parameters.visibility,
         datetime: combineDateTime(parameters.date, parameters.time),
-        // TODO: Set images to the URL returned from the S3 upload, I think this is how it works
-        //images: parameters.images ? [uploadImage(parameters.images)] : [],
       };
 
       await handleCreateEvent(eventData);
@@ -91,7 +70,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           radius="md"
           label="Event Name"
           placeholder="What are you hosting?"
-          {...formik.getFieldProps('name')}
+          {...formik.getFieldProps('eventName')}
           data-testid="create-event-name-input"
           required
         />
@@ -131,12 +110,13 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
 
         <Group grow>
           <DatePickerInput
+            defaultValue={new Date()}
             radius="md"
             label="Date"
             placeholder="Pick a date"
-            {...formik.getFieldProps('date')}
             mt="md"
             data-testid="date"
+            onChange={(value) => formik.setFieldValue('date', value)}
           />
 
           <TimeInput
@@ -191,100 +171,3 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
     </Drawer>
   );
 }
-
-//Clean up later, this is the image upload section for our next sprint
-{
-  /* <div>
-          <Group gap={5} align="center" mt="lg">
-            <Text fz="sm" fw={500}>
-              Cover Photo
-            </Text>
-            <Text size="sm" c="dimmed">
-              (optional)
-            </Text>
-            <ActionIcon
-              color="red"
-              radius="md"
-              variant="subtle"
-              size={16}
-              onClick={handleRemoveImage}
-              disabled={previews.length === 0}
-              ml={5}
-            >
-              <FontAwesomeIcon icon={faTrash} size="xs" />
-            </ActionIcon>
-          </Group>
-          {previews.length === 0 ? (
-            <Dropzone
-              onDrop={handleDropImage}
-              onReject={(rejected) => console.log('rejected files', rejected)}
-              maxSize={5 * 1024 ** 2}
-              maxFiles={1}
-              accept={IMAGE_MIME_TYPE}
-              radius="md"
-              mt={5}
-            >
-              <Stack
-                align="center"
-                justify="center"
-                style={{ minHeight: 220, pointerEvents: 'none' }}
-              >
-                <Dropzone.Accept>
-                  <FontAwesomeIcon
-                    icon={faCloudUpload}
-                    size="3x"
-                    color="var(--mantine-color-blue-6)"
-                  />
-                </Dropzone.Accept>
-                <Dropzone.Reject>
-                  <FontAwesomeIcon icon={faXmark} size="3x" color="var(--mantine-color-red-6)" />
-                </Dropzone.Reject>
-                <Dropzone.Idle>
-                  <FontAwesomeIcon icon={faImage} size="3x" color="var(--mantine-color-dimmed)" />
-                </Dropzone.Idle>
-
-                <div>
-                  <Text ta="center" size="md">
-                    Drag here or click to select file
-                  </Text>
-                  <Text ta="center" size="xs" c="dimmed" mt={7}>
-                    File should not exceed 5MB
-                  </Text>
-                </div>
-              </Stack>
-            </Dropzone>
-          ) : (
-            <>{previews}</>
-          )}
-        </div> */
-}
-
-// const previews = files.map((file, index) => {
-//   const imageUrl = URL.createObjectURL(file);
-//   return (
-//     <Image
-//       key={index}
-//       src={imageUrl}
-//       radius="md"
-//       mt="xs"
-//       onLoad={() => URL.revokeObjectURL(imageUrl)}
-//     />
-//   );
-// });
-
-// const uploadImage = (file: FileWithPath) => {
-//   // TODO: Upload image to S3 so that we can get a URL to store in the database
-// };
-
-// const handleDropImage = (acceptedFiles: FileWithPath[]) => {
-//   const file = acceptedFiles[0];
-//   if (file) {
-//     setFiles([file]);
-//     formik.setFieldValue('eventImage', file);
-//   }
-// };
-
-// const handleRemoveImage = () => {
-//   setFiles([]);
-//   formik.setFieldValue('eventImage', null);
-// };

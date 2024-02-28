@@ -1,9 +1,6 @@
 import { notifications } from '@mantine/notifications';
-import { signUp } from 'aws-amplify/auth';
-import { generateClient } from 'aws-amplify/api';
-import { createUser, createUserCommunity } from '@/src/graphql/mutations';
-
-const client = generateClient({});
+import { signUp } from '@aws-amplify/auth';
+import { createUserAPI, createUserCommunityAPI } from '@/src/api/services/user';
 
 export const processSignUp = async (parameters: any, nextStep: () => void, handlers: any) => {
   const values = { ...parameters };
@@ -49,22 +46,9 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         postalCode: '',
       };
 
-      await client.graphql({
-        query: createUser,
-        variables: {
-          input: createUserInput,
-        },
-      });
+      await createUserAPI(createUserInput);
 
-      await client.graphql({
-        query: createUserCommunity,
-        variables: {
-          input: {
-            communityId: values.selectedCommunity,
-            userId: cognitoResponse.userId,
-          },
-        },
-      });
+      await createUserCommunityAPI(cognitoResponse.userId, values.selectedCommunity);
     }
 
     console.log('Sign up success:', cognitoResponse.userId);

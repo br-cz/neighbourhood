@@ -11,7 +11,7 @@
  * - Error: A JSON error message with an HTTP status code, indicating the nature of the failure (invalid input, server error, etc.).
  */
 
-import { generateClient } from 'aws-amplify/api';
+import { generateClient } from '@aws-amplify/api';
 import { NextResponse } from 'next/server';
 import { configureAmplify } from '../utils/amplifyServerConfig';
 import { getCoordinates } from '../getCoordinatesFromPostalCode/route';
