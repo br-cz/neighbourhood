@@ -51,6 +51,7 @@ export interface Post {
   likedBy: User[];
   comments: Comment[];
   visibility: Visibility;
+  createdAt: string;
 }
 
 export interface Comment {
@@ -58,6 +59,7 @@ export interface Comment {
   post: Post;
   author: User;
   content: string;
+  createdAt: string;
 }
 
 export interface Event {
