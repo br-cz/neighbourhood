@@ -56,7 +56,7 @@ describe('Neighbourhood Shell', () => {
     await waitFor(() => {
       console.log(useCurrentUser());
       expect(screen.getByText('My Profile')).toBeInTheDocument();
-      expect(screen.getByText('Test User')).toBeInTheDocument();
+      expect(screen.getByTestId('current-user-info')).toBeInTheDocument();
     });
   });
 

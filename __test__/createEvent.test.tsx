@@ -29,8 +29,6 @@ jest.mock('formik', () => ({
     setFieldValue: jest.fn(),
     setFieldTouched: jest.fn(),
     getFieldProps: jest.fn().mockImplementation(() => ({
-      //name,
-      //value: '',
       onChange: jest.fn(),
       onBlur: jest.fn(),
     })),
@@ -48,13 +46,10 @@ const renderComponent = () =>
     </MantineProvider>
   );
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 describe('EventsPage - Create Event', () => {
-  //reset mocks before each test: apparently it works even without it
-  //   beforeEach(() => {
-  //     jest.clearAllMocks();
-  //   });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   //1.1
   test('Render Event Page', async () => {
     renderComponent();
