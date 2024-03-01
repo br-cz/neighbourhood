@@ -165,6 +165,12 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               formik.validateForm().then((errors) => {
                 if (Object.keys(errors).length === 0 && !loading) {
                   formik.submitForm();
+                  notifications.show({
+                    radius: 'md',
+                    color: 'yellow.6',
+                    title: 'Cha-ching!',
+                    message: 'Your item is now up for sale and visible to your neighbours.',
+                  });
                 } else {
                   notifications.show({
                     radius: 'md',
