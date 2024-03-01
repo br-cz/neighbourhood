@@ -10,6 +10,7 @@ import { PostCard } from '@/components/PostCard/PostCard';
 import { useFetchPosts } from '@/src/hooks/postsCustomHooks';
 import { Post } from '@/src/API';
 
+//placeholder data - remove when comments are implemented
 const users = [
   {
     id: '1',
@@ -83,7 +84,8 @@ export default function HomePage() {
           verticalSpacing={{ base: 'md', sm: 'lg' }}
           data-testid="post-feed"
         >
-          <PostCard post={placeholderPosts[0]} />
+          <PostCard post={placeholderPosts[0]} />{' '}
+          {/* placeholder - remove when comments are implemented */}
           {sortedPosts.map((post: Post) => (
             <PostCard key={post.id} post={post} />
           ))}
