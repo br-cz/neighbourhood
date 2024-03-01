@@ -25,7 +25,7 @@ interface CreateListingDrawerProps {
 
 export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateListingDrawerProps) {
   const [loading, handlers] = useDisclosure();
-  //   const { handleCreateEvent } = useCreateEvent();
+  //   const { handleCreateListing } = useCreateListing();
 
   const formik = useFormik({
     initialValues: {
@@ -46,7 +46,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         visibility: parameters.visibility,
       };
 
-      //   await handleCreateEvent(listingData);
+      //   await handleCreateListing(listingData);
       onPostCreated();
       handlers.close();
       onClose();
@@ -124,23 +124,25 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
           data-testid="description"
         />
 
+        {/* Autofill contact as user's phone number if available */}
         <Grid align="center">
-          <Grid.Col span={7}>
+          <Grid.Col span={8}>
             <TextInput
               radius="md"
               label="Phone Number"
-              placeholder="Reach me at..."
+              placeholder="Reach me about this item at..."
               {...formik.getFieldProps('contact')}
               mt="md"
               data-testid="contact"
             />
           </Grid.Col>
-          <Grid.Col span={2}>
+          {/* Potential idea, can remove */}
+          {/* <Grid.Col span={2}>
             <Checkbox label="Text" radius="md" mt="xl" />
           </Grid.Col>
           <Grid.Col span={2}>
             <Checkbox label="Call" radius="md" mt="xl" />
-          </Grid.Col>
+          </Grid.Col> */}
         </Grid>
 
         <Select
