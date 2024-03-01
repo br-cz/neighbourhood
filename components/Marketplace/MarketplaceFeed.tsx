@@ -97,9 +97,9 @@ export function MarketplaceFeed() {
         verticalSpacing={{ base: 'md', sm: 'lg' }}
         data-testid="marketplace-feed"
       >
-        {items.map((item: ItemForSale) => (
+        {/* {items.map((item: ItemForSale) => (
           <MarketplaceCard key={item.id} item={item} onView={() => handleViewListing(item)} />
-        ))}
+        ))} */}
       </SimpleGrid>
       {selectedListing && (
         <ViewListingModal
