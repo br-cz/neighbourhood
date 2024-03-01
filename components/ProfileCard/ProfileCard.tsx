@@ -13,6 +13,7 @@ export function ProfileCard() {
   const phoneNumber = '204-123-4567';
   const address = '100 Waverley Dr.';
   const birthday = 'May 1, 2001 (22 years)';
+  const pronouns = 'he/him';
   const pets = 1;
   const kids = 0;
 
@@ -21,14 +22,14 @@ export function ProfileCard() {
       <Group gap={50}>
         <Avatar src={user?.profilePic} size={150} radius="xl" />
         <Stack gap="xs">
-          <div>
+          <Stack gap={0}>
             <Title order={3}>
               {user?.firstName} {user?.lastName}
             </Title>
             <Text c="dimmed" size="sm">
               {user?.bio || 'Excited to be part of the neighbourhood!'}
             </Text>
-          </div>
+          </Stack>
           <Group gap={50} mt="xs">
             <Stack gap="xs">
               <Text size="sm">
@@ -37,8 +38,14 @@ export function ProfileCard() {
               <Text size="sm">
                 <b>Address:</b> {address}
               </Text>
+              <Text size="sm">
+                <b>Joined:</b> {formatDate(user?.createdAt)}
+              </Text>
             </Stack>
             <Stack gap="xs">
+              <Text size="sm">
+                <b>Pronouns:</b> {pronouns}
+              </Text>
               <Text size="sm">
                 <b>Birthday:</b> {birthday}
               </Text>
@@ -52,9 +59,6 @@ export function ProfileCard() {
               </Group>
             </Stack>
           </Group>
-          <Text size="sm">
-            <b>Joined:</b> {formatDate(user?.createdAt)}
-          </Text>
         </Stack>
       </Group>
     </Box>
