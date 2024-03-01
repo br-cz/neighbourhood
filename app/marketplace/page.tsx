@@ -38,7 +38,7 @@ export default function MarketplacePage() {
           </Button>
         </Group>
       </Group>
-      <MarketplaceFeed />
+      <MarketplaceFeed refresh={refresh} />
       <CreateListingDrawer
         opened={drawerOpened}
         onClose={drawerHandlers.close}

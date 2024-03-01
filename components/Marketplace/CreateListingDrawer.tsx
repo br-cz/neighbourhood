@@ -10,12 +10,12 @@ import {
   Title,
   NumberInput,
   Grid,
-  Checkbox,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { useFormik } from 'formik';
 import { Visibility } from '@/src/API';
+import { useCreateListing } from '@/src/hooks/marketplaceCustomHooks';
 
 interface CreateListingDrawerProps {
   opened: boolean;
@@ -25,7 +25,7 @@ interface CreateListingDrawerProps {
 
 export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateListingDrawerProps) {
   const [loading, handlers] = useDisclosure();
-  //   const { handleCreateListing } = useCreateListing();
+  const { handleCreateListing } = useCreateListing();
 
   const formik = useFormik({
     initialValues: {
@@ -46,7 +46,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         visibility: parameters.visibility,
       };
 
-      //   await handleCreateListing(listingData);
+      await handleCreateListing(listingData);
       onPostCreated();
       handlers.close();
       onClose();
