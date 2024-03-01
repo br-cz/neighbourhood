@@ -49,7 +49,11 @@ export function ViewListingModal({ opened, onClose, item }: ViewListingModalProp
             {item.seller.firstName} {item.seller.lastName}
           </Text>
         </Group>
-        <Group gap={25} mt="xs">
+        <Group gap="lg" mt="xs">
+          <div>
+            <Title order={6}>Price</Title>
+            <Text fz="sm">${item?.price}</Text>
+          </div>
           <div>
             <Title order={6}>If Interested, Contact</Title>
             <Text fz="sm">{item?.contact}</Text>
