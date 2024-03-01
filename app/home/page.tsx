@@ -15,13 +15,13 @@ const users = [
     id: '1',
     firstName: 'Bojangle',
     lastName: 'Williams',
-    profilePic: 'https://i.pravatar.cc/300',
+    profilePic: 'https://avatar.iran.liara.run/public/46',
   },
   {
     id: '2',
     firstName: 'LeJon',
     lastName: 'Brames',
-    profilePic: 'https://i.pravatar.cc/500',
+    profilePic: 'https://avatar.iran.liara.run/public/37',
   },
 ];
 const comments = [
