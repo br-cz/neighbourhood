@@ -17,6 +17,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     .toLowerCase()
     .replace(/^\w/, (c: string) => c.toUpperCase());
   values.phoneNumber = parameters.phoneNumber.trim();
+  const profilePicURL = `https://avatar.iran.liara.run/username?username=${encodeURIComponent(`${values.firstName} ${values.familyName}`)}`;
 
   try {
     // Step 1: Sign Up with AWS Cognito
@@ -44,6 +45,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         lastName: values.familyName,
         selectedCommunity: values.selectedCommunity,
         postalCode: '',
+        profilePic: profilePicURL,
       };
 
       await createUserAPI(createUserInput);

@@ -46,18 +46,19 @@ const input = { id: userId, email: newEmail, _version };
 export const createUserAPI = async (user: any) => {
     try {
         const createUserResponse = await client.graphql({
-            query: createUser,
-            variables: {
-                input: {
-                    id: user.id,
-                    username: user.username,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    selectedCommunity: user.selectedCommunity,
-                    postalCode: user.postalCode,
-                },
+          query: createUser,
+          variables: {
+            input: {
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              selectedCommunity: user.selectedCommunity,
+              postalCode: user.postalCode,
+              profilePic: user.profilePic,
             },
+          },
         });
         return createUserResponse.data.createUser;
     } catch (error: any) {
