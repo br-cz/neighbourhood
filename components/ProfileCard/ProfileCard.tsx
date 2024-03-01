@@ -10,7 +10,6 @@ export function ProfileCard() {
   const { currentUser: user } = useCurrentUser();
 
   //placeholder data
-  const bio = "hi! i'm a u of m cs student. feel free to reach out for anything!";
   const phoneNumber = '204-123-4567';
   const address = '100 Waverley Dr.';
   const birthday = 'May 1, 2001 (22 years)';
@@ -21,17 +20,17 @@ export function ProfileCard() {
     <Box w={1000} className={classes.card} data-testid="profile-card">
       <Group gap={50}>
         <Avatar src={user?.profilePic} size={150} radius="xl" />
-        <Stack gap="sm">
+        <Stack gap="xs">
           <div>
             <Title order={3}>
               {user?.firstName} {user?.lastName}
             </Title>
             <Text c="dimmed" size="sm">
-              {bio}
+              {user?.bio || 'Excited to be part of the neighbourhood!'}
             </Text>
           </div>
           <Group gap={50} mt="xs">
-            <Stack>
+            <Stack gap="xs">
               <Text size="sm">
                 <b>Contact:</b> {phoneNumber}
               </Text>
@@ -39,7 +38,7 @@ export function ProfileCard() {
                 <b>Address:</b> {address}
               </Text>
             </Stack>
-            <Stack>
+            <Stack gap="xs">
               <Text size="sm">
                 <b>Birthday:</b> {birthday}
               </Text>
