@@ -81,7 +81,7 @@ export default function ProfilePage() {
           />
           {errorMessage && (
             <Text c="red" m="xs" size="sm">
-              Couldn&apos;t update details: {errorMessage}
+              Could not update details: {errorMessage === "Incorrect username or password." ? "Incorrect password." : errorMessage}
             </Text>
           )}
           <Button onClick={confirmSubmit} mt={30} loading={loading}>
