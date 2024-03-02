@@ -98,7 +98,7 @@ export const createNewCommentAPI = async (commentData: CommentDataInput) => {
     });
     return comment.data.createComment;
   } catch (error: any) {
-    throw new HttpError(`Error creating post: ${error.message}`, error.statusCode || 500);
+    throw new HttpError(`Error creating comment: ${error.message}`, error.statusCode || 500);
   }
 };
 
