@@ -16,6 +16,10 @@ import { Post } from '@/types/types';
 import { formatPostedAt } from '@/utils/timeUtils';
 import { CommentCard } from '@/components/CommentCard/CommentCard';
 import classes from './PostCard.module.css';
+import { useFormik } from 'formik';
+import { createCommentSchema } from './createCommentSchema';
+import { useCreateComment } from '@/src/hooks/postsCustomHooks';
+import { notifications } from '@mantine/notifications';
 
 interface PostCardProps {
   post: Post;
@@ -24,6 +28,25 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
   const [likeOpened, { toggle: toggleLike }] = useDisclosure(false);
+  const { handleCreateComment } = useCreateComment();
+
+  const formik = useFormik({
+    initialValues: {
+      content: '',
+    },
+    validationSchema: createCommentSchema,
+    onSubmit: async (parameters) => {
+      toggleComment();
+      const commentData = {
+        content: parameters.content,
+        postCommentsId: post.id,
+      };
+
+      await handleCreateComment(commentData);
+      toggleComment();
+    },
+  });
+
   const handleLike = () => {
     //Mutation to like post
     toggleLike();
@@ -70,11 +93,14 @@ export function PostCard({ post }: PostCardProps) {
         </Button>
       </Group>
       <Collapse in={commentOpened} mt="sm">
-        <Box w={350}>
+        <form>
           <TextInput
+            name="content"
+            placeholder="Write a comment..."
             radius="lg"
             size="sm"
-            placeholder="Write a comment..."
+            onChange={formik.handleChange}
+            value={formik.values.content}
             rightSectionWidth={42}
             rightSection={
               <ActionIcon
@@ -82,13 +108,29 @@ export function PostCard({ post }: PostCardProps) {
                 radius="xl"
                 color="dark.6"
                 variant="light"
-                onClick={handlePostComment}
+                type="submit"
+                onClick={() => {
+                  formik.validateForm().then((errors) => {
+                    console.log(errors); // For logging
+                    if (Object.keys(errors).length === 0) {
+                      // No errors, form is valid so we submit
+                      formik.submitForm();
+                    } else {
+                      notifications.show({
+                        radius: 'md',
+                        color: 'red',
+                        title: 'Oops!',
+                        message: errors.content,
+                      });
+                    }
+                  });
+                }}
               >
                 <FontAwesomeIcon size="xs" icon={faArrowRight} />
               </ActionIcon>
             }
           />
-        </Box>
+        </form>
       </Collapse>
 
       <SimpleGrid
@@ -99,8 +141,8 @@ export function PostCard({ post }: PostCardProps) {
         mt="sm"
       >
         {post.comments &&
-          post.comments.length > 0 &&
-          post.comments.map((comment) => <CommentCard key={comment.id} comment={comment} />)}
+          post.comments.items.length > 0 &&
+          post.comments.items.map((comment) => <CommentCard key={comment.id} comment={comment} />)}
       </SimpleGrid>
     </Box>
   );
