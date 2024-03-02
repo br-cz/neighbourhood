@@ -77,6 +77,7 @@ export const getAllCommunityDetails = async () => {
           id
           name
           image
+          location
           posts {
             items {
               id

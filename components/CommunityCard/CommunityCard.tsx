@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, Text, Card, Stack, Button, Flex, Grid } from '@mantine/core';
 import { Community } from '@/src/API';
+import { IconChecks, IconCheck, IconX, IconPlus } from '@tabler/icons-react';
 
 interface CommunityCardProps {
   community: Community;
@@ -24,6 +25,9 @@ export default function CommunityCard({ community, currentUserID, onSelect }: Co
 
   // Get the number of friends this user has in the community
   const numberOfFriendsInCommunity = friendsInCommunity.length;
+
+  const selectButtonText = currentUserMemberObject ? 'Selected' : 'Select';
+  const buttonIcon = currentUserMemberObject ? <IconCheck size={15} /> : <IconPlus size={15} />;
 
   return (
     <Stack align="center">
@@ -58,10 +62,10 @@ export default function CommunityCard({ community, currentUserID, onSelect }: Co
               align="flex-end"
               style={{ height: '100%' }}
             >
-              <Button size="sm" variant="outline" onClick={onSelect}>
-                Select
+              <Button size="sm" variant="outline" onClick={onSelect} leftSection={buttonIcon}>
+                {selectButtonText}
               </Button>
-              <Button size="sm" variant="filled" bg="red">
+              <Button size="sm" variant="filled" color="red" disabled={!currentUserMemberObject}>
                 Leave
               </Button>
             </Flex>

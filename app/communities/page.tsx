@@ -10,6 +10,7 @@ import { IconPlus } from '@tabler/icons-react';
 import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
 import { Community } from '@/src/API';
 import { createUserCommunityAPI } from '@/src/api/services/user';
+import { CommunityListItem } from '@/components/CommunityListItem/CommunityListItem';
 // placeholder data for now
 // const communities = {
 //   1: {
@@ -42,6 +43,11 @@ export default function CommunitiesPage() {
   const [selectedCommunity, setSelectedCommunity] = useState(null);
   const { communities, loading } = useFetchAllCommunities(refresh);
   const toggleRefresh = () => setRefresh((flag) => !flag);
+  const [showAddNew, setShowAddNew] = useState(false);
+
+  const handleAddNewClick = () => {
+    setShowAddNew(true);
+  };
 
   const handleCommunitySelect = async (community: any) => {
     const currentUserMemberObject = community.members?.items?.find(
@@ -75,6 +81,10 @@ export default function CommunitiesPage() {
   };
 
   if (!user) return null;
+  // Filter communities to only those where the user is a member
+  const userCommunities = Object.values(communities).filter((community: Community) =>
+    community.members?.items?.some((member) => member?.user?.id === user)
+  );
 
   return (
     <NeighbourhoodShell>
@@ -82,17 +92,35 @@ export default function CommunitiesPage() {
         <Title order={1}>My Communities</Title>
       </Group>
       <Stack mt="md" gap="xl" align="center">
-        {Object.values(communities).map((community: Community) => (
-          <CommunityCard
-            key={community.id}
-            community={community}
-            currentUserID={user}
-            onSelect={() => handleCommunitySelect(community)}
-          />
-        ))}
-        <Button size="md" variant="outline" leftSection={<IconPlus size={15} />}>
-          Add New
-        </Button>
+        {!showAddNew ? (
+          <>
+            {userCommunities.map((community: Community) => (
+              <CommunityCard
+                key={community.id}
+                community={community}
+                currentUserID={user}
+                onSelect={() => handleCommunitySelect(community)}
+              />
+            ))}
+            <Button
+              size="md"
+              variant="outline"
+              leftSection={<IconPlus size={15} />}
+              onClick={handleAddNewClick}
+            >
+              Add New
+            </Button>
+          </>
+        ) : (
+          Object.values(communities).map((community: Community) => (
+            <CommunityCard
+              key={community.id}
+              community={community}
+              currentUserID={user}
+              onSelect={() => handleCommunitySelect(community)}
+            />
+          ))
+        )}
       </Stack>
     </NeighbourhoodShell>
   );
