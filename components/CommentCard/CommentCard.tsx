@@ -1,10 +1,10 @@
 import { Text, Avatar, Group, Box } from '@mantine/core';
 import classes from './CommentCard.module.css';
 import { formatPostedAt } from '@/utils/timeUtils';
-import { Comment } from '@/types/types';
+import { Comments } from '@/types/types';
 
 interface CommentCardProps {
-  comment: Comment;
+  comment: Comments;
 }
 
 export function CommentCard({ comment }: CommentCardProps) {
