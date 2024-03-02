@@ -2,11 +2,10 @@ import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event';
 import EventsPage from '@/app/events/page';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
-
+import userEvent from '@testing-library/user-event';
 jest.mock('formik', () => ({
   ...jest.requireActual('formik'),
   useFormik: jest.fn().mockImplementation(() => ({
@@ -80,8 +79,8 @@ describe('EventsPage - Create Event', () => {
     renderComponent();
     await userEvent.click(screen.getByText(/New Event.../i));
 
-    await userEvent.type(screen.getByTestId('location'), '123 Sesame Street');
-    await userEvent.type(screen.getByTestId('time'), '12:00');
+    userEvent.type(screen.getByTestId('location'), '123 Sesame Street');
+    userEvent.type(screen.getByTestId('time'), '12:00');
 
     // Submit the form without filling in the required fields
     await userEvent.click(screen.getByText(/Post Event/i));
@@ -107,8 +106,8 @@ describe('EventsPage - Create Event', () => {
     renderComponent();
     await userEvent.click(screen.getByText(/New Event.../i));
 
-    await userEvent.type(screen.getByTestId('create-event-name-input'), 'Garage Sale');
-    await userEvent.type(screen.getByTestId('time'), '12:00');
+    userEvent.type(screen.getByTestId('create-event-name-input'), 'Garage Sale');
+    userEvent.type(screen.getByTestId('time'), '12:00');
 
     // Submit the form without filling in the required fields
     await userEvent.click(screen.getByText(/Post Event/i));
@@ -134,8 +133,8 @@ describe('EventsPage - Create Event', () => {
     renderComponent();
     await userEvent.click(screen.getByText(/New Event.../i));
 
-    await userEvent.type(screen.getByTestId('create-event-name-input'), 'Garage Sale');
-    await userEvent.type(screen.getByTestId('location'), '123 Sesame Street');
+    userEvent.type(screen.getByTestId('create-event-name-input'), 'Garage Sale');
+    userEvent.type(screen.getByTestId('location'), '123 Sesame Street');
 
     // Submit the form without filling in the required fields
     await userEvent.click(screen.getByText(/Post Event/i));
@@ -157,13 +156,13 @@ describe('EventsPage - Create Event', () => {
 
   //1.7
   test('Drawer closes on valid form submission', async () => {
+    //Here we are testing if the drawer closes after a valid form submission
     renderComponent();
     fireEvent.click(screen.getByText(/New Event.../i));
 
     await waitFor(() => {
       expect(screen.getByTestId('create-event-name-input')).toBeInTheDocument();
     });
-
     fireEvent.change(screen.getByTestId('create-event-name-input'), {
       target: { value: 'Garage Sale' },
     });
