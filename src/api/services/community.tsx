@@ -5,50 +5,50 @@ import { HttpError } from '@/src/models/error/HttpError';
 const client = generateClient();
 
 export const getCommunityAPI = async (communityId: string) => {
-    try {
-      const response = await client.graphql({
-        query: getCommunity,
-        variables: { id: communityId },
-      });
-      return response.data.getCommunity;
-    } catch (error: any) {
-      throw new HttpError(error.message, error.statusCode || 500);
-    }
+  try {
+    const response = await client.graphql({
+      query: getCommunity,
+      variables: { id: communityId },
+    });
+    return response.data.getCommunity;
+  } catch (error: any) {
+    throw new HttpError(error.message, error.statusCode || 500);
+  }
 };
 
 export const getCurrentCommunityAPI = async () => {
-    try {
-      const currentCommunityID = JSON.parse(localStorage.getItem('currentCommunityID')!);
-      if (!currentCommunityID) {
-        throw new Error('No current community ID found');
-      }
-      return await getCommunityAPI(currentCommunityID);
-    } catch (error: any) {
-      throw new HttpError(error.message, error.statusCode || 500);
+  try {
+    const currentCommunityID = JSON.parse(localStorage.getItem('currentCommunityID')!);
+    if (!currentCommunityID) {
+      throw new Error('No current community ID found');
     }
+    return await getCommunityAPI(currentCommunityID);
+  } catch (error: any) {
+    throw new HttpError(error.message, error.statusCode || 500);
+  }
 };
 
 export const getAllUserCommunities = async (communityId: string) => {
   const ListUserCommunities = /* GraphQL */ `
-  query ListUserCommunities {
-    listUserCommunities {
-      nextToken
-      startedAt
-      items {
-        id
-        user {
+    query ListUserCommunities {
+      listUserCommunities {
+        nextToken
+        startedAt
+        items {
           id
-          firstName
-          lastName
-          username
-          profilePic
+          user {
+            id
+            firstName
+            lastName
+            username
+            profilePic
+          }
+          communityId
+          userId
         }
-        communityId
-        userId
       }
     }
-  }
-`;
+  `;
   try {
     const fetchedMembers = await client.graphql({
       query: ListUserCommunities,
@@ -63,6 +63,45 @@ export const getAllUserCommunities = async (communityId: string) => {
 export const getAllCommunities = async () => {
   try {
     const response = await client.graphql({ query: listCommunities });
+    return response;
+  } catch (error: any) {
+    throw new HttpError(error.message, error.statusCode || 500);
+  }
+};
+
+export const getAllCommunityDetails = async () => {
+  const getAllCommunityDetails = /* GraphQL */ `
+    query getAllCommunityDetails {
+      listCommunities {
+        items {
+          id
+          name
+          image
+          posts {
+            items {
+              id
+            }
+          }
+          members {
+            items {
+              id
+              userId
+              user {
+                id
+                friends
+              }
+            }
+          }
+        }
+      }
+      syncEvents {
+        nextToken
+        startedAt
+      }
+    }
+  `;
+  try {
+    const response = await client.graphql({ query: getAllCommunityDetails });
     return response;
   } catch (error: any) {
     throw new HttpError(error.message, error.statusCode || 500);
