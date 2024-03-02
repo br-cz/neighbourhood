@@ -16,7 +16,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useFormik } from 'formik';
 import { Visibility } from '@/src/API';
 import { useCreateListing } from '@/src/hooks/marketplaceCustomHooks';
-
+import { createListingSchema } from './createListingValidation';
 interface CreateListingDrawerProps {
   opened: boolean;
   onClose: () => void;
@@ -35,7 +35,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       contact: '',
       visibility: Visibility.PUBLIC,
     },
-    // validationSchema: createEventSchema,
+    validationSchema: createListingSchema,
     onSubmit: async (parameters) => {
       handlers.open();
       const listingData = {
@@ -53,6 +53,13 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       formik.resetForm();
     },
   });
+
+  const handleContactChange = (e: any) => {
+    const { value } = e.target;
+    const numericPhoneNumber = value.replace(/\D/g, '');
+    const formattedPhoneNumber = numericPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+    formik.setFieldValue('contact', formattedPhoneNumber);
+  };
 
   return (
     <Drawer
@@ -81,6 +88,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               placeholder="What are you selling?"
               {...formik.getFieldProps('title')}
               data-testid="title-input"
+              required
             />
           </Grid.Col>
           <Grid.Col span={4}>
@@ -97,6 +105,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               stepHoldDelay={500}
               stepHoldInterval={100}
               data-testid="price-input"
+              required
             />
           </Grid.Col>
         </Grid>
@@ -134,6 +143,9 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               {...formik.getFieldProps('contact')}
               mt="md"
               data-testid="contact"
+              onChange={handleContactChange} 
+              maxLength={14}
+              required
             />
           </Grid.Col>
           {/* Potential idea, can remove */}
