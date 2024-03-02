@@ -3,7 +3,6 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { wait } from '@testing-library/user-event/dist/types/utils';
 import EventsPage from '@/app/events/page';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
