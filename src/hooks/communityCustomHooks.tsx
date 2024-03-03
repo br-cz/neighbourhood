@@ -85,3 +85,29 @@ export const useFetchAllCommunities = (refresh: boolean = false) => {
 
   return { communities, loading, error };
 };
+
+export const useFetchAllUserCommunities = (refresh: boolean = false) => {
+  const [userCommunityList, setCommunities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchAllUserCommunities = async () => {
+      try {
+        setLoading(true);
+        const communityId = getCurrentCommunityID();
+        const response = await getAllUserCommunities(communityId);
+        const allUserCommunities = JSON.parse(JSON.stringify(response));
+        setCommunities(allUserCommunities.data.listUserCommunities.items);
+      } catch (err: any) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllUserCommunities();
+  }, [refresh]);
+
+  return { userCommunityList, loading, error };
+};

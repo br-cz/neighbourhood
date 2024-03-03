@@ -2,14 +2,15 @@ import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
 import classes from './CommunityButton.module.css';
-import { useData } from '@/contexts/DataContext';
+//import { useData } from '@/contexts/DataContext';
+import { useCurrentCommunity } from '@/src/hooks/communityCustomHooks';
 
 interface CommunityButtonProps {
   active: boolean;
 }
 
 export function CommunityButton({ active }: CommunityButtonProps) {
-  const { community } = useData();
+  const { community } = useCurrentCommunity();
   return (
     <Link href="/communities" passHref className={classes.link} data-testid="community">
       <UnstyledButton className={`${classes.community} ${active ? classes.active : ''}`}>

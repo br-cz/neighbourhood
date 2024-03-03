@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar, Text, Card, Stack, Button, Flex, Grid } from '@mantine/core';
 import { Community } from '@/src/API';
 import { IconChecks, IconCheck, IconX, IconPlus } from '@tabler/icons-react';
+import { getCurrentCommunityID } from '@/src/hooks/communityCustomHooks';
 
 interface CommunityCardProps {
   community: Community;
   onSelect: () => void;
   currentUserID: string;
+  onDeselect: () => void;
 }
 
-export default function CommunityCard({ community, currentUserID, onSelect }: CommunityCardProps) {
+export default function CommunityCard({
+  community,
+  currentUserID,
+  onSelect,
+  onDeselect,
+}: CommunityCardProps) {
   // Get the current user's member object from the community
   const currentUserMemberObject = community.members?.items?.find(
     (member) => member?.user?.id === currentUserID
@@ -26,12 +33,12 @@ export default function CommunityCard({ community, currentUserID, onSelect }: Co
   // Get the number of friends this user has in the community
   const numberOfFriendsInCommunity = friendsInCommunity.length;
 
-  const selectButtonText = currentUserMemberObject ? 'Selected' : 'Select';
+  const selectButtonText = community.id === getCurrentCommunityID() ? 'Selected' : 'Select';
   const buttonIcon = currentUserMemberObject ? <IconCheck size={15} /> : <IconPlus size={15} />;
 
   return (
     <Stack align="center">
-      <Card shadow="md" withBorder w="27vw">
+      <Card shadow="md" withBorder w="32vw">
         <Grid align="stretch">
           <Grid.Col span={2}>
             <Avatar
@@ -65,7 +72,13 @@ export default function CommunityCard({ community, currentUserID, onSelect }: Co
               <Button size="sm" variant="outline" onClick={onSelect} leftSection={buttonIcon}>
                 {selectButtonText}
               </Button>
-              <Button size="sm" variant="filled" color="red" disabled={!currentUserMemberObject}>
+              <Button
+                size="sm"
+                variant="filled"
+                color="red"
+                disabled={!currentUserMemberObject}
+                onClick={onDeselect}
+              >
                 Leave
               </Button>
             </Flex>
