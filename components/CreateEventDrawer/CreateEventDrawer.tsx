@@ -134,8 +134,12 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           radius="md"
           label="Visibility"
           placeholder="Choose visibility"
-          data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
-          {...formik.getFieldProps('visibility')}
+          data={[
+            { value: Visibility.PUBLIC, label: 'Public' },
+            { value: Visibility.PRIVATE, label: 'Private' },
+          ]}
+          value={formik.values.visibility}
+          onChange={(value) => formik.setFieldValue('visibility', value)}
           mt="md"
           data-testid="visibility"
           comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
