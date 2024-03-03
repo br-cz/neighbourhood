@@ -1,5 +1,5 @@
 import { generateClient } from '@aws-amplify/api';
-import { createEvent } from '@/src/graphql/mutations';
+import { createEvent, updateEvent } from '@/src/graphql/mutations';
 import { getEvent } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
 
@@ -81,5 +81,19 @@ export const createEventAPI = async (userId: string, communityId: string, eventD
         return response.data.createEvent;
     } catch (error: any) {
         throw new HttpError(`Error creating event: ${error.message}`, error.statusCode || 500);
+    }
+};
+
+export const updateEventImageAPI = async (postId: string, image: string) => {
+  const input = { id: postId, images: [image] };
+    try {
+        const updatedEvent = await client.graphql({
+        query: updateEvent,
+        variables: { input },
+        });
+        console.log('User updated successfully:', updatedEvent.data.updateEvent);
+        return updatedEvent.data.updateEvent;
+    } catch (error: any) {
+        throw new HttpError(`Error updating event image: ${error.message}`, error.statusCode || 500);
     }
 };
