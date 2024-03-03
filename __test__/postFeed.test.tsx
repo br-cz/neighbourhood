@@ -43,6 +43,9 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
   useCreatePost: jest.fn(() => ({
     createPost: jest.fn(),
   })),
+  useCreateComment: jest.fn(() => ({
+    createComment: jest.fn(),
+  })),
 }));
 
 afterEach(() => {
@@ -79,7 +82,7 @@ describe('Feed Page', () => {
   test('Renders the Post feed component correctly', async () => {
     renderComponent();
     await waitFor(() => {
-      expect(screen.getByTestId('post-feed')).toBeInTheDocument();
+      expect(screen.getAllByTestId('post-feed').length).toBeGreaterThan(0);
     });
   });
 
