@@ -34,7 +34,6 @@ export function PostCard({ post }: PostCardProps) {
       };
       const newComment = await handleCreateComment(commentData);
       setComments([...comments, newComment]);
-      toggleComment();
       formik.resetForm();
     },
   });
@@ -80,40 +79,42 @@ export function PostCard({ post }: PostCardProps) {
       </Group>
       <Collapse in={commentOpened} mt="sm">
         <form>
-          <TextInput
-            name="content"
-            placeholder="Write a comment..."
-            radius="lg"
-            size="sm"
-            onChange={formik.handleChange}
-            value={formik.values.content}
-            rightSectionWidth={42}
-            rightSection={
-              <ActionIcon
-                size={24}
-                radius="xl"
-                color="dark.6"
-                variant="light"
-                onClick={() => {
-                  formik.validateForm().then((errors) => {
-                    console.log(errors);
-                    if (Object.keys(errors).length === 0) {
-                      formik.submitForm();
-                    } else {
-                      notifications.show({
-                        radius: 'md',
-                        color: 'red',
-                        title: 'Oops!',
-                        message: errors.content,
-                      });
-                    }
-                  });
-                }}
-              >
-                <FontAwesomeIcon size="xs" icon={faArrowRight} />
-              </ActionIcon>
-            }
-          />
+          <Box w={500}>
+            <TextInput
+              name="content"
+              placeholder="Write a comment..."
+              radius="lg"
+              size="sm"
+              onChange={formik.handleChange}
+              value={formik.values.content}
+              rightSectionWidth={42}
+              rightSection={
+                <ActionIcon
+                  size={24}
+                  radius="xl"
+                  color="dark.6"
+                  variant="light"
+                  onClick={() => {
+                    formik.validateForm().then((errors) => {
+                      console.log(errors);
+                      if (Object.keys(errors).length === 0) {
+                        formik.submitForm();
+                      } else {
+                        notifications.show({
+                          radius: 'md',
+                          color: 'red',
+                          title: 'Oops!',
+                          message: 'Failed to post your comment, please try again.',
+                        });
+                      }
+                    });
+                  }}
+                >
+                  <FontAwesomeIcon size="xs" icon={faArrowRight} />
+                </ActionIcon>
+              }
+            />
+          </Box>
         </form>
       </Collapse>
       <PostCommentList comments={{ items: comments }} />
