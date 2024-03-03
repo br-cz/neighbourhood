@@ -1,31 +1,23 @@
-import {
-  Text,
-  Avatar,
-  Group,
-  Box,
-  SimpleGrid,
-  Button,
-  Collapse,
-  TextInput,
-  ActionIcon,
-} from '@mantine/core';
+import { useState } from 'react';
+import { Text, Avatar, Group, Box, Button, Collapse, TextInput, ActionIcon } from '@mantine/core';
+import { useFormik } from 'formik';
+import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { Post } from '@/types/types';
 import { formatPostedAt } from '@/utils/timeUtils';
-import { CommentCard } from '@/components/CommentCard/CommentCard';
 import classes from './PostCard.module.css';
-import { useFormik } from 'formik';
 import { createCommentSchema } from './createCommentSchema';
 import { useCreateComment } from '@/src/hooks/postsCustomHooks';
-import { notifications } from '@mantine/notifications';
+import { PostCommentList } from './PostCommentList';
 
 interface PostCardProps {
   post: Post;
 }
 
 export function PostCard({ post }: PostCardProps) {
+  const [comments, setComments] = useState(post.comments.items);
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
   const [likeOpened, { toggle: toggleLike }] = useDisclosure(false);
   const { handleCreateComment } = useCreateComment();
@@ -36,13 +28,12 @@ export function PostCard({ post }: PostCardProps) {
     },
     validationSchema: createCommentSchema,
     onSubmit: async (parameters) => {
-      toggleComment();
       const commentData = {
         content: parameters.content,
         postCommentsId: post.id,
       };
-
-      await handleCreateComment(commentData);
+      const newComment = await handleCreateComment(commentData);
+      setComments([...comments, newComment]);
       toggleComment();
       formik.resetForm();
     },
@@ -51,12 +42,6 @@ export function PostCard({ post }: PostCardProps) {
   const handleLike = () => {
     //Mutation to like post
     toggleLike();
-  };
-
-  const handlePostComment = () => {
-    //Run comment validation
-    //Mutation to create comment and add to post
-    toggleComment();
   };
 
   return (
@@ -109,12 +94,10 @@ export function PostCard({ post }: PostCardProps) {
                 radius="xl"
                 color="dark.6"
                 variant="light"
-                type="submit"
                 onClick={() => {
                   formik.validateForm().then((errors) => {
-                    console.log(errors); // For logging
+                    console.log(errors);
                     if (Object.keys(errors).length === 0) {
-                      // No errors, form is valid so we submit
                       formik.submitForm();
                     } else {
                       notifications.show({
@@ -133,20 +116,7 @@ export function PostCard({ post }: PostCardProps) {
           />
         </form>
       </Collapse>
-
-      <SimpleGrid
-        cols={1}
-        spacing="lg"
-        verticalSpacing={{ base: 'xs' }}
-        data-testid="post-feed"
-        mt="sm"
-      >
-        {post.comments &&
-          post.comments.items.length > 0 &&
-          post.comments.items
-            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-            .map((comment) => <CommentCard key={comment.id} comment={comment} />)}
-      </SimpleGrid>
+      <PostCommentList comments={{ items: comments }} />
     </Box>
   );
 }
