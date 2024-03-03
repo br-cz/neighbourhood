@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
 import { Navbar } from '@/components/Navbar/Navbar';
+import { utilSignOut } from '@/utils/signOutUtils';
 
 interface NeighbourhoodShellProps {
   children: React.ReactNode;
@@ -17,26 +18,9 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const router = useRouter();
 
-  async function handleSignOut() {
-    try {
-      await signOut({ global: true });
-      localStorage.removeItem('currentUser');
-      router.push('/');
-      notifications.show({
-        radius: 'md',
-        title: 'Logged out!',
-        message: 'Log back in to continue using Neighborhood.',
-      });
-      console.log('Signed out!');
-    } catch (error) {
-      console.error('Error signing out:', error);
-      notifications.show({
-        radius: 'md',
-        title: 'Oops!',
-        message: 'Failed to sign out, please try again.',
-      });
-    }
-  }
+  const handleSignOut = async () => {
+    await utilSignOut({ router });
+  };
 
   const openSignOutModal = () => {
     modals.openConfirmModal({
