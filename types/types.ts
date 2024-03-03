@@ -30,6 +30,7 @@ export interface User {
   profilePic: string;
   pets: number;
   kids: number;
+  createdAt: string;
 }
 
 export interface Community {
