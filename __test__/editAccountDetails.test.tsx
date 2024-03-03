@@ -1,8 +1,14 @@
+/* eslint-disable testing-library/no-wait-for-multiple-assertions */
+import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen } from '@testing-library/react';
+import { notifications } from '@mantine/notifications';
 import userEvent from '@testing-library/user-event';
 import ProfilePage from '@/app/profile/page';
-import { MantineProvider } from '@mantine/core';
 import { DataProvider } from '@/contexts/DataContext';
+
+const Auth = require('@aws-amplify/auth');
+const UserAPI = require('@/src/api/services/user');
+const UserHooks = require('@/src/hooks/usersCustomHooks');
 
 const renderComponent = () =>
   render(
@@ -26,31 +32,36 @@ describe('ProfilePage - Change Password', () => {
   // Test case 1: Renders the Account Detail Page
   test('Renders Account Detail Page', async () => {
     renderComponent();
-    expect(screen.getByText(/Edit Login Details/i)).toBeInTheDocument();
+    await userEvent.click(screen.getByTestId('open-settings-btn'));
+    expect(screen.getByTestId('account-settings-modal')).toBeInTheDocument();
   });
 
   // Test case 2: Allows the user to change their password
   test('Allows the user to change their password', async () => {
     renderComponent();
+    await userEvent.click(screen.getByTestId('open-settings-btn'));
 
-    require('@/src/hooks/usersCustomHooks').getCurrentUser.mockResolvedValue({
+    UserHooks.getCurrentUser.mockResolvedValue({
       id: 'userId',
       email: 'user@example.com',
       _version: 1,
     });
 
-    await userEvent.type(screen.getByLabelText(/Old Password/i), 'oldPassword');
-    await userEvent.type(screen.getByLabelText(/New Password/i), 'newPassword');
-    await userEvent.click(screen.getByText(/Submit Changes/i));
+    await waitFor(() => {
+      expect(screen.getByTestId('old-password-input')).toBeInTheDocument();
+    });
+    await userEvent.type(screen.getByTestId('old-password-input'), 'oldPassword');
+    await userEvent.type(screen.getByTestId('new-password-input'), 'newPassword');
+    await userEvent.click(screen.getByTestId('submit-btn'));
 
     await waitFor(() => {
-      expect(require('@aws-amplify/auth').updatePassword).toHaveBeenCalledWith({
+      expect(Auth.updatePassword).toHaveBeenCalledWith({
         oldPassword: 'oldPassword',
         newPassword: 'newPassword',
       });
     });
 
-    expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
+    expect(notifications.show).toHaveBeenCalledWith(
       expect.objectContaining({
         title: 'Your login details have been updated!',
       })
@@ -60,22 +71,26 @@ describe('ProfilePage - Change Password', () => {
   // Test case 3: Allows the user to change their email
   test('Allows the user to change their email', async () => {
     renderComponent();
+    await userEvent.click(screen.getByTestId('open-settings-btn'));
 
-    require('@/src/hooks/usersCustomHooks').getCurrentUser.mockResolvedValue({
+    UserHooks.getCurrentUser.mockResolvedValue({
       id: 'userId',
       email: 'user@example.com',
       _version: 1,
     });
 
-    const updateUserEmailMock = require('@/src/api/services/user').updateUserEmailAPI;
+    const updateUserEmailMock = UserAPI.updateUserEmailAPI;
     updateUserEmailMock.mockResolvedValue(true);
 
-    const updateUserAttributesMock = require('@aws-amplify/auth').updateUserAttributes;
+    const updateUserAttributesMock = Auth.updateUserAttributes;
     updateUserAttributesMock.mockResolvedValue(true);
 
     // Simulate typing a new email
-    await userEvent.type(screen.getByLabelText(/New Email/i), 'newuser@example.com');
-    await userEvent.click(screen.getByText(/Submit Changes/i));
+    await waitFor(() => {
+      expect(screen.getByTestId('new-email-input')).toBeInTheDocument();
+    });
+    await userEvent.type(screen.getByTestId('new-email-input'), 'newuser@example.com');
+    await userEvent.click(screen.getByTestId('submit-btn'));
 
     await waitFor(() => {
       expect(updateUserAttributesMock).toHaveBeenCalledWith({
@@ -83,7 +98,6 @@ describe('ProfilePage - Change Password', () => {
           email: 'newuser@example.com',
         },
       });
-
       expect(updateUserEmailMock).toHaveBeenCalledWith('userId', 'newuser@example.com', 1);
     });
   });
