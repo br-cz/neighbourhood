@@ -24,8 +24,14 @@ export default function HomePage() {
     setSearchQuery(event.target.value);
   };
 
-  const filteredPosts = posts.filter((post: Post) =>
-    post.content.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPosts = posts.filter(
+    (post: Post) =>
+      post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      `${post.author.firstName} ${post.author.lastName}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
   );
 
   const sortedPosts = filteredPosts.sort(
@@ -45,7 +51,7 @@ export default function HomePage() {
             onChange={handleSearchChange}
             rightSectionPointerEvents="none"
             rightSection={<IconSearch />}
-            placeholder="Search for post content"
+            placeholder="Search..."
           />
           <Button radius="md" variant="filled" onClick={drawerHandlers.open}>
             New Post...
