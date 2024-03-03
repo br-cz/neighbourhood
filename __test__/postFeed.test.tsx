@@ -15,6 +15,7 @@ const mockData = {
         firstName: 'Bojangle',
         lastName: 'Williams',
       },
+      comments: { items: [] },
     },
     {
       id: '2',
@@ -23,6 +24,7 @@ const mockData = {
         firstName: 'Grunkle',
         lastName: 'Williams',
       },
+      comments: { items: [] },
     },
     {
       id: '3',
@@ -31,6 +33,7 @@ const mockData = {
         firstName: 'LeJon',
         lastName: 'Brames',
       },
+      comments: { items: [] },
     },
   ],
 };

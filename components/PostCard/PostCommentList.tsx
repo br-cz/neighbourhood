@@ -16,8 +16,7 @@ export function PostCommentList({ comments }: PostCommentListProps) {
         data-testid="post-feed"
         mt="sm"
       >
-        {comments &&
-          comments.items.length > 0 &&
+        {comments?.items?.length > 0 &&
           comments.items
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
             .map((comment) => <CommentCard key={comment.id} comment={comment} />)}
