@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getCommunityPostsAPI, createNewPostAPI } from '../api/services/post';
 import { getCurrentUserID } from './usersCustomHooks';
-import { PostDataInput } from '@/types/types';
+import { Post, PostDataInput } from '@/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
+import { getCurrentUser } from './usersCustomHooks';
 
 export const useCreatePost = () => {
   const [error, setError] = useState<string | undefined>();
@@ -40,10 +41,18 @@ export const useFetchPosts = (refresh: boolean = false) => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
+        const user = await getCurrentUser();
         const communityId = getCurrentCommunityID();
         const response = await getCommunityPostsAPI(communityId);
         const jsonPosts = JSON.parse(JSON.stringify(response));
-        setPosts(jsonPosts.data.getCommunity.posts.items);
+        const visiblePosts = jsonPosts.data.getCommunity.posts.items.filter((post: Post) => {
+          return (
+            post.visibility === 'PUBLIC' ||
+            post.author.id == user!.id ||
+            (post.visibility === 'PRIVATE' && user!.friends!.includes(post.author.id))
+          );
+        });
+        setPosts(visiblePosts);
       } catch (err: any) {
         console.error('Error fetching posts:', err);
         setError(err);

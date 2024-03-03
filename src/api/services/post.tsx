@@ -7,31 +7,31 @@ import { HttpError } from '@/src/models/error/HttpError';
 const client = generateClient();
 
 export const getPostAPI = async (postId: string) => {
-    try {
+  try {
     const post = await client.graphql({
-        query: getPost,
-        variables: { id: postId },
+      query: getPost,
+      variables: { id: postId },
     });
     return post.data.getPost;
-    } catch (error: any) {
-        throw new HttpError(`Error retrieving post: ${error.message}`, error.statusCode || 500);
-    }
+  } catch (error: any) {
+    throw new HttpError(`Error retrieving post: ${error.message}`, error.statusCode || 500);
+  }
 };
 
 export const createNewPostAPI = async (postData: PostDataInput) => {
-    try {
+  try {
     const post = await client.graphql({
-        query: createPost,
-        variables: { input: postData },
+      query: createPost,
+      variables: { input: postData },
     });
     return post.data.createPost;
-    } catch (error: any) {
-        throw new HttpError(`Error creating post: ${error.message}`, error.statusCode || 500);
-    }
+  } catch (error: any) {
+    throw new HttpError(`Error creating post: ${error.message}`, error.statusCode || 500);
+  }
 };
 
 export const getCommunityPostsAPI = async (communityId: string) => {
-    const getCommunityPosts = /* GraphQL */ `
+  const getCommunityPosts = /* GraphQL */ `
     query GetCommunityPosts($communityId: ID!) {
       getCommunity(id: $communityId) {
         id
@@ -39,6 +39,7 @@ export const getCommunityPostsAPI = async (communityId: string) => {
           items {
             id
             author {
+              id
               username
               firstName
               lastName
@@ -63,13 +64,16 @@ export const getCommunityPostsAPI = async (communityId: string) => {
       }
     }
   `;
-    try {
-        const response = await client.graphql({
-            query: getCommunityPosts,
-            variables: { communityId },
-          });
-          return response;
-    } catch (error: any) {
-        throw new HttpError(`Error retrieving community posts: ${error.message}`, error.statusCode || 500);
-    }
+  try {
+    const response = await client.graphql({
+      query: getCommunityPosts,
+      variables: { communityId },
+    });
+    return response;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error retrieving community posts: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
 };

@@ -6,19 +6,19 @@ import { HttpError } from '@/src/models/error/HttpError';
 const client = generateClient();
 
 export const getEventAPI = async (eventId: string) => {
-    try {
-        const response = await client.graphql({
-            query: getEvent,
-            variables: { id: eventId },
-        });
-        return response.data.getEvent;
-    } catch (error: any) {
-        throw new HttpError(`Error retrieving event: ${error.message}`, error.statusCode || 500);
-    }
+  try {
+    const response = await client.graphql({
+      query: getEvent,
+      variables: { id: eventId },
+    });
+    return response.data.getEvent;
+  } catch (error: any) {
+    throw new HttpError(`Error retrieving event: ${error.message}`, error.statusCode || 500);
+  }
 };
 
 export const getCommunityEventsAPI = async (communityId: string) => {
-    const getCommunityEvents = /* GraphQL */ `
+  const getCommunityEvents = /* GraphQL */ `
     query GetCommunity($id: ID!) {
       getCommunity(id: $id) {
         id
@@ -45,6 +45,7 @@ export const getCommunityEventsAPI = async (communityId: string) => {
             userEventsId
             visibility
             organizer {
+              id
               username
               firstName
               lastName
@@ -55,31 +56,34 @@ export const getCommunityEventsAPI = async (communityId: string) => {
       }
     }
   `;
-    try {
-        const response = await client.graphql({
-            query: getCommunityEvents,
-            variables: { id: communityId },
-        });
-        const jsonResponse = JSON.parse(JSON.stringify(response));
-        return jsonResponse.data.getCommunity.events.items;
-    } catch (error: any) {
-        throw new HttpError(`Error retrieving community events: ${error.message}`, error.statusCode || 500);
-    }
+  try {
+    const response = await client.graphql({
+      query: getCommunityEvents,
+      variables: { id: communityId },
+    });
+    const jsonResponse = JSON.parse(JSON.stringify(response));
+    return jsonResponse.data.getCommunity.events.items;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error retrieving community events: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
 };
 
 export const createEventAPI = async (userId: string, communityId: string, eventData: any) => {
-    try {
-        const newEventData = {
-            ...eventData,
-            userEventsId: userId,
-            communityEventsId: communityId,
-        };
-        const response = await client.graphql({
-            query: createEvent,
-            variables: { input: newEventData },
-        });
-        return response.data.createEvent;
-    } catch (error: any) {
-        throw new HttpError(`Error creating event: ${error.message}`, error.statusCode || 500);
-    }
+  try {
+    const newEventData = {
+      ...eventData,
+      userEventsId: userId,
+      communityEventsId: communityId,
+    };
+    const response = await client.graphql({
+      query: createEvent,
+      variables: { input: newEventData },
+    });
+    return response.data.createEvent;
+  } catch (error: any) {
+    throw new HttpError(`Error creating event: ${error.message}`, error.statusCode || 500);
+  }
 };
