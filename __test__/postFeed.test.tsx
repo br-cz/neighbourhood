@@ -15,6 +15,7 @@ const mockData = {
         firstName: 'Bojangle',
         lastName: 'Williams',
       },
+      comments: { items: [] },
     },
     {
       id: '2',
@@ -23,6 +24,7 @@ const mockData = {
         firstName: 'Grunkle',
         lastName: 'Williams',
       },
+      comments: { items: [] },
     },
     {
       id: '3',
@@ -31,6 +33,7 @@ const mockData = {
         firstName: 'LeJon',
         lastName: 'Brames',
       },
+      comments: { items: [] },
     },
   ],
 };
@@ -42,6 +45,9 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
   })),
   useCreatePost: jest.fn(() => ({
     createPost: jest.fn(),
+  })),
+  useCreateComment: jest.fn(() => ({
+    createComment: jest.fn(),
   })),
 }));
 
@@ -79,7 +85,7 @@ describe('Feed Page', () => {
   test('Renders the Post feed component correctly', async () => {
     renderComponent();
     await waitFor(() => {
-      expect(screen.getByTestId('post-feed')).toBeInTheDocument();
+      expect(screen.getAllByTestId('post-feed').length).toBeGreaterThan(0);
     });
   });
 

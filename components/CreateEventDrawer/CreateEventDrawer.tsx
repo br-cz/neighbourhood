@@ -145,7 +145,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           <Button
             radius="md"
             type="button"
-            data-testid="submit button"
+            data-testid="submit-btn"
             onClick={() => {
               formik.validateForm().then((errors) => {
                 console.log(errors); // For logging

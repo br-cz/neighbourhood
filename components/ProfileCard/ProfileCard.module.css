@@ -1,0 +1,19 @@
+.card {
+  display: block;
+  width: 100%;
+  padding: var(--mantine-spacing-xl);
+  color: light-dark(var(--mantine-color-dark-7), var(--mantine-color-dark-0));
+  border: 2px solid var(--mantine-color-dark-0);
+  border-radius: var(--mantine-radius-md);
+  transition: transform 0.4s ease;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+.link {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
