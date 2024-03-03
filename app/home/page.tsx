@@ -8,7 +8,46 @@ import { useAuth } from '@/components/Authorization/useAuth';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
 import { PostCard } from '@/components/PostCard/PostCard';
 import { useFetchPosts } from '@/src/hooks/postsCustomHooks';
-import { Post } from '@/src/API';
+import { Post } from '@/types/types';
+
+//placeholder data - remove when comments are implemented
+const users = [
+  {
+    id: '1',
+    firstName: 'Bojangle',
+    lastName: 'Williams',
+    profilePic: 'https://avatar.iran.liara.run/public/46',
+  },
+  {
+    id: '2',
+    firstName: 'LeJon',
+    lastName: 'Brames',
+    profilePic: 'https://avatar.iran.liara.run/public/37',
+  },
+];
+const comments = [
+  {
+    id: '1',
+    content: 'lol! so true. donkey is so funny.',
+    createdAt: new Date().toISOString(),
+    author: users[1],
+  },
+  {
+    id: '2',
+    content: 'ikr??? 😂',
+    createdAt: new Date().toISOString(),
+    author: users[0],
+  },
+];
+const placeholderPosts = [
+  {
+    id: '30',
+    content: 'Just watched Shrek 2 with my neighbours, best movie ever!',
+    createdAt: new Date().toISOString(),
+    author: users[0],
+    comments,
+  },
+];
 
 export default function HomePage() {
   const [refresh, setRefresh] = useState(false);
@@ -45,6 +84,8 @@ export default function HomePage() {
           verticalSpacing={{ base: 'md', sm: 'lg' }}
           data-testid="post-feed"
         >
+          {/* <PostCard post={placeholderPosts[0]} />{' '} */}
+          {/* placeholder - remove when comments are implemented */}
           {sortedPosts.map((post: Post) => (
             <PostCard key={post.id} post={post} />
           ))}
