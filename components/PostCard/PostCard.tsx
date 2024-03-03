@@ -44,6 +44,7 @@ export function PostCard({ post }: PostCardProps) {
 
       await handleCreateComment(commentData);
       toggleComment();
+      formik.resetForm();
     },
   });
 
@@ -142,7 +143,9 @@ export function PostCard({ post }: PostCardProps) {
       >
         {post.comments &&
           post.comments.items.length > 0 &&
-          post.comments.items.map((comment) => <CommentCard key={comment.id} comment={comment} />)}
+          post.comments.items
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+            .map((comment) => <CommentCard key={comment.id} comment={comment} />)}
       </SimpleGrid>
     </Box>
   );
