@@ -1,9 +1,9 @@
-import { generateClient } from 'aws-amplify/api';
-import { uploadData, getUrl } from 'aws-amplify/storage';
+import { generateClient } from '@aws-amplify/api';
+import { uploadData, getUrl } from '@aws-amplify/storage';
 import { updateUser } from '@/src/graphql/mutations';
 
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
-import { getUserAPI } from '@/src/api/services/user';
+import { getUserAPI, updateUserProfilePicAPI } from '@/src/api/services/user';
 
 ConfigureAmplifyClientSide();
 const client = generateClient();
@@ -28,15 +28,9 @@ export async function storeImage(file: File, userId: string) {
         data: file,
       }).result;
 
-      await client.graphql({
-        query: updateUser,
-        variables: {
-          input: {
-            id: user.id,
-            profilePic: uploadResult.key,
-          },
-        },
-      });
+      console.log(uploadResult.key);
+
+      await updateUserProfilePicAPI(userId, uploadResult.key, user._version);
 
       return uploadResult.key;
     }
@@ -50,7 +44,10 @@ export async function retrieveImage(userId: string) {
   const user = await getUserAPI(userId);
   if (user) {
   const imageKey = user.profilePic;
+  console.log(`imageKey: ${imageKey}`);
+  console.log(`contains id: ${imageKey?.includes(userId)}`);
   if (imageKey) {
+    if (imageKey)
     try {
        const result = await getUrl({
         key: imageKey,

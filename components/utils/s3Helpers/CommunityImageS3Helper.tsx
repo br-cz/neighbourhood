@@ -1,6 +1,6 @@
-import { uploadData, getUrl } from 'aws-amplify/storage';
+import { uploadData, getUrl } from '@aws-amplify/storage';
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
-import { getCommunityAPI, updateCommunityAPI } from '@/src/api/services/community';
+import { getCommunityAPI, updateCommunityImageAPI } from '@/src/api/services/community';
 
 ConfigureAmplifyClientSide();
 
@@ -24,7 +24,7 @@ export async function storeImage(file: File, communityId: string) {
         data: file,
       }).result;
 
-      await updateCommunityAPI({ id: community.id, image: uploadResult.key });
+      await updateCommunityImageAPI(community.id, uploadResult.key, community._version);
       return uploadResult.key;
     }
     throw new Error('communityId given to store community image is invalid');
@@ -59,7 +59,7 @@ export async function clearImage(communityId: string) {
     try {
       const community = await getCommunityAPI(communityId);
       if (community) {
-        await updateCommunityAPI({ id: community.id, image: '' });
+        await updateCommunityImageAPI(community.id, '', community._version);
       }
       throw new Error('communityId given to clear image does not exist.');
     } catch (error) {

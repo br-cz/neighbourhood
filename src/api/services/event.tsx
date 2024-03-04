@@ -84,12 +84,17 @@ export const createEventAPI = async (userId: string, communityId: string, eventD
     }
 };
 
-export const updateEventImageAPI = async (postId: string, image: string) => {
-  const input = { id: postId, images: [image] };
+export const updateEventImageAPI = async (postId: string, image: string, _version: number) => {
     try {
         const updatedEvent = await client.graphql({
-        query: updateEvent,
-        variables: { input },
+          query: updateEvent,
+          variables: {
+            input: {
+              id: postId,
+              images: [image],
+              _version,
+            },
+          },
         });
         console.log('User updated successfully:', updatedEvent.data.updateEvent);
         return updatedEvent.data.updateEvent;

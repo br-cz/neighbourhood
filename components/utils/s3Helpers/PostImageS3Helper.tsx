@@ -1,4 +1,4 @@
-import { uploadData, getUrl } from 'aws-amplify/storage';
+import { uploadData, getUrl } from '@aws-amplify/storage';
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import { getPostAPI, updatePostImageAPI } from '@/src/api/services/post';
 

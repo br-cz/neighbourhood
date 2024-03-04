@@ -1,4 +1,4 @@
-import { uploadData, getUrl } from 'aws-amplify/storage';
+import { uploadData, getUrl } from '@aws-amplify/storage';
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import { getEventAPI, updateEventImageAPI } from '@/src/api/services/event';
 
@@ -25,7 +25,7 @@ export async function storeImage(file: File, eventId: string) {
       }).result;
 
       // Since only one image is allowed, directly update the event's image field
-      await updateEventImageAPI(event.id, uploadResult.key);
+      await updateEventImageAPI(event.id, uploadResult.key, event._version);
       return uploadResult.key;
     }
     throw new Error('eventId given to store event image is invalid');
@@ -57,7 +57,7 @@ export async function clearImage(eventId: string) {
     try {
       const event = await getEventAPI(eventId);
       if (event) {
-        await updateEventImageAPI(event.id, '');
+        await updateEventImageAPI(event.id, '', event._version);
       } else {
         throw new Error('eventId given to clear image does not exist.');
       }

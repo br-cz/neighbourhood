@@ -1,6 +1,6 @@
-import { uploadData, getUrl } from 'aws-amplify/storage';
+import { uploadData, getUrl } from '@aws-amplify/storage';
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
-import { getItemForSaleAPI, updateItemForSaleImageAPI } from '@/src/api/services/itemForSale';
+import { getListingAPI, updateItemForSaleImageAPI } from '@/src/api/services/marketplace';
 
 ConfigureAmplifyClientSide();
 
@@ -17,7 +17,7 @@ export async function storeImage(file: File, itemId: string) {
   const imageKey = generateKey(file.name, itemId);
 
   try {
-    const itemForSale = await getItemForSaleAPI(itemId);
+    const itemForSale = await getListingAPI(itemId);
     if (itemForSale) {
       const uploadResult = await uploadData({
         key: imageKey,
@@ -25,7 +25,7 @@ export async function storeImage(file: File, itemId: string) {
       }).result;
 
       // Since only one image is allowed, directly update the item's image field
-      await updateItemForSaleImageAPI(itemForSale.id, uploadResult.key);
+      await updateItemForSaleImageAPI(itemForSale.id, uploadResult.key, itemForSale._version);
       return uploadResult.key;
     }
     throw new Error('itemId given to store item image is invalid');

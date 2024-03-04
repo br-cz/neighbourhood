@@ -70,15 +70,16 @@ export const getAllCommunitiesAPI = async () => {
   }
 };
 
-export const updateCommunityAPI = async (communityData: any) => {
+export const updateCommunityImageAPI = async (communityId: string, image: string, _version: number) => {
   try {
-    if (!communityData.communityId) {
-      throw new HttpError('community data must include communityId when updating community', 500);
-    }
     const updateCommunityResponse = await client.graphql({
       query: updateCommunity,
       variables: {
-        input: communityData,
+        input: {
+          id: communityId,
+          image,
+          _version,
+        },
       },
     });
     return updateCommunityResponse;

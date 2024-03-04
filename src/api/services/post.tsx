@@ -74,12 +74,17 @@ export const getCommunityPostsAPI = async (communityId: string) => {
     }
 };
 
-export const updatePostImageAPI = async (postId: string, image: string) => {
-  const input = { id: postId, images: [image] };
+export const updatePostImageAPI = async (postId: string, image: string, _version: number) => {
     try {
         const updatedPost = await client.graphql({
         query: updatePost,
-        variables: { input },
+        variables: {
+          input: {
+            id: postId,
+            images: [image],
+            _version,
+          },
+        },
         });
         console.log('User updated successfully:', updatedPost.data.updatePost);
         return updatedPost.data.updatePost;

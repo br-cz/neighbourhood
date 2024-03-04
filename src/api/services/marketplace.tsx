@@ -1,5 +1,5 @@
 import { generateClient } from '@aws-amplify/api';
-import { createItemForSale } from '@/src/graphql/mutations';
+import { createItemForSale, updateItemForSale } from '@/src/graphql/mutations';
 import { getItemForSale } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
 
@@ -78,5 +78,24 @@ export const createItemForSaleAPI = async (userId: string, communityId: string, 
     return response.data.createItemForSale;
   } catch (error: any) {
     throw new HttpError(`Error creating item for sale: ${error.message}`, error.statusCode || 500);
+  }
+};
+
+export const updateItemForSaleImageAPI = async (itemId: string, image: string, _version: number) => {
+  try {
+      const updatedItemForSale = await client.graphql({
+      query: updateItemForSale,
+      variables: {
+          input: {
+              id: itemId,
+              images: [image],
+              _version,
+          },
+      },
+      });
+      console.log('Item for sale updated successfully:', updatedItemForSale.data.updateItemForSale);
+      return updatedItemForSale.data.updateItemForSale;
+  } catch (error: any) {
+      throw new HttpError(`Error updating item for sale image: ${error.message}`, error.statusCode || 500);
   }
 };
