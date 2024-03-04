@@ -1,6 +1,7 @@
-import { uploadData, getUrl } from '@aws-amplify/storage';
+import { uploadData } from '@aws-amplify/storage'; // Assuming getUrl is not needed due to retrieveImageURLFromS3 utility
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import { getPostAPI, updatePostImageAPI } from '@/src/api/services/post';
+import { deleteImageFromS3, retrieveImageURLFromS3 } from '../utilFunctions'; // Assuming these utility functions are similar to the event helper
 
 ConfigureAmplifyClientSide();
 
@@ -24,9 +25,11 @@ export async function storeImage(file: File, postId: string) {
         data: file,
       }).result;
 
-      // Since only one image is allowed, directly update the post's image field
-      await updatePostImageAPI(post.id, uploadResult.key, post._version);
-      return uploadResult.key;
+      const imageUrl = await retrieveImageURLFromS3(uploadResult.key); // Use utility function for consistency
+
+      await updatePostImageAPI(post.id, imageUrl, post._version); // Update with imageUrl instead of key
+
+      return imageUrl; // Return the image URL for consistency
     }
     throw new Error('postId given to store post image is invalid');
   } catch (error) {
@@ -34,30 +37,18 @@ export async function storeImage(file: File, postId: string) {
     }
 }
 
-export async function retrieveImage(postId: string) {
-  const post = await getPostAPI(postId);
-  if (post && post.images && post.images.length > 0 && post.images[0]) {
-    try {
-      const imageKey = post.images[0];
-      const result = await getUrl({
-        key: imageKey,
-        options: {
-          validateObjectExistence: true,
-        },
-      });
-      return result.url.toString(); // Returns the single image URL
-    } catch (error) {
-      throw new Error(`Error retrieving post image from S3: ${error}`);
-    }
-  }
-  throw new Error('No image exists for this post or the post does not exist');
-}
-
 export async function clearImage(postId: string) {
     try {
       const post = await getPostAPI(postId);
       if (post) {
-        await updatePostImageAPI(post.id, '', post._version);
+        if (post.images && post.images[0]?.includes(`PostImages/${postId}`)) { // Check if the image belongs to the post
+          const url = post.images[0];
+          const parsedUrl = new URL(url);
+          const objectKey = decodeURIComponent(parsedUrl.pathname.replace(/\+/g, ' ').substring(1));
+
+          await deleteImageFromS3(objectKey); // Delete the image from S3
+        }
+        await updatePostImageAPI(post.id, '', post._version); // Clear the image field in the post record
       } else {
         throw new Error('postId given to clear image does not exist.');
       }

@@ -1,6 +1,7 @@
-import { uploadData, getUrl } from '@aws-amplify/storage';
+import { uploadData } from '@aws-amplify/storage';
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import { getListingAPI, updateItemForSaleImageAPI } from '@/src/api/services/marketplace';
+import { deleteImageFromS3, retrieveImageURLFromS3 } from '../utilFunctions';
 
 ConfigureAmplifyClientSide();
 
@@ -24,9 +25,11 @@ export async function storeImage(file: File, itemId: string) {
         data: file,
       }).result;
 
-      // Since only one image is allowed, directly update the item's image field
-      await updateItemForSaleImageAPI(itemForSale.id, uploadResult.key, itemForSale._version);
-      return uploadResult.key;
+      const imageUrl = await retrieveImageURLFromS3(uploadResult.key);
+
+      await updateItemForSaleImageAPI(itemForSale.id, imageUrl, itemForSale._version);
+
+      return imageUrl; // Return the image URL for consistency
     }
     throw new Error('itemId given to store item image is invalid');
   } catch (error) {
@@ -34,34 +37,22 @@ export async function storeImage(file: File, itemId: string) {
     }
 }
 
-export async function retrieveImage(itemId: string) {
-  const itemForSale = await getListingAPI(itemId);
-  if (itemForSale && itemForSale.images && itemForSale.images.length > 0 && itemForSale.images[0]) {
-    try {
-      const imageKey = itemForSale.images[0];
-      const result = await getUrl({
-        key: imageKey,
-        options: {
-          validateObjectExistence: true,
-        },
-      });
-      return result.url.toString(); // Returns the single image URL
-    } catch (error) {
-      throw new Error(`Error retrieving item image from S3: ${error}`);
-    }
-  }
-  throw new Error('No image exists for this item or the item does not exist');
-}
-
 export async function clearImage(itemId: string) {
     try {
-        const itemForSale = await getListingAPI(itemId);
-        if (itemForSale) {
-            await updateItemForSaleImageAPI(itemForSale.id, '', itemForSale._version);
-        } else {
-            throw new Error('itemId given to clear image does not exist.');
+      const itemForSale = await getListingAPI(itemId);
+      if (itemForSale) {
+        if (itemForSale.images && itemForSale.images[0]?.includes(`ItemForSaleImages/${itemId}`)) {
+          const url = itemForSale.images[0];
+          const parsedUrl = new URL(url);
+          const objectKey = decodeURIComponent(parsedUrl.pathname.replace(/\+/g, ' ').substring(1));
+
+          await deleteImageFromS3(objectKey);
         }
+        await updateItemForSaleImageAPI(itemForSale.id, '', itemForSale._version);
+      } else {
+        throw new Error('itemId given to clear image does not exist.');
+      }
     } catch (error) {
-        throw new Error(`Error retrieving/updating item for sale when clearing item image: ${error}`);
+      throw new Error(`Error retrieving/updating item for sale when clearing item image: ${error}`);
     }
 }
