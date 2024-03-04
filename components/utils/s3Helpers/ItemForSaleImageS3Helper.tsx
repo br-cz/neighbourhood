@@ -35,7 +35,7 @@ export async function storeImage(file: File, itemId: string) {
 }
 
 export async function retrieveImage(itemId: string) {
-  const itemForSale = await getItemForSaleAPI(itemId);
+  const itemForSale = await getListingAPI(itemId);
   if (itemForSale && itemForSale.images && itemForSale.images.length > 0 && itemForSale.images[0]) {
     try {
       const imageKey = itemForSale.images[0];
@@ -55,9 +55,9 @@ export async function retrieveImage(itemId: string) {
 
 export async function clearImage(itemId: string) {
     try {
-        const itemForSale = await getItemForSaleAPI(itemId);
+        const itemForSale = await getListingAPI(itemId);
         if (itemForSale) {
-            await updateItemForSaleImageAPI(itemForSale.id, '');
+            await updateItemForSaleImageAPI(itemForSale.id, '', itemForSale._version);
         } else {
             throw new Error('itemId given to clear image does not exist.');
         }

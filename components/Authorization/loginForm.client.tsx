@@ -7,6 +7,7 @@ import { Box, Button, Group, PasswordInput, Text, TextInput } from '@mantine/cor
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { getCommunity, getUser } from '@/src/graphql/queries';
+import styles from '@/components/Authorization/loginForm.module.css';
 
 const client = generateClient({});
 
@@ -114,9 +115,7 @@ export default function LoginForm() {
             Log In
           </Button>
           <Text c="dimmed">or</Text>
-          <Button variant="outline" radius="md" onClick={handleSignUp}>
-            Get Started
-          </Button>
+          <Button radius="md" onClick={handleSignUp} className={styles.customButton}>Sign Up</Button>
         </Group>
       </form>
     </Box>

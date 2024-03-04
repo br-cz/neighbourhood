@@ -75,6 +75,7 @@ export const createUserAPI = async (user: any) => {
                     lastName: user.lastName,
                     selectedCommunity: user.selectedCommunity,
                     postalCode: user.postalCode,
+                    profilePic: user?.profilePic,
                 },
             },
         });

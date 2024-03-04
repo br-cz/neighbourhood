@@ -25,7 +25,7 @@ export async function storeImage(file: File, postId: string) {
       }).result;
 
       // Since only one image is allowed, directly update the post's image field
-      await updatePostImageAPI(post.id, uploadResult.key);
+      await updatePostImageAPI(post.id, uploadResult.key, post._version);
       return uploadResult.key;
     }
     throw new Error('postId given to store post image is invalid');
@@ -57,7 +57,7 @@ export async function clearImage(postId: string) {
     try {
       const post = await getPostAPI(postId);
       if (post) {
-        await updatePostImageAPI(post.id, '');
+        await updatePostImageAPI(post.id, '', post._version);
       } else {
         throw new Error('postId given to clear image does not exist.');
       }
