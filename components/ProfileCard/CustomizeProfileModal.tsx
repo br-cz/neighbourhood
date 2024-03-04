@@ -14,14 +14,14 @@ import {
   Box,
   Grid,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { DatePickerInput } from '@mantine/dates';
 import { useFormik } from 'formik';
-import { profileSchema } from './customizeProfileValidation';
+import { customizeProfileSchema } from './customizeProfileValidation';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import classes from './ProfileCard.module.css';
-import { notifications } from '@mantine/notifications';
 
 interface CustomizeProfileModalProps {
   opened: boolean;
@@ -34,8 +34,8 @@ export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModal
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formik = useFormik({
     initialValues: {
-      firstName: user?.firstName || '',
-      lastName: user?.lastName || '',
+      firstName: user?.firstName,
+      lastName: user?.lastName,
       bio: user?.bio || '',
       contact: user?.contact || '',
       pronouns: user?.pronouns || '',
@@ -43,7 +43,7 @@ export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModal
       kids: user?.kids || 0,
       pets: user?.pets || 0,
     },
-    validationSchema: profileSchema,
+    validationSchema: customizeProfileSchema,
     onSubmit: (values) => {
       // Modify with backend updates to profile
       console.log(values);
@@ -81,7 +81,11 @@ export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModal
         formik.resetForm();
         setPreviewImageUrl(user?.profilePic || '');
       }}
-      title={<Title order={2}>Customize Profile</Title>}
+      title={
+        <Title order={2} component="p">
+          Customize Profile
+        </Title>
+      }
       size="md"
     >
       <form onSubmit={formik.handleSubmit}>
@@ -90,7 +94,7 @@ export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModal
             {previewImageUrl ? (
               <Image src={previewImageUrl} radius="md" style={{ maxWidth: 150, maxHeight: 150 }} />
             ) : (
-              <Avatar radius="xl" size={150} />
+              <Avatar radius="xl" size={150} src={user?.profilePic} />
             )}
             <Stack gap="xs" className={classes.avatarOverlay}>
               <FontAwesomeIcon icon={faPencil} size="lg" />
@@ -196,7 +200,6 @@ export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModal
           </Grid>
           <Button
             mt="md"
-            type="submit"
             onClick={() => {
               formik.validateForm().then((errors) => {
                 if (Object.keys(errors).length === 0) {
