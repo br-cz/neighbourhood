@@ -81,7 +81,7 @@ export default function HomePage() {
   return (
     <NeighbourhoodShell>
       <Group justify="space-between" m="20">
-        <Title order={1}>Feed</Title>
+        <Title order={1}>Home Test</Title>
         <Group>
           <Select radius="md" placeholder="Chronological" data={['Chronological']} />
           <TextInput
