@@ -21,7 +21,7 @@ interface SelectCommunityModalProps {
 export default function SelectCommunityModal({ opened, onClose }: SelectCommunityModalProps) {
   const { user } = useAuth();
   const { communities, loading } = useFetchAllCommunities();
-  //console.log('Communities in selectCommunity Modal:', communities);
+  console.log('Communities in selectCommunity Modal:', communities);
 
   const [isLoading, handlers] = useDisclosure();
   const formik = useFormik({
@@ -38,7 +38,9 @@ export default function SelectCommunityModal({ opened, onClose }: SelectCommunit
         ) as unknown as Community;
         console.log('Community:', community.name);
 
-        const isMember = community?.members?.items.some((member: any) => member.userId === user);
+        const isMember = community?.members?.items.some(
+          (member: any) => member.userId === user && !member?._deleted
+        );
 
         if (!isMember) {
           try {
@@ -65,6 +67,7 @@ export default function SelectCommunityModal({ opened, onClose }: SelectCommunit
       });
       handlers.close();
       formik.resetForm();
+      onClose();
     },
   });
 

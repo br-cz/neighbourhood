@@ -33,8 +33,12 @@ export default function CommunityCard({
   // Get the number of friends this user has in the community
   const numberOfFriendsInCommunity = friendsInCommunity.length;
 
+  const activeMembersCount =
+    community?.members?.items?.filter((member) => !member?._deleted).length ?? 0;
+
   const selectButtonText = community.id === getCurrentCommunityID() ? 'Selected' : 'Select';
-  const buttonIcon = currentUserMemberObject ? <IconCheck size={15} /> : <IconPlus size={15} />;
+  const buttonIcon =
+    community.id === getCurrentCommunityID() ? <IconCheck size={15} /> : <IconPlus size={15} />;
 
   return (
     <Stack align="center">
@@ -54,7 +58,7 @@ export default function CommunityCard({
                 {community?.name}
               </Text>
               <Text c="dimmed" size="md">
-                Members: {community?.members?.items?.length}
+                Members: {activeMembersCount}
               </Text>
               <Text c="dimmed" size="md">
                 Friends: {numberOfFriendsInCommunity}

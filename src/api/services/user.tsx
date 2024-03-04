@@ -97,6 +97,7 @@ export const deleteUserCommunityAPI = async (id: string) => {
       variables: {
         input: {
           id,
+          _version: 1, // Testing with a hardcoded version for now
         },
       },
     });

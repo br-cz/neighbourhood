@@ -22,14 +22,15 @@ export default function CommunitiesPage() {
   const [refresh, setRefresh] = useState(false);
   const { user } = useAuth();
   const { communities, loading } = useFetchAllCommunities(refresh);
+  //console.log('Communities:', communities);
   const toggleRefresh = () => setRefresh((flag) => !flag);
   const [openedModal, { open, close }] = useDisclosure(false);
 
   const { userCommunityList } = useFetchAllUserCommunities(refresh);
-  console.log('User Community List:', userCommunityList);
+  //console.log('User Community List:', userCommunityList);
   // Filter communities to only those where the user is a member
   const userCommunities = Object.values(communities).filter((community: Community) =>
-    community.members?.items?.some((member) => member?.user?.id === user)
+    community.members?.items?.some((member) => member?.user?.id === user && !member?._deleted)
   );
 
   const handleCommunitySwitch = async (community: any) => {
@@ -43,7 +44,6 @@ export default function CommunitiesPage() {
         message: `You have switched to ${community.name} community`,
       });
     } catch (error) {
-      console.log('Error:', error);
       notifications.show({
         radius: 'md',
         title: 'Sorry!',
@@ -51,13 +51,14 @@ export default function CommunitiesPage() {
       });
     }
     toggleRefresh();
-    console.log('Testing switch', getCurrentCommunityID());
   };
 
   const handleCommunityDeselect = async (community: any) => {
     const relationship = userCommunityList.find(
       (userCommunity: UserCommunity) =>
-        userCommunity.communityId === community.id && userCommunity.userId === user
+        userCommunity.communityId === community.id &&
+        userCommunity.userId === user &&
+        !userCommunity._deleted
     ) as unknown as UserCommunity;
     try {
       console.log('Deleting user community:', relationship.id);
@@ -68,7 +69,6 @@ export default function CommunitiesPage() {
         message: `You are no longer part of ${community.name}`,
       });
     } catch (error) {
-      console.log('Error:', error);
       notifications.show({
         radius: 'md',
         title: 'Sorry!',

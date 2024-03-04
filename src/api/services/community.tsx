@@ -60,6 +60,7 @@ export const getAllUserCommunities = async (communityId: string) => {
           }
           communityId
           userId
+          _deleted
         }
       }
     }
@@ -100,6 +101,7 @@ export const getAllCommunityDetails = async () => {
           }
           members {
             items {
+              _deleted
               id
               userId
               user {
@@ -109,10 +111,6 @@ export const getAllCommunityDetails = async () => {
             }
           }
         }
-      }
-      syncEvents {
-        nextToken
-        startedAt
       }
     }
   `;
