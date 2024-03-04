@@ -10,6 +10,7 @@ import { useAuth } from '@/components/Authorization/useAuth';
 
 export default function PeoplePage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortQuery, setSortQuery] = useState<string | null>('First Name (A-Z)');
   const { user } = useAuth();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +24,13 @@ export default function PeoplePage() {
       <Group justify="space-between" m="20">
         <Title order={1}>People</Title>
         <Group>
-          <Select radius="md" placeholder="Relationship" data={['Relationship']} />
+          <Select
+            radius="md"
+            placeholder="Sort by..."
+            onChange={setSortQuery}
+            data={['First Name (A-Z)', 'Last Name (A-Z)', 'Recently Joined']}
+            defaultValue="First Name (A-Z)"
+          />
           <TextInput
             radius="md"
             value={searchQuery}
@@ -34,7 +41,7 @@ export default function PeoplePage() {
           />
         </Group>
       </Group>
-      <UserList searchQuery={searchQuery} />
+      <UserList searchQuery={searchQuery} sortQuery={sortQuery} />
     </NeighbourhoodShell>
   );
 }

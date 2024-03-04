@@ -1,13 +1,20 @@
 'use client';
 
 import { SimpleGrid, Tabs, Indicator, Loader, Group } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { UserListItem } from '../UserListItem/UserListItem';
 import classes from './UserList.module.css';
 import { useFetchCommunityMembers } from '@/src/hooks/friendsCustomHooks';
-import { sortAlphabetical } from '@/utils/sortUtils';
+import { sortByCreatedAt, sortByFirstName, sortByLastName } from '@/utils/sortUtils';
 import { User } from '@/types/types';
 
-export function UserList({ searchQuery }: { searchQuery: string }) {
+export function UserList({ searchQuery, sortQuery }: { searchQuery: string; sortQuery: string }) {
+  // Stores sorted and filtered lists of users
+  const [incomingRequests, setIncomingRequests] = useState<any>([]);
+  const [friends, setFriends] = useState<any>([]);
+  const [outgoingRequests, setOutgoingRequests] = useState<any>([]);
+  const [noRelationshipFriends, setNoRelationshipFriends] = useState<any>([]);
+  // Fetches raw lists of users
   const {
     friends: userFriends,
     incomingFriendRequests,
@@ -17,12 +24,7 @@ export function UserList({ searchQuery }: { searchQuery: string }) {
     loading,
   } = useFetchCommunityMembers();
 
-  // Filter users based on their relationshipStatus
-  const friends = userFriends;
-  const incomingRequests = incomingFriendRequests;
-  const outgoingRequests = outgoingFriendRequests;
-  const noRelationshipFriends = noneFriends;
-  const numRequests = incomingRequests.length;
+  const numRequests = incomingFriendRequests.length;
 
   function matchesSearchQuery(user: any, query: string): boolean {
     return (
@@ -32,18 +34,36 @@ export function UserList({ searchQuery }: { searchQuery: string }) {
     );
   }
 
-  const filteredIncomingRequests = incomingRequests
-    .filter((user: User) => matchesSearchQuery(user, searchQuery))
-    .sort(sortAlphabetical);
-  const filteredFriends = friends
-    .filter((user: User) => matchesSearchQuery(user, searchQuery))
-    .sort(sortAlphabetical);
-  const filteredOutgoingRequests = outgoingRequests
-    .filter((user: User) => matchesSearchQuery(user, searchQuery))
-    .sort(sortAlphabetical);
-  const filteredNoRelationshipFriends = noRelationshipFriends
-    .filter((user: User) => matchesSearchQuery(user, searchQuery))
-    .sort(sortAlphabetical);
+  const applyFilterAndSort = (users: any[], sortFunction: { (a: any, b: any): number }) =>
+    users.filter((user: User) => matchesSearchQuery(user, searchQuery)).sort(sortFunction);
+
+  const getSortFunction = () => {
+    switch (sortQuery) {
+      case 'First Name (A-Z)':
+        return sortByFirstName;
+      case 'Last Name (A-Z)':
+        return sortByLastName;
+      case 'Recently Joined':
+        return sortByCreatedAt;
+      default:
+        return () => 0;
+    }
+  };
+
+  useEffect(() => {
+    const sortFunction = getSortFunction();
+    setFriends(applyFilterAndSort(userFriends, sortFunction));
+    setIncomingRequests(applyFilterAndSort(incomingFriendRequests, sortFunction));
+    setOutgoingRequests(applyFilterAndSort(outgoingFriendRequests, sortFunction));
+    setNoRelationshipFriends(applyFilterAndSort(noneFriends, sortFunction));
+  }, [
+    searchQuery,
+    sortQuery,
+    incomingFriendRequests,
+    userFriends,
+    outgoingFriendRequests,
+    noneFriends,
+  ]);
 
   return (
     <Tabs variant="outline" radius="md" defaultValue="all" data-testid="user-list">
@@ -65,7 +85,7 @@ export function UserList({ searchQuery }: { searchQuery: string }) {
           </Group>
         ) : (
           <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
-            {filteredIncomingRequests.map((user: any) => (
+            {incomingRequests.map((user: any) => (
               //Refactor status into Enum
               <UserListItem
                 key={user.id}
@@ -74,8 +94,8 @@ export function UserList({ searchQuery }: { searchQuery: string }) {
                 onUpdate={refetch}
               />
             ))}
-            {filteredFriends &&
-              filteredFriends.map((user: any) => (
+            {friends &&
+              friends.map((user: any) => (
                 <UserListItem
                   key={user.id}
                   user={user}
@@ -83,7 +103,7 @@ export function UserList({ searchQuery }: { searchQuery: string }) {
                   onUpdate={refetch}
                 />
               ))}
-            {filteredOutgoingRequests.map((user: any) => (
+            {outgoingRequests.map((user: any) => (
               <UserListItem
                 key={user.id}
                 user={user}
@@ -91,7 +111,7 @@ export function UserList({ searchQuery }: { searchQuery: string }) {
                 onUpdate={refetch}
               />
             ))}
-            {filteredNoRelationshipFriends.map((user: any) => (
+            {noRelationshipFriends.map((user: any) => (
               <UserListItem
                 key={user.id}
                 user={user}
@@ -104,8 +124,8 @@ export function UserList({ searchQuery }: { searchQuery: string }) {
       </Tabs.Panel>
       <Tabs.Panel value="friends">
         <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
-          {filteredFriends &&
-            filteredFriends.map((user: any) => (
+          {friends &&
+            friends.map((user: any) => (
               <UserListItem
                 key={user.id}
                 user={user}
@@ -117,7 +137,7 @@ export function UserList({ searchQuery }: { searchQuery: string }) {
       </Tabs.Panel>
       <Tabs.Panel value="requests">
         <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
-          {filteredIncomingRequests.map((user: any) => (
+          {incomingRequests.map((user: any) => (
             <UserListItem
               key={user.id}
               user={user}
