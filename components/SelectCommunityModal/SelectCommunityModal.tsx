@@ -21,6 +21,7 @@ interface SelectCommunityModalProps {
 export default function SelectCommunityModal({ opened, onClose }: SelectCommunityModalProps) {
   const { user } = useAuth();
   const { communities, loading } = useFetchAllCommunities();
+  //console.log('Communities in selectCommunity Modal:', communities);
 
   const [isLoading, handlers] = useDisclosure();
   const formik = useFormik({

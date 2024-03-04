@@ -86,6 +86,108 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
       image: 'path/to/communityImage.jpg',
     },
   })),
+
+  useFetchAllCommunities: jest.fn(() => ({
+    communities: [
+      {
+        id: 'community1',
+        name: 'Test Community1',
+        location: 'Test Location',
+        // coordinates: '123, 456',
+        image: 'path/to/communityImage.jpg',
+        members: ['user1', 'user2', 'user3'],
+        posts: ['post1', 'post2', 'post3'],
+      },
+
+      {
+        id: 'community2',
+        name: 'Test Community2',
+        location: 'Test Location',
+        // coordinates: '123, 456',
+        image: 'path/to/communityImage.jpg',
+        members: ['user1', 'user2', 'user3'],
+        posts: ['post1', 'post2', 'post3'],
+      },
+      {
+        id: 'community3',
+        name: 'Test Community3',
+        location: 'Test Location',
+        // coordinates: '123, 456',
+        image: 'path/to/communityImage.jpg',
+        members: ['user1', 'user2', 'user3'],
+        posts: ['post1', 'post2', 'post3'],
+      },
+    ],
+    loading: false,
+  })),
+
+  useFetchAllUserCommunities: jest.fn(() => ({
+    userCommunityList: [
+      {
+        id: 'userCommunity1',
+        communityId: 'community1',
+        userId: 'user1',
+        user: {
+          id: 'user1',
+          username: 'testUser1',
+          email: 'test1@example.com',
+          postalCode: '12345',
+          firstName: 'Test',
+          lastName: 'User1',
+          selectedCommunity: 'community1',
+          location: 'Test Location',
+          // age: 30,
+          // bio: 'This is a test bio.',
+          // profilePic: 'path/to/profilePic.jpg',
+          // pets: 1,
+          // kids: 2,
+        },
+      },
+
+      {
+        id: 'userCommunity2',
+        communityId: 'community2',
+        userId: 'user2',
+        user: {
+          id: 'user2',
+          username: 'testUser2',
+          email: 'test2@example.com',
+          postalCode: '12345',
+          firstName: 'Test',
+          lastName: 'User2',
+          selectedCommunity: 'community2',
+          location: 'Test Location',
+          // age: 30,
+          // bio: 'This is a test bio.',
+          // profilePic: 'path/to/profilePic.jpg',
+          // pets: 1,
+          // kids: 2,
+        },
+      },
+      {
+        id: 'userCommunity3',
+        communityId: 'community3',
+        userId: 'user3',
+        user: {
+          id: 'user3',
+          username: 'testUser3',
+          email: 'test3@example.com',
+          postalCode: '12345',
+          firstName: 'Test',
+          lastName: 'User3',
+          selectedCommunity: 'community3',
+          location: 'Test Location',
+          // age: 30,
+          // bio: 'This is a test bio.',
+          // profilePic: 'path/to/profilePic.jpg',
+          // pets: 1,
+          // kids: 2,
+        },
+      },
+    ],
+    loading: false,
+  })),
+
 }));
 
 jest.mock('@/src/api/services/user', () => ({

@@ -25,9 +25,9 @@ import { signUpSchema } from './signUpValidation';
 import { processSignUp } from './signUpLogic';
 
 export const SignUp = () => {
-  const [refresh, setRefresh] = useState(false);
-  const { communities, loading } = useFetchAllCommunities(refresh);
-  const toggleRefresh = () => setRefresh((flag) => !flag);
+  // const [refresh, setRefresh] = useState(false);
+  const { communities, loading } = useFetchAllCommunities();
+  //const toggleRefresh = () => setRefresh((flag) => !flag);
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 5 ? current + 1 : current));

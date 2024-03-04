@@ -26,7 +26,7 @@ export default function CommunitiesPage() {
   const [openedModal, { open, close }] = useDisclosure(false);
 
   const { userCommunityList } = useFetchAllUserCommunities(refresh);
-
+  console.log('User Community List:', userCommunityList);
   // Filter communities to only those where the user is a member
   const userCommunities = Object.values(communities).filter((community: Community) =>
     community.members?.items?.some((member) => member?.user?.id === user)
