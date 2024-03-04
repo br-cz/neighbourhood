@@ -115,7 +115,7 @@ export default function LoginForm() {
             Log In
           </Button>
           <Text c="dimmed">or</Text>
-          <Button radius="md" onClick={handleSignUp} className={styles.customButton}>Sign Up</Button>
+          <Button radius="md" onClick={handleSignUp} className={styles.customButton}>Get Started</Button>
         </Group>
       </form>
     </Box>
