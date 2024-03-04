@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Group, Loader, Select, SimpleGrid, Title } from '@mantine/core';
+import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { IconSearch } from '@tabler/icons-react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { useAuth } from '@/components/Authorization/useAuth';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
@@ -51,13 +52,28 @@ const placeholderPosts = [
 
 export default function HomePage() {
   const [refresh, setRefresh] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { posts, loading } = useFetchPosts(refresh);
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const { user } = useAuth();
   if (!user) return null;
   const toggleRefresh = () => setRefresh((flag) => !flag);
 
-  const sortedPosts = posts.sort(
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredPosts = posts.filter(
+    (post: Post) =>
+      post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      `${post.author.firstName} ${post.author.lastName}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  const sortedPosts = filteredPosts.sort(
     (a: { createdAt: Date }, b: { createdAt: Date }) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
@@ -68,6 +84,14 @@ export default function HomePage() {
         <Title order={1}>Feed</Title>
         <Group>
           <Select radius="md" placeholder="Chronological" data={['Chronological']} />
+          <TextInput
+            radius="md"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            rightSectionPointerEvents="none"
+            rightSection={<IconSearch />}
+            placeholder="Search..."
+          />
           <Button radius="md" variant="filled" onClick={drawerHandlers.open}>
             New Post...
           </Button>
