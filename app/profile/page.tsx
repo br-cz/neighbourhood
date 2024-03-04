@@ -8,9 +8,11 @@ import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/Neighbourhoo
 import { useAuth } from '@/components/Authorization/useAuth';
 import { ProfileCard } from '@/components/ProfileCard/ProfileCard';
 import { AccountSettingsModal } from '@/components/ProfileCard/AccountSettingsModal';
+import { CustomizeProfileModal } from '@/components/ProfileCard/CustomizeProfileModal';
 
 export default function ProfilePage() {
   const [accountSettingsModalOpened, setAccountSettingsModalOpened] = useState(false);
+  const [customizeProfileModalOpened, setCustomizeProfileModalOpened] = useState(false);
   const { user: loggedIn } = useAuth();
   if (!loggedIn) return null;
 
@@ -23,6 +25,9 @@ export default function ProfilePage() {
             radius="md"
             size="sm"
             leftSection={<FontAwesomeIcon icon={faPen} />}
+            onClick={() => {
+              setCustomizeProfileModalOpened(true);
+            }}
             data-testid="edit-card-btn"
           >
             Customize
@@ -45,6 +50,10 @@ export default function ProfilePage() {
       <AccountSettingsModal
         opened={accountSettingsModalOpened}
         onClose={() => setAccountSettingsModalOpened(false)}
+      />
+      <CustomizeProfileModal
+        opened={customizeProfileModalOpened}
+        onClose={() => setCustomizeProfileModalOpened(false)}
       />
     </NeighbourhoodShell>
   );
