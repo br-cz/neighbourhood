@@ -4,8 +4,10 @@ import { SimpleGrid, Tabs, Indicator, Loader, Group } from '@mantine/core';
 import { UserListItem } from '../UserListItem/UserListItem';
 import classes from './UserList.module.css';
 import { useFetchCommunityMembers } from '@/src/hooks/friendsCustomHooks';
+import { sortAlphabetical } from '@/utils/sortUtils';
+import { User } from '@/types/types';
 
-export function UserList() {
+export function UserList({ searchQuery }: { searchQuery: string }) {
   const {
     friends: userFriends,
     incomingFriendRequests,
@@ -21,6 +23,27 @@ export function UserList() {
   const outgoingRequests = outgoingFriendRequests;
   const noRelationshipFriends = noneFriends;
   const numRequests = incomingRequests.length;
+
+  function matchesSearchQuery(user: any, query: string): boolean {
+    return (
+      `${user.firstName} ${user.lastName}`.toLowerCase().includes(query.toLowerCase()) ||
+      user?.username?.toLowerCase().includes(query.toLowerCase()) ||
+      user?.bio?.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  const filteredIncomingRequests = incomingRequests
+    .filter((user: User) => matchesSearchQuery(user, searchQuery))
+    .sort(sortAlphabetical);
+  const filteredFriends = friends
+    .filter((user: User) => matchesSearchQuery(user, searchQuery))
+    .sort(sortAlphabetical);
+  const filteredOutgoingRequests = outgoingRequests
+    .filter((user: User) => matchesSearchQuery(user, searchQuery))
+    .sort(sortAlphabetical);
+  const filteredNoRelationshipFriends = noRelationshipFriends
+    .filter((user: User) => matchesSearchQuery(user, searchQuery))
+    .sort(sortAlphabetical);
 
   return (
     <Tabs variant="outline" radius="md" defaultValue="all" data-testid="user-list">
@@ -42,7 +65,7 @@ export function UserList() {
           </Group>
         ) : (
           <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
-            {incomingRequests.map((user: any) => (
+            {filteredIncomingRequests.map((user: any) => (
               //Refactor status into Enum
               <UserListItem
                 key={user.id}
@@ -51,8 +74,8 @@ export function UserList() {
                 onUpdate={refetch}
               />
             ))}
-            {friends &&
-              friends.map((user: any) => (
+            {filteredFriends &&
+              filteredFriends.map((user: any) => (
                 <UserListItem
                   key={user.id}
                   user={user}
@@ -60,7 +83,7 @@ export function UserList() {
                   onUpdate={refetch}
                 />
               ))}
-            {outgoingRequests.map((user: any) => (
+            {filteredOutgoingRequests.map((user: any) => (
               <UserListItem
                 key={user.id}
                 user={user}
@@ -68,7 +91,7 @@ export function UserList() {
                 onUpdate={refetch}
               />
             ))}
-            {noRelationshipFriends.map((user: any) => (
+            {filteredNoRelationshipFriends.map((user: any) => (
               <UserListItem
                 key={user.id}
                 user={user}
@@ -81,8 +104,8 @@ export function UserList() {
       </Tabs.Panel>
       <Tabs.Panel value="friends">
         <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
-          {friends &&
-            friends.map((user: any) => (
+          {filteredFriends &&
+            filteredFriends.map((user: any) => (
               <UserListItem
                 key={user.id}
                 user={user}
@@ -94,7 +117,7 @@ export function UserList() {
       </Tabs.Panel>
       <Tabs.Panel value="requests">
         <SimpleGrid cols={1} spacing="xs" mt="sm" className={classes.list}>
-          {incomingRequests.map((user: any) => (
+          {filteredIncomingRequests.map((user: any) => (
             <UserListItem
               key={user.id}
               user={user}
