@@ -13,7 +13,7 @@ export function MarketplaceFeed({
 }: {
   refresh: boolean;
   searchQuery: string;
-  sortQuery: string;
+  sortQuery: string | null;
 }) {
   const { listings, loading } = useFetchListings(refresh);
   const [viewListingModalOpened, setViewListingModalOpened] = useState(false);
