@@ -96,6 +96,7 @@ export default function SelectCommunityModal({ opened, onClose }: SelectCommunit
             selectedCommunity={formik.values.selectedCommunity}
             errors={formik.errors}
             touched={formik.touched}
+           
           />
           <Group justify="end" mt="xl" gap="xl">
             <Button radius="md" onClick={onClose}>

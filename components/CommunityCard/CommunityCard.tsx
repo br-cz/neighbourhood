@@ -11,6 +11,7 @@ interface CommunityCardProps {
   onDeselect: () => void;
 }
 
+
 export default function CommunityCard({
   community,
   currentUserID,
@@ -40,9 +41,15 @@ export default function CommunityCard({
   const buttonIcon =
     community.id === getCurrentCommunityID() ? <IconCheck size={15} /> : <IconPlus size={15} />;
 
+
+
+
+
   return (
     <Stack align="center">
-      <Card shadow="md" withBorder w="32vw">
+      <Card shadow="md" withBorder w="32vw" classNames={{
+        root: '.mantine-Card-root',
+      }} styles={{root:{ padding:30}}}>
         <Grid align="stretch">
           <Grid.Col span={2}>
             <Avatar
