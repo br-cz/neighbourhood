@@ -8,7 +8,12 @@ import { useFetchCommunityMembers } from '@/src/hooks/friendsCustomHooks';
 import { sortByCreatedAt, sortByFirstName, sortByLastName } from '@/utils/sortUtils';
 import { User } from '@/types/types';
 
-export function UserList({ searchQuery, sortQuery }: { searchQuery: string; sortQuery: string }) {
+interface UserListProps {
+  searchQuery: string;
+  sortQuery: string | null;
+}
+
+export function UserList({ searchQuery, sortQuery }: UserListProps) {
   // Stores sorted and filtered lists of users
   const [incomingRequests, setIncomingRequests] = useState<any>([]);
   const [friends, setFriends] = useState<any>([]);
