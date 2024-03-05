@@ -3,19 +3,12 @@
 import React from 'react';
 import { Group, Avatar, Text, Box, Stack, Title } from '@mantine/core';
 import classes from './ProfileCard.module.css';
-import { formatDate } from '@/utils/timeUtils';
+import { formatDate, formatUTCDate } from '@/utils/timeUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 export function ProfileCard() {
   const { currentUser: user } = useCurrentUser();
-
-  //placeholder data
-  const phoneNumber = '204-123-4567';
-  const address = '100 Waverley Dr.';
-  const birthday = 'May 1, 2001 (22 years)';
-  const pronouns = 'he/him';
-  const pets = 1;
-  const kids = 0;
+  console.log(user);
 
   return (
     <Box w={1000} className={classes.card} data-testid="profile-card">
@@ -33,10 +26,10 @@ export function ProfileCard() {
           <Group gap={50} mt="xs">
             <Stack gap="xs">
               <Text size="sm">
-                <b>Contact:</b> {phoneNumber}
+                <b>Contact:</b> {user?.contact || 'N/A'}
               </Text>
               <Text size="sm">
-                <b>Address:</b> {address}
+                <b>Address:</b> {user?.address || 'N/A'}
               </Text>
               <Text size="sm">
                 <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -44,17 +37,17 @@ export function ProfileCard() {
             </Stack>
             <Stack gap="xs">
               <Text size="sm">
-                <b>Pronouns:</b> {pronouns}
+                <b>Pronouns:</b> {user?.pronouns || 'N/A'}
               </Text>
               <Text size="sm">
-                <b>Birthday:</b> {birthday}
+                <b>Birthday:</b> {user?.birthday ? formatUTCDate(user?.birthday) : 'N/A'}
               </Text>
               <Group>
                 <Text size="sm">
-                  <b>Pets:</b> {pets}
+                  <b>Pets:</b> {user?.pets || 'N/A'}
                 </Text>
                 <Text size="sm">
-                  <b>Kids:</b> {kids}
+                  <b>Kids:</b> {user?.kids || 'N/A'}
                 </Text>
               </Group>
             </Stack>

@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from '../API';
+import * as APITypes from "../API";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -16,6 +16,7 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -24,6 +25,9 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -69,14 +73,17 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SearchPostsQueryVariables, APITypes.SearchPostsQuery>;
-export const searchPeople =
-  /* GraphQL */ `query SearchPeople($communityId: ID!, $keyword: String!) {
+` as GeneratedQuery<
+  APITypes.SearchPostsQueryVariables,
+  APITypes.SearchPostsQuery
+>;
+export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!, $keyword: String!) {
   searchPeople(communityId: $communityId, keyword: $keyword) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -125,6 +132,9 @@ export const searchPeople =
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -140,7 +150,10 @@ export const searchPeople =
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SearchPeopleQueryVariables, APITypes.SearchPeopleQuery>;
+` as GeneratedQuery<
+  APITypes.SearchPeopleQueryVariables,
+  APITypes.SearchPeopleQuery
+>;
 export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communityId: ID!) {
   getCommunityPosts(communityId: $communityId) {
     id
@@ -149,6 +162,7 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -157,6 +171,9 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -202,7 +219,10 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetCommunityPostsQueryVariables, APITypes.GetCommunityPostsQuery>;
+` as GeneratedQuery<
+  APITypes.GetCommunityPostsQueryVariables,
+  APITypes.GetCommunityPostsQuery
+>;
 export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($communityId: ID!) {
   getCommunityEvents(communityId: $communityId) {
     id
@@ -229,6 +249,7 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -237,6 +258,9 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -262,13 +286,17 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetCommunityEventsQueryVariables, APITypes.GetCommunityEventsQuery>;
+` as GeneratedQuery<
+  APITypes.GetCommunityEventsQueryVariables,
+  APITypes.GetCommunityEventsQuery
+>;
 export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) {
   getUserFriends(userId: $userId) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -317,6 +345,9 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -332,7 +363,10 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetUserFriendsQueryVariables, APITypes.GetUserFriendsQuery>;
+` as GeneratedQuery<
+  APITypes.GetUserFriendsQueryVariables,
+  APITypes.GetUserFriendsQuery
+>;
 export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests($userId: ID!) {
   pendingFriendRequests(userId: $userId) {
     id
@@ -343,6 +377,7 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -351,6 +386,9 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -365,6 +403,7 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -373,6 +412,9 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -405,6 +447,7 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -413,6 +456,9 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -427,6 +473,7 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -435,6 +482,9 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -453,7 +503,10 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SentFriendRequestsQueryVariables, APITypes.SentFriendRequestsQuery>;
+` as GeneratedQuery<
+  APITypes.SentFriendRequestsQueryVariables,
+  APITypes.SentFriendRequestsQuery
+>;
 export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) {
   getFriendRequest(id: $id) {
     id
@@ -464,6 +517,7 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -472,6 +526,9 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -486,6 +543,7 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -494,6 +552,9 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -512,7 +573,10 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetFriendRequestQueryVariables, APITypes.GetFriendRequestQuery>;
+` as GeneratedQuery<
+  APITypes.GetFriendRequestQueryVariables,
+  APITypes.GetFriendRequestQuery
+>;
 export const listFriendRequests = /* GraphQL */ `query ListFriendRequests(
   $filter: ModelFriendRequestFilterInput
   $limit: Int
@@ -536,7 +600,10 @@ export const listFriendRequests = /* GraphQL */ `query ListFriendRequests(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListFriendRequestsQueryVariables, APITypes.ListFriendRequestsQuery>;
+` as GeneratedQuery<
+  APITypes.ListFriendRequestsQueryVariables,
+  APITypes.ListFriendRequestsQuery
+>;
 export const syncFriendRequests = /* GraphQL */ `query SyncFriendRequests(
   $filter: ModelFriendRequestFilterInput
   $limit: Int
@@ -566,13 +633,17 @@ export const syncFriendRequests = /* GraphQL */ `query SyncFriendRequests(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncFriendRequestsQueryVariables, APITypes.SyncFriendRequestsQuery>;
+` as GeneratedQuery<
+  APITypes.SyncFriendRequestsQueryVariables,
+  APITypes.SyncFriendRequestsQuery
+>;
 export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -621,6 +692,9 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -648,6 +722,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -656,6 +731,9 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -688,6 +766,7 @@ export const syncUsers = /* GraphQL */ `query SyncUsers(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -696,6 +775,9 @@ export const syncUsers = /* GraphQL */ `query SyncUsers(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -746,7 +828,10 @@ export const getCommunity = /* GraphQL */ `query GetCommunity($id: ID!) {
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetCommunityQueryVariables, APITypes.GetCommunityQuery>;
+` as GeneratedQuery<
+  APITypes.GetCommunityQueryVariables,
+  APITypes.GetCommunityQuery
+>;
 export const listCommunities = /* GraphQL */ `query ListCommunities(
   $filter: ModelCommunityFilterInput
   $limit: Int
@@ -771,7 +856,10 @@ export const listCommunities = /* GraphQL */ `query ListCommunities(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListCommunitiesQueryVariables, APITypes.ListCommunitiesQuery>;
+` as GeneratedQuery<
+  APITypes.ListCommunitiesQueryVariables,
+  APITypes.ListCommunitiesQuery
+>;
 export const syncCommunities = /* GraphQL */ `query SyncCommunities(
   $filter: ModelCommunityFilterInput
   $limit: Int
@@ -802,7 +890,10 @@ export const syncCommunities = /* GraphQL */ `query SyncCommunities(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncCommunitiesQueryVariables, APITypes.SyncCommunitiesQuery>;
+` as GeneratedQuery<
+  APITypes.SyncCommunitiesQueryVariables,
+  APITypes.SyncCommunitiesQuery
+>;
 export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
   getPost(id: $id) {
     id
@@ -811,6 +902,7 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -819,6 +911,9 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -945,6 +1040,7 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -953,6 +1049,9 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -973,7 +1072,10 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetCommentQueryVariables, APITypes.GetCommentQuery>;
+` as GeneratedQuery<
+  APITypes.GetCommentQueryVariables,
+  APITypes.GetCommentQuery
+>;
 export const listComments = /* GraphQL */ `query ListComments(
   $filter: ModelCommentFilterInput
   $limit: Int
@@ -997,7 +1099,10 @@ export const listComments = /* GraphQL */ `query ListComments(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListCommentsQueryVariables, APITypes.ListCommentsQuery>;
+` as GeneratedQuery<
+  APITypes.ListCommentsQueryVariables,
+  APITypes.ListCommentsQuery
+>;
 export const syncComments = /* GraphQL */ `query SyncComments(
   $filter: ModelCommentFilterInput
   $limit: Int
@@ -1027,7 +1132,10 @@ export const syncComments = /* GraphQL */ `query SyncComments(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncCommentsQueryVariables, APITypes.SyncCommentsQuery>;
+` as GeneratedQuery<
+  APITypes.SyncCommentsQueryVariables,
+  APITypes.SyncCommentsQuery
+>;
 export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
   getEvent(id: $id) {
     id
@@ -1054,6 +1162,7 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1062,6 +1171,9 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1116,7 +1228,10 @@ export const listEvents = /* GraphQL */ `query ListEvents(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListEventsQueryVariables, APITypes.ListEventsQuery>;
+` as GeneratedQuery<
+  APITypes.ListEventsQueryVariables,
+  APITypes.ListEventsQuery
+>;
 export const syncEvents = /* GraphQL */ `query SyncEvents(
   $filter: ModelEventFilterInput
   $limit: Int
@@ -1151,7 +1266,10 @@ export const syncEvents = /* GraphQL */ `query SyncEvents(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncEventsQueryVariables, APITypes.SyncEventsQuery>;
+` as GeneratedQuery<
+  APITypes.SyncEventsQueryVariables,
+  APITypes.SyncEventsQuery
+>;
 export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
   getItemForSale(id: $id) {
     id
@@ -1165,6 +1283,7 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1173,6 +1292,9 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1211,7 +1333,10 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetItemForSaleQueryVariables, APITypes.GetItemForSaleQuery>;
+` as GeneratedQuery<
+  APITypes.GetItemForSaleQueryVariables,
+  APITypes.GetItemForSaleQuery
+>;
 export const listItemForSales = /* GraphQL */ `query ListItemForSales(
   $filter: ModelItemForSaleFilterInput
   $limit: Int
@@ -1240,7 +1365,10 @@ export const listItemForSales = /* GraphQL */ `query ListItemForSales(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListItemForSalesQueryVariables, APITypes.ListItemForSalesQuery>;
+` as GeneratedQuery<
+  APITypes.ListItemForSalesQueryVariables,
+  APITypes.ListItemForSalesQuery
+>;
 export const syncItemForSales = /* GraphQL */ `query SyncItemForSales(
   $filter: ModelItemForSaleFilterInput
   $limit: Int
@@ -1275,7 +1403,10 @@ export const syncItemForSales = /* GraphQL */ `query SyncItemForSales(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncItemForSalesQueryVariables, APITypes.SyncItemForSalesQuery>;
+` as GeneratedQuery<
+  APITypes.SyncItemForSalesQueryVariables,
+  APITypes.SyncItemForSalesQuery
+>;
 export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) {
   getUserCommunity(id: $id) {
     id
@@ -1286,6 +1417,7 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1294,6 +1426,9 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1324,7 +1459,10 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetUserCommunityQueryVariables, APITypes.GetUserCommunityQuery>;
+` as GeneratedQuery<
+  APITypes.GetUserCommunityQueryVariables,
+  APITypes.GetUserCommunityQuery
+>;
 export const listUserCommunities = /* GraphQL */ `query ListUserCommunities(
   $filter: ModelUserCommunityFilterInput
   $limit: Int
@@ -1347,7 +1485,10 @@ export const listUserCommunities = /* GraphQL */ `query ListUserCommunities(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListUserCommunitiesQueryVariables, APITypes.ListUserCommunitiesQuery>;
+` as GeneratedQuery<
+  APITypes.ListUserCommunitiesQueryVariables,
+  APITypes.ListUserCommunitiesQuery
+>;
 export const syncUserCommunities = /* GraphQL */ `query SyncUserCommunities(
   $filter: ModelUserCommunityFilterInput
   $limit: Int
@@ -1376,7 +1517,10 @@ export const syncUserCommunities = /* GraphQL */ `query SyncUserCommunities(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncUserCommunitiesQueryVariables, APITypes.SyncUserCommunitiesQuery>;
+` as GeneratedQuery<
+  APITypes.SyncUserCommunitiesQueryVariables,
+  APITypes.SyncUserCommunitiesQuery
+>;
 export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!) {
   getUserLikedPosts(id: $id) {
     id
@@ -1387,6 +1531,7 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1395,6 +1540,9 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1426,7 +1574,10 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetUserLikedPostsQueryVariables, APITypes.GetUserLikedPostsQuery>;
+` as GeneratedQuery<
+  APITypes.GetUserLikedPostsQueryVariables,
+  APITypes.GetUserLikedPostsQuery
+>;
 export const listUserLikedPosts = /* GraphQL */ `query ListUserLikedPosts(
   $filter: ModelUserLikedPostsFilterInput
   $limit: Int
@@ -1449,7 +1600,10 @@ export const listUserLikedPosts = /* GraphQL */ `query ListUserLikedPosts(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListUserLikedPostsQueryVariables, APITypes.ListUserLikedPostsQuery>;
+` as GeneratedQuery<
+  APITypes.ListUserLikedPostsQueryVariables,
+  APITypes.ListUserLikedPostsQuery
+>;
 export const syncUserLikedPosts = /* GraphQL */ `query SyncUserLikedPosts(
   $filter: ModelUserLikedPostsFilterInput
   $limit: Int
@@ -1478,7 +1632,10 @@ export const syncUserLikedPosts = /* GraphQL */ `query SyncUserLikedPosts(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncUserLikedPostsQueryVariables, APITypes.SyncUserLikedPostsQuery>;
+` as GeneratedQuery<
+  APITypes.SyncUserLikedPostsQueryVariables,
+  APITypes.SyncUserLikedPostsQuery
+>;
 export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: ID!) {
   getUserLikedEvents(id: $id) {
     id
@@ -1489,6 +1646,7 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1497,6 +1655,9 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1531,7 +1692,10 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetUserLikedEventsQueryVariables, APITypes.GetUserLikedEventsQuery>;
+` as GeneratedQuery<
+  APITypes.GetUserLikedEventsQueryVariables,
+  APITypes.GetUserLikedEventsQuery
+>;
 export const listUserLikedEvents = /* GraphQL */ `query ListUserLikedEvents(
   $filter: ModelUserLikedEventsFilterInput
   $limit: Int
@@ -1554,7 +1718,10 @@ export const listUserLikedEvents = /* GraphQL */ `query ListUserLikedEvents(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListUserLikedEventsQueryVariables, APITypes.ListUserLikedEventsQuery>;
+` as GeneratedQuery<
+  APITypes.ListUserLikedEventsQueryVariables,
+  APITypes.ListUserLikedEventsQuery
+>;
 export const syncUserLikedEvents = /* GraphQL */ `query SyncUserLikedEvents(
   $filter: ModelUserLikedEventsFilterInput
   $limit: Int
@@ -1583,7 +1750,10 @@ export const syncUserLikedEvents = /* GraphQL */ `query SyncUserLikedEvents(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncUserLikedEventsQueryVariables, APITypes.SyncUserLikedEventsQuery>;
+` as GeneratedQuery<
+  APITypes.SyncUserLikedEventsQueryVariables,
+  APITypes.SyncUserLikedEventsQuery
+>;
 export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!) {
   getUserLikedItems(id: $id) {
     id
@@ -1594,6 +1764,7 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1602,6 +1773,9 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1636,7 +1810,10 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetUserLikedItemsQueryVariables, APITypes.GetUserLikedItemsQuery>;
+` as GeneratedQuery<
+  APITypes.GetUserLikedItemsQueryVariables,
+  APITypes.GetUserLikedItemsQuery
+>;
 export const listUserLikedItems = /* GraphQL */ `query ListUserLikedItems(
   $filter: ModelUserLikedItemsFilterInput
   $limit: Int
@@ -1659,7 +1836,10 @@ export const listUserLikedItems = /* GraphQL */ `query ListUserLikedItems(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListUserLikedItemsQueryVariables, APITypes.ListUserLikedItemsQuery>;
+` as GeneratedQuery<
+  APITypes.ListUserLikedItemsQueryVariables,
+  APITypes.ListUserLikedItemsQuery
+>;
 export const syncUserLikedItems = /* GraphQL */ `query SyncUserLikedItems(
   $filter: ModelUserLikedItemsFilterInput
   $limit: Int
@@ -1688,7 +1868,10 @@ export const syncUserLikedItems = /* GraphQL */ `query SyncUserLikedItems(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.SyncUserLikedItemsQueryVariables, APITypes.SyncUserLikedItemsQuery>;
+` as GeneratedQuery<
+  APITypes.SyncUserLikedItemsQueryVariables,
+  APITypes.SyncUserLikedItemsQuery
+>;
 export const userCommunitiesByUserId = /* GraphQL */ `query UserCommunitiesByUserId(
   $userId: ID!
   $sortDirection: ModelSortDirection
