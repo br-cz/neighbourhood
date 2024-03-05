@@ -5,7 +5,13 @@ import { MarketplaceCard } from './MarketplaceCard';
 import { ViewListingModal } from './ViewListingModal';
 import { useFetchListings } from '@/src/hooks/marketplaceCustomHooks';
 
-export function MarketplaceFeed({ refresh }: { refresh: boolean }) {
+export function MarketplaceFeed({
+  refresh,
+  searchQuery,
+}: {
+  refresh: boolean;
+  searchQuery: string;
+}) {
   const { listings, loading } = useFetchListings(refresh);
   const [viewListingModalOpened, setViewListingModalOpened] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
@@ -15,7 +21,16 @@ export function MarketplaceFeed({ refresh }: { refresh: boolean }) {
     setViewListingModalOpened(true);
   };
 
-  const sortedListings = listings.sort(
+  const filteredListings = listings.filter(
+    (item: ItemForSale) =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      `${item.seller.firstName} ${item.seller.lastName}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  const sortedListings = filteredListings.sort(
     (a: { createdAt: Date }, b: { createdAt: Date }) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
