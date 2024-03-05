@@ -29,3 +29,9 @@ export async function deleteImageFromS3(imageKey: string) {
         throw new Error(`Error deleting image from S3: ${error}`);
     }
 }
+
+export async function getInitials(firstName: string, lastName: string) {
+    const firstInitial = firstName && firstName[0] ? firstName[0].toUpperCase() : '';
+    const lastInitial = lastName && lastName[0] ? lastName[0].toUpperCase() : '';
+    return firstInitial + lastInitial;
+}
