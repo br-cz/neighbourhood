@@ -30,6 +30,9 @@ export interface User {
   profilePic: string;
   pets: number;
   kids: number;
+  pronouns: string;
+  contact: string;
+  birthday: string;
 }
 
 export interface Community {
