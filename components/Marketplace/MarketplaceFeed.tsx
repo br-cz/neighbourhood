@@ -45,6 +45,7 @@ export function MarketplaceFeed({
       sortedListings = filteredListings.sort(sortByCreatedAt);
       break;
     default:
+      sortedListings = filteredListings;
       break;
   }
 

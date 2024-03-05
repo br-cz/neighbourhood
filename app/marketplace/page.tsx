@@ -30,6 +30,7 @@ export default function MarketplacePage() {
         <Group>
           <Select
             radius="md"
+            placeholder="Sort by..."
             defaultValue="Newly Listed"
             onChange={setSortQuery}
             data={['Newly Listed', 'Price: Low to High', 'Price: High to Low']}
