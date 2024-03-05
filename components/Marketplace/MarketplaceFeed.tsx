@@ -4,13 +4,16 @@ import { ItemForSale } from '@/src/API';
 import { MarketplaceCard } from './MarketplaceCard';
 import { ViewListingModal } from './ViewListingModal';
 import { useFetchListings } from '@/src/hooks/marketplaceCustomHooks';
+import { sortByCreatedAt, sortByPriceHighLow, sortByPriceLowHigh } from './marketplaceSort';
 
 export function MarketplaceFeed({
   refresh,
   searchQuery,
+  sortQuery,
 }: {
   refresh: boolean;
   searchQuery: string;
+  sortQuery: string;
 }) {
   const { listings, loading } = useFetchListings(refresh);
   const [viewListingModalOpened, setViewListingModalOpened] = useState(false);
@@ -30,10 +33,20 @@ export function MarketplaceFeed({
         .includes(searchQuery.toLowerCase())
   );
 
-  const sortedListings = filteredListings.sort(
-    (a: { createdAt: Date }, b: { createdAt: Date }) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  let sortedListings = [];
+  switch (sortQuery) {
+    case 'Price: Low to High':
+      sortedListings = filteredListings.sort(sortByPriceLowHigh);
+      break;
+    case 'Price: High to Low':
+      sortedListings = filteredListings.sort(sortByPriceHighLow);
+      break;
+    case 'Newly Listed':
+      sortedListings = filteredListings.sort(sortByCreatedAt);
+      break;
+    default:
+      break;
+  }
 
   return (
     <>
