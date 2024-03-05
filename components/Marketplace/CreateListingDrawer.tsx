@@ -17,6 +17,7 @@ import { useFormik } from 'formik';
 import { Visibility } from '@/src/API';
 import { useCreateListing } from '@/src/hooks/marketplaceCustomHooks';
 import { createListingSchema } from './createListingValidation';
+
 interface CreateListingDrawerProps {
   opened: boolean;
   onClose: () => void;
@@ -143,7 +144,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               {...formik.getFieldProps('contact')}
               mt="md"
               data-testid="contact"
-              onChange={handleContactChange} 
+              onChange={handleContactChange}
               maxLength={14}
               required
             />
