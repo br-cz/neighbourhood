@@ -4,6 +4,7 @@ import { getCurrentUserID } from './usersCustomHooks';
 import { getCommunityEventsAPI, createEventAPI } from '../api/services/event';
 import { getCurrentUser } from './usersCustomHooks';
 import { Event } from '@/types/types';
+import { Visibility } from '@/types/types';
 
 export const useCreateEvent = () => {
   const handleCreateEvent = async (eventData: any) => {
@@ -38,9 +39,10 @@ export const useFetchEvents = (refresh: boolean = false) => {
         const fetchedEvents = await getCommunityEventsAPI(communityId);
         const visibleEvents = fetchedEvents.filter((event: Event) => {
           return (
-            event.visibility === 'PUBLIC' ||
+            event.visibility === Visibility.PUBLIC ||
             event.organizer.id == user!.id ||
-            (event.visibility === 'PRIVATE' && user!.friends!.includes(event.organizer.id))
+            (event.visibility === Visibility.FRIENDS_ONLY &&
+              user!.friends!.includes(event.organizer.id))
           );
         });
         setEvents(visibleEvents);

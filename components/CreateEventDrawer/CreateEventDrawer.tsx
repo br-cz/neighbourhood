@@ -2,7 +2,7 @@ import React from 'react';
 import { Drawer, TextInput, Textarea, Button, Group, Select, Text, Title } from '@mantine/core';
 import { DatePickerInput, TimeInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
-import { Visibility } from '@/src/API';
+import { Visibility } from '@/types/types';
 import { useCreateEvent } from '@/src/hooks/eventsCustomHooks';
 import { combineDateTime } from '@/utils/timeUtils';
 import { useFormik } from 'formik';
@@ -136,7 +136,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
           placeholder="Choose visibility"
           data={[
             { value: Visibility.PUBLIC, label: 'Public' },
-            { value: Visibility.PRIVATE, label: 'Private' },
+            { value: Visibility.FRIENDS_ONLY, label: 'Friends Only' },
           ]}
           value={formik.values.visibility}
           onChange={(value) => formik.setFieldValue('visibility', value)}

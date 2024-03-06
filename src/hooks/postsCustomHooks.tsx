@@ -4,6 +4,7 @@ import { getCurrentUserID } from './usersCustomHooks';
 import { Post, CommentDataInput, PostDataInput } from '@/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
 import { getCurrentUser } from './usersCustomHooks';
+import { Visibility } from '@/types/types';
 
 export const useCreatePost = () => {
   const [error, setError] = useState<string | undefined>();
@@ -47,9 +48,9 @@ export const useFetchPosts = (refresh: boolean = false) => {
         const jsonPosts = JSON.parse(JSON.stringify(response));
         const visiblePosts = jsonPosts.data.getCommunity.posts.items.filter((post: Post) => {
           return (
-            post.visibility === 'PUBLIC' ||
+            post.visibility === Visibility.PUBLIC ||
             post.author.id == user!.id ||
-            (post.visibility === 'PRIVATE' && user!.friends!.includes(post.author.id))
+            (post.visibility === Visibility.FRIENDS_ONLY && user!.friends!.includes(post.author.id))
           );
         });
         setPosts(visiblePosts);
