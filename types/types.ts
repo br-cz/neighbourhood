@@ -1,4 +1,4 @@
-import { CreateEventInput, CreatePostInput } from '@/src/API';
+import { CreateEventInput, CreatePostInput, CreateCommentInput } from '@/src/API';
 
 export enum Visibility {
   PUBLIC = 'PUBLIC',
@@ -31,6 +31,9 @@ export interface User {
   pets: number;
   kids: number;
   createdAt: string;
+  pronouns: string;
+  contact: string;
+  birthday: string;
 }
 
 export interface Community {
@@ -43,6 +46,17 @@ export interface Community {
   posts: Post[];
 }
 
+export interface CommentItem {
+  id: string;
+  author: User;
+  content: string;
+  createdAt: string;
+}
+
+export interface Comments {
+  items: CommentItem[];
+}
+
 export interface Post {
   id: string;
   author: User;
@@ -50,15 +64,9 @@ export interface Post {
   images: string[];
   content: string;
   likedBy: User[];
-  comments: Comment[];
+  comments: Comments;
   visibility: Visibility;
-}
-
-export interface Comment {
-  id: string;
-  post: Post;
-  author: User;
-  content: string;
+  createdAt: string;
 }
 
 export interface Event {
@@ -96,3 +104,4 @@ export interface FriendRequest {
 
 export type EventDataInput = Omit<CreateEventInput, 'userEventsId' | 'communityEventsId'>;
 export type PostDataInput = Omit<CreatePostInput, 'userEventsId' | 'communityEventsId'>;
+export type CommentDataInput = Omit<CreateCommentInput, 'id' | '_version'>;

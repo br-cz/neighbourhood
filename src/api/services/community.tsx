@@ -1,6 +1,7 @@
 import { generateClient } from '@aws-amplify/api';
 import { getCommunity, listCommunities } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
+import { updateCommunity } from '@/src/graphql/mutations';
 
 const client = generateClient();
 
@@ -28,7 +29,7 @@ export const getCurrentCommunityAPI = async () => {
     }
 };
 
-export const getAllUserCommunities = async (communityId: string) => {
+export const getAllUserCommunitiesAPI = async (communityId: string) => {
   const ListUserCommunities = /* GraphQL */ `
     query ListUserCommunities {
       listUserCommunities {
@@ -61,10 +62,28 @@ export const getAllUserCommunities = async (communityId: string) => {
   }
 };
 
-export const getAllCommunities = async () => {
+export const getAllCommunitiesAPI = async () => {
   try {
     const response = await client.graphql({ query: listCommunities });
     return response;
+  } catch (error: any) {
+    throw new HttpError(error.message, error.statusCode || 500);
+  }
+};
+
+export const updateCommunityImageAPI = async (communityId: string, image: string, _version: number) => {
+  try {
+    const updateCommunityResponse = await client.graphql({
+      query: updateCommunity,
+      variables: {
+        input: {
+          id: communityId,
+          image,
+          _version,
+        },
+      },
+    });
+    return updateCommunityResponse;
   } catch (error: any) {
     throw new HttpError(error.message, error.statusCode || 500);
   }
