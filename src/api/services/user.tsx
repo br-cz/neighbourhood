@@ -65,19 +65,26 @@ export const updateUserProfilePicAPI = async (userId: string, image: string, _ve
 export const createUserAPI = async (user: any) => {
     try {
         const createUserResponse = await client.graphql({
-            query: createUser,
-            variables: {
-                input: {
-                    id: user.id,
-                    username: user.username,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    selectedCommunity: user.selectedCommunity,
-                    postalCode: user.postalCode,
-                    profilePic: user?.profilePic,
-                },
+          query: createUser,
+          variables: {
+            input: {
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              selectedCommunity: user.selectedCommunity,
+              postalCode: user.postalCode,
+              address: user.address,
+              profilePic: user.profilePic,
+              bio: user.bio,
+              kids: user.kids,
+              pets: user.pets,
+              contact: user.contact,
+              birthday: user.birthday,
+              pronouns: user.pronouns,
             },
+          },
         });
         return createUserResponse.data.createUser;
     } catch (error: any) {
