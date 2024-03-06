@@ -14,11 +14,12 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-const extractDistance = (distanceStr: string) => parseFloat(distanceStr.replace(' km', ''));
+const extractDistance = (distanceStr: string) =>
+  parseFloat(distanceStr.replace(' km', '').replace(',', ''));
 
 export async function getDistanceFromCoordinates(origin: string, destination: string) {
   // Construct Google Maps API URL
-  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
   try {
     const { data } = await axios.get(url);

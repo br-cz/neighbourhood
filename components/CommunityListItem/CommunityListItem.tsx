@@ -1,5 +1,4 @@
 import React from 'react';
-import { useToggle } from '@mantine/hooks';
 import { Group, Avatar, Text } from '@mantine/core';
 import classes from './CommunityListItem.module.css';
 import { Community } from '@/types/types';
@@ -7,18 +6,14 @@ import { Community } from '@/types/types';
 interface CommunityListItemProps {
   community: Community;
   onSelect: () => void;
+  isSelected: boolean;
 }
 
-export function CommunityListItem({ community, onSelect }: CommunityListItemProps) {
-  const [selected, toggleSelected] = useToggle();
+export function CommunityListItem({ community, onSelect, isSelected }: CommunityListItemProps) {
   return (
     <div
-      className={`${classes.community} ${selected ? classes.active : ''}`}
-      onClick={() => {
-        onSelect();
-        toggleSelected();
-      }}
-      onKeyDown={onSelect}
+      className={`${classes.community} ${isSelected ? classes.active : ''}`}
+      onClick={onSelect}
       role="button"
       tabIndex={0}
       data-testid="communities-item"
@@ -26,10 +21,10 @@ export function CommunityListItem({ community, onSelect }: CommunityListItemProp
       <Group>
         <Avatar src={community.image} size="lg" radius="xl" />
         <div style={{ flex: 1 }}>
-          <Text size="sm" fw={600}>
+          <Text size="sm" weight={600}>
             {community.name}
           </Text>
-          <Text c="dimmed" size="xs">
+          <Text color="dimmed" size="xs">
             {community.location}
           </Text>
         </div>

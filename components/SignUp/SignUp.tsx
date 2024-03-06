@@ -27,6 +27,8 @@ import { processSignUp } from './signUpLogic';
 export const SignUp = () => {
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [active, setActive] = useState(0);
+  const [isAddressValid, setIsAddressValid] = useState(false);
+  const [coordinates, setCoordinates] = useState({ lat: '', lng: '' });
   const nextStep = () => setActive((current) => (current < 5 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const [loading, handlers] = useDisclosure(false);
@@ -62,8 +64,27 @@ export const SignUp = () => {
     return currentStepFields.every((field) => !errors[field as keyof typeof formik.values]);
   };
 
+  const handleAddressSelection = (isSelected: boolean) => {
+    setIsAddressValid(isSelected);
+  };
+
+  const handleCoordinatesChange = (newCoordinates) => {
+    setCoordinates(newCoordinates);
+  };
+
   const handleNext = async () => {
     const isValid = await handleValidate(active);
+    console.log(formik.values);
+
+    if (active === 1 && !isAddressValid) {
+      notifications.show({
+        title: 'Oops!',
+        message:
+          'You must select an address from the dropdown list. Please select an address and proceed.',
+        color: 'red',
+      });
+      return;
+    }
     if (isValid) {
       nextStep();
     } else {
@@ -209,6 +230,9 @@ export const SignUp = () => {
                 onBlur={formik.handleBlur}
                 error={formik.errors}
                 touched={formik.touched}
+                setFieldValue={formik.setFieldValue}
+                onAddressSelection={handleAddressSelection}
+                onCoordinatesChange={handleCoordinatesChange}
               />
             </Stack>
           </Stepper.Step>
@@ -229,6 +253,7 @@ export const SignUp = () => {
                 onChange={formik.handleChange}
                 errors={formik.errors}
                 touched={formik.touched}
+                coordinates={coordinates}
               />
             </Stack>
           </Stepper.Step>

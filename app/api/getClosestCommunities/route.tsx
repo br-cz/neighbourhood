@@ -14,7 +14,6 @@
 import { generateClient } from '@aws-amplify/api';
 import { NextResponse } from 'next/server';
 import { configureAmplify } from '../utils/amplifyServerConfig';
-import { getCoordinates } from '../getCoordinatesFromPostalCode/route';
 import { listCommunities } from '@/src/graphql/queries';
 import { getDistanceFromCoordinates } from '../getDistanceFromCoordinates/route';
 
@@ -22,22 +21,17 @@ configureAmplify();
 const client = generateClient();
 
 export async function GET(request: Request) {
+  if (request.method !== 'GET') {
+    return NextResponse.json({ error: 'Method not allowed.' }, { status: 405 });
+  }
+
+  // Extract query parameters
   const { searchParams } = new URL(request.url);
-  const postalCode = searchParams.get('postalcode');
+  const coordinates = searchParams.get('coordinates');
 
-  if (typeof postalCode !== 'string') {
-    return NextResponse.json({ error: 'Postal code must be a string.' }, { status: 400 });
+  if (typeof coordinates !== 'string') {
+    return NextResponse.json({ error: 'Invalid request parameter.' }, { status: 400 });
   }
-
-  const coordinatesResponse = await getCoordinates(postalCode);
-  if (coordinatesResponse.error) {
-    return NextResponse.json(
-      { error: 'Error when retrieving coordinates from postal code' },
-      { status: coordinatesResponse.status }
-    );
-  }
-
-  const coordinates = `${coordinatesResponse.lat}, ${coordinatesResponse.lng}`;
 
   const todos = await client.graphql({ query: listCommunities });
   const {
