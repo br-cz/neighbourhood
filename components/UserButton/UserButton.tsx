@@ -3,6 +3,7 @@ import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
 import classes from './UserButton.module.css';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { getInitials } from '../utils/utilFunctions';
 
 interface UserButtonProps {
   active: boolean;
@@ -10,12 +11,14 @@ interface UserButtonProps {
 
 export function UserButton({ active }: UserButtonProps) {
   const { currentUser } = useCurrentUser();
+
   return (
     <Link href="/profile" passHref className={classes.link} data-testid="profile">
       <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
         <Group>
-          <Avatar src={currentUser?.profilePic} size="md" radius="xl" />
-
+          <Avatar src={currentUser?.profilePic} size="md" radius="xl">
+            {getInitials(currentUser?.firstName, currentUser?.lastName)}
+          </Avatar>
           <div style={{ flex: 1 }}>
             <Text size="sm" fw={600}>
               My Profile
