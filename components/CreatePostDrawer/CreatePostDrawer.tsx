@@ -62,6 +62,7 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
           placeholder="Share your thoughts..."
           {...formik.getFieldProps('content')}
           data-testid="post-content"
+          required
         />
 
         <Select
@@ -77,7 +78,7 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
           mt="md"
           comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
         />
-
+        
         <Group justify="center" mt="lg">
           <Button
             data-testid="post-button"

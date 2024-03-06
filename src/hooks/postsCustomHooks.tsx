@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { getCommunityPostsAPI, createNewPostAPI } from '../api/services/post';
+import { getCommunityPostsAPI, createNewPostAPI, createNewCommentAPI } from '../api/services/post';
 import { getCurrentUserID } from './usersCustomHooks';
-import { Post, PostDataInput } from '@/types/types';
+import { Post, CommentDataInput, PostDataInput } from '@/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
 import { getCurrentUser } from './usersCustomHooks';
 
@@ -65,4 +65,27 @@ export const useFetchPosts = (refresh: boolean = false) => {
   }, [refresh]);
 
   return { posts, loading, error };
+};
+
+export const useCreateComment = () => {
+  const [error, setError] = useState<string | undefined>();
+
+  const handleCreateComment = async (commentData: Omit<CommentDataInput, 'userCommentsId'>) => {
+    try {
+      const userId = getCurrentUserID();
+      const newCommentData: CommentDataInput = {
+        ...commentData,
+        userCommentsId: userId,
+      };
+      const comment = await createNewCommentAPI(newCommentData);
+      console.log('Comment created:', comment);
+      return comment;
+    } catch (err: any) {
+      console.error('Error creating comment:', err);
+      setError(err);
+      return err;
+    }
+  };
+
+  return { handleCreateComment, error };
 };

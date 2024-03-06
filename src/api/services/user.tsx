@@ -43,21 +43,48 @@ const input = { id: userId, email: newEmail, _version };
     }
 };
 
+export const updateUserProfilePicAPI = async (userId: string, image: string, _version: number) => {
+        try {
+            const updatedUser = await client.graphql({
+                query: updateUser,
+                variables: {
+                    input: {
+                        id: userId,
+                        profilePic: image,
+                        _version,
+                    },
+                },
+            });
+            console.log('User updated successfully:', updatedUser.data.updateUser);
+            return updatedUser.data.updateUser;
+        } catch (error: any) {
+            throw new HttpError(`Error updating user profile picture: ${error.message}`, error.statusCode || 500);
+        }
+    };
+
 export const createUserAPI = async (user: any) => {
     try {
         const createUserResponse = await client.graphql({
-            query: createUser,
-            variables: {
-                input: {
-                    id: user.id,
-                    username: user.username,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    selectedCommunity: user.selectedCommunity,
-                    postalCode: user.postalCode,
-                },
+          query: createUser,
+          variables: {
+            input: {
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              selectedCommunity: user.selectedCommunity,
+              postalCode: user.postalCode,
+              address: user.address,
+              profilePic: user.profilePic,
+              bio: user.bio,
+              kids: user.kids,
+              pets: user.pets,
+              contact: user.contact,
+              birthday: user.birthday,
+              pronouns: user.pronouns,
             },
+          },
         });
         return createUserResponse.data.createUser;
     } catch (error: any) {

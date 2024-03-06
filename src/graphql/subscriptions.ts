@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from '../API';
+import * as APITypes from "../API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -20,6 +20,7 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -28,6 +29,9 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -42,6 +46,7 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -50,6 +55,9 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -84,6 +92,7 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -92,6 +101,9 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -106,6 +118,7 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -114,6 +127,9 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -148,6 +164,7 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -156,6 +173,9 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -170,6 +190,7 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -178,6 +199,9 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -200,13 +224,13 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
   APITypes.OnDeleteFriendRequestSubscriptionVariables,
   APITypes.OnDeleteFriendRequestSubscription
 >;
-export const onCreateUser =
-  /* GraphQL */ `subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
+export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
   onCreateUser(filter: $filter) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -255,6 +279,9 @@ export const onCreateUser =
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -271,16 +298,16 @@ export const onCreateUser =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateUserSubscriptionVariables,
-    APITypes.OnCreateUserSubscription
-  >;
-export const onUpdateUser =
-  /* GraphQL */ `subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+  APITypes.OnCreateUserSubscriptionVariables,
+  APITypes.OnCreateUserSubscription
+>;
+export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
   onUpdateUser(filter: $filter) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -329,6 +356,9 @@ export const onUpdateUser =
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -345,16 +375,16 @@ export const onUpdateUser =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateUserSubscriptionVariables,
-    APITypes.OnUpdateUserSubscription
-  >;
-export const onDeleteUser =
-  /* GraphQL */ `subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+  APITypes.OnUpdateUserSubscriptionVariables,
+  APITypes.OnUpdateUserSubscription
+>;
+export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
   onDeleteUser(filter: $filter) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -403,6 +433,9 @@ export const onDeleteUser =
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -419,11 +452,10 @@ export const onDeleteUser =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteUserSubscriptionVariables,
-    APITypes.OnDeleteUserSubscription
-  >;
-export const onCreateCommunity =
-  /* GraphQL */ `subscription OnCreateCommunity($filter: ModelSubscriptionCommunityFilterInput) {
+  APITypes.OnDeleteUserSubscriptionVariables,
+  APITypes.OnDeleteUserSubscription
+>;
+export const onCreateCommunity = /* GraphQL */ `subscription OnCreateCommunity($filter: ModelSubscriptionCommunityFilterInput) {
   onCreateCommunity(filter: $filter) {
     id
     name
@@ -459,11 +491,10 @@ export const onCreateCommunity =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateCommunitySubscriptionVariables,
-    APITypes.OnCreateCommunitySubscription
-  >;
-export const onUpdateCommunity =
-  /* GraphQL */ `subscription OnUpdateCommunity($filter: ModelSubscriptionCommunityFilterInput) {
+  APITypes.OnCreateCommunitySubscriptionVariables,
+  APITypes.OnCreateCommunitySubscription
+>;
+export const onUpdateCommunity = /* GraphQL */ `subscription OnUpdateCommunity($filter: ModelSubscriptionCommunityFilterInput) {
   onUpdateCommunity(filter: $filter) {
     id
     name
@@ -499,11 +530,10 @@ export const onUpdateCommunity =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateCommunitySubscriptionVariables,
-    APITypes.OnUpdateCommunitySubscription
-  >;
-export const onDeleteCommunity =
-  /* GraphQL */ `subscription OnDeleteCommunity($filter: ModelSubscriptionCommunityFilterInput) {
+  APITypes.OnUpdateCommunitySubscriptionVariables,
+  APITypes.OnUpdateCommunitySubscription
+>;
+export const onDeleteCommunity = /* GraphQL */ `subscription OnDeleteCommunity($filter: ModelSubscriptionCommunityFilterInput) {
   onDeleteCommunity(filter: $filter) {
     id
     name
@@ -539,11 +569,10 @@ export const onDeleteCommunity =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteCommunitySubscriptionVariables,
-    APITypes.OnDeleteCommunitySubscription
-  >;
-export const onCreatePost =
-  /* GraphQL */ `subscription OnCreatePost($filter: ModelSubscriptionPostFilterInput) {
+  APITypes.OnDeleteCommunitySubscriptionVariables,
+  APITypes.OnDeleteCommunitySubscription
+>;
+export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: ModelSubscriptionPostFilterInput) {
   onCreatePost(filter: $filter) {
     id
     author {
@@ -551,6 +580,7 @@ export const onCreatePost =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -559,6 +589,9 @@ export const onCreatePost =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -605,11 +638,10 @@ export const onCreatePost =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreatePostSubscriptionVariables,
-    APITypes.OnCreatePostSubscription
-  >;
-export const onUpdatePost =
-  /* GraphQL */ `subscription OnUpdatePost($filter: ModelSubscriptionPostFilterInput) {
+  APITypes.OnCreatePostSubscriptionVariables,
+  APITypes.OnCreatePostSubscription
+>;
+export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: ModelSubscriptionPostFilterInput) {
   onUpdatePost(filter: $filter) {
     id
     author {
@@ -617,6 +649,7 @@ export const onUpdatePost =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -625,6 +658,9 @@ export const onUpdatePost =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -671,11 +707,10 @@ export const onUpdatePost =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdatePostSubscriptionVariables,
-    APITypes.OnUpdatePostSubscription
-  >;
-export const onDeletePost =
-  /* GraphQL */ `subscription OnDeletePost($filter: ModelSubscriptionPostFilterInput) {
+  APITypes.OnUpdatePostSubscriptionVariables,
+  APITypes.OnUpdatePostSubscription
+>;
+export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: ModelSubscriptionPostFilterInput) {
   onDeletePost(filter: $filter) {
     id
     author {
@@ -683,6 +718,7 @@ export const onDeletePost =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -691,6 +727,9 @@ export const onDeletePost =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -737,11 +776,10 @@ export const onDeletePost =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeletePostSubscriptionVariables,
-    APITypes.OnDeletePostSubscription
-  >;
-export const onCreateComment =
-  /* GraphQL */ `subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
+  APITypes.OnDeletePostSubscriptionVariables,
+  APITypes.OnDeletePostSubscription
+>;
+export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
   onCreateComment(filter: $filter) {
     id
     post {
@@ -763,6 +801,7 @@ export const onCreateComment =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -771,6 +810,9 @@ export const onCreateComment =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -792,11 +834,10 @@ export const onCreateComment =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateCommentSubscriptionVariables,
-    APITypes.OnCreateCommentSubscription
-  >;
-export const onUpdateComment =
-  /* GraphQL */ `subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
+  APITypes.OnCreateCommentSubscriptionVariables,
+  APITypes.OnCreateCommentSubscription
+>;
+export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
   onUpdateComment(filter: $filter) {
     id
     post {
@@ -818,6 +859,7 @@ export const onUpdateComment =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -826,6 +868,9 @@ export const onUpdateComment =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -847,11 +892,10 @@ export const onUpdateComment =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateCommentSubscriptionVariables,
-    APITypes.OnUpdateCommentSubscription
-  >;
-export const onDeleteComment =
-  /* GraphQL */ `subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
+  APITypes.OnUpdateCommentSubscriptionVariables,
+  APITypes.OnUpdateCommentSubscription
+>;
+export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
   onDeleteComment(filter: $filter) {
     id
     post {
@@ -873,6 +917,7 @@ export const onDeleteComment =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -881,6 +926,9 @@ export const onDeleteComment =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -902,11 +950,10 @@ export const onDeleteComment =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteCommentSubscriptionVariables,
-    APITypes.OnDeleteCommentSubscription
-  >;
-export const onCreateEvent =
-  /* GraphQL */ `subscription OnCreateEvent($filter: ModelSubscriptionEventFilterInput) {
+  APITypes.OnDeleteCommentSubscriptionVariables,
+  APITypes.OnDeleteCommentSubscription
+>;
+export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: ModelSubscriptionEventFilterInput) {
   onCreateEvent(filter: $filter) {
     id
     name
@@ -932,6 +979,7 @@ export const onCreateEvent =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -940,6 +988,9 @@ export const onCreateEvent =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -966,11 +1017,10 @@ export const onCreateEvent =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateEventSubscriptionVariables,
-    APITypes.OnCreateEventSubscription
-  >;
-export const onUpdateEvent =
-  /* GraphQL */ `subscription OnUpdateEvent($filter: ModelSubscriptionEventFilterInput) {
+  APITypes.OnCreateEventSubscriptionVariables,
+  APITypes.OnCreateEventSubscription
+>;
+export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: ModelSubscriptionEventFilterInput) {
   onUpdateEvent(filter: $filter) {
     id
     name
@@ -996,6 +1046,7 @@ export const onUpdateEvent =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1004,6 +1055,9 @@ export const onUpdateEvent =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1030,11 +1084,10 @@ export const onUpdateEvent =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateEventSubscriptionVariables,
-    APITypes.OnUpdateEventSubscription
-  >;
-export const onDeleteEvent =
-  /* GraphQL */ `subscription OnDeleteEvent($filter: ModelSubscriptionEventFilterInput) {
+  APITypes.OnUpdateEventSubscriptionVariables,
+  APITypes.OnUpdateEventSubscription
+>;
+export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: ModelSubscriptionEventFilterInput) {
   onDeleteEvent(filter: $filter) {
     id
     name
@@ -1060,6 +1113,7 @@ export const onDeleteEvent =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1068,6 +1122,9 @@ export const onDeleteEvent =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1094,9 +1151,9 @@ export const onDeleteEvent =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteEventSubscriptionVariables,
-    APITypes.OnDeleteEventSubscription
-  >;
+  APITypes.OnDeleteEventSubscriptionVariables,
+  APITypes.OnDeleteEventSubscription
+>;
 export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSale(
   $filter: ModelSubscriptionItemForSaleFilterInput
 ) {
@@ -1112,6 +1169,7 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1120,6 +1178,9 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1177,6 +1238,7 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1185,6 +1247,9 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1242,6 +1307,7 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1250,6 +1316,9 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1304,6 +1373,7 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1312,6 +1382,9 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1358,6 +1431,7 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1366,6 +1440,9 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1412,6 +1489,7 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1420,6 +1498,9 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1466,6 +1547,7 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1474,6 +1556,9 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1521,6 +1606,7 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1529,6 +1615,9 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1576,6 +1665,7 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1584,6 +1674,9 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1631,6 +1724,7 @@ export const onCreateUserLikedEvents = /* GraphQL */ `subscription OnCreateUserL
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1639,6 +1733,9 @@ export const onCreateUserLikedEvents = /* GraphQL */ `subscription OnCreateUserL
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1689,6 +1786,7 @@ export const onUpdateUserLikedEvents = /* GraphQL */ `subscription OnUpdateUserL
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1697,6 +1795,9 @@ export const onUpdateUserLikedEvents = /* GraphQL */ `subscription OnUpdateUserL
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1747,6 +1848,7 @@ export const onDeleteUserLikedEvents = /* GraphQL */ `subscription OnDeleteUserL
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1755,6 +1857,9 @@ export const onDeleteUserLikedEvents = /* GraphQL */ `subscription OnDeleteUserL
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1805,6 +1910,7 @@ export const onCreateUserLikedItems = /* GraphQL */ `subscription OnCreateUserLi
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1813,6 +1919,9 @@ export const onCreateUserLikedItems = /* GraphQL */ `subscription OnCreateUserLi
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1863,6 +1972,7 @@ export const onUpdateUserLikedItems = /* GraphQL */ `subscription OnUpdateUserLi
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1871,6 +1981,9 @@ export const onUpdateUserLikedItems = /* GraphQL */ `subscription OnUpdateUserLi
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1921,6 +2034,7 @@ export const onDeleteUserLikedItems = /* GraphQL */ `subscription OnDeleteUserLi
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1929,6 +2043,9 @@ export const onDeleteUserLikedItems = /* GraphQL */ `subscription OnDeleteUserLi
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
