@@ -1,5 +1,5 @@
 import { notifications } from '@mantine/notifications'; // Assuming a type exists
-import { signOut } from 'aws-amplify/auth';
+import { signOut } from '@aws-amplify/auth';
 
 interface HandleSignOutParams {
   router: any;
