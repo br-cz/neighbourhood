@@ -20,6 +20,7 @@ export const fetchAllFriendRequestsAPI = async () => {
           _version
           receiver {
             id
+            createdAt
             firstName
             lastName
             username
@@ -27,6 +28,7 @@ export const fetchAllFriendRequestsAPI = async () => {
           }
           sender {
             id
+            createdAt
             firstName
             lastName
             username
