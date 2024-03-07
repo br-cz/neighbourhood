@@ -5,7 +5,7 @@ const useGoogleMapsApi = (apiKey: string) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState(null);
 
-  if (apiKey === '') {
+  if (process.env.NODE_ENV !== 'test' && apiKey === '') {
     throw new Error('Api key does not exist');
   }
 

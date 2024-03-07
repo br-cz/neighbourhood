@@ -68,7 +68,7 @@ export const SignUp = () => {
     setIsAddressValid(isSelected);
   };
 
-  const handleCoordinatesChange = (newCoordinates) => {
+  const handleCoordinatesChange = (newCoordinates: any) => {
     setCoordinates(newCoordinates);
   };
 

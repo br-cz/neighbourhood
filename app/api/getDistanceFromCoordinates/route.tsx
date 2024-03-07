@@ -14,10 +14,22 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
+interface SuccessResponse {
+  distanceKm: number;
+  duration: string;
+}
+
+interface ErrorResponse {
+  error: string;
+  status: number;
+}
+
+type ApiResponse = SuccessResponse | ErrorResponse;
+
 const extractDistance = (distanceStr: string) =>
   parseFloat(distanceStr.replace(' km', '').replace(',', ''));
 
-export async function getDistanceFromCoordinates(origin: string, destination: string) {
+async function getDistanceFromCoordinates(origin: string, destination: string): Promise<ApiResponse> {
   // Construct Google Maps API URL
   const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
@@ -42,7 +54,7 @@ export async function getDistanceFromCoordinates(origin: string, destination: st
   }
 }
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse> {
   // Validate HTTP method
   if (request.method !== 'GET') {
     return NextResponse.json({ error: 'Method not allowed.' }, { status: 405 });
@@ -61,10 +73,10 @@ export async function GET(request: Request) {
   const result = await getDistanceFromCoordinates(origin as string, destination as string);
 
   // Check if the result includes distance and duration information
-  if ('distance' in result && 'duration' in result) {
+  if ('distanceKm' in result && 'duration' in result) {
     // Success: Return the distance and duration information
     return NextResponse.json(result, { status: 200 });
+  } else {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
-  // Error: Use the status code from the result and return the error message
-  return NextResponse.json({ error: result.error }, { status: result.status });
 }

@@ -2,7 +2,24 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Box, Stack, TextInput } from '@mantine/core';
 import useGoogleMapsApi from '@/src/hooks/googleMapsAPI'; // Adjust the path as necessary
 
-export const AddressInput = ({
+interface AddressInputProps {
+  address: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  error: any;
+  touched: any;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+  onAddressSelection: (isSelected: boolean) => void;
+  onCoordinatesChange: (coordinates: { lat: string; lng: string }) => void;
+}
+
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
+export const AddressInput: React.FC<AddressInputProps> = ({
   address,
   onChange,
   onBlur,
@@ -41,7 +58,7 @@ export const AddressInput = ({
     }
   }, [isLoaded, loadError, onChange, onBlur]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     setLocalAddress(e.target.value);
     if (e.target.value !== address) {
       onAddressSelection(false);

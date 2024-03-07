@@ -21,7 +21,7 @@ export function CommunityListItem({ community, onSelect, isSelected }: Community
       <Group>
         <Avatar src={community.image} size="lg" radius="xl" />
         <div style={{ flex: 1 }}>
-          <Text size="sm" weight={600}>
+          <Text size="sm" fw={600}>
             {community.name}
           </Text>
           <Text color="dimmed" size="xs">

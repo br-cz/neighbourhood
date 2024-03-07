@@ -15,7 +15,6 @@ import { generateClient } from '@aws-amplify/api';
 import { NextResponse } from 'next/server';
 import { configureAmplify } from '../utils/amplifyServerConfig';
 import { listCommunities } from '@/src/graphql/queries';
-import { getDistanceFromCoordinates } from '../getDistanceFromCoordinates/route';
 
 configureAmplify();
 const client = generateClient();
@@ -43,8 +42,14 @@ export async function GET(request: Request) {
 
   try {
     const distancePromises = items.map(async (item) => {
-      const distanceResponse = await getDistanceFromCoordinates(coordinates, item.coordinates);
-      if (distanceResponse.error) {
+      const response = await fetch(
+        `/api/getDistanceFromCoordinates?origin=${coordinates}destination=${item.coordinates}`
+      );
+      if (!response.ok) throw new Error('Failed to fetch communities');
+
+      const data = await response.json();
+      console.log(data);
+      if ('error' in data) {
         throw new Error('Error when retrieving distances to communities');
       }
       return {
@@ -55,7 +60,7 @@ export async function GET(request: Request) {
           coordinates: item.coordinates,
           image: item.image,
         },
-        distanceKm: distanceResponse.distanceKm,
+        distanceKm: data.distanceKm,
       };
     });
 

@@ -49,7 +49,9 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
         if (!response.ok) throw new Error('Failed to fetch communities');
 
         const data = await response.json();
-        const filteredCommunities = data.filter((element) => element.distanceKm <= 10).slice(0, 5);
+        const filteredCommunities = data
+          .filter((element: NearestCommunity) => element.distanceKm <= 10)
+          .slice(0, 5);
         setNearestCommunities(filteredCommunities); //
       } catch (error) {
         console.error('Error fetching nearest communities:', error);
@@ -99,10 +101,10 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
             ))
           ) : (
             <>
-              <Text size="sm" align="center" className={styles.glowOnce}>
+              <Text size="sm" ta="center" className={styles.glowOnce}>
                 Oh no! No communities available 🧐
               </Text>
-              <Text size="sm" align="center">
+              <Text size="sm" ta="center">
                 Currently, we can only serve neighbours located in Winnipeg and close surrounding
                 areas. Please go back and select a different address.
               </Text>
