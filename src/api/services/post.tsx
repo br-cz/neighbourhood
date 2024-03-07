@@ -39,6 +39,7 @@ export const getCommunityPostsAPI = async (communityId: string) => {
           items {
             id
             author {
+              id
               username
               firstName
               lastName
@@ -112,20 +113,20 @@ export const getAllCommentsAPI = async () => {
 };
 
 export const updatePostImageAPI = async (postId: string, image: string, _version: number) => {
-    try {
-        const updatedPost = await client.graphql({
-        query: updatePost,
-        variables: {
-          input: {
-            id: postId,
-            images: [image],
-            _version,
-          },
+  try {
+    const updatedPost = await client.graphql({
+      query: updatePost,
+      variables: {
+        input: {
+          id: postId,
+          images: [image],
+          _version,
         },
-        });
-        console.log('User updated successfully:', updatedPost.data.updatePost);
-        return updatedPost.data.updatePost;
-    } catch (error: any) {
-        throw new HttpError(`Error updating post image: ${error.message}`, error.statusCode || 500);
-    }
+      },
+    });
+    console.log('User updated successfully:', updatedPost.data.updatePost);
+    return updatedPost.data.updatePost;
+  } catch (error: any) {
+    throw new HttpError(`Error updating post image: ${error.message}`, error.statusCode || 500);
+  }
 };
