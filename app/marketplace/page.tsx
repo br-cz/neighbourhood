@@ -13,10 +13,11 @@ import { CreateListingDrawer } from '@/components/Marketplace/CreateListingDrawe
 export default function MarketplacePage() {
   const [refresh, setRefresh] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortQuery, setSortQuery] = useState<string | null>('Newly Listed');
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const toggleRefresh = () => setRefresh((flag) => !flag);
   const { user } = useAuth();
-  if (!user) return null; // or a message indicating the user is not signed in
+  if (!user) return null;
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -29,7 +30,9 @@ export default function MarketplacePage() {
         <Group>
           <Select
             radius="md"
-            placeholder="Newly Listed"
+            placeholder="Sort by..."
+            defaultValue="Newly Listed"
+            onChange={setSortQuery}
             data={['Newly Listed', 'Price: Low to High', 'Price: High to Low']}
           />
           <TextInput
@@ -46,7 +49,7 @@ export default function MarketplacePage() {
           </Button>
         </Group>
       </Group>
-      <MarketplaceFeed refresh={refresh} searchQuery={searchQuery} />
+      <MarketplaceFeed refresh={refresh} searchQuery={searchQuery} sortQuery={sortQuery} />
       <CreateListingDrawer
         opened={drawerOpened}
         onClose={drawerHandlers.close}

@@ -23,6 +23,7 @@ type User @model {
   username: String!
   email: String!
   postalCode: String!
+  address: String
   firstName: String!
   lastName: String!
   communities: [Community!]! @manyToMany(relationName: "UserCommunity")
@@ -39,6 +40,9 @@ type User @model {
   age: Int
   bio: String
   profilePic: String
+  pronouns: String
+  contact: String
+  birthday: AWSDate
   pets: Int
   kids: Int
   comments: [Comment] @hasMany
