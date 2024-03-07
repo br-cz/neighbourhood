@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Loader, Select, SimpleGrid, Title } from '@mantine/core';
+import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title } from '@mantine/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { EventCard } from '@/components/EventCard/EventCard';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { CreateEventDrawer } from '@/components/CreateEventDrawer/CreateEventDrawer';
@@ -13,6 +15,7 @@ import { Event } from '@/src/API';
 
 export default function EventsPage() {
   const [refresh, setRefresh] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const [viewEventModalOpened, setViewEventModalOpened] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -20,7 +23,21 @@ export default function EventsPage() {
   const { events, loading } = useFetchEvents(refresh);
   const toggleRefresh = () => setRefresh((flag) => !flag);
 
-  const sortedEvents = events.sort(
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredEvents = events.filter(
+    (event: Event) =>
+      event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      `${event.organizer.firstName} ${event.organizer.lastName}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  const sortedEvents = filteredEvents.sort(
     (a: { createdAt: Date }, b: { createdAt: Date }) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
@@ -38,6 +55,14 @@ export default function EventsPage() {
         <Title order={1}>Events</Title>
         <Group>
           <Select radius="md" placeholder="Newly Posted" data={['Newly Posted']} />
+          <TextInput
+            radius="md"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            rightSectionPointerEvents="none"
+            rightSection={<FontAwesomeIcon icon={faSearch} />}
+            placeholder="Search..."
+          />
           <Button radius="md" variant="filled" onClick={drawerHandlers.open}>
             New Event...
           </Button>

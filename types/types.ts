@@ -30,6 +30,7 @@ export interface User {
   profilePic: string;
   pets: number;
   kids: number;
+  createdAt: string;
   pronouns: string;
   contact: string;
   birthday: string;

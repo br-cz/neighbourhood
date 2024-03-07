@@ -31,25 +31,26 @@ export const getCurrentCommunityAPI = async () => {
 
 export const getAllUserCommunitiesAPI = async (communityId: string) => {
   const ListUserCommunities = /* GraphQL */ `
-  query ListUserCommunities {
-    listUserCommunities {
-      nextToken
-      startedAt
-      items {
-        id
-        user {
+    query ListUserCommunities {
+      listUserCommunities {
+        nextToken
+        startedAt
+        items {
           id
-          firstName
-          lastName
-          username
-          profilePic
+          user {
+            id
+            createdAt
+            firstName
+            lastName
+            username
+            profilePic
+          }
+          communityId
+          userId
         }
-        communityId
-        userId
       }
     }
-  }
-`;
+  `;
   try {
     const fetchedMembers = await client.graphql({
       query: ListUserCommunities,
