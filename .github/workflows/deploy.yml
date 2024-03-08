@@ -56,7 +56,7 @@ jobs:
 
       - name: Tag the Docker image for ECR
         run: |
-          docker tag neighbourhood:latest public.ecr.aws/r3w6m3b9/neighbourhood:latest
+          docker tag comp4350teamsaffron/neighbourhood:latest public.ecr.aws/r3w6m3b9/neighbourhood:latest
 
       - name: Push the Docker image to Amazon ECR
         run: |
