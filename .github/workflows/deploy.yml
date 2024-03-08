@@ -33,4 +33,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: yourusername/yourrepository:latest
+          tags: comp4350teamsaffron/neighbourhood:latest
