@@ -14,19 +14,23 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18'
+
       - name: Setup Amplify Configuration
         run: |
           echo '${{ secrets.AMPLIFY_CONFIGURATION }}' > src/amplifyconfiguration.json
+
       - name: Build and test
         run: |
           npm install
           npm run build
           npm test
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
@@ -34,3 +38,24 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: comp4350teamsaffron/neighbourhood:latest
+
+      - name: Pull image from Docker Hub
+        run: |
+          docker pull comp4350teamsaffron/neighbourhood:latest
+
+      - name: Tag the Docker image for ECR
+        run: |
+          docker tag comp4350teamsaffron/neighbourhood:latest ${{ steps.login-ecr.outputs.registry }}/neighbourhood:latest
+
+      - name: Push the Docker image to Amazon ECR
+        run: |
+          docker push ${{ steps.login-ecr.outputs.registry }}/neighbourhood:latest
+
+      - name: Fill in the new image ID in the ECS task definition
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: neighbourhood
+          IMAGE_TAG: latest
+        run: |
+          sed -i "s|IMAGE_NAME|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|" task-def.json
+          aws ecs register-task-definition --cli-input-json file://task-def.json
