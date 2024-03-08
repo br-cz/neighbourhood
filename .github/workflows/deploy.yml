@@ -56,11 +56,11 @@ jobs:
 
       - name: Tag the Docker image for ECR
         run: |
-          docker tag comp4350teamsaffron/neighbourhood:latest ${{ steps.login-ecr.outputs.registry }}/neighbourhood:latest
+          docker tag neighbourhood:latest public.ecr.aws/r3w6m3b9/neighbourhood:latest
 
       - name: Push the Docker image to Amazon ECR
         run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/neighbourhood:latest
+          docker push public.ecr.aws/r3w6m3b9/neighbourhood:latest
 
       - name: Fill in the new image ID in the ECS task definition
         env:
