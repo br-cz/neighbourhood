@@ -1,5 +1,6 @@
 {
   "family": "neighbourhood-containers",
+  "networkMode": "awsvpc",
   "containerDefinitions": [
     {
       "name": "neighbourhood-container",
@@ -14,5 +15,8 @@
         }
       ]
     }
-  ]
+  ],
+  "requiresCompatibilities": ["FARGATE"],
+  "memory": "512",
+  "cpu": "256"
 }
