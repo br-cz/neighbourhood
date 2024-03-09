@@ -63,7 +63,7 @@ export default function HomePage() {
             No one has shared anything yet in this community, be the first one to share!
           </Text>
         </Group>
-      ) : filteredPosts.length === 0 ? (
+      ) : filteredAndSortedPosts.length === 0 ? (
         <Group justify="center" mt="200">
           <Text size="xl" c="dimmed">
             There is no post that matches your search query
