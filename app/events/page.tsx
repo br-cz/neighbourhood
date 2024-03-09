@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title } from '@mantine/core';
+import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title, Text } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { EventCard } from '@/components/EventCard/EventCard';
@@ -37,7 +37,7 @@ export default function EventsPage() {
         .includes(searchQuery.toLowerCase())
   );
 
-  const sortedEvents = filteredEvents.sort(
+  const filteredAndSortedEvents = filteredEvents.sort(
     (a: { createdAt: Date }, b: { createdAt: Date }) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
@@ -73,6 +73,18 @@ export default function EventsPage() {
         <Group justify="center" mt="200">
           <Loader />
         </Group>
+      ) : events.length === 0 ? (
+        <Group justify="center" mt="200">
+          <Text size="xl" c="dimmed">
+            No one is hosting an event yet, be the first one!
+          </Text>
+        </Group>
+      ) : filteredEvents.length === 0 ? (
+        <Group justify="center" mt="200">
+          <Text size="xl" c="dimmed">
+            There is no event that matches your search query
+          </Text>
+        </Group>
       ) : (
         <SimpleGrid
           cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
@@ -80,7 +92,7 @@ export default function EventsPage() {
           verticalSpacing={{ base: 'md', sm: 'lg' }}
           data-testid="event-feed"
         >
-          {sortedEvents.map((event: Event) => (
+          {filteredAndSortedEvents.map((event: Event) => (
             <EventCard key={event.id} event={event} onView={() => handleViewEvent(event)} />
           ))}
         </SimpleGrid>
