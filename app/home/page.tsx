@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title } from '@mantine/core';
+import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
@@ -56,6 +56,18 @@ export default function HomePage() {
       {loading ? (
         <Group justify="center" mt="200">
           <Loader />
+        </Group>
+      ) : posts.length === 0 ? (
+        <Group justify="center" mt="200">
+          <Text size="xl" c="dimmed">
+            No one has shared anything yet in this community, be the first one to share!
+          </Text>
+        </Group>
+      ) : filteredAndSortedPosts.length === 0 ? (
+        <Group justify="center" mt="200">
+          <Text size="xl" c="dimmed">
+            There is no post that matches your search query
+          </Text>
         </Group>
       ) : (
         <SimpleGrid
