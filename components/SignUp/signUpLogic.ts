@@ -1,3 +1,5 @@
+import { createAvatar } from '@dicebear/core';
+import { initials } from '@dicebear/collection';
 import { notifications } from '@mantine/notifications';
 import { signUp } from '@aws-amplify/auth';
 import { createUserAPI, createUserCommunityAPI } from '@/src/api/services/user';
@@ -17,6 +19,8 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     .toLowerCase()
     .replace(/^\w/, (c: string) => c.toUpperCase());
   values.phoneNumber = parameters.phoneNumber.trim();
+
+  const avatarURL = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(`${values.firstName} ${values.familyName}`)}&scale=60&fontFamily=Helvetica,sans-serif&fontWeight=500`;
 
   try {
     // Step 1: Sign Up with AWS Cognito
@@ -44,6 +48,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         lastName: values.familyName,
         selectedCommunity: values.selectedCommunity,
         postalCode: '',
+        profilePic: avatarURL,
       };
 
       await createUserAPI(createUserInput);
