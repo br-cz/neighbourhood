@@ -24,11 +24,11 @@ export const filterAndSortEvents = (
   const eventsToSort = (() => {
     switch (sortQuery) {
       case 'Today':
-        return filterEventsForToday(events);
+        return filterEventsForToday(filteredEvents);
       case 'This Week':
-        return filterEventsForWeek(events);
+        return filterEventsForWeek(filteredEvents);
       case 'Next Week':
-        return filterEventsForNextWeek(events);
+        return filterEventsForNextWeek(filteredEvents);
       default:
         return filteredEvents;
     }
