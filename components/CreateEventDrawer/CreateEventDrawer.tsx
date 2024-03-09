@@ -65,7 +65,6 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
     },
   });
 
-  //Clean up later, this is the image upload section for our next sprint
   const previews = files.map((file: FileWithPath, index: any) => {
     const imageUrl = URL.createObjectURL(file);
     return (

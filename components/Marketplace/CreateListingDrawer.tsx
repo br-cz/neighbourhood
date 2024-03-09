@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Drawer,
   TextInput,
@@ -10,13 +10,21 @@ import {
   Title,
   NumberInput,
   Grid,
+  ActionIcon,
+  Box,
+  Stack,
+  Image,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCloudUpload, faImage, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useFormik } from 'formik';
 import { Visibility } from '@/src/API';
 import { useCreateListing } from '@/src/hooks/marketplaceCustomHooks';
 import { createListingSchema } from './createListingValidation';
+import { storeImage } from '@/components/utils/s3Helpers/ItemForSaleImageS3Helper';
 
 interface CreateListingDrawerProps {
   opened: boolean;
@@ -25,6 +33,7 @@ interface CreateListingDrawerProps {
 }
 
 export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateListingDrawerProps) {
+  const [files, setFiles] = useState<FileWithPath[]>([]);
   const [loading, handlers] = useDisclosure();
   const { handleCreateListing } = useCreateListing();
 
@@ -60,6 +69,34 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
     const numericPhoneNumber = value.replace(/\D/g, '');
     const formattedPhoneNumber = numericPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
     formik.setFieldValue('contact', formattedPhoneNumber);
+  };
+
+  const previews = files.map((file: FileWithPath, index: any) => {
+    const imageUrl = URL.createObjectURL(file);
+    return (
+      <Image
+        key={index}
+        src={imageUrl}
+        radius="md"
+        mt="xs"
+        onLoad={() => URL.revokeObjectURL(imageUrl)}
+        style={{ maxWidth: 400, maxHeight: 300 }}
+      />
+    );
+  });
+
+  const handleDropImage = async (acceptedFiles: FileWithPath[]) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setFiles([file]);
+      const imageUrl = await storeImage(file, 'eventId');
+      formik.setFieldValue('eventImage', imageUrl);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFiles([]);
+    formik.setFieldValue('eventImage', null);
   };
 
   return (
@@ -169,7 +206,70 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
           comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
         />
 
-        <Group justify="center" mt="lg">
+        <Box w={400} h={300}>
+          <Group gap={5} align="center" mt="lg">
+            <Text fz="sm" fw={500}>
+              Item Photo
+            </Text>
+            <Text size="sm" c="dimmed">
+              (optional)
+            </Text>
+            <ActionIcon
+              color="red"
+              radius="md"
+              variant="subtle"
+              size={16}
+              onClick={handleRemoveImage}
+              disabled={previews.length === 0}
+              ml={5}
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Group>
+          {previews.length === 0 ? (
+            <Dropzone
+              onDrop={handleDropImage}
+              onReject={(rejected) => console.log('rejected files', rejected)}
+              maxSize={5 * 1024 ** 2}
+              maxFiles={1}
+              accept={IMAGE_MIME_TYPE}
+              radius="md"
+              mt={5}
+            >
+              <Stack
+                align="center"
+                justify="center"
+                style={{ minHeight: 220, pointerEvents: 'none' }}
+              >
+                <Dropzone.Accept>
+                  <FontAwesomeIcon
+                    icon={faCloudUpload}
+                    size="3x"
+                    color="var(--mantine-color-blue-6)"
+                  />
+                </Dropzone.Accept>
+                <Dropzone.Reject>
+                  <FontAwesomeIcon icon={faXmark} size="3x" color="var(--mantine-color-red-6)" />
+                </Dropzone.Reject>
+                <Dropzone.Idle>
+                  <FontAwesomeIcon icon={faImage} size="3x" color="var(--mantine-color-dimmed)" />
+                </Dropzone.Idle>
+                <div>
+                  <Text ta="center" size="md">
+                    Drag here or click to select file
+                  </Text>
+                  <Text ta="center" size="xs" c="dimmed" mt={7}>
+                    File should not exceed 5MB
+                  </Text>
+                </div>
+              </Stack>
+            </Dropzone>
+          ) : (
+            <>{previews}</>
+          )}
+        </Box>
+
+        <Group justify="center" mt="md">
           <Button
             radius="md"
             type="button"
