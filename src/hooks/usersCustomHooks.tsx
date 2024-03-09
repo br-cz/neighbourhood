@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
+import { notifications } from '@mantine/notifications';
 import { HttpError } from '../models/error/HttpError';
-import { getUserAPI } from '../api/services/user';
+import { getUserAPI, updateUserAPI } from '../api/services/user';
+import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const getCurrentUserID = () => JSON.parse(localStorage.getItem('currentUserID')!);
 export const getCurrentUser = async () => getUserAPI(getCurrentUserID());
 
-export const useCurrentUser = () => {
+export const useCurrentUser = (refresh: boolean = false) => {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<HttpError | null>(null);
@@ -28,7 +30,25 @@ export const useCurrentUser = () => {
     }
 
     fetchCurrentUser();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, [refresh]);
 
-  return { currentUser, loading, error };
+  // Function to update the user profile
+  const updateUserProfile = async (values: any, profilePicFile?: File) => {
+    try {
+      let profilePicUrl = currentUser!.profilePic;
+      if (profilePicFile) {
+        profilePicUrl = await storeImage(profilePicFile, currentUser!.id);
+      }
+      const updatedUser = await updateUserAPI({
+        ...currentUser,
+        ...values,
+        profilePic: profilePicUrl,
+      });
+      setCurrentUser(updatedUser);
+    } catch (err) {
+      throw new HttpError('Error updating user profile', 500);
+    }
+  };
+
+  return { currentUser, loading, error, updateUserProfile };
 };

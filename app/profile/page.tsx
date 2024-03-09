@@ -11,6 +11,8 @@ import { AccountSettingsModal } from '@/components/ProfileCard/AccountSettingsMo
 import { CustomizeProfileModal } from '@/components/ProfileCard/CustomizeProfileModal';
 
 export default function ProfilePage() {
+  const [refresh, setRefresh] = useState(false);
+  const toggleRefresh = () => setRefresh((flag) => !flag);
   const [accountSettingsModalOpened, setAccountSettingsModalOpened] = useState(false);
   const [customizeProfileModalOpened, setCustomizeProfileModalOpened] = useState(false);
   const { user: loggedIn } = useAuth();
@@ -46,7 +48,7 @@ export default function ProfilePage() {
           </Button>
         </Group>
       </Group>
-      <ProfileCard />
+      <ProfileCard refresh={refresh} />
       <AccountSettingsModal
         opened={accountSettingsModalOpened}
         onClose={() => setAccountSettingsModalOpened(false)}
@@ -54,6 +56,7 @@ export default function ProfilePage() {
       <CustomizeProfileModal
         opened={customizeProfileModalOpened}
         onClose={() => setCustomizeProfileModalOpened(false)}
+        onUpdate={toggleRefresh}
       />
     </NeighbourhoodShell>
   );

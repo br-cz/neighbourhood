@@ -6,8 +6,12 @@ import classes from './ProfileCard.module.css';
 import { formatDate, formatUTCDate } from '@/utils/timeUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
-export function ProfileCard() {
-  const { currentUser: user, loading } = useCurrentUser();
+interface ProfileCardProps {
+  refresh: boolean;
+}
+
+export function ProfileCard({ refresh }: ProfileCardProps) {
+  const { currentUser: user, loading } = useCurrentUser(refresh);
 
   return (
     <>
@@ -30,10 +34,10 @@ export function ProfileCard() {
                 <Group gap={50} mt="xs">
                   <Stack gap="xs">
                     <Text size="sm">
-                       <b>Contact:</b> {user?.contact || 'N/A'}
+                      <b>Contact:</b> {user?.contact || '---'}
                     </Text>
                     <Text size="sm">
-                      <b>Address:</b> {user?.address || 'N/A'}
+                      <b>Address:</b> {user?.address || '---'}
                     </Text>
                     <Text size="sm">
                       <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -41,17 +45,17 @@ export function ProfileCard() {
                   </Stack>
                   <Stack gap="xs">
                     <Text size="sm">
-                      <b>Pronouns:</b> {user?.pronouns || 'N/A'}
+                      <b>Pronouns:</b> {user?.pronouns || '---'}
                     </Text>
                     <Text size="sm">
                       <b>Birthday:</b> {user?.birthday ? formatUTCDate(user?.birthday) : 'N/A'}
                     </Text>
                     <Group>
                       <Text size="sm">
-                        <b>Pets:</b> {user?.pets || 'N/A'}
+                        <b>Pets:</b> {user?.pets || '---'}
                       </Text>
                       <Text size="sm">
-                        <b>Kids:</b> {user?.kids || 'N/A'}
+                        <b>Kids:</b> {user?.kids || '---'}
                       </Text>
                     </Group>
                   </Stack>

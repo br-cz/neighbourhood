@@ -22,14 +22,16 @@ import { useFormik } from 'formik';
 import { customizeProfileSchema } from './customizeProfileValidation';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import classes from './ProfileCard.module.css';
+import { utcToISO } from '@/utils/timeUtils';
 
 interface CustomizeProfileModalProps {
   opened: boolean;
   onClose: () => void;
+  onUpdate: () => void;
 }
 
-export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModalProps) {
-  const { currentUser: user } = useCurrentUser();
+export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizeProfileModalProps) {
+  const { currentUser: user, updateUserProfile } = useCurrentUser();
   const [previewImageUrl, setPreviewImageUrl] = useState(user?.profilePic || '');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formik = useFormik({
@@ -44,11 +46,13 @@ export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModal
       pets: user?.pets || 0,
     },
     validationSchema: customizeProfileSchema,
-    onSubmit: (values) => {
-      // Modify with backend updates to profile
-      console.log(values);
-      onClose();
-      formik.resetForm();
+    onSubmit: async (values) => {
+      await updateUserProfile(values).then(() => {
+        onUpdate();
+        onClose();
+        formik.resetForm();
+        setPreviewImageUrl(user?.profilePic || '');
+      });
     },
     enableReinitialize: true,
   });
@@ -155,9 +159,9 @@ export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModal
                 defaultValue={user?.pronouns}
                 placeholder={user?.pronouns}
                 data={[
-                  { value: 'he', label: 'He/Him' },
-                  { value: 'she', label: 'She/Her' },
-                  { value: 'they', label: 'They/Them' },
+                  { value: 'he/him', label: 'He/Him' },
+                  { value: 'she/her', label: 'She/Her' },
+                  { value: 'they/them', label: 'They/Them' },
                   { value: 'other', label: 'Ask Me' },
                 ]}
                 onChange={(value) => formik.setFieldValue('pronouns', value)}
@@ -170,9 +174,12 @@ export function CustomizeProfileModal({ opened, onClose }: CustomizeProfileModal
               <DatePickerInput
                 radius="md"
                 label="Birthday"
-                defaultValue={user?.birthday && new Date(user?.birthday)}
+                defaultValue={user?.birthday ? new Date(`${user.birthday}T00:00:00`) : undefined}
                 data-testid="date"
-                onChange={(value) => formik.setFieldValue('date', value)}
+                onChange={(value) => {
+                  const isoDateWithoutTimezone = utcToISO(value);
+                  formik.setFieldValue('birthday', isoDateWithoutTimezone);
+                }}
               />
             </Grid.Col>
             <Grid.Col span={3}>
