@@ -293,7 +293,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             </div>
             {button}
             <Popover.Dropdown>
-              <UserListItemPreview user={user} relationshipStatus={status} onUpdate={onUpdate} />
+              <UserListItemPreview user={user} relationshipStatus={status} />
             </Popover.Dropdown>
           </Group>
         </div>

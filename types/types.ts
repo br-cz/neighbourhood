@@ -34,6 +34,7 @@ export interface User {
   pronouns: string;
   contact: string;
   birthday: string;
+  address: string;
 }
 
 export interface Community {
