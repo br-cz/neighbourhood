@@ -73,10 +73,16 @@ export default function EventsPage() {
         <Group justify="center" mt="200">
           <Loader />
         </Group>
-      ) : filteredAndSortedEvents.length === 0 ? (
+      ) : events.length === 0 ? (
         <Group justify="center" mt="200">
           <Text size="xl" c="dimmed">
             No one is hosting an event yet, be the first one!
+          </Text>
+        </Group>
+      ) : filteredEvents.length === 0 ? (
+        <Group justify="center" mt="200">
+          <Text size="xl" c="dimmed">
+            There is no event that matches your search query
           </Text>
         </Group>
       ) : (

@@ -55,10 +55,16 @@ export function MarketplaceFeed({
         <Group justify="center" mt="200">
           <Loader />
         </Group>
-      ) : sortedListings.length === 0 ? (
+      ) : listings.length === 0 ? (
         <Group justify="center" mt="200">
           <Text size="xl" c="dimmed">
             No item is up for grabs yet, try listing yours!
+          </Text>
+        </Group>
+      ) : filteredListings.length === 0 ? (
+        <Group justify="center" mt="200">
+          <Text size="xl" c="dimmed">
+            There is no item that matches your search query
           </Text>
         </Group>
       ) : (
