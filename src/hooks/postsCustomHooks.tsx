@@ -8,7 +8,7 @@ import {
   createLikeAPI,
 } from '../api/services/post';
 import { getCurrentUser, getCurrentUserID } from './usersCustomHooks';
-import { PostAndLike, CommentDataInput, PostDataInput, Visibility } from '@/types/types';
+import { Post, CommentDataInput, PostDataInput, Visibility } from '@/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
 
 export const useCreatePost = () => {
@@ -39,43 +39,35 @@ export const useCreatePost = () => {
 };
 
 export const useFetchPosts = (refresh: boolean = false) => {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
-  const userId = getCurrentUserID();
 
   useEffect(() => {
     const fetchPosts = async () => {
-      setLoading(true);
       try {
+        setLoading(true);
         const user = await getCurrentUser();
         const communityId = getCurrentCommunityID();
-        const postsResponse = await getCommunityPostsAPI(communityId);
-        let visiblePosts = JSON.parse(
-          JSON.stringify(postsResponse)
-        ).data.getCommunity.posts.items.filter(
-          (post: PostAndLike) =>
+        const response = await getCommunityPostsAPI(communityId);
+        const jsonPosts = JSON.parse(JSON.stringify(response));
+        const visiblePosts = jsonPosts.data.getCommunity.posts.items.filter(
+          (post: Post) =>
             post.visibility === Visibility.PUBLIC ||
             post.author.id === user!.id ||
             (post.visibility === Visibility.FRIENDS_ONLY && user!.friends?.includes(post.author.id))
         );
-        const likesResponse = await listUserLikedPostsAPI();
-        const likedPostsIds = new Set(likesResponse.map((like) => like.postId));
-        visiblePosts = visiblePosts.map((post: PostAndLike) => ({
-          ...post,
-          isLiked: likedPostsIds.has(post.id),
-        }));
         setPosts(visiblePosts);
-      } catch (err) {
-        console.error('Error fetching posts and likes:', err);
-        setError('Failed to fetch posts and likes');
+      } catch (err: any) {
+        console.error('Error fetching posts:', err);
+        setError(err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPosts();
-  }, [refresh, userId]);
+  }, [refresh]);
 
   return { posts, loading, error };
 };

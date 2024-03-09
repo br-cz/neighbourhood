@@ -69,10 +69,6 @@ export interface Post {
   createdAt: string;
 }
 
-export interface PostAndLike extends Post {
-  isLiked: boolean;
-}
-
 export interface Event {
   id: string;
   name: string;

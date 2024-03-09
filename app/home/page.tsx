@@ -9,7 +9,7 @@ import { useAuth } from '@/components/Authorization/useAuth';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
 import { PostCard } from '@/components/PostCard/PostCard';
 import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
-import { PostAndLike } from '@/types/types';
+import { Post } from '@/types/types';
 
 //placeholder data - remove when comments are implemented
 const users = [
@@ -65,7 +65,7 @@ export default function HomePage() {
   };
 
   const filteredPosts = posts.filter(
-    (post: PostAndLike) =>
+    (post: Post) =>
       post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.author.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.author.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -111,7 +111,7 @@ export default function HomePage() {
         >
           {/* <PostCard post={placeholderPosts[0]} />{' '} */}
           {/* placeholder - remove when comments are implemented */}
-          {sortedPosts.map((post: PostAndLike) => (
+          {sortedPosts.map((post: Post) => (
             <PostCard key={post.id} post={post} isLiked={userLikes.get(post.id)} />
           ))}
         </SimpleGrid>
