@@ -17,6 +17,7 @@ import { useFormik } from 'formik';
 import { Visibility } from '@/src/API';
 import { useCreateListing } from '@/src/hooks/marketplaceCustomHooks';
 import { createListingSchema } from './createListingValidation';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 interface CreateListingDrawerProps {
   opened: boolean;
@@ -25,6 +26,7 @@ interface CreateListingDrawerProps {
 }
 
 export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateListingDrawerProps) {
+  const { currentUser: user } = useCurrentUser();
   const [loading, handlers] = useDisclosure();
   const { handleCreateListing } = useCreateListing();
 
@@ -33,7 +35,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       title: '',
       price: '',
       description: '',
-      contact: '',
+      contact: user?.contact,
       visibility: Visibility.PUBLIC,
     },
     validationSchema: createListingSchema,
@@ -53,6 +55,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       onClose();
       formik.resetForm();
     },
+    enableReinitialize: true,
   });
 
   const handleContactChange = (e: any) => {
@@ -140,8 +143,8 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
             <TextInput
               radius="md"
               label="Phone Number"
-              placeholder="Reach me about this item at..."
-              {...formik.getFieldProps('contact')}
+              placeholder={user?.contact ? user.contact : 'Reach me about this item at...'}
+              value={formik.values.contact}
               mt="md"
               data-testid="contact"
               onChange={handleContactChange}
@@ -162,8 +165,12 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
           radius="md"
           label="Visibility"
           placeholder="Choose visibility"
-          data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
-          {...formik.getFieldProps('visibility')}
+          data={[
+            { value: Visibility.PUBLIC, label: 'Public' },
+            { value: Visibility.FRIENDS_ONLY, label: 'Friends Only' },
+          ]}
+          value={formik.values.visibility}
+          onChange={(value) => formik.setFieldValue('visibility', value)}
           mt="md"
           data-testid="visibility"
           comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
