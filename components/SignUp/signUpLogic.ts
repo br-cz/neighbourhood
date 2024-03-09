@@ -1,5 +1,3 @@
-import { createAvatar } from '@dicebear/core';
-import { initials } from '@dicebear/collection';
 import { notifications } from '@mantine/notifications';
 import { signUp } from '@aws-amplify/auth';
 import { createUserAPI, createUserCommunityAPI } from '@/src/api/services/user';
