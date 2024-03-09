@@ -9,6 +9,26 @@ import { EmailVerify } from '@/components/SignUp/EmailVerify';
 
 const mockVerificationCode = jest.fn();
 
+beforeAll(() => {
+  const maps = {
+    places: {
+      Autocomplete: jest.fn().mockImplementation(() => ({
+        addListener: jest.fn(),
+        getPlace: jest.fn().mockReturnValue({
+          formatted_address: '123 Main St, Anytown, CA',
+          geometry: {
+            location: {
+              lat: jest.fn().mockReturnValue('123'),
+              lng: jest.fn().mockReturnValue('456'),
+            },
+          },
+        }),
+      })),
+    },
+  };
+  global.window.google = { maps };
+});
+
 beforeEach(() => {
   jest.mock('formik', () => ({
     ...jest.requireActual('formik'),

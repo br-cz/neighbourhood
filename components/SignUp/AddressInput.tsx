@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Stack, TextInput } from '@mantine/core';
-import useGoogleMapsApi from '@/src/hooks/googleMapsAPI'; // Adjust the path as necessary
+import { useGoogleMapsApi } from '@/src/hooks/googleMapsAPI'; // Adjust the path as necessary
 
 interface AddressInputProps {
   address: string;

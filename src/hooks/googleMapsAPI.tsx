@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 
-const useGoogleMapsApi = (apiKey: string) => {
+export const useGoogleMapsApi = (apiKey: string) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState(null);
 
@@ -22,12 +22,11 @@ const useGoogleMapsApi = (apiKey: string) => {
         setIsLoaded(true);
         // The API can now be used, for example to initialize Autocomplete
       })
-      .catch((error) => {
+      .catch((error: any) => {
+        // Explicitly specify the type of 'error' as 'any'
         setLoadError(error);
       });
   }, [apiKey]);
 
   return { isLoaded, loadError };
 };
-
-export default useGoogleMapsApi;
