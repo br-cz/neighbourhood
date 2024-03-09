@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { UserListItem } from '../UserListItem/UserListItem';
 import classes from './UserList.module.css';
 import { useFetchCommunityMembers } from '@/src/hooks/friendsCustomHooks';
-import { sortByCreatedAt, sortByFirstName, sortByLastName } from '@/utils/sortUtils';
+import { sortByNewToOld, sortByFirstName, sortByLastName } from '@/utils/sortUtils';
 import { User } from '@/types/types';
 
 interface UserListProps {
@@ -49,7 +49,7 @@ export function UserList({ searchQuery, sortQuery }: UserListProps) {
       case 'Last Name (A-Z)':
         return sortByLastName;
       case 'Recently Joined':
-        return sortByCreatedAt;
+        return sortByNewToOld;
       default:
         return () => 0;
     }

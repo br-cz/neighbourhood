@@ -10,6 +10,7 @@ import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer
 import { PostCard } from '@/components/PostCard/PostCard';
 import { useFetchPosts } from '@/src/hooks/postsCustomHooks';
 import { Post } from '@/types/types';
+import { filterAndSortPosts } from '@/components/utils/postUtils';
 
 export default function HomePage() {
   const [refresh, setRefresh] = useState(false);
@@ -17,6 +18,8 @@ export default function HomePage() {
   const { posts, loading } = useFetchPosts(refresh);
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const { user } = useAuth();
+  const [sortQuery, setSortQuery] = useState<string | null>(null);
+
   if (!user) return null;
   const toggleRefresh = () => setRefresh((flag) => !flag);
 
@@ -24,27 +27,19 @@ export default function HomePage() {
     setSearchQuery(event.target.value);
   };
 
-  const filteredPosts = posts.filter(
-    (post: Post) =>
-      post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.author.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.author.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      `${post.author.firstName} ${post.author.lastName}`
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-  );
-
-  const filteredAndSortedPosts = filteredPosts.sort(
-    (a: { createdAt: Date }, b: { createdAt: Date }) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-
+  const filteredAndSortedPosts = filterAndSortPosts(posts, searchQuery, sortQuery);
   return (
     <NeighbourhoodShell>
       <Group justify="space-between" m="20">
         <Title order={1}>Feed</Title>
         <Group>
-          <Select radius="md" placeholder="Chronological" data={['Chronological']} />
+          <Select
+            radius="md"
+            placeholder="Sort by..."
+            onChange={setSortQuery}
+            value={sortQuery}
+            data={['Date: New to Old', 'Date: Old to New', 'First Name: (A-Z)', 'Last Name: (A-Z)']}
+          />
           <TextInput
             radius="md"
             value={searchQuery}
