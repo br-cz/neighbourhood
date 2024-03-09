@@ -51,7 +51,7 @@ jobs:
         run: docker tag comp4350teamsaffron/neighbourhood:latest registry.heroku.com/neighbourhood/web
 
       - name: Push the Docker image to Heroku Container Registry
-        run: docker push registry.heroku.com/yourappname/web
+        run: docker push registry.heroku.com/neighbourhood/web
 
       - name: Release the Docker image to the Heroku app
         env:
