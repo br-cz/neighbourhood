@@ -118,6 +118,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "address": {
+                    "name": "address",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "firstName": {
                     "name": "firstName",
                     "isArray": false,
@@ -300,6 +307,27 @@ export const schema = {
                     "name": "profilePic",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "pronouns": {
+                    "name": "pronouns",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "contact": {
+                    "name": "contact",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "birthday": {
+                    "name": "birthday",
+                    "isArray": false,
+                    "type": "AWSDate",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1398,5 +1426,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "3aacab33a91910d4911697b15d9d9c8c"
+    "version": "c7f8c46cd8ea7b42e8e88d6eb3652549"
 };

@@ -1,6 +1,6 @@
 import { generateClient } from '@aws-amplify/api';
 import { getPost, listComments } from '@/src/graphql/queries';
-import { createPost, createComment } from '@/src/graphql/mutations';
+import { createPost, createComment, updatePost } from '@/src/graphql/mutations';
 import { CommentDataInput, PostDataInput } from '@/types/types';
 import { HttpError } from '@/src/models/error/HttpError';
 
@@ -39,6 +39,7 @@ export const getCommunityPostsAPI = async (communityId: string) => {
           items {
             id
             author {
+              id
               username
               firstName
               lastName
@@ -108,5 +109,24 @@ export const getAllCommentsAPI = async () => {
     return response;
   } catch (error: any) {
     throw new HttpError(error.message, error.statusCode || 500);
+  }
+};
+
+export const updatePostImageAPI = async (postId: string, image: string, _version: number) => {
+  try {
+    const updatedPost = await client.graphql({
+      query: updatePost,
+      variables: {
+        input: {
+          id: postId,
+          images: [image],
+          _version,
+        },
+      },
+    });
+    console.log('User updated successfully:', updatedPost.data.updatePost);
+    return updatedPost.data.updatePost;
+  } catch (error: any) {
+    throw new HttpError(`Error updating post image: ${error.message}`, error.statusCode || 500);
   }
 };

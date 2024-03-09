@@ -24,6 +24,10 @@ export function sortByLastName(a: any, b: any): number {
   return 0;
 }
 
-export function sortByCreatedAt(a: any, b: any): number {
+export function sortByNewToOld(a: any, b: any): number {
   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+}
+
+export function sortByOldToNew(a: any, b: any): number {
+  return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
 }
