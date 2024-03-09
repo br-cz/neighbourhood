@@ -13,7 +13,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '18'
+
+      - name: Setup Amplify Configuration
+        run: |
+          echo '${{ secrets.AMPLIFY_CONFIGURATION }}' > src/amplifyconfiguration.json
 
       - name: Build and test
         run: |
@@ -33,4 +37,25 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: yourusername/yourrepository:latest
+          tags: comp4350teamsaffron/neighbourhood:latest
+
+      - name: Pull the Docker image from Docker Hub
+        run: docker pull comp4350teamsaffron/neighbourhood:latest
+
+      - name: Log in to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
+
+      - name: Tag the Docker image for Heroku
+        run: docker tag comp4350teamsaffron/neighbourhood:latest registry.heroku.com/neighbourhood/web
+
+      - name: Push the Docker image to Heroku Container Registry
+        run: docker push registry.heroku.com/neighbourhood/web
+
+      - name: Release the Docker image to the Heroku app
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: |
+          heroku container:release web --app ${HEROKU_APP_NAME}
