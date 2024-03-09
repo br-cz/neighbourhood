@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { notifications } from '@mantine/notifications';
 import { HttpError } from '../models/error/HttpError';
 import { getUserAPI, updateUserAPI } from '../api/services/user';
 import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
@@ -32,7 +31,6 @@ export const useCurrentUser = (refresh: boolean = false) => {
     fetchCurrentUser();
   }, [refresh]);
 
-  // Function to update the user profile
   const updateUserProfile = async (values: any, profilePicFile?: File) => {
     try {
       let profilePicUrl = currentUser!.profilePic;
