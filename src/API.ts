@@ -149,6 +149,13 @@ export enum Visibility {
   PRIVATE = 'PRIVATE',
 }
 
+export enum Pronouns {
+  SheHer = 'SheHer',
+  HeHim = 'HeHim',
+  TheyThem = 'TheyThem',
+  Other = 'Other',
+}
+
 export type ModelEventConnection = {
   __typename: 'ModelEventConnection';
   items: Array<Event | null>;

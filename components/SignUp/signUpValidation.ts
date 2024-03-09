@@ -1,7 +1,9 @@
-import { object, string, ref } from 'yup';
+import { object, string, ref, date, mixed } from 'yup';
 
 // Checks for a valid name format - excludes repeating chars and most special chars
 const nameRegex = /^(?!.*(.)\1{3})[a-zA-ZÀ-ÿ-_'"]+(?:\s[a-zA-ZÀ-ÿ-_'"]+)*$/;
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
 export const signUpSchema = object({
   email: string().email('Invalid email format').required('Email is required'),
@@ -30,8 +32,22 @@ export const signUpSchema = object({
     .max(20, 'Username must be 20 characters or less'),
   address: string().required('Address is required'),
   selectedCommunity: string().required('Selecting a community is required.'),
-  phoneNumber: string().matches(
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-    'Phone number must be valid.'
-  ),
+  phoneNumber: string().matches(/^\(\d{3}\) \d{3}-\d{4}$/, 'Phone number must be valid.'),
+
+  // ****** Must add pronouns and birthday to the user schema
+
+  //pronouns: string().required('Pronouns are required'),
+  //birthday: date()
+  //.required('Birthday is required'),
+  // .max(today, 'Date must be in the past')
+  
+
+
+  // ****** Profile picture validation is not working???
+
+  // profilePic: mixed().test('fileSize', 'File size must be less than 2bytes', (value) => {
+  //   if (!value) return true;
+   
+  //   return value.size <= 2;//* 1024 * 1024;
+  // }),
 });
