@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { useAuth } from '@/components/Authorization/useAuth';
-import { Button, Group, Title, Stack, LoadingOverlay } from '@mantine/core';
+import { Button, Group, Title, Stack, LoadingOverlay, Loader } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import CommunityCard from '@/components/CommunityCard/CommunityCard';
 import { IconPlus } from '@tabler/icons-react';
@@ -85,27 +85,35 @@ export default function CommunitiesPage() {
       <Group justify="space-between" m={20}>
         <Title order={1}>My Communities</Title>
       </Group>
-      <Stack mt="md" gap="xl" align="center">
-        {userCommunities.map((community: Community) => (
-          <CommunityCard
-            key={community.id}
-            community={community}
-            currentUserID={user}
-            onSelect={() => handleCommunitySwitch(community)}
-            onDeselect={() => handleCommunityDeselect(community)}
+      {loading ? (
+        <Group justify="center" align="cemter" mt="50vh">
+          <Loader />
+        </Group>
+      ) : (
+        <>
+          <Stack mt="md" gap="xl" align="center">
+            {userCommunities.map((community: Community) => (
+              <CommunityCard
+                key={community.id}
+                community={community}
+                currentUserID={user}
+                onSelect={() => handleCommunitySwitch(community)}
+                onDeselect={() => handleCommunityDeselect(community)}
+              />
+            ))}
+            {/* <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 1 }} /> */}
+            <Button size="md" variant="outline" leftSection={<IconPlus size={15} />} onClick={open}>
+              Add New
+            </Button>
+          </Stack>
+          <SelectCommunityModal
+            opened={openedModal}
+            onClose={() => {
+              close(), toggleRefresh();
+            }}
           />
-        ))}
-        <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 1 }} />
-        <Button size="md" variant="outline" leftSection={<IconPlus size={15} />} onClick={open}>
-          Add New
-        </Button>
-      </Stack>
-      <SelectCommunityModal
-        opened={openedModal}
-        onClose={() => {
-          close(), toggleRefresh();
-        }}
-      />
+        </>
+      )}
     </NeighbourhoodShell>
   );
 }

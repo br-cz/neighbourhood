@@ -96,7 +96,7 @@ export const useFetchAllUserCommunities = (refresh: boolean = false) => {
       try {
         setLoading(true);
         const communityId = getCurrentCommunityID();
-        const response = await getAllUserCommunities(communityId);
+        const response = await getAllUserCommunitiesAPI(communityId);
         const allUserCommunities = JSON.parse(JSON.stringify(response));
         setCommunities(allUserCommunities.data.listUserCommunities.items);
       } catch (err: any) {
