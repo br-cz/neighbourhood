@@ -21,7 +21,9 @@ export function ProfileCard({ refresh }: ProfileCardProps) {
         ) : (
           <Box w={1000} className={classes.card} data-testid="profile-card">
             <Group gap={50}>
-              <Avatar src={user?.profilePic} size={150} radius="xl" />
+              <Box w={150} h={150}>
+                <Avatar src={user?.profilePic} className={classes.avatar} radius="xl" />
+              </Box>
               <Stack gap="xs">
                 <Stack gap={0}>
                   <Title order={3}>

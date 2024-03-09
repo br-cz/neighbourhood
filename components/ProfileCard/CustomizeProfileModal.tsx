@@ -15,6 +15,7 @@ import {
   Grid,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { DatePickerInput } from '@mantine/dates';
@@ -23,6 +24,7 @@ import { customizeProfileSchema } from './customizeProfileValidation';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import classes from './ProfileCard.module.css';
 import { utcToISO } from '@/utils/timeUtils';
+import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface CustomizeProfileModalProps {
   opened: boolean;
@@ -33,7 +35,9 @@ interface CustomizeProfileModalProps {
 export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizeProfileModalProps) {
   const { currentUser: user, updateUserProfile } = useCurrentUser();
   const [previewImageUrl, setPreviewImageUrl] = useState(user?.profilePic || '');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [loading, loadingToggle] = useDisclosure();
   const formik = useFormik({
     initialValues: {
       firstName: user?.firstName,
@@ -47,12 +51,33 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
     },
     validationSchema: customizeProfileSchema,
     onSubmit: async (values) => {
-      await updateUserProfile(values).then(() => {
+      let imageUrl = user?.profilePic;
+      if (selectedFile && user) {
+        try {
+          imageUrl = await storeImage(selectedFile, user.id);
+        } catch (error) {
+          notifications.show({
+            title: 'Error',
+            message: 'Failed to upload profile picture.',
+            color: 'red',
+          });
+          console.error('Failed to upload image:', error);
+          return;
+        }
+      }
+      const updatedValues = { ...values, profilePic: imageUrl };
+      await updateUserProfile(updatedValues).then(() => {
         onUpdate();
         onClose();
         formik.resetForm();
         setPreviewImageUrl(user?.profilePic || '');
+        notifications.show({
+          radius: 'md',
+          title: 'Profile Updated',
+          message: 'Your new information is now visible to your friends/neighbours.',
+        });
       });
+      loadingToggle.close();
     },
     enableReinitialize: true,
   });
@@ -66,7 +91,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImageUrl(imageUrl);
-      formik.setFieldValue('profilePic', file);
+      setSelectedFile(file);
     }
   };
 
@@ -96,7 +121,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
         <Group justify="center">
           <Box w={150} h={150} onClick={handleImageUploadClick} className={classes.avatar}>
             {previewImageUrl ? (
-              <Image src={previewImageUrl} radius="md" style={{ maxWidth: 150, maxHeight: 150 }} />
+              <Image src={previewImageUrl} radius="xl" style={{ maxWidth: 150, maxHeight: 150 }} />
             ) : (
               <Avatar radius="xl" size={150} src={user?.profilePic} />
             )}
@@ -184,17 +209,6 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
             </Grid.Col>
             <Grid.Col span={3}>
               <NumberInput
-                label="Kids"
-                defaultValue={user?.kids}
-                placeholder={user?.kids}
-                min={0}
-                step={1}
-                value={formik.values.kids}
-                onChange={(value) => formik.setFieldValue('kids', value)}
-              />
-            </Grid.Col>
-            <Grid.Col span={3}>
-              <NumberInput
                 label="Pets"
                 defaultValue={user?.pets}
                 placeholder={user?.pets}
@@ -204,19 +218,28 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
                 onChange={(value) => formik.setFieldValue('pets', value)}
               />
             </Grid.Col>
+            <Grid.Col span={3}>
+              <NumberInput
+                label="Kids"
+                defaultValue={user?.kids}
+                placeholder={user?.kids}
+                min={0}
+                step={1}
+                value={formik.values.kids}
+                onChange={(value) => formik.setFieldValue('kids', value)}
+              />
+            </Grid.Col>
           </Grid>
           <Button
             mt="md"
+            loading={loading}
             onClick={() => {
+              loadingToggle.open();
               formik.validateForm().then((errors) => {
                 if (Object.keys(errors).length === 0) {
                   formik.submitForm();
-                  notifications.show({
-                    radius: 'md',
-                    title: 'Profile Updated',
-                    message: 'Your new information is now visible to your friends/neighbours.',
-                  });
                 } else {
+                  loadingToggle.close();
                   notifications.show({
                     radius: 'md',
                     color: 'red.6',
