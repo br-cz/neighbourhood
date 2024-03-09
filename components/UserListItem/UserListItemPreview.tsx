@@ -5,22 +5,12 @@ import { Group, Avatar, Text, Box, Stack, Title } from '@mantine/core';
 import { formatDate } from '@/utils/timeUtils';
 import { User } from '@/types/types';
 
-interface ProfileCardProps {
+interface UserListItemPreviewProps {
   user: User;
   relationshipStatus: string;
-  onUpdate: () => void;
 }
 
-export function UserListItemPreview({ user, relationshipStatus, onUpdate }: ProfileCardProps) {
-  //placeholder data - add to schema, queries, profile setup, and then finally replace these
-  const phoneNumber = '204-123-4567';
-  const address = '100 Waverley Dr.';
-  const birthday = 'May 1, 2001';
-  const age = 22; //age calculation from timeUtils
-  const pronouns = 'he/him';
-  const pets = 1;
-  const kids = 0;
-
+export function UserListItemPreview({ user, relationshipStatus }: UserListItemPreviewProps) {
   return (
     <Box w={500} data-testid="profile-card">
       <Stack gap="xs">
@@ -40,10 +30,10 @@ export function UserListItemPreview({ user, relationshipStatus, onUpdate }: Prof
             <Group gap={50} mt="xs">
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Contact:</b> {phoneNumber}
+                  <b>Contact:</b> {user?.contact || 'N/A'}
                 </Text>
                 <Text size="xs">
-                  <b>Address:</b> {address}
+                  <b>Address:</b> {user?.address || 'N/A'}
                 </Text>
                 <Text size="xs">
                   <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -51,17 +41,18 @@ export function UserListItemPreview({ user, relationshipStatus, onUpdate }: Prof
               </Stack>
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Pronouns:</b> {pronouns}
+                  <b>Pronouns:</b> {user?.pronouns || 'N/A'}
                 </Text>
                 <Text size="xs">
-                  <b>Birthday:</b> {birthday} ({age} years)
+                  {/* Add age here */}
+                  <b>Birthday:</b> {user?.birthday || 'N/A'}
                 </Text>
                 <Group>
                   <Text size="xs">
-                    <b>Pets:</b> {pets}
+                    <b>Pets:</b> {user?.pets || 'N/A'}
                   </Text>
                   <Text size="xs">
-                    <b>Kids:</b> {kids}
+                    <b>Kids:</b> {user?.kids || 'N/A'}
                   </Text>
                 </Group>
               </Stack>
@@ -72,7 +63,7 @@ export function UserListItemPreview({ user, relationshipStatus, onUpdate }: Prof
             <Group gap={50} mt="xs">
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Pronouns:</b> {pronouns}
+                  <b>Pronouns:</b> {user?.pronouns || 'N/A'}
                 </Text>
                 <Text size="xs">
                   <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -80,14 +71,15 @@ export function UserListItemPreview({ user, relationshipStatus, onUpdate }: Prof
               </Stack>
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Age:</b> {age}
+                  {/* Add age here */}
+                  <b>Age:</b>
                 </Text>
                 <Group>
                   <Text size="xs">
-                    <b>Pets:</b> {pets}
+                    <b>Pets:</b> {user?.pets || 'N/A'}
                   </Text>
                   <Text size="xs">
-                    <b>Kids:</b> {kids}
+                    <b>Kids:</b> {user?.kids || 'N/A'}
                   </Text>
                 </Group>
               </Stack>
