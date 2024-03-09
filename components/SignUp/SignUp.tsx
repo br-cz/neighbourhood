@@ -23,6 +23,7 @@ import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
 import { signUpSchema } from './signUpValidation';
 import { processSignUp } from './signUpLogic';
+import { Pronouns } from '@/src/API';
 
 export const SignUp = () => {
   const [verificationCode, setVerificationCode] = useState<string>('');
@@ -42,6 +43,9 @@ export const SignUp = () => {
       firstName: '',
       familyName: '',
       phoneNumber: '',
+      //pronouns: Pronouns.Other,
+      profilePic: null,
+      //birthday: new Date(),
     },
     validationSchema: signUpSchema,
     onSubmit: async (parameters) => {
@@ -54,7 +58,8 @@ export const SignUp = () => {
       0: ['email', 'password', 'confirmPassword'],
       1: ['address'],
       2: ['selectedCommunity'],
-      3: ['firstName', 'familyName', 'preferredUsername', 'phoneNumber'],
+      3: ['firstName', 'familyName', 'preferredUsername', 'phoneNumber', 'profilePic'],// 'birthday'],
+      // **** Add pronouns and birthday to 3 after user graphql schema is updated
     };
     const currentStepFields = stepFields[step] || [];
     const errors = await formik.validateForm();
@@ -249,10 +254,14 @@ export const SignUp = () => {
                 familyName={formik.values.familyName}
                 preferredUsername={formik.values.preferredUsername}
                 phoneNumber={formik.values.phoneNumber}
+                //pronouns={formik.values.pronouns}
+                //birthday={formik.values.birthday ? new Date(formik.values.birthday) : null} // Cast the 'birthday' value to type 'Date | null'
+                profilePic={formik.values.profilePic}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                errors={formik.errors}
-                touched={formik.touched}
+                setFieldValue={formik.setFieldValue}
+                errors={formik.errors }//as {birthday?: string | undefined;}} // Cast 'formik.errors' to the correct type
+                touched={formik.touched}// as {birthday?: boolean | undefined;}}
               />
             </Stack>
           </Stepper.Step>

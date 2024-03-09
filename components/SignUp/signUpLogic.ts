@@ -16,7 +16,8 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     .trim()
     .toLowerCase()
     .replace(/^\w/, (c: string) => c.toUpperCase());
-  values.phoneNumber = parameters.phoneNumber.trim();
+  values.phoneNumber = parameters.phoneNumber;
+  values.profilePic = parameters.profilePic;
 
   try {
     // Step 1: Sign Up with AWS Cognito
@@ -30,6 +31,9 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
           family_name: values.familyName,
           preferred_username: values.preferredUsername,
           address: values.address,
+          phone_number: values.phoneNumber,
+          // birthdate: values.birthday.toISOString(),
+          profilePic: values.profilePic,
         },
       },
     });
@@ -44,6 +48,9 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         lastName: values.familyName,
         selectedCommunity: values.selectedCommunity,
         postalCode: '',
+        address: values.address,
+        phoneNumber: values.phoneNumber,
+        profilePic: values.profilePic,
       };
 
       await createUserAPI(createUserInput);
