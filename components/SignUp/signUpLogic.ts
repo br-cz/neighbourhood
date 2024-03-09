@@ -16,7 +16,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     .trim()
     .toLowerCase()
     .replace(/^\w/, (c: string) => c.toUpperCase());
-  values.phoneNumber = parameters.phoneNumber;
+  values.phoneNumber = parameters.phoneNumber.trim();
   values.profilePic = parameters.profilePic;
 
   try {
