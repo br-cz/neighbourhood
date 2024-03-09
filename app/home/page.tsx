@@ -8,8 +8,8 @@ import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/Neighbourhoo
 import { useAuth } from '@/components/Authorization/useAuth';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
 import { PostCard } from '@/components/PostCard/PostCard';
-import { useFetchPosts } from '@/src/hooks/postsCustomHooks';
-import { Post } from '@/types/types';
+import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
+import { PostAndLike } from '@/types/types';
 
 //placeholder data - remove when comments are implemented
 const users = [
@@ -54,6 +54,7 @@ export default function HomePage() {
   const [refresh, setRefresh] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { posts, loading } = useFetchPosts(refresh);
+  const { userLikes } = useUserLikes();
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const { user } = useAuth();
   if (!user) return null;
@@ -64,7 +65,7 @@ export default function HomePage() {
   };
 
   const filteredPosts = posts.filter(
-    (post: Post) =>
+    (post: PostAndLike) =>
       post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.author.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.author.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -110,8 +111,8 @@ export default function HomePage() {
         >
           {/* <PostCard post={placeholderPosts[0]} />{' '} */}
           {/* placeholder - remove when comments are implemented */}
-          {sortedPosts.map((post: Post) => (
-            <PostCard key={post.id} post={post} />
+          {sortedPosts.map((post: PostAndLike) => (
+            <PostCard key={post.id} post={post} isLiked={userLikes.get(post.id)} />
           ))}
         </SimpleGrid>
       )}
