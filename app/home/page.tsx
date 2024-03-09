@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title } from '@mantine/core';
+import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
@@ -10,45 +10,6 @@ import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer
 import { PostCard } from '@/components/PostCard/PostCard';
 import { useFetchPosts } from '@/src/hooks/postsCustomHooks';
 import { Post } from '@/types/types';
-
-//placeholder data - remove when comments are implemented
-const users = [
-  {
-    id: '1',
-    firstName: 'Bojangle',
-    lastName: 'Williams',
-    profilePic: 'https://avatar.iran.liara.run/public/46',
-  },
-  {
-    id: '2',
-    firstName: 'LeJon',
-    lastName: 'Brames',
-    profilePic: 'https://avatar.iran.liara.run/public/37',
-  },
-];
-const comments = [
-  {
-    id: '1',
-    content: 'lol! so true. donkey is so funny.',
-    createdAt: new Date().toISOString(),
-    author: users[1],
-  },
-  {
-    id: '2',
-    content: 'ikr??? 😂',
-    createdAt: new Date().toISOString(),
-    author: users[0],
-  },
-];
-const placeholderPosts = [
-  {
-    id: '30',
-    content: 'Just watched Shrek 2 with my neighbours, best movie ever!',
-    createdAt: new Date().toISOString(),
-    author: users[0],
-    comments,
-  },
-];
 
 export default function HomePage() {
   const [refresh, setRefresh] = useState(false);
@@ -73,7 +34,7 @@ export default function HomePage() {
         .includes(searchQuery.toLowerCase())
   );
 
-  const sortedPosts = filteredPosts.sort(
+  const filteredAndSortedPosts = filteredPosts.sort(
     (a: { createdAt: Date }, b: { createdAt: Date }) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
@@ -101,6 +62,12 @@ export default function HomePage() {
         <Group justify="center" mt="200">
           <Loader />
         </Group>
+      ) : filteredAndSortedPosts.length === 0 ? (
+        <Group justify="center" mt="200">
+          <Text size="xl" c="dimmed">
+            No one has shared anything yet in this community, be the first one to share!
+          </Text>
+        </Group>
       ) : (
         <SimpleGrid
           cols={1}
@@ -108,9 +75,7 @@ export default function HomePage() {
           verticalSpacing={{ base: 'md', sm: 'lg' }}
           data-testid="post-feed"
         >
-          {/* <PostCard post={placeholderPosts[0]} />{' '} */}
-          {/* placeholder - remove when comments are implemented */}
-          {sortedPosts.map((post: Post) => (
+          {filteredAndSortedPosts.map((post: Post) => (
             <PostCard key={post.id} post={post} />
           ))}
         </SimpleGrid>
