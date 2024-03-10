@@ -43,9 +43,8 @@ export const SignUp = () => {
       familyName: '',
       phoneNumber: '',
       pronouns: '',
-      profilePic: '',
+      profilePic: null,
       birthday: '',
-      age: 0,
       kids: 0,
       pets: 0,
     },
@@ -60,7 +59,7 @@ export const SignUp = () => {
       0: ['email', 'password', 'confirmPassword'],
       1: ['address'],
       2: ['selectedCommunity'],
-      3: ['firstName', 'familyName', 'preferredUsername', 'phoneNumber', 'profilePic', 'age', 'kids', 'pets', 'birthday'],
+      3: ['firstName', 'familyName', 'preferredUsername', 'phoneNumber', 'profilePic', 'kids', 'pets', 'birthday'],
     };
     const currentStepFields = stepFields[step] || [];
     const errors = await formik.validateForm();
@@ -259,7 +258,6 @@ export const SignUp = () => {
                 birthday={formik.values.birthday} 
                 kids={formik.values.kids}
                 pets={formik.values.pets}
-                age={formik.values.age}
                 profilePic={formik.values.profilePic}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

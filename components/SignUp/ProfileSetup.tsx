@@ -1,14 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {
-  Modal,
   TextInput,
   NumberInput,
-  Button,
   Stack,
-  Title,
   Group,
   Select,
-  Text,
   Image,
   Avatar,
   Box,
@@ -27,7 +23,6 @@ interface ProfileSetupProps {
   phoneNumber: string;
   pronouns: string;
   profilePic: File | null;
-  age: number;
   birthday: string;
   kids: number;
   pets: number;
@@ -42,7 +37,6 @@ interface ProfileSetupProps {
     pronouns?: string;
     profilePic?: string;
     birthday?: string;
-    age?: string;
     kids?: string;
     pets?: string;
   };
@@ -54,7 +48,6 @@ interface ProfileSetupProps {
     pronouns?: boolean;
     profilePic?: boolean;
     birthday?: boolean;
-    age?: boolean;
     kids?: boolean;
     pets?: boolean;
   };
@@ -68,7 +61,6 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   pronouns,
   profilePic,
   birthday,
-  age,
   kids,
   pets,
   setFieldValue,
@@ -78,27 +70,11 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   touched,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [imageSrc, setImageSrc] = useState<string | undefined>('');
-  const ageError = errors && errors.age ? errors.age : undefined;
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | undefined>('');
 
-  useEffect(() => {
-    if (profilePic) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImageSrc(reader.result as string);
-      };
-      reader.readAsDataURL(profilePic);
-    } 
-    else {
-      setImageSrc(undefined);
-    }
-  }, [profilePic]);
-
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
-    setFieldValue('age', dateToAge(date as Date));
     setFieldValue('birthday', utcToISO(date));
   }
 
@@ -204,7 +180,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
             onChange={handleDateChange}
             maxDate={new Date()}
             onBlur={onBlur}
-            error={selectedDate && ageError ? ageError : undefined}
+            error={touched.birthday && errors.birthday ? errors.birthday : undefined}
             mt="md"
             data-testid="birthday"
           />

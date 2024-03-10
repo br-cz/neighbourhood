@@ -1,6 +1,7 @@
 import { notifications } from '@mantine/notifications';
 import { signUp } from '@aws-amplify/auth';
 import { createUserAPI, createUserCommunityAPI } from '@/src/api/services/user';
+import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const processSignUp = async (parameters: any, nextStep: () => void, handlers: any) => {
   const values = { ...parameters };
@@ -21,9 +22,9 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
   values.pronouns = parameters.pronouns;
   values.profilePic = parameters.profilePic;
   values.birthday = parameters.birthday;
-  values.age = parameters.age;
   values.pets = parameters.pets;
   values.kids = parameters.kids;
+  values.profilePic = parameters.profilePic;
 
   try {
     // Step 1: Sign Up with AWS Cognito
@@ -51,6 +52,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         lastName: values.familyName,
         selectedCommunity: values.selectedCommunity,
         postalCode: '',
+        profilePic: storeImage(values.profilePic, cognitoResponse.userId),
         // address: values.address,
         // age: values.age,
         // phoneNumber: values.phoneNumber,
