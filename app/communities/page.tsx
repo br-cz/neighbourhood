@@ -3,81 +3,37 @@
 import React, { useState } from 'react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { useAuth } from '@/components/Authorization/useAuth';
-import { Button, Group, Title, Stack, LoadingOverlay, Loader } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
+import { Button, Group, Title, Stack, Loader, Flex, Text, Modal } from '@mantine/core';
 import CommunityCard from '@/components/CommunityCard/CommunityCard';
 import { IconPlus } from '@tabler/icons-react';
 import {
   useFetchAllCommunities,
   useFetchAllUserCommunities,
 } from '@/src/hooks/communityCustomHooks';
-import { Community, UserCommunity } from '@/src/API';
-import { deleteUserCommunityAPI } from '@/src/api/services/user';
+import { Community } from '@/src/API';
 import SelectCommunityModal from '@/components/SelectCommunityModal/SelectCommunityModal';
 import { useDisclosure } from '@mantine/hooks';
-import { switchCommunityAPI } from '@/src/api/services/community';
-import { getCurrentCommunityID } from '@/src/hooks/communityCustomHooks';
+import { handleSwitch, handleDeselect } from './utils/communityUtils';
 
 export default function CommunitiesPage() {
   const [refresh, setRefresh] = useState(false);
+  const [selectedCommunity, setSelectedCommunity] = useState<Community>();
   const { user } = useAuth();
   const { communities, loading } = useFetchAllCommunities(refresh);
-  //console.log('Communities:', communities);
   const toggleRefresh = () => setRefresh((flag) => !flag);
   const [openedModal, { open, close }] = useDisclosure(false);
-
+  const [openConfirmationModal, { open: openConfirmation, close: closeConfirmation }] =
+    useDisclosure(false);
   const { userCommunityList } = useFetchAllUserCommunities(refresh);
-  //console.log('User Community List:', userCommunityList);
-  // Filter communities to only those where the user is a member
   const userCommunities = Object.values(communities).filter((community: Community) =>
     community.members?.items?.some((member) => member?.user?.id === user && !member?._deleted)
   );
 
-  const handleCommunitySwitch = async (community: any) => {
-    try {
-      await switchCommunityAPI(user, community.id);
-      localStorage.setItem('currentCommunityID', JSON.stringify(community.id));
-      localStorage.setItem('currentCommunity', JSON.stringify(community));
-      notifications.show({
-        radius: 'md',
-        title: 'Yay!',
-        message: `You have switched to ${community.name} community`,
-      });
-    } catch (error) {
-      notifications.show({
-        radius: 'md',
-        title: 'Sorry!',
-        message: 'Failed to switch the community. Please try again.',
-      });
-    }
-    toggleRefresh();
-  };
+  const handleCommunitySwitch = async (community: any) =>
+    await handleSwitch(user, community, toggleRefresh);
 
-  const handleCommunityDeselect = async (community: any) => {
-    const relationship = userCommunityList.find(
-      (userCommunity: UserCommunity) =>
-        userCommunity.communityId === community.id &&
-        userCommunity.userId === user &&
-        !userCommunity._deleted
-    ) as unknown as UserCommunity;
-    try {
-      console.log('Deleting user community:', relationship.id);
-      await deleteUserCommunityAPI(relationship.id);
-      notifications.show({
-        radius: 'md',
-        title: 'We are sorry to see you go!',
-        message: `You are no longer part of ${community.name}`,
-      });
-    } catch (error) {
-      notifications.show({
-        radius: 'md',
-        title: 'Sorry!',
-        message: 'Failed to leave the community. Please try again.',
-      });
-    }
-    toggleRefresh();
-  };
-
+  const handleCommunityDeselect = async (community: any) =>
+    await handleDeselect(user, community, userCommunities, userCommunityList, toggleRefresh);
   if (!user) return null;
 
   return (
@@ -86,20 +42,56 @@ export default function CommunitiesPage() {
         <Title order={1}>My Communities</Title>
       </Group>
       {loading ? (
-        <Group justify="center" align="cemter" mt="50vh">
+        <Group justify="center" align="center" h="50vh">
           <Loader />
         </Group>
       ) : (
         <>
           <Stack mt="md" gap="xl" align="center">
             {userCommunities.map((community: Community) => (
-              <CommunityCard
-                key={community.id}
-                community={community}
-                currentUserID={user}
-                onSelect={() => handleCommunitySwitch(community)}
-                onDeselect={() => handleCommunityDeselect(community)}
-              />
+              <>
+                <CommunityCard
+                  key={community.id}
+                  community={community}
+                  currentUserID={user}
+                  onSelect={() => handleCommunitySwitch(community)}
+                  onDeselect={() => {
+                    openConfirmation(), setSelectedCommunity(community);
+                  }}
+                />
+                <Modal
+                  opened={openConfirmationModal}
+                  onClose={closeConfirmation}
+                  title={
+                    <span style={{ fontWeight: '600', fontSize: '18px' }}>
+                      Leaving {selectedCommunity?.name}
+                    </span>
+                  }
+                  centered
+                  overlayProps={{
+                    backgroundOpacity: 0.4,
+                    blur: 2,
+                  }}
+                  size="28%"
+                >
+                  <Text size="md">
+                    Are you sure you want to leave this community? You will no longer be able to
+                    access the feed.
+                  </Text>
+                  <Group justify="end" mt="lg" gap="md">
+                    <Button onClick={closeConfirmation}>Don't Leave</Button>
+                    <Button
+                      color="red"
+                      onClick={() => {
+                        handleCommunityDeselect(selectedCommunity);
+                        closeConfirmation();
+                      }}
+                    >
+                      Leave Community
+                    </Button>
+                  </Group>
+                </Modal>
+              </>
             ))}
             {/* <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 1 }} /> */}
             <Button size="md" variant="outline" leftSection={<IconPlus size={15} />} onClick={open}>
@@ -108,6 +100,7 @@ export default function CommunitiesPage() {
           </Stack>
           <SelectCommunityModal
             opened={openedModal}
+            userCommunities={userCommunities}
             onClose={() => {
               close(), toggleRefresh();
             }}
