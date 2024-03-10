@@ -6,6 +6,9 @@ import {
   getAllCommunityDetails,
 } from '../api/services/community';
 
+import { Subject } from 'rxjs';
+export const communityUpdateSubject = new Subject<void>();
+
 export const getCurrentCommunityID = () => JSON.parse(localStorage.getItem('currentCommunityID')!);
 export const getCurrentCommunity = async () => getCommunityAPI(getCurrentCommunityID());
 
@@ -56,6 +59,17 @@ export const useCurrentCommunity = () => {
       }
     };
     fetchCurrentCommunity();
+
+    // Subscribe to current community so that we can update the community data across the app
+    // without having to prop drill or creating global contexts
+    const subscription = communityUpdateSubject.subscribe({
+      next: async () => {
+        fetchCurrentCommunity();
+      },
+    });
+
+    // Cleanup
+    return () => subscription.unsubscribe();
   }, []);
 
   return { community, loading, error };

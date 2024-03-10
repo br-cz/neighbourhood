@@ -49,50 +49,48 @@ export default function CommunitiesPage() {
         <>
           <Stack mt="md" gap="xl" align="center">
             {userCommunities.map((community: Community) => (
-              <>
-                <CommunityCard
-                  key={community.id}
-                  community={community}
-                  currentUserID={user}
-                  onSelect={() => handleCommunitySwitch(community)}
-                  onDeselect={() => {
-                    openConfirmation(), setSelectedCommunity(community);
-                  }}
-                />
-                <Modal
-                  opened={openConfirmationModal}
-                  onClose={closeConfirmation}
-                  title={
-                    <span style={{ fontWeight: '600', fontSize: '18px' }}>
-                      Leaving {selectedCommunity?.name}
-                    </span>
-                  }
-                  centered
-                  overlayProps={{
-                    backgroundOpacity: 0.4,
-                    blur: 2,
-                  }}
-                  size="28%"
-                >
-                  <Text size="md">
-                    Are you sure you want to leave this community? You will no longer be able to
-                    access the feed.
-                  </Text>
-                  <Group justify="end" mt="lg" gap="md">
-                    <Button onClick={closeConfirmation}>Don't Leave</Button>
-                    <Button
-                      color="red"
-                      onClick={() => {
-                        handleCommunityDeselect(selectedCommunity);
-                        closeConfirmation();
-                      }}
-                    >
-                      Leave Community
-                    </Button>
-                  </Group>
-                </Modal>
-              </>
+              <CommunityCard
+                key={community.id}
+                community={community}
+                currentUserID={user}
+                onSelect={() => handleCommunitySwitch(community)}
+                onDeselect={() => {
+                  openConfirmation(), setSelectedCommunity(community);
+                }}
+              />
             ))}
+            <Modal
+              opened={openConfirmationModal}
+              onClose={closeConfirmation}
+              title={
+                <span style={{ fontWeight: '600', fontSize: '18px' }}>
+                  Leaving {selectedCommunity?.name}
+                </span>
+              }
+              centered
+              overlayProps={{
+                backgroundOpacity: 0.4,
+                blur: 2,
+              }}
+              size="28%"
+            >
+              <Text size="md">
+                Are you sure you want to leave this community? You will no longer be able to access
+                the feed.
+              </Text>
+              <Group justify="end" mt="lg" gap="md">
+                <Button onClick={closeConfirmation}>Don't Leave</Button>
+                <Button
+                  color="red"
+                  onClick={() => {
+                    handleCommunityDeselect(selectedCommunity);
+                    closeConfirmation();
+                  }}
+                >
+                  Leave Community
+                </Button>
+              </Group>
+            </Modal>
             {/* <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 1 }} /> */}
             <Button size="md" variant="outline" leftSection={<IconPlus size={15} />} onClick={open}>
               Add New

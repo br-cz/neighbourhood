@@ -3,6 +3,11 @@ import { switchCommunityAPI } from '@/src/api/services/community';
 import { getCurrentCommunityID } from '@/src/hooks/communityCustomHooks';
 import { Community, UserCommunity } from '@/src/API';
 import { deleteUserCommunityAPI } from '@/src/api/services/user';
+import { communityUpdateSubject } from '@/src/hooks/communityCustomHooks';
+
+const triggerCommunityUpdate = () => {
+  communityUpdateSubject.next();
+};
 // Utility function for handling community switch
 export const handleSwitch = async (user: any, community: Community, toggleRefresh: () => void) => {
   try {
@@ -16,6 +21,7 @@ export const handleSwitch = async (user: any, community: Community, toggleRefres
       message: `You have now switched to ${community.name} community`,
     });
     toggleRefresh();
+    triggerCommunityUpdate(); //Trigger community update so that all components start updating the community data
   } catch (error) {
     notifications.show({
       radius: 'md',
