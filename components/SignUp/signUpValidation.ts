@@ -33,6 +33,4 @@ export const signUpSchema = object({
   address: string().required('Address is required'),
   selectedCommunity: string().required('Selecting a community is required.'),
   phoneNumber: string().matches(/^\(\d{3}\) \d{3}-\d{4}$/, 'Phone number must be valid.'),
-  age: number().min(18, 'You must be 18 years or older').max(120, 'There is no way you are that old!'),
-  // How would i validate the profile picture
 });

@@ -18,13 +18,11 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     .toLowerCase()
     .replace(/^\w/, (c: string) => c.toUpperCase());
   values.phoneNumber = parameters.phoneNumber.trim();
-  values.profilePic = parameters.profilePic;
   values.pronouns = parameters.pronouns;
   values.profilePic = parameters.profilePic;
   values.birthday = parameters.birthday;
   values.pets = parameters.pets;
   values.kids = parameters.kids;
-  values.profilePic = parameters.profilePic;
 
   try {
     // Step 1: Sign Up with AWS Cognito
@@ -46,18 +44,19 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     if (cognitoResponse.userId) {
       const createUserInput = {
         id: cognitoResponse.userId,
-        username: values.preferredUsername,
         email: values.email,
+        username: values.preferredUsername,
+        address: values.address,
+        selectedCommunity: values.selectedCommunity,
         firstName: values.firstName,
         lastName: values.familyName,
-        selectedCommunity: values.selectedCommunity,
+        contact: values.phoneNumber,
+        pronouns: values.pronouns,
+        profilePic: values.profilePic ? storeImage(values.profilePic, cognitoResponse.userId) : null,
+        birthday: values.birthday,
+        kids: values.kids,
+        pets: values.pets,
         postalCode: '',
-        profilePic: storeImage(values.profilePic, cognitoResponse.userId),
-        // address: values.address,
-        // age: values.age,
-        // phoneNumber: values.phoneNumber,
-        // profilePic: values.profilePic,
-
       };
 
       await createUserAPI(createUserInput);
