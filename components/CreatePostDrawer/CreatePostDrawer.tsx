@@ -4,7 +4,7 @@ import { Drawer, Textarea, Button, Group, Select, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { useCreatePost } from '@/src/hooks/postsCustomHooks';
-import { Visibility } from '@/src/API';
+import { Visibility } from '@/types/types';
 import { createPostSchema } from './createPostValidation';
 
 interface CreatePostDrawerProps {
@@ -69,12 +69,16 @@ export function CreatePostDrawer({ opened, onClose, onPostCreated }: CreatePostD
           radius="md"
           label="Visibility"
           placeholder="Choose visibility"
-          data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
-          {...formik.getFieldProps('visibility')}
+          data={[
+            { value: Visibility.PUBLIC, label: 'Public' },
+            { value: Visibility.FRIENDS_ONLY, label: 'Friends Only' },
+          ]}
+          value={formik.values.visibility}
+          onChange={(value) => formik.setFieldValue('visibility', value)}
           mt="md"
           comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
         />
-        
+
         <Group justify="center" mt="lg">
           <Button
             data-testid="post-button"

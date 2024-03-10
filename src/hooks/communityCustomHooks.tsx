@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllUserCommunities, getCommunityAPI } from '../api/services/community';
+import { getAllUserCommunitiesAPI, getCommunityAPI } from '../api/services/community';
 
 export const getCurrentCommunityID = () => JSON.parse(localStorage.getItem('currentCommunityID')!);
 export const getCurrentCommunity = async () => getCommunityAPI(getCurrentCommunityID());
@@ -15,7 +15,7 @@ export const useFetchMembers = () => {
         setLoading(true);
 
         const communityId = getCurrentCommunityID();
-        const fetchedMembers = await getAllUserCommunities(communityId);
+        const fetchedMembers = await getAllUserCommunitiesAPI(communityId);
         const jsonMembers = JSON.parse(JSON.stringify(fetchedMembers));
         const filteredMembers = jsonMembers.data.listUserCommunities.items.filter(
           (item: any) => item.communityId === communityId

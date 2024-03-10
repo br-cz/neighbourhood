@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Group, Avatar, Text, Button, Title } from '@mantine/core';
+import { Group, Avatar, Text, Button, Title, Popover } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClock, faSmile, faUserPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import classes from './UserListItem.module.css';
+
 import {
   useCreateFriend,
   useCreateFriendRequest,
@@ -16,6 +17,7 @@ import {
 } from '@/src/hooks/friendsCustomHooks';
 import * as APITypes from '@/src/API';
 import { User } from '@/types/types';
+import { UserListItemPreview } from './UserListItemPreview';
 
 interface UserListItemProps {
   user: User;
@@ -25,18 +27,32 @@ interface UserListItemProps {
 
 export function UserListItem({ user, relationshipStatus, onUpdate }: UserListItemProps) {
   const [status, setStatus] = useState(relationshipStatus);
+  const [active, setActive] = useState(false);
+  const [popoverOpened, setPopoverOpened] = useState(false);
   const { handleCreateFriendRequest, error } = useCreateFriendRequest();
   const { handleCreateFriend, error: createFriendError } = useCreateFriend();
   const { handleDeleteFriend } = useDeleteFriend();
   const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
   const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
 
+  const handleButtonClicked = () => {
+    if (!popoverOpened) {
+      setActive((a: boolean) => !a);
+      setPopoverOpened((o: boolean) => !o);
+    }
+  };
+
+  const handlePreviewClicked = () => {
+    setActive((a: boolean) => !a);
+    setPopoverOpened((o: boolean) => !o);
+  };
+
   const handleAddFriend = async () => {
     try {
       const friendRequestData: APITypes.CreateFriendRequestInput = {
-        senderId: '', // This will be set in handleCreateFriendRequest
+        senderId: '',
         receiverId: user.id,
-        userFriendRequestsId: user.id, // This is typically the receiverId
+        userFriendRequestsId: user.id,
       };
 
       await handleCreateFriendRequest(friendRequestData);
@@ -76,7 +92,9 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
         </Title>
       ),
       children: (
-        <Text size="sm">Are you sure you want to decline {user?.firstName}'s friend request?</Text>
+        <Text size="sm">
+          Are you sure you want to decline {user?.firstName}&apos;s friend request?
+        </Text>
       ),
       confirmProps: { size: 'xs', radius: 'md', color: 'red' },
       cancelProps: { size: 'xs', radius: 'md' },
@@ -170,7 +188,10 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           size="xs"
           variant="outline"
           leftSection={<FontAwesomeIcon icon={faSmile} />}
-          onClick={handleRemoveFriend}
+          onClick={() => {
+            handleButtonClicked();
+            handleRemoveFriend();
+          }}
           data-testid="friends-btn"
         >
           Friends
@@ -184,7 +205,10 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           size="xs"
           variant="outline"
           leftSection={<FontAwesomeIcon icon={faClock} />}
-          onClick={handleCancelRequest}
+          onClick={() => {
+            handleButtonClicked();
+            handleCancelRequest();
+          }}
           data-testid="outgoing-request-btn"
         >
           Pending
@@ -198,7 +222,10 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             radius="md"
             size="xs"
             leftSection={<FontAwesomeIcon icon={faCheck} />}
-            onClick={handleAcceptRequest}
+            onClick={() => {
+              handleButtonClicked();
+              handleAcceptRequest();
+            }}
             data-testid="accept-request-btn"
           >
             Accept
@@ -208,7 +235,10 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             size="xs"
             color="red"
             leftSection={<FontAwesomeIcon icon={faXmark} />}
-            onClick={handleDeclineRequest}
+            onClick={() => {
+              handleButtonClicked();
+              handleDeclineRequest();
+            }}
             data-testid="decline-request-btn"
           >
             Decline
@@ -223,7 +253,10 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           radius="md"
           size="xs"
           leftSection={<FontAwesomeIcon icon={faUserPlus} />}
-          onClick={handleAddFriend}
+          onClick={() => {
+            handleButtonClicked();
+            handleAddFriend();
+          }}
           data-testid="add-friend-btn"
         >
           Add Friend
@@ -233,20 +266,38 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   }
 
   return (
-    <div className={classes.user} data-testid="user-item">
-      <Group>
-        <Avatar src={user?.profilePic} size="lg" radius="xl" />
-        <div style={{ flex: 1 }}>
-          <Text size="sm" fw={600}>
-            {user?.firstName} {user?.lastName}
-          </Text>
+    <Popover
+      opened={popoverOpened}
+      onChange={handlePreviewClicked}
+      classNames={{ dropdown: classes.preview }}
+    >
+      <Popover.Target>
+        <div
+          className={`${classes.user} ${active ? classes.active : ''}`}
+          data-testid="user-item"
+          onClick={handlePreviewClicked}
+          onKeyDown={() => {}}
+          role="button"
+          tabIndex={0}
+        >
+          <Group>
+            <Avatar src={user?.profilePic} size="lg" radius="xl" />
+            <div style={{ flex: 1 }}>
+              <Text size="sm" fw={600}>
+                {user?.firstName} {user?.lastName}
+              </Text>
 
-          <Text c="dimmed" size="xs">
-            {user?.username}
-          </Text>
+              <Text c="dimmed" size="xs">
+                {user?.username}
+              </Text>
+            </div>
+            {button}
+            <Popover.Dropdown>
+              <UserListItemPreview user={user} relationshipStatus={status} />
+            </Popover.Dropdown>
+          </Group>
         </div>
-        {button}
-      </Group>
-    </div>
+      </Popover.Target>
+    </Popover>
   );
 }

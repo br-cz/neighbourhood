@@ -2,19 +2,19 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from '../API';
+import * as APITypes from "../API";
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
 };
 
-export const switchCommunity =
-  /* GraphQL */ `mutation SwitchCommunity($userId: ID!, $communityId: ID!) {
+export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: ID!, $communityId: ID!) {
   switchCommunity(userId: $userId, communityId: $communityId) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -63,6 +63,9 @@ export const switchCommunity =
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -78,14 +81,17 @@ export const switchCommunity =
     __typename
   }
 }
-` as GeneratedMutation<APITypes.SwitchCommunityMutationVariables, APITypes.SwitchCommunityMutation>;
-export const joinCommunity =
-  /* GraphQL */ `mutation JoinCommunity($userId: ID!, $communityId: ID!) {
+` as GeneratedMutation<
+  APITypes.SwitchCommunityMutationVariables,
+  APITypes.SwitchCommunityMutation
+>;
+export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!, $communityId: ID!) {
   joinCommunity(userId: $userId, communityId: $communityId) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -134,6 +140,9 @@ export const joinCommunity =
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -149,7 +158,10 @@ export const joinCommunity =
     __typename
   }
 }
-` as GeneratedMutation<APITypes.JoinCommunityMutationVariables, APITypes.JoinCommunityMutation>;
+` as GeneratedMutation<
+  APITypes.JoinCommunityMutationVariables,
+  APITypes.JoinCommunityMutation
+>;
 export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
   likePost(postId: $postId) {
     id
@@ -158,6 +170,7 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -166,6 +179,9 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -211,7 +227,10 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
     __typename
   }
 }
-` as GeneratedMutation<APITypes.LikePostMutationVariables, APITypes.LikePostMutation>;
+` as GeneratedMutation<
+  APITypes.LikePostMutationVariables,
+  APITypes.LikePostMutation
+>;
 export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
   unlikePost(postId: $postId) {
     id
@@ -220,6 +239,7 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -228,6 +248,9 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -273,9 +296,11 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
     __typename
   }
 }
-` as GeneratedMutation<APITypes.UnlikePostMutationVariables, APITypes.UnlikePostMutation>;
-export const commentOnPost =
-  /* GraphQL */ `mutation CommentOnPost($postId: ID!, $authorId: ID!, $content: String!) {
+` as GeneratedMutation<
+  APITypes.UnlikePostMutationVariables,
+  APITypes.UnlikePostMutation
+>;
+export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!, $authorId: ID!, $content: String!) {
   commentOnPost(postId: $postId, authorId: $authorId, content: $content) {
     id
     post {
@@ -297,6 +322,7 @@ export const commentOnPost =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -305,6 +331,9 @@ export const commentOnPost =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -325,7 +354,10 @@ export const commentOnPost =
     __typename
   }
 }
-` as GeneratedMutation<APITypes.CommentOnPostMutationVariables, APITypes.CommentOnPostMutation>;
+` as GeneratedMutation<
+  APITypes.CommentOnPostMutationVariables,
+  APITypes.CommentOnPostMutation
+>;
 export const sellItem = /* GraphQL */ `mutation SellItem(
   $title: String!
   $description: String!
@@ -357,6 +389,7 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -365,6 +398,9 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -403,13 +439,17 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.SellItemMutationVariables, APITypes.SellItemMutation>;
+` as GeneratedMutation<
+  APITypes.SellItemMutationVariables,
+  APITypes.SellItemMutation
+>;
 export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friendId: ID!) {
   addFriend(userId: $userId, friendId: $friendId) {
     id
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -458,6 +498,9 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -473,11 +516,17 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
     __typename
   }
 }
-` as GeneratedMutation<APITypes.AddFriendMutationVariables, APITypes.AddFriendMutation>;
+` as GeneratedMutation<
+  APITypes.AddFriendMutationVariables,
+  APITypes.AddFriendMutation
+>;
 export const removeFriend = /* GraphQL */ `mutation RemoveFriend($userId: ID!, $friendId: ID!) {
   removeFriend(userId: $userId, friendId: $friendId)
 }
-` as GeneratedMutation<APITypes.RemoveFriendMutationVariables, APITypes.RemoveFriendMutation>;
+` as GeneratedMutation<
+  APITypes.RemoveFriendMutationVariables,
+  APITypes.RemoveFriendMutation
+>;
 export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventId: ID!) {
   likeEvent(userId: $userId, eventId: $eventId) {
     id
@@ -504,6 +553,7 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -512,6 +562,9 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -537,7 +590,10 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
     __typename
   }
 }
-` as GeneratedMutation<APITypes.LikeEventMutationVariables, APITypes.LikeEventMutation>;
+` as GeneratedMutation<
+  APITypes.LikeEventMutationVariables,
+  APITypes.LikeEventMutation
+>;
 export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $eventId: ID!) {
   unlikeEvent(userId: $userId, eventId: $eventId) {
     id
@@ -564,6 +620,7 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -572,6 +629,9 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -597,7 +657,10 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
     __typename
   }
 }
-` as GeneratedMutation<APITypes.UnlikeEventMutationVariables, APITypes.UnlikeEventMutation>;
+` as GeneratedMutation<
+  APITypes.UnlikeEventMutationVariables,
+  APITypes.UnlikeEventMutation
+>;
 export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: ID!, $itemId: ID!) {
   likeItemForSale(userId: $userId, itemId: $itemId) {
     id
@@ -611,6 +674,7 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -619,67 +683,9 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       age
       bio
       profilePic
-      pets
-      kids
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-    community {
-      id
-      name
-      location
-      coordinates
-      image
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-    likedBy {
-      nextToken
-      startedAt
-      __typename
-    }
-    visibility
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    userItemsForSaleId
-    communityItemsForSaleId
-    __typename
-  }
-}
-` as GeneratedMutation<APITypes.LikeItemForSaleMutationVariables, APITypes.LikeItemForSaleMutation>;
-export const unlikeItemForSale =
-  /* GraphQL */ `mutation UnlikeItemForSale($userId: ID!, $itemId: ID!) {
-  unlikeItemForSale(userId: $userId, itemId: $itemId) {
-    id
-    title
-    description
-    images
-    contact
-    price
-    seller {
-      id
-      username
-      email
-      postalCode
-      firstName
-      lastName
-      selectedCommunity
-      friends
-      location
-      age
-      bio
-      profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -719,11 +725,77 @@ export const unlikeItemForSale =
   }
 }
 ` as GeneratedMutation<
-    APITypes.UnlikeItemForSaleMutationVariables,
-    APITypes.UnlikeItemForSaleMutation
-  >;
-export const sendFriendRequest =
-  /* GraphQL */ `mutation SendFriendRequest($senderId: ID!, $receiverId: ID!) {
+  APITypes.LikeItemForSaleMutationVariables,
+  APITypes.LikeItemForSaleMutation
+>;
+export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($userId: ID!, $itemId: ID!) {
+  unlikeItemForSale(userId: $userId, itemId: $itemId) {
+    id
+    title
+    description
+    images
+    contact
+    price
+    seller {
+      id
+      username
+      email
+      postalCode
+      address
+      firstName
+      lastName
+      selectedCommunity
+      friends
+      location
+      age
+      bio
+      profilePic
+      pronouns
+      contact
+      birthday
+      pets
+      kids
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    community {
+      id
+      name
+      location
+      coordinates
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    likedBy {
+      nextToken
+      startedAt
+      __typename
+    }
+    visibility
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    userItemsForSaleId
+    communityItemsForSaleId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UnlikeItemForSaleMutationVariables,
+  APITypes.UnlikeItemForSaleMutation
+>;
+export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($senderId: ID!, $receiverId: ID!) {
   sendFriendRequest(senderId: $senderId, receiverId: $receiverId) {
     id
     senderId
@@ -733,6 +805,7 @@ export const sendFriendRequest =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -741,6 +814,9 @@ export const sendFriendRequest =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -755,6 +831,7 @@ export const sendFriendRequest =
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -763,6 +840,9 @@ export const sendFriendRequest =
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -782,9 +862,9 @@ export const sendFriendRequest =
   }
 }
 ` as GeneratedMutation<
-    APITypes.SendFriendRequestMutationVariables,
-    APITypes.SendFriendRequestMutation
-  >;
+  APITypes.SendFriendRequestMutationVariables,
+  APITypes.SendFriendRequestMutation
+>;
 export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($requestId: ID!) {
   acceptFriendRequest(requestId: $requestId) {
     id
@@ -795,6 +875,7 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -803,6 +884,9 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -817,6 +901,7 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -825,6 +910,9 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -857,6 +945,7 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -865,6 +954,9 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -879,6 +971,7 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -887,6 +980,9 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -922,6 +1018,7 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -930,6 +1027,9 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -944,6 +1044,7 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -952,6 +1053,9 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -987,6 +1091,7 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -995,6 +1100,9 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1009,6 +1117,7 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1017,6 +1126,9 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1052,6 +1164,7 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1060,6 +1173,9 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1074,6 +1190,7 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1082,6 +1199,9 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1113,6 +1233,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -1161,6 +1282,9 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -1176,7 +1300,10 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.CreateUserMutationVariables, APITypes.CreateUserMutation>;
+` as GeneratedMutation<
+  APITypes.CreateUserMutationVariables,
+  APITypes.CreateUserMutation
+>;
 export const updateUser = /* GraphQL */ `mutation UpdateUser(
   $input: UpdateUserInput!
   $condition: ModelUserConditionInput
@@ -1186,6 +1313,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -1234,6 +1362,9 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -1249,7 +1380,10 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.UpdateUserMutationVariables, APITypes.UpdateUserMutation>;
+` as GeneratedMutation<
+  APITypes.UpdateUserMutationVariables,
+  APITypes.UpdateUserMutation
+>;
 export const deleteUser = /* GraphQL */ `mutation DeleteUser(
   $input: DeleteUserInput!
   $condition: ModelUserConditionInput
@@ -1259,6 +1393,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     username
     email
     postalCode
+    address
     firstName
     lastName
     communities {
@@ -1307,6 +1442,9 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     age
     bio
     profilePic
+    pronouns
+    contact
+    birthday
     pets
     kids
     comments {
@@ -1322,7 +1460,10 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.DeleteUserMutationVariables, APITypes.DeleteUserMutation>;
+` as GeneratedMutation<
+  APITypes.DeleteUserMutationVariables,
+  APITypes.DeleteUserMutation
+>;
 export const createCommunity = /* GraphQL */ `mutation CreateCommunity(
   $input: CreateCommunityInput!
   $condition: ModelCommunityConditionInput
@@ -1361,7 +1502,10 @@ export const createCommunity = /* GraphQL */ `mutation CreateCommunity(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.CreateCommunityMutationVariables, APITypes.CreateCommunityMutation>;
+` as GeneratedMutation<
+  APITypes.CreateCommunityMutationVariables,
+  APITypes.CreateCommunityMutation
+>;
 export const updateCommunity = /* GraphQL */ `mutation UpdateCommunity(
   $input: UpdateCommunityInput!
   $condition: ModelCommunityConditionInput
@@ -1400,7 +1544,10 @@ export const updateCommunity = /* GraphQL */ `mutation UpdateCommunity(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.UpdateCommunityMutationVariables, APITypes.UpdateCommunityMutation>;
+` as GeneratedMutation<
+  APITypes.UpdateCommunityMutationVariables,
+  APITypes.UpdateCommunityMutation
+>;
 export const deleteCommunity = /* GraphQL */ `mutation DeleteCommunity(
   $input: DeleteCommunityInput!
   $condition: ModelCommunityConditionInput
@@ -1439,7 +1586,10 @@ export const deleteCommunity = /* GraphQL */ `mutation DeleteCommunity(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.DeleteCommunityMutationVariables, APITypes.DeleteCommunityMutation>;
+` as GeneratedMutation<
+  APITypes.DeleteCommunityMutationVariables,
+  APITypes.DeleteCommunityMutation
+>;
 export const createPost = /* GraphQL */ `mutation CreatePost(
   $input: CreatePostInput!
   $condition: ModelPostConditionInput
@@ -1451,6 +1601,7 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1459,6 +1610,9 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1504,7 +1658,10 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.CreatePostMutationVariables, APITypes.CreatePostMutation>;
+` as GeneratedMutation<
+  APITypes.CreatePostMutationVariables,
+  APITypes.CreatePostMutation
+>;
 export const updatePost = /* GraphQL */ `mutation UpdatePost(
   $input: UpdatePostInput!
   $condition: ModelPostConditionInput
@@ -1516,6 +1673,7 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1524,6 +1682,9 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1569,7 +1730,10 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.UpdatePostMutationVariables, APITypes.UpdatePostMutation>;
+` as GeneratedMutation<
+  APITypes.UpdatePostMutationVariables,
+  APITypes.UpdatePostMutation
+>;
 export const deletePost = /* GraphQL */ `mutation DeletePost(
   $input: DeletePostInput!
   $condition: ModelPostConditionInput
@@ -1581,6 +1745,7 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1589,6 +1754,9 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1634,7 +1802,10 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.DeletePostMutationVariables, APITypes.DeletePostMutation>;
+` as GeneratedMutation<
+  APITypes.DeletePostMutationVariables,
+  APITypes.DeletePostMutation
+>;
 export const createComment = /* GraphQL */ `mutation CreateComment(
   $input: CreateCommentInput!
   $condition: ModelCommentConditionInput
@@ -1660,6 +1831,7 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1668,6 +1840,9 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1688,7 +1863,10 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.CreateCommentMutationVariables, APITypes.CreateCommentMutation>;
+` as GeneratedMutation<
+  APITypes.CreateCommentMutationVariables,
+  APITypes.CreateCommentMutation
+>;
 export const updateComment = /* GraphQL */ `mutation UpdateComment(
   $input: UpdateCommentInput!
   $condition: ModelCommentConditionInput
@@ -1714,6 +1892,7 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1722,6 +1901,9 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1742,7 +1924,10 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.UpdateCommentMutationVariables, APITypes.UpdateCommentMutation>;
+` as GeneratedMutation<
+  APITypes.UpdateCommentMutationVariables,
+  APITypes.UpdateCommentMutation
+>;
 export const deleteComment = /* GraphQL */ `mutation DeleteComment(
   $input: DeleteCommentInput!
   $condition: ModelCommentConditionInput
@@ -1768,6 +1953,7 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1776,6 +1962,9 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1796,7 +1985,10 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.DeleteCommentMutationVariables, APITypes.DeleteCommentMutation>;
+` as GeneratedMutation<
+  APITypes.DeleteCommentMutationVariables,
+  APITypes.DeleteCommentMutation
+>;
 export const createEvent = /* GraphQL */ `mutation CreateEvent(
   $input: CreateEventInput!
   $condition: ModelEventConditionInput
@@ -1826,6 +2018,7 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1834,6 +2027,9 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1859,7 +2055,10 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.CreateEventMutationVariables, APITypes.CreateEventMutation>;
+` as GeneratedMutation<
+  APITypes.CreateEventMutationVariables,
+  APITypes.CreateEventMutation
+>;
 export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
   $input: UpdateEventInput!
   $condition: ModelEventConditionInput
@@ -1889,6 +2088,7 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1897,6 +2097,9 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1922,7 +2125,10 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.UpdateEventMutationVariables, APITypes.UpdateEventMutation>;
+` as GeneratedMutation<
+  APITypes.UpdateEventMutationVariables,
+  APITypes.UpdateEventMutation
+>;
 export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
   $input: DeleteEventInput!
   $condition: ModelEventConditionInput
@@ -1952,6 +2158,7 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -1960,6 +2167,9 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -1985,7 +2195,10 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
     __typename
   }
 }
-` as GeneratedMutation<APITypes.DeleteEventMutationVariables, APITypes.DeleteEventMutation>;
+` as GeneratedMutation<
+  APITypes.DeleteEventMutationVariables,
+  APITypes.DeleteEventMutation
+>;
 export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
   $input: CreateItemForSaleInput!
   $condition: ModelItemForSaleConditionInput
@@ -2002,6 +2215,7 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2010,6 +2224,9 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2068,6 +2285,7 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2076,6 +2294,9 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2134,6 +2355,7 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2142,6 +2364,9 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2197,6 +2422,7 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2205,6 +2431,9 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2252,6 +2481,7 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2260,6 +2490,9 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2307,6 +2540,7 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2315,6 +2549,9 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2362,6 +2599,7 @@ export const createUserLikedPosts = /* GraphQL */ `mutation CreateUserLikedPosts
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2370,6 +2608,9 @@ export const createUserLikedPosts = /* GraphQL */ `mutation CreateUserLikedPosts
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2418,6 +2659,7 @@ export const updateUserLikedPosts = /* GraphQL */ `mutation UpdateUserLikedPosts
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2426,6 +2668,9 @@ export const updateUserLikedPosts = /* GraphQL */ `mutation UpdateUserLikedPosts
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2474,6 +2719,7 @@ export const deleteUserLikedPosts = /* GraphQL */ `mutation DeleteUserLikedPosts
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2482,6 +2728,9 @@ export const deleteUserLikedPosts = /* GraphQL */ `mutation DeleteUserLikedPosts
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2530,6 +2779,7 @@ export const createUserLikedEvents = /* GraphQL */ `mutation CreateUserLikedEven
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2538,6 +2788,9 @@ export const createUserLikedEvents = /* GraphQL */ `mutation CreateUserLikedEven
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2589,6 +2842,7 @@ export const updateUserLikedEvents = /* GraphQL */ `mutation UpdateUserLikedEven
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2597,6 +2851,9 @@ export const updateUserLikedEvents = /* GraphQL */ `mutation UpdateUserLikedEven
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2648,6 +2905,7 @@ export const deleteUserLikedEvents = /* GraphQL */ `mutation DeleteUserLikedEven
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2656,6 +2914,9 @@ export const deleteUserLikedEvents = /* GraphQL */ `mutation DeleteUserLikedEven
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2707,6 +2968,7 @@ export const createUserLikedItems = /* GraphQL */ `mutation CreateUserLikedItems
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2715,6 +2977,9 @@ export const createUserLikedItems = /* GraphQL */ `mutation CreateUserLikedItems
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2766,6 +3031,7 @@ export const updateUserLikedItems = /* GraphQL */ `mutation UpdateUserLikedItems
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2774,6 +3040,9 @@ export const updateUserLikedItems = /* GraphQL */ `mutation UpdateUserLikedItems
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt
@@ -2825,6 +3094,7 @@ export const deleteUserLikedItems = /* GraphQL */ `mutation DeleteUserLikedItems
       username
       email
       postalCode
+      address
       firstName
       lastName
       selectedCommunity
@@ -2833,6 +3103,9 @@ export const deleteUserLikedItems = /* GraphQL */ `mutation DeleteUserLikedItems
       age
       bio
       profilePic
+      pronouns
+      contact
+      birthday
       pets
       kids
       createdAt

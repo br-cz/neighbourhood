@@ -1,3 +1,12 @@
+export function formatUTCDate(isoDate: string): string {
+  return new Date(isoDate).toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
 export function formatDate(isoDate: string): string {
   return new Date(isoDate).toLocaleDateString('en-US', {
     year: 'numeric',
