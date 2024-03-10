@@ -26,7 +26,6 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -52,7 +51,6 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -98,7 +96,6 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -124,7 +121,6 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -170,7 +166,6 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -196,7 +191,6 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -276,7 +270,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -285,6 +278,11 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -353,7 +351,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -362,6 +359,11 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -430,7 +432,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -439,6 +440,11 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -487,6 +493,7 @@ export const onCreateCommunity = /* GraphQL */ `subscription OnCreateCommunity($
     _version
     _deleted
     _lastChangedAt
+    userRelevantCommunitiesId
     __typename
   }
 }
@@ -526,6 +533,7 @@ export const onUpdateCommunity = /* GraphQL */ `subscription OnUpdateCommunity($
     _version
     _deleted
     _lastChangedAt
+    userRelevantCommunitiesId
     __typename
   }
 }
@@ -565,6 +573,7 @@ export const onDeleteCommunity = /* GraphQL */ `subscription OnDeleteCommunity($
     _version
     _deleted
     _lastChangedAt
+    userRelevantCommunitiesId
     __typename
   }
 }
@@ -586,7 +595,6 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -612,6 +620,7 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -655,7 +664,6 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -681,6 +689,7 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -724,7 +733,6 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -750,6 +758,7 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -807,7 +816,6 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -865,7 +873,6 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -923,7 +930,6 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -972,6 +978,7 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -985,7 +992,6 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1039,6 +1045,7 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -1052,7 +1059,6 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1106,6 +1112,7 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -1119,7 +1126,6 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1175,7 +1181,6 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1201,6 +1206,7 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -1244,7 +1250,6 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1270,6 +1275,7 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -1313,7 +1319,6 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1339,6 +1344,7 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -1379,7 +1385,6 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1405,6 +1410,7 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -1437,7 +1443,6 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1463,6 +1468,7 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -1495,7 +1501,6 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1521,6 +1526,7 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -1553,7 +1559,6 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1612,7 +1617,6 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1671,7 +1675,6 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1730,7 +1733,6 @@ export const onCreateUserLikedEvents = /* GraphQL */ `subscription OnCreateUserL
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1792,7 +1794,6 @@ export const onUpdateUserLikedEvents = /* GraphQL */ `subscription OnUpdateUserL
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1854,7 +1855,6 @@ export const onDeleteUserLikedEvents = /* GraphQL */ `subscription OnDeleteUserL
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1916,7 +1916,6 @@ export const onCreateUserLikedItems = /* GraphQL */ `subscription OnCreateUserLi
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1978,7 +1977,6 @@ export const onUpdateUserLikedItems = /* GraphQL */ `subscription OnUpdateUserLi
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2040,7 +2038,6 @@ export const onDeleteUserLikedItems = /* GraphQL */ `subscription OnDeleteUserLi
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
