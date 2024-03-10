@@ -41,6 +41,26 @@ export function formatPostedAt(isoDate: string): string {
   return result;
 }
 
+export function dateToAge( dob: Date ) : number | null {
+  const currentDate = new Date();
+  const birthDate = new Date(dob);
+
+  // Check if the provided date is valid
+  if (isNaN(birthDate.getTime())) {
+    return null;
+  }
+
+  let age = currentDate.getFullYear() - birthDate.getFullYear();
+  const monthDifference = currentDate.getMonth() - birthDate.getMonth();
+
+  // Adjust age based on month and day difference
+  if (monthDifference < 0 || (monthDifference === 0 && currentDate.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+}
+
 export function combineDateTime(date: Date, time: string) {
   const dateTime = new Date(date);
 
