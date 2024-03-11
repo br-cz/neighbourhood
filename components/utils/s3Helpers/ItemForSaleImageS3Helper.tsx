@@ -19,7 +19,7 @@ export async function retrieveImage(itemId: string) {
       }
       return listing.images[0];
     }
-    return '';
+    return retrieveImageURLFromS3('ItemForSaleImages/placeholder-img.jpg');
   }
   throw new Error('Listing does not exist when retrieving image');
 }

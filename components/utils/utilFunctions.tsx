@@ -9,7 +9,6 @@ export const isValidUrl = (urlString: string) => {
 };
 
 export async function retrieveImageURLFromS3(imageKey: string) {
-    console.log('imageKey', imageKey);
     try {
         const result = await getUrl({
         key: imageKey,
