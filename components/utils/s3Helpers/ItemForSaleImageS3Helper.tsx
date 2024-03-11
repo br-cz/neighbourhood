@@ -19,7 +19,7 @@ export async function retrieveImage(itemId: string) {
       }
       return listing.images[0];
     }
-    throw new Error('There is no image available for listing');
+    return '';
   }
   throw new Error('Listing does not exist when retrieving image');
 }

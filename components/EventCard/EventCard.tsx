@@ -5,7 +5,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './EventCard.module.css';
 import { Event } from '@/src/API';
 import { formatDate, formatTime } from '@/utils/timeUtils';
-import { retrieveImage as retrieveProfilePic} from '../utils/s3Helpers/EventImageS3Helper';
+import { retrieveImage as retrieveProfilePic } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 import { retrieveImage as retrieveEventImage } from '../utils/s3Helpers/EventImageS3Helper';
 
 interface EventCardProps {
