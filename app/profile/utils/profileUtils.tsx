@@ -30,7 +30,7 @@ export async function handleProfileUpdate(
       message: "Please don't forget to keep track of these new changes",
     });
     onClose();
-    //resetForm();
+    resetForm();
     
   } catch (error: any) {
     console.error('Error updating user info:', error);
@@ -40,6 +40,7 @@ export async function handleProfileUpdate(
     if (error.message.includes('Attempt limit exceeded')) {
       errorMessage = 'Too many attempts. Please try again later.';
       onClose();
+      resetForm();
     }
 
     notifications.show({
