@@ -55,12 +55,36 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         contact: parameters.contact,
         visibility: parameters.visibility,
       };
+      try {
+        const createdListing = (await handleCreateListing(listingData)) as {
+          id: string;
+          _version: number;
+        };
 
-      await handleCreateListing(listingData);
-      onPostCreated();
-      handlers.close();
-      onClose();
-      formik.resetForm();
+        if (files.length > 0 && createdListing && createdListing.id) {
+          await storeImage(files[0], createdListing.id);
+        }
+
+        onPostCreated();
+        notifications.show({
+          radius: 'md',
+          color: 'yellow.6',
+          title: 'Cha-ching!',
+          message: 'Your item is now up for sale and visible to your neighbours.',
+        });
+      } catch (error) {
+        console.error('Error creating listing:', error);
+        notifications.show({
+          title: 'Oops!',
+          message: 'Something went wrong creating your event - please try again.',
+          color: 'red.6',
+        });
+      } finally {
+        handlers.close();
+        onClose();
+        setFiles([]);
+        formik.resetForm();
+      }
     },
   });
 
@@ -80,7 +104,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         radius="md"
         mt="xs"
         onLoad={() => URL.revokeObjectURL(imageUrl)}
-        style={{ maxWidth: 400, maxHeight: 300 }}
+        style={{ maxWidth: 400, maxHeight: 250 }}
       />
     );
   });
@@ -89,8 +113,6 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
     const file = acceptedFiles[0];
     if (file) {
       setFiles([file]);
-      const imageUrl = await storeImage(file, 'eventId');
-      formik.setFieldValue('eventImage', imageUrl);
     }
   };
 
@@ -106,6 +128,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       opened={opened}
       onClose={() => {
         formik.resetForm();
+        setFiles([]);
         onClose();
       }}
       position="right"
@@ -170,8 +193,6 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
           mt="md"
           data-testid="description"
         />
-
-        {/* Autofill contact as user's phone number if available */}
         <Grid align="center">
           <Grid.Col span={8}>
             <TextInput
@@ -186,13 +207,6 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               required
             />
           </Grid.Col>
-          {/* Potential idea, can remove */}
-          {/* <Grid.Col span={2}>
-            <Checkbox label="Text" radius="md" mt="xl" />
-          </Grid.Col>
-          <Grid.Col span={2}>
-            <Checkbox label="Call" radius="md" mt="xl" />
-          </Grid.Col> */}
         </Grid>
 
         <Select
@@ -278,12 +292,6 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               formik.validateForm().then((errors) => {
                 if (Object.keys(errors).length === 0 && !loading) {
                   formik.submitForm();
-                  notifications.show({
-                    radius: 'md',
-                    color: 'yellow.6',
-                    title: 'Cha-ching!',
-                    message: 'Your item is now up for sale and visible to your neighbours.',
-                  });
                 } else {
                   notifications.show({
                     radius: 'md',

@@ -57,11 +57,35 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
         datetime: combineDateTime(parameters.date, parameters.time),
       };
 
-      await handleCreateEvent(eventData);
-      onPostCreated();
-      handlers.close();
-      onClose();
-      formik.resetForm();
+      try {
+        const createdEvent = (await handleCreateEvent(eventData)) as {
+          id: string;
+          _version: number;
+        };
+
+        if (files.length > 0 && createdEvent && createdEvent.id) {
+          await storeImage(files[0], createdEvent.id);
+        }
+
+        onPostCreated();
+        notifications.show({
+          title: 'Woo-hoo!',
+          message: 'Your event has been created and is now visible to your neighbours.',
+          color: 'yellow.6',
+        });
+      } catch (error) {
+        console.error('Error creating event:', error);
+        notifications.show({
+          title: 'Oops!',
+          message: 'Something went wrong creating your event - please try again.',
+          color: 'red.6',
+        });
+      } finally {
+        handlers.close();
+        onClose();
+        setFiles([]);
+        formik.resetForm();
+      }
     },
   });
 
@@ -74,7 +98,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
         radius="md"
         mt="xs"
         onLoad={() => URL.revokeObjectURL(imageUrl)}
-        style={{ maxWidth: 400, maxHeight: 300 }}
+        style={{ maxWidth: 400, maxHeight: 250 }}
       />
     );
   });
@@ -83,8 +107,6 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
     const file = acceptedFiles[0];
     if (file) {
       setFiles([file]);
-      const imageUrl = await storeImage(file, 'eventId');
-      formik.setFieldValue('eventImage', imageUrl);
     }
   };
 
@@ -100,6 +122,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
       opened={opened}
       onClose={() => {
         formik.resetForm();
+        setFiles([]);
         onClose();
       }}
       position="right"
