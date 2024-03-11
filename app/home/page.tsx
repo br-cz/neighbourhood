@@ -8,7 +8,7 @@ import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/Neighbourhoo
 import { useAuth } from '@/components/Authorization/useAuth';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
 import { PostCard } from '@/components/PostCard/PostCard';
-import { useFetchPosts } from '@/src/hooks/postsCustomHooks';
+import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
 import { Post } from '@/types/types';
 import { filterAndSortPosts } from '@/components/utils/postUtils';
 
@@ -16,6 +16,7 @@ export default function HomePage() {
   const [refresh, setRefresh] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { posts, loading } = useFetchPosts(refresh);
+  const { userLikes } = useUserLikes();
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const { user } = useAuth();
   const [sortQuery, setSortQuery] = useState<string | null>(null);
@@ -35,7 +36,7 @@ export default function HomePage() {
         <Group>
           <Select
             radius="md"
-            placeholder="Sort by..."
+            placeholder="Date: New to Old"
             onChange={setSortQuery}
             value={sortQuery}
             data={['Date: New to Old', 'Date: Old to New', 'First Name: (A-Z)', 'Last Name: (A-Z)']}
@@ -77,7 +78,7 @@ export default function HomePage() {
           data-testid="post-feed"
         >
           {filteredAndSortedPosts.map((post: Post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard key={post.id} post={post} isLiked={userLikes.get(post.id)} />
           ))}
         </SimpleGrid>
       )}

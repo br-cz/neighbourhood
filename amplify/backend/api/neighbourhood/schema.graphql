@@ -37,7 +37,6 @@ type User @model {
   likedEvents: [Event!]! @manyToMany(relationName: "UserLikedEvents")
   likedItems: [ItemForSale!]! @manyToMany(relationName: "UserLikedItems")
   location: String
-  age: Int
   bio: String
   profilePic: String
   pronouns: String
@@ -46,6 +45,7 @@ type User @model {
   pets: Int
   kids: Int
   comments: [Comment] @hasMany
+  relevantCommunities: [Community] @hasMany
 }
 
 type Community @model {
