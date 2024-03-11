@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import {
   TextInput,
   NumberInput,
@@ -9,18 +9,23 @@ import {
   Avatar,
   Box,
   Grid,
+  Divider,
+  Tooltip,
+  Text,
+  Center,
 } from '@mantine/core';
-import { dateToAge } from '@/utils/timeUtils';
 import { DatePickerInput } from '@mantine/dates';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle, faPencil } from '@fortawesome/free-solid-svg-icons';
 import classes from './ProfileSetup.module.css';
+import { utcToISO } from '@/utils/timeUtils';
 
-// ******** MERGE WITH AL / MAIN BEFORE COMMITING
-import { DateValue } from '@mantine/dates'; 
 interface ProfileSetupProps {
   preferredUsername: string;
   firstName: string;
   familyName: string;
   phoneNumber: string;
+  bio: string;
   pronouns: string;
   profilePic: File | null;
   birthday: string;
@@ -33,6 +38,7 @@ interface ProfileSetupProps {
     preferredUsername?: string;
     firstName?: string;
     familyName?: string;
+    bio?: string;
     phoneNumber?: string;
     pronouns?: string;
     profilePic?: string;
@@ -42,6 +48,7 @@ interface ProfileSetupProps {
   };
   touched: {
     preferredUsername?: boolean;
+    bio?: boolean;
     firstName?: boolean;
     familyName?: boolean;
     phoneNumber?: boolean;
@@ -58,6 +65,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   firstName,
   familyName,
   phoneNumber,
+  bio,
   pronouns,
   profilePic,
   birthday,
@@ -76,7 +84,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     setFieldValue('birthday', utcToISO(date));
-  }
+  };
 
   const handleContactChange = (e: any) => {
     const { value } = e.target;
@@ -84,11 +92,11 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
     const formattedPhoneNumber = numericPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
     setFieldValue('phoneNumber', formattedPhoneNumber);
   };
-  
+
   const handleImageUploadClick = () => {
     fileInputRef.current?.click();
   };
-  
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -98,36 +106,35 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
     }
   };
 
-  // ********** MERGE WITH AL / MAIN BEFORE COMMITING
-  const utcToISO = (date: DateValue): string => {
-    if (!date) return '';
-    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-  };
-
   return (
-  <Box w={400} >
-    <Group justify="center">
-      <Box w={150} h={150} onClick={handleImageUploadClick}  className={classes.avatar}>
-        {previewImageUrl ? (
-          <Image src={previewImageUrl} radius="xl" style={{ maxWidth: 150, maxHeight: 150 }} />
-        ) : (
-          <Avatar radius="xl" size={150} src={''} />
-        )}
-        <Stack gap="xs" className={classes.avatarOverlay}>
-          {/* <FontAwesomeIcon icon={faPencil} size="lg" /> */}
-        </Stack>
-        <input
-          ref={fileInputRef}
-          type="file"
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
-          accept="image/*"
-        />
-      </Box>
-
-      <Grid>  
-        <Grid.Col span={12}>
-          <TextInput
+    <Box w={400} mt={20}>
+      <Group justify="center">
+        <Box w={100} h={100} onClick={handleImageUploadClick} className={classes.avatar}>
+          {previewImageUrl ? (
+            <Image
+              src={previewImageUrl}
+              style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+            />
+          ) : (
+            <Avatar radius="xl" size={100} />
+          )}
+          <Stack gap="xs" className={classes.avatarOverlay}>
+            <FontAwesomeIcon icon={faPencil} />
+            <Text fz="xs" fw={500}>
+              Edit
+            </Text>
+          </Stack>
+          <input
+            ref={fileInputRef}
+            type="file"
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+            accept="image/*"
+          />
+        </Box>
+        <Grid>
+          <Grid.Col span={12}>
+            <TextInput
               label="Username"
               name="preferredUsername"
               value={preferredUsername}
@@ -142,9 +149,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
               data-testid="username"
               required
             />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <TextInput
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <TextInput
               label="First Name"
               name="firstName"
               value={firstName}
@@ -153,11 +160,11 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
               error={touched.firstName && errors.firstName ? errors.firstName : undefined}
               radius="md"
               data-testid="firstName"
-              required    
+              required
             />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <TextInput
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <TextInput
               label="Last Name"
               name="familyName"
               value={familyName}
@@ -168,81 +175,127 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
               data-testid="lastName"
               required
             />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <DatePickerInput
-            defaultValue={new Date()}
-            radius="md"
-            name="birthday"
-            label="Birthday"
-            value={selectedDate}
-            placeholder="Pick a date"
-            onChange={handleDateChange}
-            maxDate={new Date()}
-            onBlur={onBlur}
-            error={touched.birthday && errors.birthday ? errors.birthday : undefined}
-            mt="md"
-            data-testid="birthday"
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <Select
-            radius="md"
-            name="pronouns"
-            label="Pronouns"
-            value={pronouns}
-            placeholder="Choose pronouns"
-            data={[
-              { value: 'he/him', label: 'He/Him' },
-              { value: 'she/her', label: 'She/Her' },
-              { value: 'they/them', label: 'They/Them' },
-              { value: 'other', label: 'Ask Me' },
-            ]}
-            onChange={(value) => setFieldValue('pronouns', value)}
-            onBlur={onBlur}
-            comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
-            error={touched.pronouns && errors.pronouns ? errors.pronouns : undefined}
-            mt="md"
-            data-testid="pronouns"
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <TextInput
-            label="Phone Number"
-            name="phoneNumber"
-            value={phoneNumber}
-            onChange={handleContactChange}
-            maxLength={14}
-            onBlur={onBlur}
-            error={touched.phoneNumber && errors.phoneNumber ? errors.phoneNumber : undefined}
-            radius="md"
-            data-testid="phone"
-          />
-        </Grid.Col>
-        <Grid.Col span={3}>
-          <NumberInput
-            label="Pets"
-            defaultValue={pets}
-            placeholder={'0'}
-            min={0}
-            step={1}
-            value={pets}
-            onChange={(value) => setFieldValue('pets', value)}
-          />
-        </Grid.Col>
-        <Grid.Col span={3}>
-          <NumberInput
-            label="Kids"
-            defaultValue={kids}
-            placeholder={'0'}
-            min={0}
-            step={1}
-            value={kids}
-            onChange={(value) => setFieldValue('kids', value)}
-          />
-        </Grid.Col>
-      </Grid>
-    </Group>
-  </Box>
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <Divider mt="lg" />
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <TextInput
+              radius="md"
+              name="bio"
+              label="Bio"
+              value={bio}
+              placeholder="Tell us a little about yourself..."
+              onChange={onChange}
+              onBlur={onBlur}
+              error={touched.bio && errors.bio ? errors.bio : undefined}
+              mt="md"
+              data-testid="bio"
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <DatePickerInput
+              defaultValue={new Date()}
+              radius="md"
+              name="birthday"
+              placeholder="Optional"
+              label="Birthday"
+              value={selectedDate}
+              onChange={handleDateChange}
+              maxDate={new Date()}
+              onBlur={onBlur}
+              error={touched.birthday && errors.birthday ? errors.birthday : undefined}
+              mt="md"
+              data-testid="birthday"
+              rightSection={
+                <Tooltip
+                  label="Your age will be visible to your community, but your birthday only to friends."
+                  position="top-end"
+                  withArrow
+                  transitionProps={{ transition: 'pop-bottom-right' }}
+                >
+                  <Text component="div" c="dimmed" style={{ cursor: 'help' }}>
+                    <Center>
+                      <FontAwesomeIcon icon={faInfoCircle} size="sm" />
+                    </Center>
+                  </Text>
+                </Tooltip>
+              }
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Select
+              radius="md"
+              name="pronouns"
+              label="Pronouns"
+              value={pronouns}
+              data={[
+                { value: 'he/him', label: 'He/Him' },
+                { value: 'she/her', label: 'She/Her' },
+                { value: 'they/them', label: 'They/Them' },
+                { value: 'other', label: 'Ask Me' },
+              ]}
+              onChange={(value) => setFieldValue('pronouns', value)}
+              onBlur={onBlur}
+              placeholder="Optional"
+              comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
+              error={touched.pronouns && errors.pronouns ? errors.pronouns : undefined}
+              mt="md"
+              data-testid="pronouns"
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <TextInput
+              label="Phone Number"
+              name="phoneNumber"
+              value={phoneNumber}
+              onChange={handleContactChange}
+              placeholder="Optional"
+              maxLength={14}
+              onBlur={onBlur}
+              error={touched.phoneNumber && errors.phoneNumber ? errors.phoneNumber : undefined}
+              radius="md"
+              data-testid="phone"
+              rightSection={
+                <Tooltip
+                  label="Your phone number will be visible only to your friends and marketplace listings."
+                  position="top-end"
+                  withArrow
+                  transitionProps={{ transition: 'pop-bottom-right' }}
+                >
+                  <Text component="div" c="dimmed" style={{ cursor: 'help' }}>
+                    <Center>
+                      <FontAwesomeIcon icon={faInfoCircle} size="sm" />
+                    </Center>
+                  </Text>
+                </Tooltip>
+              }
+            />
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <NumberInput
+              label="Pets"
+              defaultValue={0}
+              placeholder="0"
+              min={0}
+              step={1}
+              value={pets}
+              onChange={(value) => setFieldValue('pets', value)}
+            />
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <NumberInput
+              label="Kids"
+              defaultValue={0}
+              placeholder="0"
+              min={0}
+              step={1}
+              value={kids}
+              onChange={(value) => setFieldValue('kids', value)}
+            />
+          </Grid.Col>
+        </Grid>
+      </Group>
+    </Box>
   );
 };

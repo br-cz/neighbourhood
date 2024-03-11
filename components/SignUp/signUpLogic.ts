@@ -1,7 +1,6 @@
 import { notifications } from '@mantine/notifications';
 import { signUp } from '@aws-amplify/auth';
 import { createUserAPI, createUserCommunityAPI } from '@/src/api/services/user';
-import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const processSignUp = async (parameters: any, nextStep: () => void, handlers: any) => {
   const values = { ...parameters };
@@ -17,6 +16,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     .trim()
     .toLowerCase()
     .replace(/^\w/, (c: string) => c.toUpperCase());
+  values.bio = parameters.bio.trim();
   values.phoneNumber = parameters.phoneNumber.trim();
   values.pronouns = parameters.pronouns;
   values.profilePic = parameters.profilePic;
@@ -52,23 +52,25 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         selectedCommunity: values.selectedCommunity,
         firstName: values.firstName,
         lastName: values.familyName,
+        bio: values.bio,
         contact: values.phoneNumber,
         pronouns: values.pronouns,
-        profilePic: values.profilePic ? storeImage(values.profilePic, cognitoResponse.userId) : null,
+        profilePic: avatarURL,
         birthday: values.birthday,
         kids: values.kids,
         pets: values.pets,
         postalCode: '',
-        profilePic: avatarURL,
       };
 
-      await createUserAPI(createUserInput);
+      console.log('createUserInput:', createUserInput);
 
-      await createUserCommunityAPI(cognitoResponse.userId, values.selectedCommunity);
+      await createUserAPI(createUserInput);
+      await createUserCommunityAPI(cognitoResponse.userId, values.selectedCommunity[0]);
     }
 
     console.log('Sign up success:', cognitoResponse.userId);
     nextStep();
+    return cognitoResponse;
   } catch (error) {
     console.log('error signing up:', error);
     notifications.show({
@@ -77,5 +79,4 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
       color: 'red',
     });
   }
-  handlers.close();
 };
