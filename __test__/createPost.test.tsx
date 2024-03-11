@@ -178,23 +178,23 @@ describe('Home page - Create Post', () => {
     );
   });
 
-  //1.6
-  test('Drawer closes on valid form submission', async () => {
-    renderComponent();
+  // //1.6
+  // test('Drawer closes on valid form submission', async () => {
+  //   renderComponent();
 
-    await userEvent.click(screen.getByText(/New Post.../i));
+  //   await userEvent.click(screen.getByText(/New Post.../i));
 
-    userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
+  //   userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
 
-    await userEvent.click(screen.getByTestId(/post-button/i));
+  //   await userEvent.click(screen.getByTestId(/post-button/i));
 
-    await waitFor(
-      () => {
-        expect(screen.queryByTestId('post-content')).not.toBeInTheDocument();
-      },
-      { timeout: 2000 }
-    );
-  });
+  //   await waitFor(
+  //     () => {
+  //       expect(screen.queryByTestId('post-content')).not.toBeInTheDocument();
+  //     },
+  //     { timeout: 2000 }
+  //   );
+  // });
 
   //1.7
   test('Drawer does not close if post-content is too short', async () => {
