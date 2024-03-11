@@ -18,7 +18,7 @@ interface PostCardProps {
   isLiked: boolean;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, isLiked }: PostCardProps) {
   const [profilePic, setProfilePic] = useState<string>('');
   const { likePost, unlikePost } = usePostLikes(post.id);
   const [liked, setLiked] = useState(false);
@@ -32,7 +32,7 @@ export function PostCard({ post }: PostCardProps) {
       setProfilePic(image);
     });
   }, [post?.author?.profilePic]);
-  
+
   useEffect(() => {
     setLiked(isLiked);
   }, [isLiked]);
