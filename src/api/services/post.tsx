@@ -1,8 +1,16 @@
 import { generateClient } from '@aws-amplify/api';
-import { getPost, listComments } from '@/src/graphql/queries';
-import { createPost, createComment, updatePost } from '@/src/graphql/mutations';
+import { getPost, listComments, listUserLikedPosts } from '@/src/graphql/queries';
+import {
+  createPost,
+  createComment,
+  updatePost,
+  createUserLikedPosts,
+  deleteUserLikedPosts,
+} from '@/src/graphql/mutations';
 import { CommentDataInput, PostDataInput } from '@/types/types';
 import { HttpError } from '@/src/models/error/HttpError';
+import { UserLikedPosts } from '@/src/API';
+import { getCurrentUserID } from '@/src/hooks/usersCustomHooks';
 
 const client = generateClient();
 
@@ -39,6 +47,7 @@ export const getCommunityPostsAPI = async (communityId: string) => {
           items {
             id
             author {
+              id
               username
               firstName
               lastName
@@ -90,6 +99,23 @@ export const getCommunityPostsAPI = async (communityId: string) => {
   }
 };
 
+export const listUserLikedPostsAPI = async () => {
+  try {
+    const response = await client.graphql({
+      query: listUserLikedPosts,
+    });
+    const filteredResponse = response.data.listUserLikedPosts.items.filter(
+      (item: any) => !item._deleted
+    );
+    return filteredResponse;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error retrieving user liked posts: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
+};
+
 export const createNewCommentAPI = async (commentData: CommentDataInput) => {
   try {
     const comment = await client.graphql({
@@ -112,20 +138,57 @@ export const getAllCommentsAPI = async () => {
 };
 
 export const updatePostImageAPI = async (postId: string, image: string, _version: number) => {
-    try {
-        const updatedPost = await client.graphql({
-        query: updatePost,
-        variables: {
-          input: {
-            id: postId,
-            images: [image],
-            _version,
-          },
+  try {
+    const updatedPost = await client.graphql({
+      query: updatePost,
+      variables: {
+        input: {
+          id: postId,
+          images: [image],
+          _version,
         },
-        });
-        console.log('User updated successfully:', updatedPost.data.updatePost);
-        return updatedPost.data.updatePost;
-    } catch (error: any) {
-        throw new HttpError(`Error updating post image: ${error.message}`, error.statusCode || 500);
-    }
+      },
+    });
+    console.log('User updated successfully:', updatedPost.data.updatePost);
+    return updatedPost.data.updatePost;
+  } catch (error: any) {
+    throw new HttpError(`Error updating post image: ${error.message}`, error.statusCode || 500);
+  }
+};
+
+export const createLikeAPI = async (postId: string) => {
+  const userId = getCurrentUserID();
+  try {
+    const createUserLikedPostsResponse = await client.graphql({
+      query: createUserLikedPosts,
+      variables: {
+        input: {
+          postId,
+          userId,
+        },
+      },
+    });
+    return createUserLikedPostsResponse.data.createUserLikedPosts;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error creating user post connection: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
+};
+
+export const deleteLikeAPI = async (like: UserLikedPosts) => {
+  try {
+    return await client.graphql({
+      query: deleteUserLikedPosts,
+      variables: {
+        input: {
+          id: like.id,
+          _version: like._version,
+        },
+      },
+    });
+  } catch (error: any) {
+    throw new HttpError(`Error deleting like: ${error.message}`, error.statusCode || 500);
+  }
 };

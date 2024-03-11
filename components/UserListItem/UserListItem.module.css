@@ -7,7 +7,22 @@
   transition: background-color 0.2s ease;
 }
 .user:hover {
+  cursor: pointer;
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+}
+
+.user.active {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+}
+
+.preview {
+  display: block;
+  width: 100%;
+  padding: var(--mantine-spacing-md);
+  color: light-dark(var(--mantine-color-dark-7), var(--mantine-color-dark-0));
+  border: 1px solid var(--mantine-color-dark-8);
+  border-radius: var(--mantine-radius-md);
+  transition: transform 0.4s ease;
 }
 
 .link {

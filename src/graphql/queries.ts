@@ -22,7 +22,6 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -48,6 +47,7 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -129,7 +129,6 @@ export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!,
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -138,6 +137,11 @@ export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!,
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -168,7 +172,6 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -194,6 +197,7 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -242,6 +246,7 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -255,7 +260,6 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -342,7 +346,6 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -351,6 +354,11 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -383,7 +391,6 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -409,7 +416,6 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -453,7 +459,6 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -479,7 +484,6 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -523,7 +527,6 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -549,7 +552,6 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -689,7 +691,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -698,6 +699,11 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -728,7 +734,6 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -772,7 +777,6 @@ export const syncUsers = /* GraphQL */ `query SyncUsers(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -825,6 +829,7 @@ export const getCommunity = /* GraphQL */ `query GetCommunity($id: ID!) {
     _version
     _deleted
     _lastChangedAt
+    userRelevantCommunitiesId
     __typename
   }
 }
@@ -849,6 +854,7 @@ export const listCommunities = /* GraphQL */ `query ListCommunities(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     nextToken
@@ -883,6 +889,7 @@ export const syncCommunities = /* GraphQL */ `query SyncCommunities(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     nextToken
@@ -908,7 +915,6 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -934,6 +940,7 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -1046,7 +1053,6 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1155,6 +1161,7 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -1168,7 +1175,6 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1289,7 +1295,6 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1315,6 +1320,7 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -1423,7 +1429,6 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1449,6 +1454,7 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -1537,7 +1543,6 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1652,7 +1657,6 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1770,7 +1774,6 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
