@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import { HttpError } from '../models/error/HttpError';
 import { getUserAPI } from '../api/services/user';
 
-export const getCurrentUserID = () => JSON.parse(localStorage.getItem('currentUserID')!);
+export const getCurrentUserID = () => {
+  if (typeof window !== 'undefined') {
+    return JSON.parse(localStorage.getItem('currentUserID')!);
+  }
+  return null;
+};
 export const getCurrentUser = async () => getUserAPI(getCurrentUserID());
 
 export const useCurrentUser = () => {
