@@ -70,6 +70,27 @@ export const updateUserProfilePicAPI = async (userId: string, image: string, _ve
   }
 };
 
+export const updateUserSelectedCommunity = async (
+  userId: string,
+  communityId: string,
+  _version: number
+) => {
+  const input = { id: userId, selectedCommunity: communityId, _version };
+  try {
+    const updatedUser = await client.graphql({
+      query: updateUser,
+      variables: { input },
+    });
+    console.log('User selected community successfully updated:', updatedUser.data.updateUser);
+    return updatedUser.data.updateUser;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error updating user profile picture: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
+};
+
 // export const updateUserProfilePicAPI = async (userId: string, image: string, _version: number) => {
 //   try {
 //     const updatedUser = await client.graphql({

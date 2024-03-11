@@ -4,31 +4,39 @@ import { getCurrentCommunityID } from '@/src/hooks/communityCustomHooks';
 import { Community, UserCommunity } from '@/src/API';
 import { deleteUserCommunityAPI } from '@/src/api/services/user';
 import { communityUpdateSubject } from '@/src/hooks/communityCustomHooks';
+import { updateUserSelectedCommunity, getCurrentUserAPI } from '@/src/api/services/user';
+import { getCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 const triggerCommunityUpdate = () => {
   communityUpdateSubject.next();
 };
 // Utility function for handling community switch
 export const handleSwitch = async (user: any, community: Community, toggleRefresh: () => void) => {
-  try {
-    await switchCommunityAPI(user, community.id);
-    localStorage.setItem('currentCommunityID', JSON.stringify(community.id));
-    localStorage.setItem('currentCommunity', JSON.stringify(community));
-    notifications.show({
-      radius: 'md',
-      title: 'Update!',
-      color: 'green',
-      message: `You have now switched to ${community.name} community`,
-    });
-    toggleRefresh();
-    triggerCommunityUpdate(); //Trigger community update so that all components start updating the community data
-  } catch (error) {
-    notifications.show({
-      radius: 'md',
-      title: 'Sorry!',
-      color: 'red',
-      message: 'Failed to switch the community. Please try again.',
-    });
+  const currentUser = await getCurrentUser();
+  if (currentUser) {
+    try {
+      console.log('Switching to community:', community.id);
+      await updateUserSelectedCommunity(currentUser.id, community.id, currentUser._version);
+      await switchCommunityAPI(user, community.id);
+      console.log('Updated User details: ', await getCurrentUserAPI());
+      localStorage.setItem('currentCommunityID', JSON.stringify(community.id));
+      localStorage.setItem('currentCommunity', JSON.stringify(community));
+      notifications.show({
+        radius: 'md',
+        title: 'Update!',
+        color: 'green',
+        message: `You have now switched to ${community.name} community`,
+      });
+      toggleRefresh();
+      triggerCommunityUpdate(); //Trigger community update so that all components start updating the community data
+    } catch (error) {
+      notifications.show({
+        radius: 'md',
+        title: 'Sorry!',
+        color: 'red',
+        message: 'Failed to switch the community. Please try again.',
+      });
+    }
   }
 };
 

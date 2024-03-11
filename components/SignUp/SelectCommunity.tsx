@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, SimpleGrid, Stack, Text, LoadingOverlay } from '@mantine/core';
 import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
-import { Community } from '@/src/models';
+import { Community } from '@/types/types';
 import { FormikErrors, FormikTouched } from 'formik';
 
 interface SelectCommunityProps {
