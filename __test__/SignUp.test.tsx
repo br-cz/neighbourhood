@@ -106,7 +106,7 @@ const completeStep4 = async () => {
   fireEvent.change(screen.getByTestId('firstName'), { target: { value: 'Grunkle' } });
   fireEvent.change(screen.getByTestId('lastName'), { target: { value: 'Williams' } });
   fireEvent.change(screen.getByTestId('username'), { target: { value: 'grunk' } });
-  fireEvent.change(screen.getByTestId('phone'), { target: { value: '9999999999' } });
+  fireEvent.change(screen.getByTestId('phone'), { target: { value: '(999) 999-9999' } });
   fireEvent.click(screen.getByText(/Create Profile/i));
 };
 
@@ -389,12 +389,12 @@ describe('Step 4: Profile Setup', () => {
     fireEvent.change(firstNameInput, { target: { value: 'Grunkle' } });
     fireEvent.change(lastNameInput, { target: { value: 'Williams' } });
     fireEvent.change(usernameInput, { target: { value: 'grunk' } });
-    fireEvent.change(phoneInput, { target: { value: '9999999999' } });
+    fireEvent.change(phoneInput, { target: { value: '(999) 999-9999' } });
     await waitFor(() => {
       expect(firstNameInput.value).toBe('Grunkle');
       expect(lastNameInput.value).toBe('Williams');
       expect(usernameInput.value).toBe('grunk');
-      expect(phoneInput.value).toBe('9999999999');
+      expect(phoneInput.value).toBe('(999) 999-9999');
     });
   });
 

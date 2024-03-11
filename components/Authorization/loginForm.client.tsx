@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { generateClient } from '@aws-amplify/api';
@@ -15,8 +16,6 @@ interface SignInParams {
   username: string;
   password: string;
   clientInput: any;
-  router: any;
-  notificationsInput: any;
   handlers: any;
   setErrorMessage: (message: string) => void;
 }
@@ -25,8 +24,6 @@ export async function handleSignIn({
   username,
   password,
   clientInput,
-  router,
-  notificationsInput,
   handlers,
   setErrorMessage,
 }: SignInParams): Promise<void> {
@@ -48,13 +45,6 @@ export async function handleSignIn({
       localStorage.setItem('currentCommunityID', JSON.stringify(communityID));
       localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
     }
-
-    router.push('/home');
-    notificationsInput.show({
-      radius: 'md',
-      title: 'Hey, Neighbour! 👋 ',
-      message: `Logged in successfully. Welcome back, ${user.data.getUser?.firstName}!`,
-    });
   } catch (error) {
     handlers.close();
     console.log('Error signing in', error);
@@ -76,10 +66,14 @@ export default function LoginForm() {
       username: email,
       password: pass,
       clientInput: client,
-      router,
-      notificationsInput: notifications,
       handlers,
       setErrorMessage,
+    });
+    router.push('/home');
+    notifications.show({
+      radius: 'md',
+      title: 'Hey, Neighbour! 👋 ',
+      message: 'Logged in successfully. Welcome back to your community!',
     });
   };
 
@@ -115,7 +109,9 @@ export default function LoginForm() {
             Log In
           </Button>
           <Text c="dimmed">or</Text>
-          <Button radius="md" onClick={handleSignUp} className={styles.customButton}>Get Started</Button>
+          <Button radius="md" onClick={handleSignUp} className={styles.customButton}>
+            Get Started
+          </Button>
         </Group>
       </form>
     </Box>
