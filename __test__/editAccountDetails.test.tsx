@@ -63,7 +63,7 @@ describe('ProfilePage - Change Password', () => {
 
     expect(notifications.show).toHaveBeenCalledWith(
       expect.objectContaining({
-        title: 'Your login details have been updated!',
+        title: 'Your password has been updated!',
       })
     );
   });
