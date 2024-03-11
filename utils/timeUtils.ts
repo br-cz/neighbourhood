@@ -1,3 +1,14 @@
+import { DateValue } from '@mantine/dates';
+
+export function isoToUTC(isoDate: string): string {
+  return new Date(isoDate).toUTCString();
+}
+
+export function utcToISO(date: DateValue): string {
+  if (!date) return '';
+  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+}
+
 export function formatUTCDate(isoDate: string): string {
   return new Date(isoDate).toLocaleDateString('en-US', {
     timeZone: 'UTC',

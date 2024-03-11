@@ -90,9 +90,9 @@ const completeStep2 = async () => {
 const completeStep3 = async () => {
   await waitFor(() => {
     expect(screen.getByTestId('communities')).toBeInTheDocument();
-    expect(screen.getByTestId('communities-item')).toBeInTheDocument();
+    expect(screen.getByTestId('communities-item-community1')).toBeInTheDocument();
   });
-  fireEvent.click(screen.getByTestId('communities-item'));
+  fireEvent.click(screen.getByTestId('communities-item-community1'));
   fireEvent.click(screen.getByText(/Continue/i));
 };
 
@@ -303,7 +303,7 @@ describe('Step 3: Community Select', () => {
       expect(screen.getByTestId('communities')).toBeInTheDocument();
     });
     await waitFor(() => {
-      expect(screen.getByTestId('communities-item')).toBeInTheDocument();
+      expect(screen.getByTestId('communities-item-community1')).toBeInTheDocument();
     });
   });
 
@@ -313,11 +313,11 @@ describe('Step 3: Community Select', () => {
     await completeStep1();
     await completeStep2();
     await waitFor(() => {
-      expect(screen.getByTestId('communities-item')).toBeInTheDocument();
+      expect(screen.getByTestId('communities-item-community1')).toBeInTheDocument();
     });
-    fireEvent.click(screen.getByTestId('communities-item'));
+    fireEvent.click(screen.getByTestId('communities-item-community1'));
     await waitFor(() => {
-      expect(screen.getByTestId('communities-item')).toHaveClass('active');
+      expect(screen.getByTestId('communities-item-community1')).toHaveClass('active');
     });
   });
 
@@ -330,7 +330,7 @@ describe('Step 3: Community Select', () => {
     await waitFor(
       () => {
         expect(screen.queryByTestId('communities')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('communities-item')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('communities-item-community1')).not.toBeInTheDocument();
       },
       { timeout: 1000 }
     );
@@ -342,12 +342,12 @@ describe('Step 3: Community Select', () => {
     await completeStep1();
     await completeStep2();
     await waitFor(() => {
-      expect(screen.getByTestId('communities-item')).toBeInTheDocument();
+      expect(screen.getByTestId('communities-item-community1')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByText(/Continue/i));
     await waitFor(
       () => {
-        expect(screen.getByText('Selecting a community is required.')).toBeInTheDocument();
+        expect(screen.getByText('You must select at least one community')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );

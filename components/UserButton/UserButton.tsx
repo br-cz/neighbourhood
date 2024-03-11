@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
 import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
 import classes from './UserButton.module.css';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { getInitials } from '../utils/utilFunctions';
+import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface UserButtonProps {
   active: boolean;
@@ -11,12 +13,20 @@ interface UserButtonProps {
 
 export function UserButton({ active }: UserButtonProps) {
   const { currentUser } = useCurrentUser();
+  const [profilePic, setProfilePic] = useState<string>('');
+
+  useEffect(() => {
+    if (!currentUser) return;
+    retrieveImage(currentUser?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [currentUser?.profilePic]);
 
   return (
     <Link href="/profile" passHref className={classes.link} data-testid="profile">
       <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
         <Group>
-          <Avatar src={currentUser?.profilePic} size="md" radius="xl">
+          <Avatar src={profilePic} size="md" radius="xl">
             {getInitials(currentUser?.firstName, currentUser?.lastName)}
           </Avatar>
           <div style={{ flex: 1 }}>

@@ -10,6 +10,20 @@ function generateKey(fileName: string, eventId: string) {
     return `EventImages/${eventId}-${timestamp}-${fileName}`;
 }
 
+export async function retrieveImage(eventId: string) {
+  const event = await getEventAPI(eventId);
+  if (event) {
+    if (event.images && event.images[0]) {
+      if (event.images[0]?.includes(eventId)) {
+        return retrieveImageURLFromS3(event.images[0]);
+      }
+      return event.images[0];
+    }
+    return '';
+  }
+  throw new Error('Event does not exist when retrieving image');
+}
+
 export async function storeImage(file: File, eventId: string) {
   if (!file || !eventId) {
     throw new Error('Invalid file or eventId');
@@ -25,9 +39,7 @@ export async function storeImage(file: File, eventId: string) {
         data: file,
       }).result;
 
-      const imageUrl = await retrieveImageURLFromS3(uploadResult.key);
-
-      await updateEventImageAPI(event.id, imageUrl, event._version);
+      await updateEventImageAPI(event.id, uploadResult.key, event._version);
       return uploadResult.key;
     }
     throw new Error('eventId given to store event image is invalid');

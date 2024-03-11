@@ -10,6 +10,20 @@ function generateKey(fileName: string, itemId: string) {
     return `ItemForSaleImages/${itemId}-${timestamp}-${fileName}`;
 }
 
+export async function retrieveImage(itemId: string) {
+  const listing = await getListingAPI(itemId);
+  if (listing) {
+    if (listing.images && listing.images[0]) {
+      if (listing.images[0]?.includes(itemId)) {
+        return retrieveImageURLFromS3(listing.images[0]);
+      }
+      return listing.images[0];
+    }
+    return '';
+  }
+  throw new Error('Listing does not exist when retrieving image');
+}
+
 export async function storeImage(file: File, itemId: string) {
   if (!file || !itemId) {
     throw new Error('Invalid file or itemId');
@@ -25,11 +39,9 @@ export async function storeImage(file: File, itemId: string) {
         data: file,
       }).result;
 
-      const imageUrl = await retrieveImageURLFromS3(uploadResult.key);
+      await updateItemForSaleImageAPI(itemForSale.id, uploadResult.key, itemForSale._version);
 
-      await updateItemForSaleImageAPI(itemForSale.id, imageUrl, itemForSale._version);
-
-      return imageUrl; // Return the image URL for consistency
+      return uploadResult.key;
     }
     throw new Error('itemId given to store item image is invalid');
   } catch (error) {

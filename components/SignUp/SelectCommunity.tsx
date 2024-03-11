@@ -1,20 +1,19 @@
-'import client';
+'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, SimpleGrid, Stack, Text, Loader } from '@mantine/core';
+import { Box, SimpleGrid, Stack, Text, LoadingOverlay } from '@mantine/core';
 import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 import { Community } from '@/types/types';
-import styles from '@/components/SignUp/SelectCommunity.module.css';
+import { FormikErrors, FormikTouched } from 'formik';
 
 interface SelectCommunityProps {
+  communities: Community[];
+  loading: boolean;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   onChange?: (e: React.ChangeEvent<any>) => void;
-  errors: {
-    selectedCommunity?: string;
-  };
-  touched: {
-    selectedCommunity?: boolean;
-  };
+  selectedCommunity: string[];
+  errors: FormikErrors<{ selectedCommunity: string[] }>;
+  touched: FormikTouched<{ selectedCommunity: Boolean[] }>;
   coordinates: {
     lat: string;
     lng: string;
@@ -27,8 +26,11 @@ interface NearestCommunity {
 }
 
 export const SelectCommunity: React.FC<SelectCommunityProps> = ({
+  communities,
+  loading,
   setFieldValue,
   onChange,
+  selectedCommunity,
   errors,
   touched,
   coordinates,
@@ -63,53 +65,40 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
     fetchCommunities();
   }, [coordinates]);
 
-  const handleSelectCommunity = (id: string) => {
+  const handleSelectCommunity = (id: string, isSelected: boolean) => {
     setSelectedCommunityId(id);
-    setFieldValue('selectedCommunity', id); // Update the Formik state
-  };
+    //console.log('id inside handleSelectCommunity', id);
 
+    const prevSelected = selectedCommunity;
+    const prevArray = Array.isArray(prevSelected) ? prevSelected : [];
+    //console.log('prevArray', prevArray);
+
+    let newValue;
+    if (isSelected) {
+      newValue = prevArray.includes(id) ? prevArray : [...prevArray, id];
+    } else {
+      newValue = prevArray.filter((existingId) => existingId !== id);
+    }
+
+    setFieldValue('selectedCommunity', newValue);
+  };
+  // console.log('Touched.selectedCommunity Error', touched.selectedCommunity); //This does not work for now, so not using it as a conditional for error message display
   return (
-    <Box w={400}>
+    <Box w="25vw">
       <Stack mt="lg" gap="md">
         <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange} data-testid="communities">
-          {touched.selectedCommunity && errors.selectedCommunity && (
-            <Text color="red" size="xs">
+          {errors.selectedCommunity && (
+            <Text c="red" fz="sm">
               {errors.selectedCommunity}
             </Text>
           )}
-          {isLoading ? (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100px',
-                gap: '10px',
-              }}
-            >
-              <Loader />
-              <Text size="sm">Retrieving closest communities...</Text>
-            </div>
-          ) : nearestCommunities.length > 0 ? (
-            nearestCommunities.map((element) => (
-              <CommunityListItem
-                key={element.community.id}
-                community={element.community}
-                onSelect={() => handleSelectCommunity(element.community.id)}
-                isSelected={element.community.id === selectedCommunityId}
-              />
-            ))
-          ) : (
-            <>
-              <Text size="sm" ta="center" className={styles.glowOnce}>
-                Oh no! No communities available 🧐
-              </Text>
-              <Text size="sm" ta="center">
-                Currently, we can only serve neighbours located in Winnipeg and close surrounding
-                areas. Please go back and select a different address.
-              </Text>
-            </>
-          )}
+          {Object.values(communities).map((community: Community) => (
+            <CommunityListItem
+              key={community.id}
+              community={community}
+              onSelect={(isSelected) => handleSelectCommunity(community.id, isSelected)}
+            />
+          ))}
         </SimpleGrid>
       </Stack>
     </Box>

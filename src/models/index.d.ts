@@ -78,7 +78,7 @@ type EagerUser = {
   readonly pets?: number | null;
   readonly kids?: number | null;
   readonly comments?: (Comment | null)[] | null;
-  readonly relevantCommunities?: (Community | null)[] | null;
+  readonly relevantCommunities?: string[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -114,7 +114,7 @@ type LazyUser = {
   readonly pets?: number | null;
   readonly kids?: number | null;
   readonly comments: AsyncCollection<Comment>;
-  readonly relevantCommunities: AsyncCollection<Community>;
+  readonly relevantCommunities?: string[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -141,7 +141,6 @@ type EagerCommunity = {
   readonly itemsForSale?: (ItemForSale | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly userRelevantCommunitiesId?: string | null;
 }
 
 type LazyCommunity = {
@@ -160,7 +159,6 @@ type LazyCommunity = {
   readonly itemsForSale: AsyncCollection<ItemForSale>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly userRelevantCommunitiesId?: string | null;
 }
 
 export declare type Community = LazyLoading extends LazyLoadingDisabled ? EagerCommunity : LazyCommunity
