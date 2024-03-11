@@ -23,6 +23,17 @@ export function formatTime(isoDate: string): string {
   });
 }
 
+export function dateToAge(isoDate: string): string {
+  const now = new Date();
+  const birthday = new Date(isoDate);
+  const diffInSeconds = Math.floor((now.getTime() - birthday.getTime()) / 1000);
+  let result = '';
+  
+  result = `${Math.floor(diffInSeconds / 31556952)}`;
+
+  return result;
+}
+
 export function formatPostedAt(isoDate: string): string {
   const now = new Date();
   const postedAt = new Date(isoDate);

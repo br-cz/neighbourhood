@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getCurrentCommunityID } from './communityCustomHooks';
-import { getCurrentUserID } from './usersCustomHooks';
+import { getCurrentUserID, getCurrentUser } from './usersCustomHooks';
 import { createItemForSaleAPI, getCommunityItemsForSaleAPI } from '../api/services/marketplace';
+import { ItemForSale, Visibility } from '@/types/types';
 
 export const useCreateListing = () => {
   const handleCreateListing = async (itemData: any) => {
@@ -9,7 +10,7 @@ export const useCreateListing = () => {
       const createdListing = await createItemForSaleAPI(
         getCurrentUserID(),
         getCurrentCommunityID(),
-        itemData
+        { ...itemData, images: [itemData.itemImage] }
       );
       console.log('Listing created:', createdListing);
       return createdListing;
@@ -31,9 +32,17 @@ export const useFetchListings = (refresh: boolean = false) => {
     const fetchListings = async () => {
       try {
         setLoading(true);
+        const user = await getCurrentUser();
         const communityId = getCurrentCommunityID();
         const fetchedListings = await getCommunityItemsForSaleAPI(communityId);
-        setListings(fetchedListings);
+        const visibleListings = fetchedListings.filter(
+          (listing: ItemForSale) =>
+            listing.visibility === Visibility.PUBLIC ||
+            listing.seller.id === user!.id ||
+            (listing.visibility === Visibility.FRIENDS_ONLY &&
+              user!.friends!.includes(listing.seller.id))
+        );
+        setListings(visibleListings);
       } catch (err) {
         setError(err);
       } finally {
