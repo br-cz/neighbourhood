@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Box, Stack, Title } from '@mantine/core';
 import { formatDate } from '@/utils/timeUtils';
 import { User } from '@/types/types';
+import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface UserListItemPreviewProps {
   user: User;
@@ -11,11 +12,20 @@ interface UserListItemPreviewProps {
 }
 
 export function UserListItemPreview({ user, relationshipStatus }: UserListItemPreviewProps) {
+  const [profilePic, setProfilePic] = useState<string>('');
+
+  useEffect(() => {
+    if (!user) return;
+    retrieveImage(user?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [user?.profilePic]);
+
   return (
     <Box w={500} data-testid="profile-card">
       <Stack gap="xs">
         <Group>
-          <Avatar src={user?.profilePic} size={48} radius="xl" />
+          <Avatar src={profilePic} size={48} radius="xl" />
           <Stack gap={0}>
             <Title order={6}>
               {user?.firstName} {user?.lastName}

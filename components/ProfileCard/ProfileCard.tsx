@@ -1,13 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Box, Stack, Title, Loader } from '@mantine/core';
 import classes from './ProfileCard.module.css';
 import { formatDate, formatUTCDate } from '@/utils/timeUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
 export function ProfileCard() {
   const { currentUser: user, loading } = useCurrentUser();
+  const [profilePic, setProfilePic] = useState<string>('');
+
+  useEffect(() => {
+    if (!user) return;
+    retrieveImage(user?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [user?.profilePic]);
 
   return (
     <>
@@ -17,7 +26,7 @@ export function ProfileCard() {
         ) : (
           <Box w={1000} className={classes.card} data-testid="profile-card">
             <Group gap={50}>
-              <Avatar src={user?.profilePic} size={150} radius="xl" />
+              <Avatar src={profilePic} size={150} radius="xl" />
               <Stack gap="xs">
                 <Stack gap={0}>
                   <Title order={3}>

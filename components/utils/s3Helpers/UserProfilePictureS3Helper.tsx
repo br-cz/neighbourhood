@@ -11,6 +11,25 @@ function generateKey(fileName: string, userId: string) {
     return `UserProfilePictures/${userId}-${timestamp}-${fileName}`;
 }
 
+export async function retrieveImage(userId: string) {
+  const user = await getUserAPI(userId);
+  if (user) {
+    if (user.profilePic) {
+      if (user.profilePic.includes(userId)) {
+        let imageKey = user.profilePic;
+        if (imageKey.includes('https://neighbourhooda920d24246fa4325ad39f863f5b37e50195636-dev.s3.ca-central-1.amazonaws.com')) {
+          const parsedUrl = new URL(imageKey);
+          imageKey = decodeURIComponent(parsedUrl.pathname.replace(/\+/g, ' ').substring(1));
+        }
+        return retrieveImageURLFromS3(imageKey);
+      }
+      return user.profilePic;
+    }
+    return '';
+  }
+  throw new Error('User does not exist when retrieving profile pic');
+}
+
 export async function storeImage(file: File, userId: string) {
   if (!file || !userId) {
     throw new Error('Invalid file or userId');
@@ -26,11 +45,9 @@ export async function storeImage(file: File, userId: string) {
         data: file,
       }).result;
 
-      const imageUrl = await retrieveImageURLFromS3(uploadResult.key);
+      await updateUserProfilePicAPI(user.id, uploadResult.key, user._version);
 
-      await updateUserProfilePicAPI(user.id, imageUrl, user._version);
-
-      return imageUrl;
+      return uploadResult.key;
     }
     throw new Error('userId given to store user profile picture is invalid');
   } catch (error) {

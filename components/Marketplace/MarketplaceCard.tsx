@@ -1,8 +1,11 @@
+import React, { useEffect, useState } from 'react';
 import { Card, Image, Text, Button, Group, Center, Avatar } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
 import { ItemForSale } from '@/src/API';
+import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveItemImage } from '../utils/s3Helpers/ItemForSaleImageS3Helper';
 
 interface MarketplaceCardProps {
   item: ItemForSale;
@@ -10,11 +13,28 @@ interface MarketplaceCardProps {
 }
 
 export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
+  const [profilePic, setProfilePic] = useState<string>('');
+  const [itemImage, setItemImage] = useState<string>('');
+
+  useEffect(() => {
+    if (!item?.seller) return;
+    retrieveProfilePicture(item?.seller?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [item?.seller?.profilePic]);
+
+  useEffect(() => {
+    if (!item) return;
+    retrieveItemImage(item.id).then((image) => {
+      setItemImage(image);
+    });
+  }, [item?.images]);
+
   return (
     <Card withBorder radius="md" className={classes.card} data-testid="marketplace-card">
       <a>
         <Image
-          src={item?.images?.[0] ?? './img/placeholder-img.jpg'}
+          src={itemImage ?? './img/placeholder-img.jpg'}
           height={180}
           className={classes.image}
         />
@@ -30,7 +50,7 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
 
       <Group>
         <Center>
-          <Avatar src={item?.seller?.profilePic} size={23} radius="xl" mr={7} />
+          <Avatar src={profilePic} size={23} radius="xl" mr={7} />
           <Text fz="sm" c="dimmed" truncate="end">
             {item?.seller?.firstName} {item?.seller?.lastName}
           </Text>
