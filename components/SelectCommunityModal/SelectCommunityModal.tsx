@@ -102,7 +102,7 @@ export default function SelectCommunityModal({
                       radius: 'md',
                       color: 'red',
                       title: 'Oops!',
-                      message: 'You have to pick at least one community to join it!',
+                      message: `${errors.selectedCommunity}`,
                     });
                   }
                 });

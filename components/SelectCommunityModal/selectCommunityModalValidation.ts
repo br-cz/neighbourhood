@@ -1,8 +1,8 @@
 import { object, string, ref, array } from 'yup';
 
-export const selectedCommunityModalSchema = object().shape({
+export const selectedCommunityModalSchema = object({
   selectedCommunity: array()
     .of(string())
     .min(1, 'You must select at least one community')
-    .required('Selecting a community is required.'),
+    .max(1, 'You can only select one community at a time'),
 });
