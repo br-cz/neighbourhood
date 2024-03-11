@@ -357,18 +357,10 @@ export const schema = {
                 "relevantCommunities": {
                     "name": "relevantCommunities",
                     "isArray": true,
-                    "type": {
-                        "model": "Community"
-                    },
-                    "isRequired": false,
+                    "type": "String",
+                    "isRequired": true,
                     "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "userRelevantCommunitiesId"
-                        ]
-                    }
+                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -513,13 +505,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "userRelevantCommunitiesId": {
-                    "name": "userRelevantCommunitiesId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -528,15 +513,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "gsi-User.relevantCommunities",
-                        "fields": [
-                            "userRelevantCommunitiesId"
-                        ]
-                    }
                 }
             ]
         },
@@ -1451,5 +1427,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "468d1f4a4189d9c95fe667fe74c42b20"
+    "version": "bba794366e09540ce31dc82eefdae246"
 };

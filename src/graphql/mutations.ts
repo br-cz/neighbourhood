@@ -72,11 +72,7 @@ export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: 
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -153,11 +149,7 @@ export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!,
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -191,6 +183,7 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -209,7 +202,6 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     images
@@ -260,6 +252,7 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -278,7 +271,6 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     images
@@ -343,6 +335,7 @@ export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!,
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -409,6 +402,7 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -427,7 +421,6 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -514,11 +507,7 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -557,7 +546,6 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -578,6 +566,7 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -624,7 +613,6 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -645,6 +633,7 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -698,6 +687,7 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -716,7 +706,6 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -765,6 +754,7 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -783,7 +773,6 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -829,6 +818,7 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -854,6 +844,7 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -897,6 +888,7 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -922,6 +914,7 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -965,6 +958,7 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -990,6 +984,7 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1009,6 +1004,160 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
 ` as GeneratedMutation<
   APITypes.DeclineFriendRequestMutationVariables,
   APITypes.DeclineFriendRequestMutation
+>;
+export const addRelevantCommunity = /* GraphQL */ `mutation AddRelevantCommunity($userId: ID!, $communityId: ID!) {
+  addRelevantCommunity(userId: $userId, communityId: $communityId) {
+    id
+    username
+    email
+    postalCode
+    address
+    firstName
+    lastName
+    communities {
+      nextToken
+      startedAt
+      __typename
+    }
+    selectedCommunity
+    posts {
+      nextToken
+      startedAt
+      __typename
+    }
+    friends
+    friendRequests {
+      nextToken
+      startedAt
+      __typename
+    }
+    events {
+      nextToken
+      startedAt
+      __typename
+    }
+    itemsForSale {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedPosts {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedEvents {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedItems {
+      nextToken
+      startedAt
+      __typename
+    }
+    location
+    bio
+    profilePic
+    pronouns
+    contact
+    birthday
+    pets
+    kids
+    comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.AddRelevantCommunityMutationVariables,
+  APITypes.AddRelevantCommunityMutation
+>;
+export const removeRelevantCommunity = /* GraphQL */ `mutation RemoveRelevantCommunity($userId: ID!, $communityId: ID!) {
+  removeRelevantCommunity(userId: $userId, communityId: $communityId) {
+    id
+    username
+    email
+    postalCode
+    address
+    firstName
+    lastName
+    communities {
+      nextToken
+      startedAt
+      __typename
+    }
+    selectedCommunity
+    posts {
+      nextToken
+      startedAt
+      __typename
+    }
+    friends
+    friendRequests {
+      nextToken
+      startedAt
+      __typename
+    }
+    events {
+      nextToken
+      startedAt
+      __typename
+    }
+    itemsForSale {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedPosts {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedEvents {
+      nextToken
+      startedAt
+      __typename
+    }
+    likedItems {
+      nextToken
+      startedAt
+      __typename
+    }
+    location
+    bio
+    profilePic
+    pronouns
+    contact
+    birthday
+    pets
+    kids
+    comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.RemoveRelevantCommunityMutationVariables,
+  APITypes.RemoveRelevantCommunityMutation
 >;
 export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
   $input: CreateFriendRequestInput!
@@ -1036,6 +1185,7 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1061,6 +1211,7 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1107,6 +1258,7 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1132,6 +1284,7 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1178,6 +1331,7 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1203,6 +1357,7 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1290,11 +1445,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -1374,11 +1525,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -1458,11 +1605,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -1510,7 +1653,6 @@ export const createCommunity = /* GraphQL */ `mutation CreateCommunity(
     _version
     _deleted
     _lastChangedAt
-    userRelevantCommunitiesId
     __typename
   }
 }
@@ -1553,7 +1695,6 @@ export const updateCommunity = /* GraphQL */ `mutation UpdateCommunity(
     _version
     _deleted
     _lastChangedAt
-    userRelevantCommunitiesId
     __typename
   }
 }
@@ -1596,7 +1737,6 @@ export const deleteCommunity = /* GraphQL */ `mutation DeleteCommunity(
     _version
     _deleted
     _lastChangedAt
-    userRelevantCommunitiesId
     __typename
   }
 }
@@ -1628,6 +1768,7 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1646,7 +1787,6 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     images
@@ -1700,6 +1840,7 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1718,7 +1859,6 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     images
@@ -1772,6 +1912,7 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1790,7 +1931,6 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     images
@@ -1858,6 +1998,7 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1918,6 +2059,7 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1978,6 +2120,7 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2022,7 +2165,6 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -2043,6 +2185,7 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2092,7 +2235,6 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -2113,6 +2255,7 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2162,7 +2305,6 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -2183,6 +2325,7 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2239,6 +2382,7 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2257,7 +2401,6 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -2309,6 +2452,7 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2327,7 +2471,6 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -2379,6 +2522,7 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2397,7 +2541,6 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -2446,6 +2589,7 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2464,7 +2608,6 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -2505,6 +2648,7 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2523,7 +2667,6 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -2564,6 +2707,7 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2582,7 +2726,6 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -2623,6 +2766,7 @@ export const createUserLikedPosts = /* GraphQL */ `mutation CreateUserLikedPosts
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2682,6 +2826,7 @@ export const updateUserLikedPosts = /* GraphQL */ `mutation UpdateUserLikedPosts
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2741,6 +2886,7 @@ export const deleteUserLikedPosts = /* GraphQL */ `mutation DeleteUserLikedPosts
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2800,6 +2946,7 @@ export const createUserLikedEvents = /* GraphQL */ `mutation CreateUserLikedEven
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2862,6 +3009,7 @@ export const updateUserLikedEvents = /* GraphQL */ `mutation UpdateUserLikedEven
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2924,6 +3072,7 @@ export const deleteUserLikedEvents = /* GraphQL */ `mutation DeleteUserLikedEven
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2986,6 +3135,7 @@ export const createUserLikedItems = /* GraphQL */ `mutation CreateUserLikedItems
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -3048,6 +3198,7 @@ export const updateUserLikedItems = /* GraphQL */ `mutation UpdateUserLikedItems
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -3110,6 +3261,7 @@ export const deleteUserLikedItems = /* GraphQL */ `mutation DeleteUserLikedItems
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version

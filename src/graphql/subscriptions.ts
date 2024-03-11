@@ -33,6 +33,7 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -58,6 +59,7 @@ export const onCreateFriendRequest = /* GraphQL */ `subscription OnCreateFriendR
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -103,6 +105,7 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -128,6 +131,7 @@ export const onUpdateFriendRequest = /* GraphQL */ `subscription OnUpdateFriendR
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -173,6 +177,7 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -198,6 +203,7 @@ export const onDeleteFriendRequest = /* GraphQL */ `subscription OnDeleteFriendR
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -282,11 +288,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -363,11 +365,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -444,11 +442,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
       startedAt
       __typename
     }
-    relevantCommunities {
-      nextToken
-      startedAt
-      __typename
-    }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -493,7 +487,6 @@ export const onCreateCommunity = /* GraphQL */ `subscription OnCreateCommunity($
     _version
     _deleted
     _lastChangedAt
-    userRelevantCommunitiesId
     __typename
   }
 }
@@ -533,7 +526,6 @@ export const onUpdateCommunity = /* GraphQL */ `subscription OnUpdateCommunity($
     _version
     _deleted
     _lastChangedAt
-    userRelevantCommunitiesId
     __typename
   }
 }
@@ -573,7 +565,6 @@ export const onDeleteCommunity = /* GraphQL */ `subscription OnDeleteCommunity($
     _version
     _deleted
     _lastChangedAt
-    userRelevantCommunitiesId
     __typename
   }
 }
@@ -602,6 +593,7 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -620,7 +612,6 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     images
@@ -671,6 +662,7 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -689,7 +681,6 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     images
@@ -740,6 +731,7 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -758,7 +750,6 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     images
@@ -823,6 +814,7 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -880,6 +872,7 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -937,6 +930,7 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -978,7 +972,6 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -999,6 +992,7 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1045,7 +1039,6 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -1066,6 +1059,7 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1112,7 +1106,6 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -1133,6 +1126,7 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1188,6 +1182,7 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1206,7 +1201,6 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -1257,6 +1251,7 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1275,7 +1270,6 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -1326,6 +1320,7 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1344,7 +1339,6 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -1392,6 +1386,7 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1410,7 +1405,6 @@ export const onCreateUserCommunity = /* GraphQL */ `subscription OnCreateUserCom
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -1450,6 +1444,7 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1468,7 +1463,6 @@ export const onUpdateUserCommunity = /* GraphQL */ `subscription OnUpdateUserCom
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -1508,6 +1502,7 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1526,7 +1521,6 @@ export const onDeleteUserCommunity = /* GraphQL */ `subscription OnDeleteUserCom
       _version
       _deleted
       _lastChangedAt
-      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -1566,6 +1560,7 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1624,6 +1619,7 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1682,6 +1678,7 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1740,6 +1737,7 @@ export const onCreateUserLikedEvents = /* GraphQL */ `subscription OnCreateUserL
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1801,6 +1799,7 @@ export const onUpdateUserLikedEvents = /* GraphQL */ `subscription OnUpdateUserL
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1862,6 +1861,7 @@ export const onDeleteUserLikedEvents = /* GraphQL */ `subscription OnDeleteUserL
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1923,6 +1923,7 @@ export const onCreateUserLikedItems = /* GraphQL */ `subscription OnCreateUserLi
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1984,6 +1985,7 @@ export const onUpdateUserLikedItems = /* GraphQL */ `subscription OnUpdateUserLi
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -2045,6 +2047,7 @@ export const onDeleteUserLikedItems = /* GraphQL */ `subscription OnDeleteUserLi
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
