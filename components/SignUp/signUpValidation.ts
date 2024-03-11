@@ -33,6 +33,7 @@ export const signUpSchema = object({
   selectedCommunity: array()
     .of(string())
     .min(1, 'You must select at least one community')
+    .max(1, 'You can only select one community at a time')
     .required('Selecting a community is required.'),
 
   phoneNumber: string().matches(
