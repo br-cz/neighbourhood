@@ -10,7 +10,7 @@ export const useCreateListing = () => {
       const createdListing = await createItemForSaleAPI(
         getCurrentUserID(),
         getCurrentCommunityID(),
-        itemData
+        { ...itemData, images: [itemData.itemImage] }
       );
       console.log('Listing created:', createdListing);
       return createdListing;
