@@ -25,10 +25,9 @@ export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalPr
         parameters.oldPassword,
         parameters.newPassword,
         parameters.newEmail,
+        onClose,
+        formik.resetForm
       );
-
-      onClose();
-      formik.resetForm();
       handlers.close();
     },
   });
