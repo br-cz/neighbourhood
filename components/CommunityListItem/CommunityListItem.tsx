@@ -7,7 +7,7 @@ import { retrieveImage } from '../utils/s3Helpers/CommunityImageS3Helper';
 
 interface CommunityListItemProps {
   community: Community;
-  onSelect: () => void;
+  onSelect: (isSelected: boolean) => void;
 }
 
 export function CommunityListItem({ community, onSelect }: CommunityListItemProps) {
@@ -25,13 +25,13 @@ export function CommunityListItem({ community, onSelect }: CommunityListItemProp
     <div
       className={`${classes.community} ${selected ? classes.active : ''}`}
       onClick={() => {
-        onSelect();
         toggleSelected();
+        onSelect(!selected);
       }}
-      onKeyDown={onSelect}
+      // onKeyDown={onSelect}
       role="button"
       tabIndex={0}
-      data-testid="communities-item"
+      data-testid={`communities-item-${community.id}`}
     >
       <Group>
         <Avatar src={communityImage} size="lg" radius="xl" />

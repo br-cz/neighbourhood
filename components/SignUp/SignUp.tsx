@@ -1,5 +1,5 @@
 'import client';
-
+import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { confirmSignUp } from 'aws-amplify/auth';
@@ -25,11 +25,14 @@ import { signUpSchema } from './signUpValidation';
 import { processSignUp } from './signUpLogic';
 
 export const SignUp = () => {
+  // const [refresh, setRefresh] = useState(false);
+  const { communities, loading } = useFetchAllCommunities();
+  //const toggleRefresh = () => setRefresh((flag) => !flag);
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 5 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-  const [loading, handlers] = useDisclosure(false);
+  const [isLoading, handlers] = useDisclosure(false);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -37,7 +40,7 @@ export const SignUp = () => {
       password: '',
       confirmPassword: '',
       address: '',
-      selectedCommunity: '', //should eventually change to an array since it's a multi-select
+      selectedCommunity: [], //should eventually change to an array since it's a multi-select
       preferredUsername: '',
       firstName: '',
       familyName: '',
@@ -230,10 +233,13 @@ export const SignUp = () => {
                 If you&apos;re in-between communities - don&apos;t worry, you can join more later.
               </Text>
               <SelectCommunity
+                communities={communities}
+                loading={loading}
                 setFieldValue={formik.setFieldValue}
                 onChange={formik.handleChange}
                 errors={formik.errors}
                 touched={formik.touched}
+                selectedCommunity={formik.values.selectedCommunity}
               />
             </Stack>
           </Stepper.Step>
@@ -296,11 +302,11 @@ export const SignUp = () => {
             </Button>
           )}
           {active === 3 ? (
-            <Button radius="md" loading={loading} onClick={confirmSubmit}>
+            <Button radius="md" loading={isLoading} onClick={confirmSubmit}>
               Create Profile
             </Button>
           ) : active === 4 ? (
-            <Button radius="md" loading={loading} onClick={handleVerify}>
+            <Button radius="md" loading={isLoading} onClick={handleVerify}>
               Verify
             </Button>
           ) : (

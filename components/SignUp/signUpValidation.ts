@@ -1,6 +1,5 @@
-import { object, string, ref, number } from 'yup';
+import { object, string, ref, array } from 'yup';
 
-// Checks for a valid name format - excludes repeating chars and most special chars
 const nameRegex = /^(?!.*(.)\1{3})[a-zA-ZÀ-ÿ-_'"]+(?:\s[a-zA-ZÀ-ÿ-_'"]+)*$/;
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -31,6 +30,9 @@ export const signUpSchema = object({
     .min(3, 'Username must be 3 characters or more.')
     .max(20, 'Username must be 20 characters or less'),
   address: string().required('Address is required'),
-  selectedCommunity: string().required('Selecting a community is required.'),
   phoneNumber: string().matches(/^\(\d{3}\) \d{3}-\d{4}$/, 'Phone number must be valid.'),
+  selectedCommunity: array()
+    .of(string())
+    .min(1, 'You must select at least one community')
+    .required('Selecting a community is required.'),
 });
