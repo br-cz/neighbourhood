@@ -11,6 +11,20 @@ function generateKey(fileName: string, communityId: string) {
     return `CommunityImages/${communityId}-${timestamp}-${fileName}`;
 }
 
+export async function retrieveImage(communityId: string) {
+  const community = await getCommunityAPI(communityId);
+  if (community) {
+    if (community.image) {
+      if (community.image.includes(communityId)) {
+        return retrieveImageURLFromS3(community.image);
+      }
+      return community.image;
+    }
+    throw new Error('There is no image available for community');
+  }
+  throw new Error('Community does not exist when retrieving image');
+}
+
 export async function storeImage(file: File, communityId: string) {
   if (!file || !communityId) {
     throw new Error('Invalid file or communityId');
@@ -26,11 +40,9 @@ export async function storeImage(file: File, communityId: string) {
         data: file,
       }).result;
 
-      const imageUrl = await retrieveImageURLFromS3(uploadResult.key);
+      await updateCommunityImageAPI(community.id, uploadResult.key, community._version);
 
-      await updateCommunityImageAPI(community.id, imageUrl, community._version);
-
-      return imageUrl;
+      return uploadResult.key;
     }
     throw new Error('communityId given to store community image is invalid');
   } catch (error) {

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Text, Group, Avatar, Image, Stack, Title } from '@mantine/core';
 import classes from './ViewListingModal.module.css';
 import { ItemForSale } from '@/src/API';
+import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveItemImage } from '../utils/s3Helpers/ItemForSaleImageS3Helper';
 
 interface ViewListingModalProps {
   opened: boolean;
@@ -10,6 +12,23 @@ interface ViewListingModalProps {
 }
 
 export function ViewListingModal({ opened, onClose, item }: ViewListingModalProps) {
+  const [profilePic, setProfilePic] = useState<string>('');
+  const [itemImage, setItemImage] = useState<string>('');
+
+  useEffect(() => {
+    if (!item?.seller) return;
+    retrieveProfilePicture(item?.seller?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [item?.seller?.profilePic]);
+
+  useEffect(() => {
+    if (!item) return;
+    retrieveItemImage(item.id).then((image) => {
+      setItemImage(image);
+    });
+  }, [item?.images]);
+
   return (
     <Modal
       opened={opened}
@@ -29,7 +48,7 @@ export function ViewListingModal({ opened, onClose, item }: ViewListingModalProp
       <Stack gap="sm">
         <Group justify="center" mb={15}>
           <Image
-            src={item?.images?.[0] ?? './img/placeholder-img.jpg'}
+            src={itemImage ?? './img/placeholder-img.jpg'}
             alt={item?.title}
             className={classes.image}
           />
@@ -44,7 +63,7 @@ export function ViewListingModal({ opened, onClose, item }: ViewListingModalProp
 
         <Title order={6}>Seller</Title>
         <Group gap="xs" align="center">
-          <Avatar src={item?.seller.profilePic} alt={item.seller.firstName} radius="xl" />
+          <Avatar src={profilePic} alt={item.seller.firstName} radius="xl" />
           <Text size="sm" c="dimmed">
             {item.seller.firstName} {item.seller.lastName}
           </Text>

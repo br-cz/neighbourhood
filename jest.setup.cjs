@@ -92,6 +92,28 @@ jest.mock('@/src/api/services/user', () => ({
   updateUserEmailAPI: jest.fn(),
   createUserAPI: jest.fn(),
   createUserCommunityAPI: jest.fn(),
+  updateUserProfilePicAPI: jest.fn(),
+  getUserAPI: jest.fn(),
+}));
+
+jest.mock('@/components/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
+  retrieveImage: jest.fn().mockResolvedValue(''),
+}));
+
+jest.mock('@/components/utils/s3Helpers/CommunityImageS3Helper', () => ({
+  retrieveImage: jest.fn().mockResolvedValue(''),
+}));
+
+jest.mock('@/components/utils/s3Helpers/EventImageS3Helper', () => ({
+  retrieveImage: jest.fn().mockResolvedValue(''),
+}));
+
+jest.mock('@/components/utils/s3Helpers/PostImageS3Helper', () => ({
+  retrieveImage: jest.fn().mockResolvedValue(''),
+}));
+
+jest.mock('@/components/utils/s3Helpers/ItemForSaleImageS3Helper', () => ({
+  retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
 jest.mock('@/src/hooks/eventsCustomHooks', () => ({

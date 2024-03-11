@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   Modal,
   TextInput,
@@ -24,7 +24,7 @@ import { customizeProfileSchema } from './customizeProfileValidation';
 import { useCurrentUser, userUpdateSubject } from '@/src/hooks/usersCustomHooks';
 import classes from './ProfileCard.module.css';
 import { utcToISO } from '@/utils/timeUtils';
-import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage, storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface CustomizeProfileModalProps {
   opened: boolean;
@@ -34,10 +34,19 @@ interface CustomizeProfileModalProps {
 
 export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizeProfileModalProps) {
   const { currentUser: user, updateUserProfile } = useCurrentUser();
+  const [profilePic, setProfilePic] = useState('');
   const [previewImageUrl, setPreviewImageUrl] = useState(user?.profilePic || '');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, loadingToggle] = useDisclosure();
+
+  useEffect(() => {
+    if (!user) return;
+    retrieveImage(user?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [user?.profilePic]);
+
   const formik = useFormik({
     initialValues: {
       firstName: user?.firstName,
@@ -48,6 +57,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
       birthday: user?.birthday || '',
       kids: user?.kids || 0,
       pets: user?.pets || 0,
+      profilePic: user?.profilePic,
     },
     validationSchema: customizeProfileSchema,
     onSubmit: async (values) => {
@@ -109,7 +119,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
       onClose={() => {
         onClose();
         formik.resetForm();
-        setPreviewImageUrl(user?.profilePic || '');
+        setPreviewImageUrl(profilePic || '');
       }}
       title={
         <Title order={2} component="p">
@@ -124,7 +134,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
             {previewImageUrl ? (
               <Image src={previewImageUrl} radius="xl" style={{ maxWidth: 150, maxHeight: 150 }} />
             ) : (
-              <Avatar radius="xl" size={150} src={user?.profilePic} />
+              <Avatar radius="xl" size={150} src={profilePic} />
             )}
             <Stack gap="xs" className={classes.avatarOverlay}>
               <FontAwesomeIcon icon={faPencil} size="lg" />
