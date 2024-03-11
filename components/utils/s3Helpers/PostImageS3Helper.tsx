@@ -19,7 +19,7 @@ export async function retrieveImage(postId: string) {
       }
       return post.images[0];
     }
-    throw new Error('There is no image available for post');
+    return '';
   }
   throw new Error('Post does not exist when retrieving image');
 }
