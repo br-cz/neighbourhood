@@ -36,7 +36,7 @@ export default function SelectCommunityModal({
     validationSchema: selectedCommunityModalSchema,
     onSubmit: async (values) => {
       handlers.open();
-      if (values.selectedCommunity != '' && userCommunities.length == 2) {
+      if (values.selectedCommunity != '' && userCommunities.length == 3) {
         notifications.show({
           radius: 'md',
           color: 'red',
@@ -107,7 +107,7 @@ export default function SelectCommunityModal({
               }}
               loading={isLoading}
             >
-              Select
+              Join
             </Button>
           </Group>
         </form>
