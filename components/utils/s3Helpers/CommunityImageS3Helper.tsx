@@ -20,7 +20,7 @@ export async function retrieveImage(communityId: string) {
       }
       return community.image;
     }
-    throw new Error('There is no image available for community');
+    return '';
   }
   throw new Error('Community does not exist when retrieving image');
 }
