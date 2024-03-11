@@ -36,7 +36,7 @@ export default function HomePage() {
         <Group>
           <Select
             radius="md"
-            placeholder="Sort by..."
+            placeholder="Date: New to Old"
             onChange={setSortQuery}
             value={sortQuery}
             data={['Date: New to Old', 'Date: Old to New', 'First Name: (A-Z)', 'Last Name: (A-Z)']}
