@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, Avatar, Group, Box, Button, Collapse, TextInput, ActionIcon } from '@mantine/core';
 import { useFormik } from 'formik';
 import { notifications } from '@mantine/notifications';
@@ -9,18 +9,33 @@ import { Post } from '@/types/types';
 import { formatPostedAt } from '@/utils/timeUtils';
 import classes from './PostCard.module.css';
 import { createCommentSchema } from './createCommentSchema';
-import { useCreateComment } from '@/src/hooks/postsCustomHooks';
+import { useCreateComment, usePostLikes } from '@/src/hooks/postsCustomHooks';
 import { PostCommentList } from './PostCommentList';
+import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface PostCardProps {
   post: Post;
+  isLiked: boolean;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, isLiked }: PostCardProps) {
+  const [profilePic, setProfilePic] = useState<string>('');
+  const { likePost, unlikePost } = usePostLikes(post.id);
+  const [liked, setLiked] = useState(false);
   const [comments, setComments] = useState(post.comments.items);
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
-  const [likeOpened, { toggle: toggleLike }] = useDisclosure(false);
   const { handleCreateComment } = useCreateComment();
+
+  useEffect(() => {
+    if (!post?.author) return;
+    retrieveImage(post?.author?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [post?.author?.profilePic]);
+
+  useEffect(() => {
+    setLiked(isLiked);
+  }, [isLiked]);
 
   const formik = useFormik({
     initialValues: {
@@ -38,15 +53,20 @@ export function PostCard({ post }: PostCardProps) {
     },
   });
 
-  const handleLike = () => {
-    //Mutation to like post
-    toggleLike();
+  const handleLike = async () => {
+    if (liked) {
+      await unlikePost();
+      setLiked(false);
+    } else {
+      await likePost();
+      setLiked(true);
+    }
   };
 
   return (
     <Box className={classes.post} data-testid="post-card">
       <Group align="center" gap="xs">
-        <Avatar src={post.author.profilePic} alt="Profile Pic" radius="xl" size={32} />
+        <Avatar src={profilePic} alt="Profile Pic" radius="xl" size={32} />
         <Text size="sm" fw={600}>
           {post.author.firstName} {post.author.lastName}
         </Text>
@@ -61,11 +81,11 @@ export function PostCard({ post }: PostCardProps) {
         <Button
           size="xs"
           radius="md"
-          variant={likeOpened ? 'outline' : 'filled'}
+          variant={liked ? 'outline' : 'filled'}
           leftSection={<FontAwesomeIcon icon={faHeart} />}
           onClick={handleLike}
         >
-          {likeOpened ? 'Liked' : 'Like'}
+          {liked ? 'Liked' : 'Like'}
         </Button>
         <Button
           size="xs"

@@ -22,7 +22,6 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -30,6 +29,7 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -129,7 +129,6 @@ export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!,
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -142,6 +141,7 @@ export const searchPeople = /* GraphQL */ `query SearchPeople($communityId: ID!,
       startedAt
       __typename
     }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -168,7 +168,6 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -176,6 +175,7 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -255,7 +255,6 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -263,6 +262,7 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -342,7 +342,6 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -351,6 +350,46 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetUserFriendsQueryVariables,
+  APITypes.GetUserFriendsQuery
+>;
+export const getUserRelevantCommunities = /* GraphQL */ `query GetUserRelevantCommunities($userId: ID!) {
+  getUserRelevantCommunities(userId: $userId) {
+    id
+    name
+    location
+    coordinates
+    image
+    members {
+      nextToken
+      startedAt
+      __typename
+    }
+    posts {
+      nextToken
+      startedAt
+      __typename
+    }
+    events {
+      nextToken
+      startedAt
+      __typename
+    }
+    itemsForSale {
       nextToken
       startedAt
       __typename
@@ -364,8 +403,8 @@ export const getUserFriends = /* GraphQL */ `query GetUserFriends($userId: ID!) 
   }
 }
 ` as GeneratedQuery<
-  APITypes.GetUserFriendsQueryVariables,
-  APITypes.GetUserFriendsQuery
+  APITypes.GetUserRelevantCommunitiesQueryVariables,
+  APITypes.GetUserRelevantCommunitiesQuery
 >;
 export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests($userId: ID!) {
   pendingFriendRequests(userId: $userId) {
@@ -383,7 +422,6 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -391,6 +429,7 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -409,7 +448,6 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -417,6 +455,7 @@ export const pendingFriendRequests = /* GraphQL */ `query PendingFriendRequests(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -453,7 +492,6 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -461,6 +499,7 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -479,7 +518,6 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -487,6 +525,7 @@ export const sentFriendRequests = /* GraphQL */ `query SentFriendRequests($userI
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -523,7 +562,6 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -531,6 +569,7 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -549,7 +588,6 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -557,6 +595,7 @@ export const getFriendRequest = /* GraphQL */ `query GetFriendRequest($id: ID!) 
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -689,7 +728,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -702,6 +740,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
       startedAt
       __typename
     }
+    relevantCommunities
     createdAt
     updatedAt
     _version
@@ -728,7 +767,6 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -736,6 +774,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -772,7 +811,6 @@ export const syncUsers = /* GraphQL */ `query SyncUsers(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -780,6 +818,7 @@ export const syncUsers = /* GraphQL */ `query SyncUsers(
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -908,7 +947,6 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -916,6 +954,7 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1046,7 +1085,6 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1054,6 +1092,7 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1168,7 +1207,6 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1176,6 +1214,7 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1289,7 +1328,6 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1297,6 +1335,7 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1423,7 +1462,6 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1431,6 +1469,7 @@ export const getUserCommunity = /* GraphQL */ `query GetUserCommunity($id: ID!) 
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1537,7 +1576,6 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1545,6 +1583,7 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1652,7 +1691,6 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1660,6 +1698,7 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version
@@ -1770,7 +1809,6 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1778,6 +1816,7 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       birthday
       pets
       kids
+      relevantCommunities
       createdAt
       updatedAt
       _version

@@ -1,13 +1,26 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Box, Stack, Title, Loader } from '@mantine/core';
 import classes from './ProfileCard.module.css';
 import { formatDate, formatUTCDate } from '@/utils/timeUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
-export function ProfileCard() {
-  const { currentUser: user, loading } = useCurrentUser();
+interface ProfileCardProps {
+  refresh: boolean;
+}
+
+export function ProfileCard({ refresh }: ProfileCardProps) {
+  const { currentUser: user, loading } = useCurrentUser(refresh);
+  const [profilePic, setProfilePic] = useState<string>('');
+
+  useEffect(() => {
+    if (!user) return;
+    retrieveImage(user?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [user?.profilePic]);
 
   return (
     <>
@@ -17,7 +30,9 @@ export function ProfileCard() {
         ) : (
           <Box w={1000} className={classes.card} data-testid="profile-card">
             <Group gap={50}>
-              <Avatar src={user?.profilePic} size={150} radius="xl" />
+              <Box w={150} h={150}>
+                <Avatar src={profilePic} className={classes.avatar} radius="xl" />
+              </Box>
               <Stack gap="xs">
                 <Stack gap={0}>
                   <Title order={3}>
@@ -30,10 +45,10 @@ export function ProfileCard() {
                 <Group gap={50} mt="xs">
                   <Stack gap="xs">
                     <Text size="sm">
-                       <b>Contact:</b> {user?.contact || 'N/A'}
+                      <b>Contact:</b> {user?.contact || '---'}
                     </Text>
                     <Text size="sm">
-                      <b>Address:</b> {user?.address || 'N/A'}
+                      <b>Address:</b> {user?.address || '---'}
                     </Text>
                     <Text size="sm">
                       <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -41,17 +56,17 @@ export function ProfileCard() {
                   </Stack>
                   <Stack gap="xs">
                     <Text size="sm">
-                      <b>Pronouns:</b> {user?.pronouns || 'N/A'}
+                      <b>Pronouns:</b> {user?.pronouns || '---'}
                     </Text>
                     <Text size="sm">
                       <b>Birthday:</b> {user?.birthday ? formatUTCDate(user?.birthday) : 'N/A'}
                     </Text>
                     <Group>
                       <Text size="sm">
-                        <b>Pets:</b> {user?.pets || 'N/A'}
+                        <b>Pets:</b> {user?.pets || '---'}
                       </Text>
                       <Text size="sm">
-                        <b>Kids:</b> {user?.kids || 'N/A'}
+                        <b>Kids:</b> {user?.kids || '---'}
                       </Text>
                     </Group>
                   </Stack>

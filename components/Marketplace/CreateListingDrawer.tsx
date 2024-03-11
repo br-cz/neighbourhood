@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Drawer,
   TextInput,
@@ -10,13 +10,22 @@ import {
   Title,
   NumberInput,
   Grid,
+  ActionIcon,
+  Box,
+  Stack,
+  Image,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCloudUpload, faImage, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useFormik } from 'formik';
 import { Visibility } from '@/src/API';
 import { useCreateListing } from '@/src/hooks/marketplaceCustomHooks';
 import { createListingSchema } from './createListingValidation';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { storeImage } from '@/components/utils/s3Helpers/ItemForSaleImageS3Helper';
 
 interface CreateListingDrawerProps {
   opened: boolean;
@@ -25,6 +34,8 @@ interface CreateListingDrawerProps {
 }
 
 export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateListingDrawerProps) {
+  const { currentUser: user } = useCurrentUser();
+  const [files, setFiles] = useState<FileWithPath[]>([]);
   const [loading, handlers] = useDisclosure();
   const { handleCreateListing } = useCreateListing();
 
@@ -33,7 +44,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       title: '',
       price: '',
       description: '',
-      contact: '',
+      contact: user?.contact,
       visibility: Visibility.PUBLIC,
     },
     validationSchema: createListingSchema,
@@ -46,13 +57,38 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         contact: parameters.contact,
         visibility: parameters.visibility,
       };
+      try {
+        const createdListing = (await handleCreateListing(listingData)) as {
+          id: string;
+          _version: number;
+        };
 
-      await handleCreateListing(listingData);
-      onPostCreated();
-      handlers.close();
-      onClose();
-      formik.resetForm();
+        if (files.length > 0 && createdListing && createdListing.id) {
+          await storeImage(files[0], createdListing.id);
+        }
+
+        onPostCreated();
+        notifications.show({
+          radius: 'md',
+          color: 'yellow.6',
+          title: 'Cha-ching!',
+          message: 'Your item is now up for sale and visible to your neighbours.',
+        });
+      } catch (error) {
+        console.error('Error creating listing:', error);
+        notifications.show({
+          title: 'Oops!',
+          message: 'Something went wrong creating your event - please try again.',
+          color: 'red.6',
+        });
+      } finally {
+        handlers.close();
+        onClose();
+        setFiles([]);
+        formik.resetForm();
+      }
     },
+    enableReinitialize: true,
   });
 
   const handleContactChange = (e: any) => {
@@ -62,6 +98,32 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
     formik.setFieldValue('contact', formattedPhoneNumber);
   };
 
+  const previews = files.map((file: FileWithPath, index: any) => {
+    const imageUrl = URL.createObjectURL(file);
+    return (
+      <Image
+        key={index}
+        src={imageUrl}
+        radius="md"
+        mt="xs"
+        onLoad={() => URL.revokeObjectURL(imageUrl)}
+        style={{ maxWidth: 400, maxHeight: 250 }}
+      />
+    );
+  });
+
+  const handleDropImage = async (acceptedFiles: FileWithPath[]) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setFiles([file]);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFiles([]);
+    formik.setFieldValue('eventImage', null);
+  };
+
   return (
     <Drawer
       offset={8}
@@ -69,6 +131,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       opened={opened}
       onClose={() => {
         formik.resetForm();
+        setFiles([]);
         onClose();
       }}
       position="right"
@@ -133,15 +196,13 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
           mt="md"
           data-testid="description"
         />
-
-        {/* Autofill contact as user's phone number if available */}
         <Grid align="center">
           <Grid.Col span={8}>
             <TextInput
               radius="md"
               label="Phone Number"
-              placeholder="Reach me about this item at..."
-              {...formik.getFieldProps('contact')}
+              placeholder={user?.contact ? user.contact : 'Reach me about this item at...'}
+              value={formik.values.contact}
               mt="md"
               data-testid="contact"
               onChange={handleContactChange}
@@ -149,27 +210,87 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               required
             />
           </Grid.Col>
-          {/* Potential idea, can remove */}
-          {/* <Grid.Col span={2}>
-            <Checkbox label="Text" radius="md" mt="xl" />
-          </Grid.Col>
-          <Grid.Col span={2}>
-            <Checkbox label="Call" radius="md" mt="xl" />
-          </Grid.Col> */}
         </Grid>
 
         <Select
           radius="md"
           label="Visibility"
           placeholder="Choose visibility"
-          data={[{ value: Visibility.PUBLIC, label: 'Public' }]}
-          {...formik.getFieldProps('visibility')}
+          data={[
+            { value: Visibility.PUBLIC, label: 'Public' },
+            { value: Visibility.FRIENDS_ONLY, label: 'Friends Only' },
+          ]}
+          value={formik.values.visibility}
+          onChange={(value) => formik.setFieldValue('visibility', value)}
           mt="md"
           data-testid="visibility"
           comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 400 } }}
         />
 
-        <Group justify="center" mt="lg">
+        <Box w={400} h={300}>
+          <Group gap={5} align="center" mt="lg">
+            <Text fz="sm" fw={500}>
+              Item Photo
+            </Text>
+            <Text size="sm" c="dimmed">
+              (optional)
+            </Text>
+            <ActionIcon
+              color="red"
+              radius="md"
+              variant="subtle"
+              size={16}
+              onClick={handleRemoveImage}
+              disabled={previews.length === 0}
+              ml={5}
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Group>
+          {previews.length === 0 ? (
+            <Dropzone
+              onDrop={handleDropImage}
+              onReject={(rejected) => console.log('rejected files', rejected)}
+              maxSize={5 * 1024 ** 2}
+              maxFiles={1}
+              accept={IMAGE_MIME_TYPE}
+              radius="md"
+              mt={5}
+            >
+              <Stack
+                align="center"
+                justify="center"
+                style={{ minHeight: 220, pointerEvents: 'none' }}
+              >
+                <Dropzone.Accept>
+                  <FontAwesomeIcon
+                    icon={faCloudUpload}
+                    size="3x"
+                    color="var(--mantine-color-blue-6)"
+                  />
+                </Dropzone.Accept>
+                <Dropzone.Reject>
+                  <FontAwesomeIcon icon={faXmark} size="3x" color="var(--mantine-color-red-6)" />
+                </Dropzone.Reject>
+                <Dropzone.Idle>
+                  <FontAwesomeIcon icon={faImage} size="3x" color="var(--mantine-color-dimmed)" />
+                </Dropzone.Idle>
+                <div>
+                  <Text ta="center" size="md">
+                    Drag here or click to select file
+                  </Text>
+                  <Text ta="center" size="xs" c="dimmed" mt={7}>
+                    File should not exceed 5MB
+                  </Text>
+                </div>
+              </Stack>
+            </Dropzone>
+          ) : (
+            <>{previews}</>
+          )}
+        </Box>
+
+        <Group justify="center" mt="md">
           <Button
             radius="md"
             type="button"
@@ -178,12 +299,6 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               formik.validateForm().then((errors) => {
                 if (Object.keys(errors).length === 0 && !loading) {
                   formik.submitForm();
-                  notifications.show({
-                    radius: 'md',
-                    color: 'yellow.6',
-                    title: 'Cha-ching!',
-                    message: 'Your item is now up for sale and visible to your neighbours.',
-                  });
                 } else {
                   notifications.show({
                     radius: 'md',

@@ -289,13 +289,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "age": {
-                    "name": "age",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "bio": {
                     "name": "bio",
                     "isArray": false,
@@ -360,6 +353,14 @@ export const schema = {
                             "userCommentsId"
                         ]
                     }
+                },
+                "relevantCommunities": {
+                    "name": "relevantCommunities",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1426,5 +1427,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c7f8c46cd8ea7b42e8e88d6eb3652549"
+    "version": "bba794366e09540ce31dc82eefdae246"
 };

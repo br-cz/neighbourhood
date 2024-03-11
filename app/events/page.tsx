@@ -12,6 +12,7 @@ import { ViewEventModal } from '@/components/ViewEventModal/ViewEventModal';
 import { useAuth } from '@/components/Authorization/useAuth';
 import { useFetchEvents } from '@/src/hooks/eventsCustomHooks';
 import { Event } from '@/src/API';
+import { filterAndSortEvents } from '@/components/utils/eventUtils';
 
 export default function EventsPage() {
   const [refresh, setRefresh] = useState(false);
@@ -22,25 +23,13 @@ export default function EventsPage() {
   const { user } = useAuth();
   const { events, loading } = useFetchEvents(refresh);
   const toggleRefresh = () => setRefresh((flag) => !flag);
+  const [sortQuery, setSortQuery] = useState<string | null>(null);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredEvents = events.filter(
-    (event: Event) =>
-      event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      `${event.organizer.firstName} ${event.organizer.lastName}`
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-  );
-
-  const filteredAndSortedEvents = filteredEvents.sort(
-    (a: { createdAt: Date }, b: { createdAt: Date }) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  const filteredAndSortedEvents = filterAndSortEvents(events, searchQuery, sortQuery);
 
   const handleViewEvent = (event: any) => {
     setSelectedEvent(event);
@@ -54,7 +43,13 @@ export default function EventsPage() {
       <Group justify="space-between" m="20">
         <Title order={1}>Events</Title>
         <Group>
-          <Select radius="md" placeholder="Newly Posted" data={['Newly Posted']} />
+          <Select
+            radius="md"
+            placeholder="Newly Posted"
+            onChange={setSortQuery}
+            value={sortQuery}
+            data={['Newly Posted', 'Today', 'This Week', 'Next Week']}
+          />
           <TextInput
             radius="md"
             value={searchQuery}
@@ -79,7 +74,7 @@ export default function EventsPage() {
             No one is hosting an event yet, be the first one!
           </Text>
         </Group>
-      ) : filteredEvents.length === 0 ? (
+      ) : filteredAndSortedEvents.length === 0 ? (
         <Group justify="center" mt="200">
           <Text size="xl" c="dimmed">
             There is no event that matches your search query

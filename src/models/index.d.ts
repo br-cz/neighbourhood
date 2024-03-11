@@ -70,7 +70,6 @@ type EagerUser = {
   readonly likedEvents: UserLikedEvents[];
   readonly likedItems: UserLikedItems[];
   readonly location?: string | null;
-  readonly age?: number | null;
   readonly bio?: string | null;
   readonly profilePic?: string | null;
   readonly pronouns?: string | null;
@@ -79,6 +78,7 @@ type EagerUser = {
   readonly pets?: number | null;
   readonly kids?: number | null;
   readonly comments?: (Comment | null)[] | null;
+  readonly relevantCommunities?: string[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -106,7 +106,6 @@ type LazyUser = {
   readonly likedEvents: AsyncCollection<UserLikedEvents>;
   readonly likedItems: AsyncCollection<UserLikedItems>;
   readonly location?: string | null;
-  readonly age?: number | null;
   readonly bio?: string | null;
   readonly profilePic?: string | null;
   readonly pronouns?: string | null;
@@ -115,6 +114,7 @@ type LazyUser = {
   readonly pets?: number | null;
   readonly kids?: number | null;
   readonly comments: AsyncCollection<Comment>;
+  readonly relevantCommunities?: string[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
