@@ -21,7 +21,7 @@ import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { DatePickerInput } from '@mantine/dates';
 import { useFormik } from 'formik';
 import { customizeProfileSchema } from './customizeProfileValidation';
-import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { useCurrentUser, userUpdateSubject } from '@/src/hooks/usersCustomHooks';
 import classes from './ProfileCard.module.css';
 import { utcToISO } from '@/utils/timeUtils';
 import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
@@ -78,6 +78,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
         });
       });
       loadingToggle.close();
+      userUpdateSubject.next();
     },
     enableReinitialize: true,
   });

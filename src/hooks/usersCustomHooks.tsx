@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import { Subject } from 'rxjs';
 import { HttpError } from '../models/error/HttpError';
 import { getUserAPI, updateUserAPI } from '../api/services/user';
 import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
+
+export const userUpdateSubject = new Subject<void>();
 
 export const getCurrentUserID = () => {
   if (typeof window !== 'undefined') {
@@ -32,8 +35,13 @@ export const useCurrentUser = (refresh: boolean = false) => {
         setLoading(false);
       }
     }
-
     fetchCurrentUser();
+    const subscription = userUpdateSubject.subscribe({
+      next: async () => {
+        fetchCurrentUser();
+      },
+    });
+    return () => subscription.unsubscribe();
   }, [refresh]);
 
   const updateUserProfile = async (values: any, profilePicFile?: File) => {
