@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Group, Avatar, Text, Button, Title, Popover } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
@@ -18,6 +18,7 @@ import {
 import * as APITypes from '@/src/API';
 import { User } from '@/types/types';
 import { UserListItemPreview } from './UserListItemPreview';
+import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface UserListItemProps {
   user: User;
@@ -29,11 +30,19 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const [status, setStatus] = useState(relationshipStatus);
   const [active, setActive] = useState(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
+  const [profilePic, setProfilePic] = useState<string>('');
   const { handleCreateFriendRequest, error } = useCreateFriendRequest();
   const { handleCreateFriend, error: createFriendError } = useCreateFriend();
   const { handleDeleteFriend } = useDeleteFriend();
   const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
   const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
+
+  useEffect(() => {
+    if (!user) return;
+    retrieveImage(user?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [user?.profilePic]);
 
   const handleButtonClicked = () => {
     if (!popoverOpened) {
@@ -281,7 +290,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           tabIndex={0}
         >
           <Group>
-            <Avatar src={user?.profilePic} size="lg" radius="xl" />
+            <Avatar src={profilePic} size="lg" radius="xl" />
             <div style={{ flex: 1 }}>
               <Text size="sm" fw={600}>
                 {user?.firstName} {user?.lastName}
