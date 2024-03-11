@@ -1,12 +1,10 @@
 import { object, string, ref } from 'yup';
 
 export const accountSettingsSchema = object({
-  newEmail: string().email('Invalid email format').required('Email is required'),
-  oldPassword: string()
-    .min(8, 'Password must be 8 characters or more.')
-    .required('Password is required'),
+  oldPassword: string().required('Current password is required'),
+  newEmail: string().email('Invalid email format').nullable(true),
   newPassword: string()
-    .min(8, 'Password must be 8 characters or more.')
+    .nullable(true)
     .notOneOf([ref('oldPassword'), null], 'New password must be different from old password')
-    .required('Confirm password is required'),
+    .min(8, 'New password must be 8 characters or more.'),
 });

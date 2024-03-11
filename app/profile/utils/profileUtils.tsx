@@ -13,8 +13,8 @@ export async function handleProfileUpdate(
   try {
     const user = await getCurrentUser();
     console.log('User info update:', oldPassword, newPassword, newEmail);
-    
-    if (oldPassword && newPassword && oldPassword !== newPassword) {
+
+    if (oldPassword && newPassword) {
       await updatePassword({ oldPassword, newPassword });
     }
 
@@ -23,7 +23,7 @@ export async function handleProfileUpdate(
       await updateUserAttributes({ userAttributes });
       await updateUserEmailAPI(user!.id, newEmail, user!._version);
     }
-    
+
     notifications.show({
       radius: 'md',
       title: 'Your login details have been updated!',
@@ -31,11 +31,11 @@ export async function handleProfileUpdate(
     });
     onClose();
     resetForm();
-    
   } catch (error: any) {
     console.error('Error updating user info:', error);
 
-    let errorMessage = 'Failed to update your account information - please check your inputs and try again.';
+    let errorMessage =
+      'Failed to update your account information - please check your inputs and try again.';
 
     if (error.message.includes('Attempt limit exceeded')) {
       errorMessage = 'Too many attempts. Please try again later.';

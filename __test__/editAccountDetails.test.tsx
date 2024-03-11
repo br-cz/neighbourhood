@@ -89,6 +89,7 @@ describe('ProfilePage - Change Password', () => {
     await waitFor(() => {
       expect(screen.getByTestId('new-email-input')).toBeInTheDocument();
     });
+    await userEvent.type(screen.getByTestId('old-password-input'), 'oldPassword');
     await userEvent.type(screen.getByTestId('new-email-input'), 'newuser@example.com');
     await userEvent.click(screen.getByTestId('submit-btn'));
 

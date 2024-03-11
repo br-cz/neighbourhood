@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
-import { Modal, Text, Stack, Title, Box, TextInput, PasswordInput, Button } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { handleProfileUpdate } from '@/app/profile/utils/profileUtils';
+import React from 'react';
+import {
+  Modal,
+  Stack,
+  Title,
+  Box,
+  TextInput,
+  PasswordInput,
+  Button,
+  Text,
+  Center,
+} from '@mantine/core';
 import { useFormik } from 'formik';
-import { accountSettingsSchema } from './accountSettingsValidation';
+import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { handleProfileUpdate } from '@/app/profile/utils/profileUtils';
+import { accountSettingsSchema } from './accountSettingsValidation';
+
 interface AccountSettingsModalProps {
   opened: boolean;
   onClose: () => void;
@@ -32,11 +43,13 @@ export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalPr
     },
   });
 
-
   return (
     <Modal
       opened={opened}
-      onClose={onClose}
+      onClose={() => {
+        formik.resetForm();
+        onClose();
+      }}
       title={
         <Title order={2} component="p">
           Account Settings
@@ -52,13 +65,29 @@ export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalPr
       <Stack gap="sm">
         <form>
           <Box>
-            <Title order={5}>Edit Email</Title>
+            <PasswordInput
+              label="Current Password"
+              name="oldPassword"
+              value={formik.values.oldPassword}
+              radius="md"
+              data-testid="old-password-input"
+              required
+              onChange={(event) => formik.setFieldValue('oldPassword', event.target.value)}
+              error={
+                formik.touched.oldPassword && formik.errors.oldPassword
+                  ? formik.errors.oldPassword
+                  : undefined
+              }
+            />
+            <Title order={6} mt="xl">
+              Change Email
+            </Title>
             <TextInput
-              label="New Email"
+              placeholder="newemail@email.com"
               name="newEmail"
               value={formik.values.newEmail}
               radius="md"
-              mt="sm"
+              mt={5}
               data-testid="new-email-input"
               onChange={(event) => formik.setFieldValue('newEmail', event.target.value)}
               error={
@@ -67,29 +96,18 @@ export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalPr
                   : undefined
               }
             />
-            <Title order={5} mt="xl">
-              Edit Password
-            </Title>
+            <Center>
+              <Text c="dimmed" mt="md">
+                or
+              </Text>
+            </Center>
+            <Title order={6}>Change Password</Title>
             <PasswordInput
-              label="Old Password"
-              name="oldPassword"
-              value={formik.values.oldPassword}
-              radius="md"
-              mt="md"
-              data-testid="old-password-input"
-              onChange={(event) => formik.setFieldValue('oldPassword', event.target.value)}
-              error={
-                formik.touched.oldPassword && formik.errors.oldPassword
-                  ? formik.errors.oldPassword
-                  : undefined
-              }
-            />
-            <PasswordInput
-              label="New Password"
               name="newPassword"
+              placeholder="At least 8 characters"
               value={formik.values.newPassword}
               radius="md"
-              mt="md"
+              mt={5}
               data-testid="new-password-input"
               onChange={(event) => formik.setFieldValue('newPassword', event.target.value)}
               error={
@@ -98,32 +116,35 @@ export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalPr
                   : undefined
               }
             />
-            <Button
-              radius="md"
-              mt="lg"
-              type="button"
-              data-testid="submit-btn"
-              onClick={() => {
-                console.log(formik.values); // For logging
-                formik.validateForm().then((errors) => {
-                  console.log(errors); // For logging
-                  if (Object.keys(errors).length === 0 && !loading) {
-                    // No errors, form is valid so we submit
-                    formik.submitForm();
-                  } else {
-                    notifications.show({
-                      radius: 'md',
-                      color: 'red',
-                      title: 'Oops!',
-                      message: "Couldn't update your information - please check your inputs and try again.",
-                    });
-                  }
-                });
-              }}
-              loading={loading}
-            >
-              Submit Changes
-            </Button>
+            <Center>
+              <Button
+                radius="md"
+                mt="xl"
+                type="button"
+                data-testid="submit-btn"
+                onClick={() => {
+                  console.log(formik.values); // For logging
+                  formik.validateForm().then((errors) => {
+                    console.log(errors); // For logging
+                    if (Object.keys(errors).length === 0 && !loading) {
+                      // No errors, form is valid so we submit
+                      formik.submitForm();
+                    } else {
+                      notifications.show({
+                        radius: 'md',
+                        color: 'red',
+                        title: 'Oops!',
+                        message:
+                          "Couldn't update your information - please check your inputs and try again.",
+                      });
+                    }
+                  });
+                }}
+                loading={loading}
+              >
+                Submit Changes
+              </Button>
+            </Center>
           </Box>
         </form>
       </Stack>
