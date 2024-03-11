@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Modal, Text, Stack, Title, Box, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { modals } from '@mantine/modals';
 import { handleProfileUpdate } from '@/app/profile/utils/profileUtils';
-
+import { useFormik } from 'formik';
+import { accountSettingsSchema } from './accountSettingsValidation';
+import { notifications } from '@mantine/notifications';
 interface AccountSettingsModalProps {
   opened: boolean;
   onClose: () => void;
@@ -11,41 +12,27 @@ interface AccountSettingsModalProps {
 
 export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalProps) {
   const [loading, handlers] = useDisclosure();
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const formik = useFormik({
+    initialValues: {
+      oldPassword: '',
+      newPassword: '',
+      newEmail: '',
+    },
+    validationSchema: accountSettingsSchema,
+    onSubmit: async (parameters) => {
+      handlers.open();
+      await handleProfileUpdate(
+        parameters.oldPassword,
+        parameters.newPassword,
+        parameters.newEmail,
+      );
 
-  const handleSubmit = () => {
-    handlers.open();
-    handleProfileUpdate(
-      oldPassword,
-      newPassword,
-      newEmail,
-      setErrorMessage,
-      setNewEmail,
-      setOldPassword,
-      setNewPassword,
-      handlers
-    );
-  };
+      onClose();
+      formik.resetForm();
+      handlers.close();
+    },
+  });
 
-  const confirmSubmit = () => {
-    modals.openConfirmModal({
-      title: (
-        <Title order={5} component="p">
-          Save changes?
-        </Title>
-      ),
-      children: <Text size="sm">Are you wish to update your login details?</Text>,
-      confirmProps: { size: 'xs', radius: 'md' },
-      cancelProps: { size: 'xs', radius: 'md' },
-      labels: { confirm: 'Confirm', cancel: 'Back' },
-      onConfirm: () => {
-        handleSubmit();
-      },
-    });
-  };
 
   return (
     <Modal
@@ -69,37 +56,73 @@ export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalPr
             <Title order={5}>Edit Email</Title>
             <TextInput
               label="New Email"
-              value={newEmail}
+              name="newEmail"
+              value={formik.values.newEmail}
               radius="md"
               mt="sm"
               data-testid="new-email-input"
-              onChange={(e) => setNewEmail(e.currentTarget.value)}
+              onChange={(event) => formik.setFieldValue('newEmail', event.target.value)}
+              error={
+                formik.touched.newEmail && formik.errors.newEmail
+                  ? formik.errors.newEmail
+                  : undefined
+              }
             />
             <Title order={5} mt="xl">
               Edit Password
             </Title>
             <PasswordInput
               label="Old Password"
-              value={oldPassword}
+              name="oldPassword"
+              value={formik.values.oldPassword}
               radius="md"
-              data-testid="old-password-input"
-              onChange={(e) => setOldPassword(e.currentTarget.value)}
               mt="md"
+              data-testid="old-password-input"
+              onChange={(event) => formik.setFieldValue('oldPassword', event.target.value)}
+              error={
+                formik.touched.oldPassword && formik.errors.oldPassword
+                  ? formik.errors.oldPassword
+                  : undefined
+              }
             />
             <PasswordInput
               label="New Password"
-              value={newPassword}
+              name="newPassword"
+              value={formik.values.newPassword}
               radius="md"
-              data-testid="new-password-input"
-              onChange={(e) => setNewPassword(e.currentTarget.value)}
               mt="md"
+              data-testid="new-password-input"
+              onChange={(event) => formik.setFieldValue('newPassword', event.target.value)}
+              error={
+                formik.touched.newPassword && formik.errors.newPassword
+                  ? formik.errors.newPassword
+                  : undefined
+              }
             />
-            {errorMessage && (
-              <Text c="red" m="xs" size="sm">
-                Couldn&apos;t update details: {errorMessage}
-              </Text>
-            )}
-            <Button onClick={confirmSubmit} mt="xl" data-testid="submit-btn" loading={loading}>
+            <Button
+              radius="md"
+              mt="lg"
+              type="button"
+              data-testid="submit-btn"
+              onClick={() => {
+                console.log(formik.values); // For logging
+                formik.validateForm().then((errors) => {
+                  console.log(errors); // For logging
+                  if (Object.keys(errors).length === 0 && !loading) {
+                    // No errors, form is valid so we submit
+                    formik.submitForm();
+                  } else {
+                    notifications.show({
+                      radius: 'md',
+                      color: 'red',
+                      title: 'Oops!',
+                      message: "Couldn't update your information - please check your inputs and try again.",
+                    });
+                  }
+                });
+              }}
+              loading={loading}
+            >
               Submit Changes
             </Button>
           </Box>

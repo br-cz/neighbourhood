@@ -7,11 +7,6 @@ export async function handleProfileUpdate(
   oldPassword: string,
   newPassword: string,
   newEmail: string,
-  setErrorMessage: any,
-  setNewEmail: any,
-  setOldPassword: any,
-  setNewPassword: any,
-  handlers: any
 ) {
   try {
     const user = await getCurrentUser();
@@ -26,10 +21,6 @@ export async function handleProfileUpdate(
       await updatePassword({ oldPassword, newPassword });
     }
 
-    setErrorMessage('');
-    setNewEmail('');
-    setOldPassword('');
-    setNewPassword('');
     notifications.show({
       radius: 'md',
       title: 'Your login details have been updated!',
@@ -37,8 +28,10 @@ export async function handleProfileUpdate(
     });
   } catch (error: any) {
     console.error('Error updating user info:', error);
-    setErrorMessage(error.message || 'Failed to update profile.');
-  } finally {
-    handlers.close();
+    notifications.show({
+      color: 'red',
+      title: 'Error!',
+      message: 'Failed to update your account information - please check your inputs and try again.',
+    });
   }
 }
