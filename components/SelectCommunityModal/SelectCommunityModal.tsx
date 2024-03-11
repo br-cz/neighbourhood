@@ -30,13 +30,13 @@ export default function SelectCommunityModal({
   const [isLoading, handlers] = useDisclosure();
   const formik = useFormik({
     initialValues: {
-      selectedCommunity: [],
+      selectedCommunity: '',
     },
 
     validationSchema: selectedCommunityModalSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       handlers.open();
-      if (values.selectedCommunity.length + userCommunities.length > 3) {
+      if (values.selectedCommunity != '' && userCommunities.length == 2) {
         notifications.show({
           radius: 'md',
           color: 'red',
@@ -49,9 +49,7 @@ export default function SelectCommunityModal({
         onClose();
         return;
       }
-      values.selectedCommunity.forEach(async (communityId) => {
-        await commmunitySelectHandler(communityId, communities, user, userCommunities);
-      });
+      await commmunitySelectHandler(values.selectedCommunity, communities, user, userCommunities);
       handlers.close();
       formik.resetForm();
       onClose();

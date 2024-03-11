@@ -30,11 +30,7 @@ export const signUpSchema = object({
     .max(20, 'Username must be 20 characters or less'),
   address: string().required('Address is required'),
   //selectedCommunity: string().required('Selecting a community is required.'),
-  selectedCommunity: array()
-    .of(string())
-    .min(1, 'You must select at least one community')
-    .required('Selecting a community is required.'),
-
+  selectedCommunity: string().required('Selecting a community required.'),
   phoneNumber: string().matches(
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
     'Phone number must be valid.'

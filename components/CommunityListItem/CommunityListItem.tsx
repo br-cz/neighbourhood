@@ -7,11 +7,17 @@ import { retrieveImage } from '../utils/s3Helpers/CommunityImageS3Helper';
 
 interface CommunityListItemProps {
   community: Community;
-  onSelect: (isSelected: boolean) => void;
+  onSelect: () => void;
+  selected: boolean;
+  isAnyCommunitySelected: boolean;
 }
 
-export function CommunityListItem({ community, onSelect }: CommunityListItemProps) {
-  const [selected, toggleSelected] = useToggle();
+export function CommunityListItem({
+  community,
+  onSelect,
+  selected,
+  isAnyCommunitySelected,
+}: CommunityListItemProps) {
   const [communityImage, setCommunityImage] = useState<string>('');
 
   useEffect(() => {
@@ -21,25 +27,26 @@ export function CommunityListItem({ community, onSelect }: CommunityListItemProp
     });
   }, [community?.image]);
 
+  const itemStyle = {
+    opacity: !isAnyCommunitySelected || selected ? 1 : 0.5,
+    color: !isAnyCommunitySelected || selected ? 'inherit' : '#b0b0b0',
+  };
+
   return (
     <div
       className={`${classes.community} ${selected ? classes.active : ''}`}
-      onClick={() => {
-        toggleSelected();
-        onSelect(!selected);
-      }}
-      // onKeyDown={onSelect}
+      onClick={onSelect}
       role="button"
       tabIndex={0}
       data-testid={`communities-item-${community.id}`}
     >
       <Group>
-        <Avatar src={communityImage} size="lg" radius="xl" />
+        <Avatar src={communityImage} size="lg" radius="xl" style={{ opacity: itemStyle.opacity }} />
         <div style={{ flex: 1 }}>
-          <Text size="sm" fw={600}>
+          <Text size="sm" fw={600} style={{ color: itemStyle.color }}>
             {community.name}
           </Text>
-          <Text c="dimmed" size="xs">
+          <Text size="xs" style={{ color: itemStyle.color }}>
             {community.location}
           </Text>
         </div>
