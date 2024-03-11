@@ -9,6 +9,8 @@ export async function utilSignOut({ router }: HandleSignOutParams) {
   try {
     await signOut({ global: true });
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentCommunity');
+    localStorage.removeItem('currentCommunityID');
     router.push('/');
     notifications.show({
       radius: 'md',
