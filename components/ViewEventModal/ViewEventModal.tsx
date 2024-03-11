@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Text, Group, Avatar, Image, Stack, Title } from '@mantine/core';
 import classes from './ViewEventModal.module.css';
 import { Event } from '@/src/API';
 import { formatDate, formatTime } from '@/utils/timeUtils';
+import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveEventImage } from '../utils/s3Helpers/EventImageS3Helper';
 
 interface ViewEventModalProps {
   opened: boolean;
@@ -11,6 +13,23 @@ interface ViewEventModalProps {
 }
 
 export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) {
+  const [profilePic, setProfilePic] = useState<string>('');
+  const [eventImage, setEventImage] = useState<string>('');
+
+  useEffect(() => {
+    if (!event?.organizer) return;
+    retrieveProfilePicture(event?.organizer?.id).then((image) => {
+      setProfilePic(image);
+    });
+  }, [event?.organizer?.profilePic]);
+
+  useEffect(() => {
+    if (!event) return;
+    retrieveEventImage(event.id).then((image) => {
+      setEventImage(image);
+    });
+  }, [event?.images]);
+
   return (
     <Modal
       opened={opened}
@@ -30,7 +49,7 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
       <Stack gap="sm">
         <Group justify="center" mb={15}>
           <Image
-            src={event?.images?.[0] ?? './img/placeholder-img.jpg'}
+            src={eventImage ?? './img/placeholder-img.jpg'}
             alt={event?.name}
             className={classes.image}
           />
@@ -45,7 +64,7 @@ export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) 
 
         <Title order={6}>Organizer</Title>
         <Group gap="xs" align="center">
-          <Avatar src={event.organizer.profilePic} alt={event.organizer.firstName} radius="xl" />
+          <Avatar src={profilePic} alt={event.organizer.firstName} radius="xl" />
           <Text size="sm" c="dimmed">
             {event.organizer.firstName} {event.organizer.lastName}
           </Text>

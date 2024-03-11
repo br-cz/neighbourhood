@@ -162,3 +162,34 @@ export const deleteUserCommunityAPI = async (id: string) => {
     );
   }
 };
+
+export const updateUserAPI = async (user: any) => {
+  try {
+    const updateUserResponse = await client.graphql({
+      query: updateUser,
+      variables: {
+        input: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          selectedCommunity: user.selectedCommunity,
+          postalCode: user.postalCode,
+          address: user.address,
+          profilePic: user.profilePic,
+          bio: user.bio,
+          kids: user.kids,
+          pets: user.pets,
+          contact: user.contact,
+          birthday: user.birthday,
+          pronouns: user.pronouns,
+          _version: user._version,
+        },
+      },
+    });
+    return updateUserResponse.data.updateUser;
+  } catch (error: any) {
+    throw new HttpError(`Error updating user: ${error.message}`, error.statusCode || 500);
+  }
+};

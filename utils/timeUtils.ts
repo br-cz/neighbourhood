@@ -1,3 +1,14 @@
+import { DateValue } from '@mantine/dates';
+
+export function isoToUTC(isoDate: string): string {
+  return new Date(isoDate).toUTCString();
+}
+
+export function utcToISO(date: DateValue): string {
+  if (!date) return '';
+  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+}
+
 export function formatUTCDate(isoDate: string): string {
   return new Date(isoDate).toLocaleDateString('en-US', {
     timeZone: 'UTC',
@@ -21,6 +32,17 @@ export function formatTime(isoDate: string): string {
     minute: '2-digit',
     hour12: true,
   });
+}
+
+export function dateToAge(isoDate: string): string {
+  const now = new Date();
+  const birthday = new Date(isoDate);
+  const diffInSeconds = Math.floor((now.getTime() - birthday.getTime()) / 1000);
+  let result = '';
+  
+  result = `${Math.floor(diffInSeconds / 31556952)}`;
+
+  return result;
 }
 
 export function formatPostedAt(isoDate: string): string {
