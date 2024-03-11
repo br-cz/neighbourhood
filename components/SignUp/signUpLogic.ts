@@ -24,6 +24,8 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
   values.pets = parameters.pets;
   values.kids = parameters.kids;
 
+  const avatarURL = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(`${values.firstName} ${values.familyName}`)}&scale=60&fontFamily=Helvetica,sans-serif&fontWeight=500`;
+
   try {
     // Step 1: Sign Up with AWS Cognito
     const cognitoResponse = await signUp({
@@ -57,6 +59,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         kids: values.kids,
         pets: values.pets,
         postalCode: '',
+        profilePic: avatarURL,
       };
 
       await createUserAPI(createUserInput);

@@ -10,6 +10,20 @@ function generateKey(fileName: string, postId: string) {
     return `PostImages/${postId}-${timestamp}-${fileName}`;
 }
 
+export async function retrieveImage(postId: string) {
+  const post = await getPostAPI(postId);
+  if (post) {
+    if (post.images && post.images[0]) {
+      if (post.images[0]?.includes(postId)) {
+        return retrieveImageURLFromS3(post.images[0]);
+      }
+      return post.images[0];
+    }
+    throw new Error('There is no image available for post');
+  }
+  throw new Error('Post does not exist when retrieving image');
+}
+
 export async function storeImage(file: File, postId: string) {
   if (!file || !postId) {
     throw new Error('Invalid file or postId');
@@ -25,11 +39,9 @@ export async function storeImage(file: File, postId: string) {
         data: file,
       }).result;
 
-      const imageUrl = await retrieveImageURLFromS3(uploadResult.key); // Use utility function for consistency
+      await updatePostImageAPI(post.id, uploadResult.key, post._version);
 
-      await updatePostImageAPI(post.id, imageUrl, post._version); // Update with imageUrl instead of key
-
-      return imageUrl; // Return the image URL for consistency
+      return uploadResult.key;
     }
     throw new Error('postId given to store post image is invalid');
   } catch (error) {
