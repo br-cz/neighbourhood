@@ -60,7 +60,6 @@ export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: 
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -69,6 +68,11 @@ export const switchCommunity = /* GraphQL */ `mutation SwitchCommunity($userId: 
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -137,7 +141,6 @@ export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!,
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -146,6 +149,11 @@ export const joinCommunity = /* GraphQL */ `mutation JoinCommunity($userId: ID!,
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -176,7 +184,6 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -202,6 +209,7 @@ export const likePost = /* GraphQL */ `mutation LikePost($postId: ID!) {
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -245,7 +253,6 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -271,6 +278,7 @@ export const unlikePost = /* GraphQL */ `mutation UnlikePost($postId: ID!) {
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -328,7 +336,6 @@ export const commentOnPost = /* GraphQL */ `mutation CommentOnPost($postId: ID!,
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -395,7 +402,6 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -421,6 +427,7 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -495,7 +502,6 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -504,6 +510,11 @@ export const addFriend = /* GraphQL */ `mutation AddFriend($userId: ID!, $friend
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -546,6 +557,7 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -559,7 +571,6 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -613,6 +624,7 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -626,7 +638,6 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -680,7 +691,6 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -706,6 +716,7 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -747,7 +758,6 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -773,6 +783,7 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -811,7 +822,6 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -837,7 +847,6 @@ export const sendFriendRequest = /* GraphQL */ `mutation SendFriendRequest($send
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -881,7 +890,6 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -907,7 +915,6 @@ export const acceptFriendRequest = /* GraphQL */ `mutation AcceptFriendRequest($
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -951,7 +958,6 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -977,7 +983,6 @@ export const declineFriendRequest = /* GraphQL */ `mutation DeclineFriendRequest
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1024,7 +1029,6 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1050,7 +1054,6 @@ export const createFriendRequest = /* GraphQL */ `mutation CreateFriendRequest(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1097,7 +1100,6 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1123,7 +1125,6 @@ export const updateFriendRequest = /* GraphQL */ `mutation UpdateFriendRequest(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1170,7 +1171,6 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1196,7 +1196,6 @@ export const deleteFriendRequest = /* GraphQL */ `mutation DeleteFriendRequest(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1279,7 +1278,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -1288,6 +1286,11 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -1359,7 +1362,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -1368,6 +1370,11 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -1439,7 +1446,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
       __typename
     }
     location
-    age
     bio
     profilePic
     pronouns
@@ -1448,6 +1454,11 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     pets
     kids
     comments {
+      nextToken
+      startedAt
+      __typename
+    }
+    relevantCommunities {
       nextToken
       startedAt
       __typename
@@ -1499,6 +1510,7 @@ export const createCommunity = /* GraphQL */ `mutation CreateCommunity(
     _version
     _deleted
     _lastChangedAt
+    userRelevantCommunitiesId
     __typename
   }
 }
@@ -1541,6 +1553,7 @@ export const updateCommunity = /* GraphQL */ `mutation UpdateCommunity(
     _version
     _deleted
     _lastChangedAt
+    userRelevantCommunitiesId
     __typename
   }
 }
@@ -1583,6 +1596,7 @@ export const deleteCommunity = /* GraphQL */ `mutation DeleteCommunity(
     _version
     _deleted
     _lastChangedAt
+    userRelevantCommunitiesId
     __typename
   }
 }
@@ -1607,7 +1621,6 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1633,6 +1646,7 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -1679,7 +1693,6 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1705,6 +1718,7 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -1751,7 +1765,6 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1777,6 +1790,7 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     images
@@ -1837,7 +1851,6 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1898,7 +1911,6 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -1959,7 +1971,6 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2011,6 +2022,7 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -2024,7 +2036,6 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2081,6 +2092,7 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -2094,7 +2106,6 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2151,6 +2162,7 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     organizer {
@@ -2164,7 +2176,6 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2221,7 +2232,6 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2247,6 +2257,7 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -2291,7 +2302,6 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2317,6 +2327,7 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -2361,7 +2372,6 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2387,6 +2397,7 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     likedBy {
@@ -2428,7 +2439,6 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2454,6 +2464,7 @@ export const createUserCommunity = /* GraphQL */ `mutation CreateUserCommunity(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -2487,7 +2498,6 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2513,6 +2523,7 @@ export const updateUserCommunity = /* GraphQL */ `mutation UpdateUserCommunity(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -2546,7 +2557,6 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2572,6 +2582,7 @@ export const deleteUserCommunity = /* GraphQL */ `mutation DeleteUserCommunity(
       _version
       _deleted
       _lastChangedAt
+      userRelevantCommunitiesId
       __typename
     }
     createdAt
@@ -2605,7 +2616,6 @@ export const createUserLikedPosts = /* GraphQL */ `mutation CreateUserLikedPosts
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2665,7 +2675,6 @@ export const updateUserLikedPosts = /* GraphQL */ `mutation UpdateUserLikedPosts
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2725,7 +2734,6 @@ export const deleteUserLikedPosts = /* GraphQL */ `mutation DeleteUserLikedPosts
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2785,7 +2793,6 @@ export const createUserLikedEvents = /* GraphQL */ `mutation CreateUserLikedEven
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2848,7 +2855,6 @@ export const updateUserLikedEvents = /* GraphQL */ `mutation UpdateUserLikedEven
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2911,7 +2917,6 @@ export const deleteUserLikedEvents = /* GraphQL */ `mutation DeleteUserLikedEven
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -2974,7 +2979,6 @@ export const createUserLikedItems = /* GraphQL */ `mutation CreateUserLikedItems
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -3037,7 +3041,6 @@ export const updateUserLikedItems = /* GraphQL */ `mutation UpdateUserLikedItems
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns
@@ -3100,7 +3103,6 @@ export const deleteUserLikedItems = /* GraphQL */ `mutation DeleteUserLikedItems
       selectedCommunity
       friends
       location
-      age
       bio
       profilePic
       pronouns

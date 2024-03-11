@@ -289,13 +289,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "age": {
-                    "name": "age",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "bio": {
                     "name": "bio",
                     "isArray": false,
@@ -358,6 +351,22 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
                             "userCommentsId"
+                        ]
+                    }
+                },
+                "relevantCommunities": {
+                    "name": "relevantCommunities",
+                    "isArray": true,
+                    "type": {
+                        "model": "Community"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "userRelevantCommunitiesId"
                         ]
                     }
                 },
@@ -504,6 +513,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "userRelevantCommunitiesId": {
+                    "name": "userRelevantCommunitiesId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -512,6 +528,15 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "gsi-User.relevantCommunities",
+                        "fields": [
+                            "userRelevantCommunitiesId"
+                        ]
+                    }
                 }
             ]
         },
@@ -1426,5 +1451,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c7f8c46cd8ea7b42e8e88d6eb3652549"
+    "version": "468d1f4a4189d9c95fe667fe74c42b20"
 };

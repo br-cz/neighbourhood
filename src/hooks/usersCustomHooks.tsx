@@ -3,7 +3,12 @@ import { HttpError } from '../models/error/HttpError';
 import { getUserAPI, updateUserAPI } from '../api/services/user';
 import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
-export const getCurrentUserID = () => JSON.parse(localStorage.getItem('currentUserID')!);
+export const getCurrentUserID = () => {
+  if (typeof window !== 'undefined') {
+    return JSON.parse(localStorage.getItem('currentUserID')!);
+  }
+  return null;
+};
 export const getCurrentUser = async () => getUserAPI(getCurrentUserID());
 
 export const useCurrentUser = (refresh: boolean = false) => {
