@@ -16,6 +16,7 @@ const mockData = {
         lastName: 'Williams',
       },
       comments: { items: [] },
+      isLiked: false,
     },
     {
       id: '2',
@@ -25,6 +26,7 @@ const mockData = {
         lastName: 'Williams',
       },
       comments: { items: [] },
+      isLiked: false,
     },
     {
       id: '3',
@@ -34,6 +36,7 @@ const mockData = {
         lastName: 'Brames',
       },
       comments: { items: [] },
+      isLiked: false,
     },
   ],
 };
@@ -48,6 +51,15 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
   })),
   useCreateComment: jest.fn(() => ({
     createComment: jest.fn(),
+  })),
+  usePostLikes: jest.fn(() => ({
+    likePost: jest.fn(),
+    unlikePost: jest.fn(),
+  })),
+  useUserLikes: jest.fn(() => ({
+    userLikes: {
+      get: () => false,
+    },
   })),
 }));
 
