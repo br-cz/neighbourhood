@@ -19,7 +19,7 @@ export async function retrieveImage(eventId: string) {
       }
       return event.images[0];
     }
-    throw new Error('There is no image available for event');
+    return '';
   }
   throw new Error('Event does not exist when retrieving image');
 }
