@@ -9,42 +9,42 @@ export enum Visibility {
 
 export interface User {
   id: string;
-  username: string;
-  email: string;
-  postalCode: string;
+  username?: string;
+  email?: string;
+  postalCode?: string;
   firstName: string;
   lastName: string;
-  communities: Community[];
-  selectedCommunity: Community;
-  posts: Post[];
-  friends: User[];
-  friendRequests: FriendRequest[];
-  events: Event[];
-  itemsForSale: ItemForSale[];
-  likedPosts: Post[];
-  likedEvents: Event[];
-  likedItems: ItemForSale[];
-  location: string;
-  age: number;
-  bio: string;
-  profilePic: string;
-  pets: number;
-  kids: number;
+  communities?: Community[];
+  selectedCommunity?: Community;
+  posts?: Post[];
+  friends?: User[];
+  friendRequests?: FriendRequest[];
+  events?: Event[];
+  itemsForSale?: ItemForSale[];
+  likedPosts?: Post[];
+  likedEvents?: Event[];
+  likedItems?: ItemForSale[];
+  location?: string;
+  age?: number;
+  bio?: string;
+  profilePic?: string;
+  pets?: number;
+  kids?: number;
   createdAt: string;
-  pronouns: string;
-  contact: string;
-  birthday: string;
-  address: string;
+  pronouns?: string;
+  contact?: string;
+  birthday?: string;
+  address?: string;
 }
 
 export interface Community {
   id: string;
   name: string;
-  location: string;
-  postalCode: string;
-  image: string;
-  members: User[];
-  posts: Post[];
+  location?: string;
+  postalCode?: string;
+  image?: string;
+  members?: User[];
+  posts?: Post[];
 }
 
 export interface CommentItem {
@@ -62,9 +62,8 @@ export interface Post {
   id: string;
   author: User;
   community: Community;
-  images: string[];
   content: string;
-  likedBy: User[];
+  likedBy?: User[];
   comments: Comments;
   visibility: Visibility;
   createdAt: string;
@@ -73,14 +72,14 @@ export interface Post {
 export interface Event {
   id: string;
   name: string;
-  description: string;
-  image: string;
+  description?: string;
+  images?: string[];
   location: string;
-  datetime: Date;
+  datetime: string;
   community: Community;
   organizer: User;
-  attendees: User[];
-  likedBy: User[];
+  attendees?: User[];
+  likedBy?: User[];
   visibility: Visibility;
 }
 

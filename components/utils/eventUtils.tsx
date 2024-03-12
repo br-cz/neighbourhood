@@ -1,10 +1,10 @@
 import {
+  filterEventsForThisMonth,
   filterEventsForToday,
   filterEventsForWeek,
   sortByNewToOld,
-  filterEventsForNextWeek,
 } from '@/utils/sortUtils';
-import { Event } from '@/src/API';
+import { Event } from '@/types/types';
 
 export const filterAndSortEvents = (
   events: Event[],
@@ -14,7 +14,7 @@ export const filterAndSortEvents = (
   const filteredEvents = events.filter(
     (event) =>
       event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       `${event.organizer.firstName} ${event.organizer.lastName}`
         .toLowerCase()
@@ -27,8 +27,8 @@ export const filterAndSortEvents = (
         return filterEventsForToday(filteredEvents);
       case 'This Week':
         return filterEventsForWeek(filteredEvents);
-      case 'Next Week':
-        return filterEventsForNextWeek(filteredEvents);
+      case 'This Month':
+        return filterEventsForThisMonth(filteredEvents);
       default:
         return filteredEvents;
     }

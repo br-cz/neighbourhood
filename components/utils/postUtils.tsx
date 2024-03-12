@@ -1,5 +1,5 @@
 import { Post } from '@/types/types';
-import { sortByNewToOld, sortByOldToNew, sortByFirstName, sortByLastName } from '@/utils/sortUtils';
+import { sortByNewToOld, sortByOldToNew } from '@/utils/sortUtils';
 
 // Function to filter and sort posts
 export const filterAndSortPosts = (
@@ -19,14 +19,10 @@ export const filterAndSortPosts = (
 
   const sortedPosts = filteredPosts.sort((a: Post, b: Post) => {
     switch (sortQuery) {
-      case 'Date: Old to New':
+      case 'Oldest':
         return sortByOldToNew(a, b);
-      case 'Date: New to Old':
+      case 'Newly Posted':
         return sortByNewToOld(a, b);
-      case 'First Name: (A-Z)':
-        return sortByFirstName(a.author, b.author);
-      case 'Last Name: (A-Z)':
-        return sortByLastName(a.author, b.author);
       default:
         return sortByNewToOld(a, b);
     }
