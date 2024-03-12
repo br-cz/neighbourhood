@@ -16,7 +16,13 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     .trim()
     .toLowerCase()
     .replace(/^\w/, (c: string) => c.toUpperCase());
+  values.bio = parameters.bio.trim();
   values.phoneNumber = parameters.phoneNumber.trim();
+  values.pronouns = parameters.pronouns;
+  values.profilePic = parameters.profilePic;
+  values.birthday = parameters.birthday;
+  values.pets = parameters.pets;
+  values.kids = parameters.kids;
 
   const avatarURL = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(`${values.firstName} ${values.familyName}`)}&scale=60&fontFamily=Helvetica,sans-serif&fontWeight=500`;
 
@@ -40,22 +46,31 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     if (cognitoResponse.userId) {
       const createUserInput = {
         id: cognitoResponse.userId,
-        username: values.preferredUsername,
         email: values.email,
+        username: values.preferredUsername,
+        address: values.address,
+        selectedCommunity: values.selectedCommunity,
         firstName: values.firstName,
         lastName: values.familyName,
-        selectedCommunity: values.selectedCommunity,
-        postalCode: '',
+        bio: values.bio,
+        contact: values.phoneNumber,
+        pronouns: values.pronouns,
         profilePic: avatarURL,
+        birthday: values.birthday,
+        kids: values.kids,
+        pets: values.pets,
+        postalCode: '',
       };
 
-      await createUserAPI(createUserInput);
+      console.log('createUserInput:', createUserInput);
 
-      await createUserCommunityAPI(cognitoResponse.userId, values.selectedCommunity);
+      await createUserAPI(createUserInput);
+      await createUserCommunityAPI(cognitoResponse.userId, values.selectedCommunity[0]);
     }
 
     console.log('Sign up success:', cognitoResponse.userId);
     nextStep();
+    return cognitoResponse;
   } catch (error) {
     console.log('error signing up:', error);
     notifications.show({
@@ -64,5 +79,4 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
       color: 'red',
     });
   }
-  handlers.close();
 };
