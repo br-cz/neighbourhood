@@ -19,7 +19,7 @@ export async function retrieveImage(eventId: string) {
       }
       return event.images[0];
     }
-    return '';
+    return retrieveImageURLFromS3('EventImages/placeholder-img.jpg');
   }
   throw new Error('Event does not exist when retrieving image');
 }
