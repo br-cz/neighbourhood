@@ -93,7 +93,13 @@ export default function CommunitiesPage() {
               </Group>
             </Modal>
             {/* <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 1 }} /> */}
-            <Button size="md" variant="outline" leftSection={<IconPlus size={15} />} onClick={open}>
+            <Button
+              size="md"
+              variant="outline"
+              leftSection={<IconPlus size={15} />}
+              onClick={open}
+              disabled={userCommunities.length === 3}
+            >
               Add New
             </Button>
           </Stack>
