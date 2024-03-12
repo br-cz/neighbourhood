@@ -78,7 +78,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         console.error('Error creating listing:', error);
         notifications.show({
           title: 'Oops!',
-          message: 'Something went wrong creating your event - please try again.',
+          message: 'Something went wrong creating your listing - please try again.',
           color: 'red.6',
         });
       } finally {
@@ -136,7 +136,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       }}
       position="right"
       title={
-        <Title order={3} component="p">
+        <Title order={3} component="p" data-testid="create-listing-drawer">
           New Listing
         </Title>
       }
@@ -294,7 +294,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
           <Button
             radius="md"
             type="button"
-            data-testid="submit button"
+            data-testid="submit-button"
             onClick={() => {
               formik.validateForm().then((errors) => {
                 if (Object.keys(errors).length === 0 && !loading) {
