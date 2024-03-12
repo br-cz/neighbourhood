@@ -107,7 +107,6 @@ describe('timeUtils', () => {
     });
   });
 
-
   // 1.4
   describe('combineDateTime', () => {
     it('combines date and time into ISO string', () => {
@@ -127,6 +126,7 @@ describe('timeUtils', () => {
     });
   });
 
+  //1.5
   describe('isoToUTC', () => {
     it('converts ISO date strings to UTC', () => {
       expect(isoToUTC('2023-08-29T10:00:00-05:00')).toMatch(/Tue, 29 Aug 2023 15:00:00 GMT/);
@@ -137,6 +137,7 @@ describe('timeUtils', () => {
     });
   });
 
+  //1.6
   describe('utcToISO', () => {
     it('converts Mantine DateValue to ISO strings', () => {
       const dateValue = new Date('2023-08-29');
