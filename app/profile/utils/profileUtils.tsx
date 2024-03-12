@@ -7,38 +7,59 @@ export async function handleProfileUpdate(
   oldPassword: string,
   newPassword: string,
   newEmail: string,
-  setErrorMessage: any,
-  setNewEmail: any,
-  setOldPassword: any,
-  setNewPassword: any,
-  handlers: any
+  onClose: () => void,
+  resetForm: () => void
 ) {
   try {
     const user = await getCurrentUser();
+    let notificationTitle = '';
     console.log('User info update:', oldPassword, newPassword, newEmail);
+
+    if (oldPassword && newPassword) {
+      await updatePassword({ oldPassword, newPassword });
+      notificationTitle = 'Your password has been updated!';
+    }
+
     if (newEmail && user!.email !== newEmail) {
       const userAttributes = { email: newEmail };
       await updateUserAttributes({ userAttributes });
       await updateUserEmailAPI(user!.id, newEmail, user!._version);
+      notificationTitle = 'Your email has been updated!';
     }
 
-    if (oldPassword && newPassword && oldPassword !== newPassword) {
-      await updatePassword({ oldPassword, newPassword });
+    if (newEmail && newPassword) {
+      notificationTitle = 'Your login details have been updated!';
     }
 
-    setErrorMessage('');
-    setNewEmail('');
-    setOldPassword('');
-    setNewPassword('');
     notifications.show({
       radius: 'md',
-      title: 'Your login details have been updated!',
+      title: notificationTitle,
       message: "Please don't forget to keep track of these new changes",
     });
+
+    onClose();
+    resetForm();
   } catch (error: any) {
     console.error('Error updating user info:', error);
-    setErrorMessage(error.message || 'Failed to update profile.');
-  } finally {
-    handlers.close();
+
+    let errorMessage =
+      'Failed to update your account information - please check your inputs and try again.';
+
+
+    if (error.message.includes('Incorrect username or password')) {
+      errorMessage = 'Your old password is incorrect. Please try again.';
+    }
+    if (error.message.includes('Attempt limit exceeded')) {
+      errorMessage = 'Too many attempts. Please try again later.';
+      onClose();
+      resetForm();
+    }
+
+    notifications.show({
+      radius: 'md',
+      color: 'red',
+      title: 'Oops!',
+      message: errorMessage,
+    });
   }
 }

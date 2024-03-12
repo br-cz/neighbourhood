@@ -132,7 +132,10 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
         <Group justify="center">
           <Box w={150} h={150} onClick={handleImageUploadClick} className={classes.avatar}>
             {previewImageUrl ? (
-              <Image src={previewImageUrl} radius="xl" style={{ maxWidth: 150, maxHeight: 150 }} />
+              <Image
+                src={previewImageUrl}
+                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+              />
             ) : (
               <Avatar radius="xl" size={150} src={profilePic} />
             )}

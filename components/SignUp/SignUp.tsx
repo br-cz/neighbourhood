@@ -1,8 +1,9 @@
 'import client';
-import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { confirmSignUp } from 'aws-amplify/auth';
+import { generateClient } from '@aws-amplify/api';
 import { Stepper, Button, Group, Stack, Title, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
@@ -16,6 +17,7 @@ import {
   faPeopleGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { useFormik } from 'formik';
+import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
 import { LoginDetails } from '@/components/SignUp/LoginDetails.tsx';
 import { AddressInput } from './AddressInput';
 import { SelectCommunity } from './SelectCommunity';
@@ -23,11 +25,14 @@ import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
 import { signUpSchema } from './signUpValidation';
 import { processSignUp } from './signUpLogic';
+import { storeImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
+import { handleSignIn } from '../Authorization/loginForm.client';
+
+const client = generateClient({});
 
 export const SignUp = () => {
-  // const [refresh, setRefresh] = useState(false);
   const { communities, loading } = useFetchAllCommunities();
-  //const toggleRefresh = () => setRefresh((flag) => !flag);
+  const [userId, setUserId] = useState<string | null>(null);
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [active, setActive] = useState(0);
   const [isAddressValid, setIsAddressValid] = useState(false);
@@ -57,7 +62,10 @@ export const SignUp = () => {
     },
     validationSchema: signUpSchema,
     onSubmit: async (parameters) => {
-      await processSignUp(parameters, nextStep, handlers);
+      const response = await processSignUp(parameters, nextStep, handlers);
+      if (response && response.userId) {
+        setUserId(response.userId);
+      }
     },
   });
 
@@ -66,7 +74,17 @@ export const SignUp = () => {
       0: ['email', 'password', 'confirmPassword'],
       1: ['address'],
       2: ['selectedCommunity'],
-      3: ['firstName', 'familyName', 'preferredUsername', 'phoneNumber'],
+      3: [
+        'firstName',
+        'familyName',
+        'preferredUsername',
+        'bio',
+        'phoneNumber',
+        'profilePic',
+        'kids',
+        'pets',
+        'birthday',
+      ],
     };
     const currentStepFields = stepFields[step] || [];
     const errors = await formik.validateForm();
@@ -128,20 +146,36 @@ export const SignUp = () => {
       });
       return;
     }
+    handlers.open();
     try {
       await confirmSignUp({
         username: formik.values.email,
         confirmationCode: verificationCode,
       });
-      notifications.show({
-        title: 'Signed up successfully!',
-        message: 'You can now log in to continue to Neighbourhood.',
+      const username = formik.values.email;
+      const { password } = formik.values;
+
+      await handleSignIn({
+        username,
+        password,
+        clientInput: client,
+        handlers,
+        setErrorMessage: (message) => console.error(message),
       });
-      router.push('/');
+      if (formik.values.profilePic && userId) {
+        await storeImage(formik.values.profilePic, userId);
+      }
+      router.push('/home');
+      notifications.show({
+        radius: 'md',
+        title: 'Hey, Neighbour! 👋 ',
+        message: `Welcome to your new community, ${formik.values.firstName}!`,
+      });
     } catch (error) {
+      console.error('Verification Error:', error);
       notifications.show({
         title: 'Verification Error',
-        message: 'Failed to verify email. Please try again.',
+        message: 'Failed to verify email. Please contact an administrator.',
         color: 'red',
       });
     }
@@ -286,9 +320,16 @@ export const SignUp = () => {
                 firstName={formik.values.firstName}
                 familyName={formik.values.familyName}
                 preferredUsername={formik.values.preferredUsername}
+                bio={formik.values.bio}
                 phoneNumber={formik.values.phoneNumber}
+                pronouns={formik.values.pronouns}
+                birthday={formik.values.birthday}
+                kids={formik.values.kids}
+                pets={formik.values.pets}
+                profilePic={formik.values.profilePic}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                setFieldValue={formik.setFieldValue}
                 errors={formik.errors}
                 touched={formik.touched}
               />
