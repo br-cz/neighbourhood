@@ -29,17 +29,84 @@ describe('timeUtils', () => {
 
   //1.3
   describe('formatPostedAt', () => {
+    const generatePastDate = (interval: string, unitsAgo: number) => {
+      const date = new Date();
+      switch (interval) {
+        case 'm':
+          date.setMinutes(date.getMinutes() - unitsAgo);
+          break;
+        case 'h':
+          date.setHours(date.getHours() - unitsAgo);
+          break;
+        case 'd':
+          date.setDate(date.getDate() - unitsAgo);
+          break;
+        case 'w':
+          date.setDate(date.getDate() - unitsAgo * 7);
+          break;
+        case 'mo':
+          date.setMonth(date.getMonth() - unitsAgo);
+          break;
+        case 'y':
+          date.setFullYear(date.getFullYear() - unitsAgo);
+          break;
+        default:
+          throw new Error('Invalid interval');
+      }
+      return date.toISOString();
+    };
+
     it('returns "Just now" for dates less than a minute ago', () => {
       const now = new Date().toISOString();
       expect(formatPostedAt(now)).toBe('Just now');
     });
-    it('handles transitions between time intervals correctly', () => {
-      const slightlyLessThanMinute = Date.now() - 59 * 1000;
-      const slightlyMoreThanMinute = Date.now() - 61 * 1000;
-      expect(formatPostedAt(new Date(slightlyLessThanMinute).toISOString())).toBe('Just now');
-      expect(formatPostedAt(new Date(slightlyMoreThanMinute).toISOString())).toBe('1m ago');
+
+    it('handles minutes ago correctly', () => {
+      const fiveMinutesAgo = generatePastDate('m', 5);
+      const fiftyNineMinutesAgo = generatePastDate('m', 59);
+      expect(formatPostedAt(fiveMinutesAgo)).toBe('5m ago');
+      expect(formatPostedAt(fiftyNineMinutesAgo)).toBe('59m ago');
+    });
+
+    it('handles hours ago correctly', () => {
+      const twoHoursAgo = generatePastDate('h', 2);
+      const twentyThreeHoursAgo = generatePastDate('h', 23);
+      expect(formatPostedAt(twoHoursAgo)).toBe('2h ago');
+      expect(formatPostedAt(twentyThreeHoursAgo)).toBe('23h ago');
+    });
+
+    it('handles days ago correctly', () => {
+      const threeDaysAgo = generatePastDate('d', 4);
+      const sixDaysAgo = generatePastDate('d', 7);
+      expect(formatPostedAt(threeDaysAgo)).toBe('3d ago');
+      expect(formatPostedAt(sixDaysAgo)).toBe('6d ago');
+    });
+
+    it('handles weeks ago correctly', () => {
+      const oneWeekAgo = generatePastDate('w', 2);
+      const threeWeeksAgo = generatePastDate('w', 4);
+      expect(formatPostedAt(oneWeekAgo)).toBe('1w ago');
+      expect(formatPostedAt(threeWeeksAgo)).toBe('3w ago');
+    });
+
+    it('handles months ago correctly', () => {
+      const threeMonthsAgo = generatePastDate('mo', 4);
+      const elevenMonthsAgo = generatePastDate('mo', 11);
+      expect(formatPostedAt(threeMonthsAgo)).toBe('3mo ago');
+      expect(formatPostedAt(elevenMonthsAgo)).toBe('11mo ago');
+    });
+
+    it('handles years ago correctly', () => {
+      const twoYearsAgo = generatePastDate('y', 2);
+      expect(formatPostedAt(twoYearsAgo)).toBe('2y ago');
+    });
+
+    it('returns "A long time ago" for very old dates', () => {
+      const ancientDate = new Date('1990-01-01').toISOString();
+      expect(formatPostedAt(ancientDate)).toBe('A long time ago');
     });
   });
+
 
   // 1.4
   describe('combineDateTime', () => {
