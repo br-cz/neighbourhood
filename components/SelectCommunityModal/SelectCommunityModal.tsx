@@ -7,10 +7,10 @@ import { notifications } from '@mantine/notifications';
 import { IconPlus } from '@tabler/icons-react';
 import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
 import { Community } from '@/src/API';
-import { SelectCommunity } from '../SignUp/SelectCommunity';
 import { useFormik } from 'formik';
 import { selectedCommunityModalSchema } from './selectCommunityModalValidation';
 import { commmunitySelectHandler } from './communitySelectHandler';
+import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 
 interface SelectCommunityModalProps {
   opened: boolean;
@@ -77,15 +77,14 @@ export default function SelectCommunityModal({
         scrollAreaComponent={ScrollArea.Autosize}
       >
         <form onSubmit={formik.handleSubmit}>
-          <SelectCommunity
-            communities={availableCommunities}
-            loading={loading}
-            setFieldValue={formik.setFieldValue}
-            onChange={formik.handleChange}
-            selectedCommunity={formik.values.selectedCommunity}
-            errors={formik.errors}
-            touched={formik.touched}
-          />
+          {availableCommunities.map((community: Community) => (
+            <CommunityListItem
+              community={community}
+              onSelect={() => formik.setFieldValue('selectedCommunity', community.id)}
+              selected={formik.values.selectedCommunity === community.id}
+              isAnyCommunitySelected={!!formik.values.selectedCommunity}
+            />
+          ))}
           <Group justify="end" mt="xl" gap="xl">
             <Button radius="md" onClick={onClose}>
               Cancel

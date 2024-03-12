@@ -9,13 +9,19 @@ import { EmailVerify } from '@/components/SignUp/EmailVerify';
 
 const mockVerificationCode = jest.fn();
 
+const addListenerMock = jest.fn((event, callback) => {
+  if (event === 'place_changed') {
+    callback();
+  }
+});
+
 beforeAll(() => {
   const maps = {
     places: {
       Autocomplete: jest.fn().mockImplementation(() => ({
-        addListener: jest.fn(),
+        addListener: addListenerMock,
         getPlace: jest.fn().mockReturnValue({
-          formatted_address: '123 Main St, Anytown, CA',
+          formatted_address: '88 Briarcliff Bay Winnipeg, MB R3T 3H7',
           geometry: {
             location: {
               lat: jest.fn().mockReturnValue('123'),
@@ -83,7 +89,13 @@ const completeStep2 = async () => {
   await waitFor(() => {
     expect(screen.getByTestId('address')).toBeInTheDocument();
   });
-  fireEvent.change(screen.getByTestId('address'), { target: { value: '25 Smith St.' } });
+  fireEvent.change(screen.getByTestId('address'), {
+    target: { value: '88 Briarcliff Bay Winnipeg, MB R3T 3H7' },
+  });
+  await waitFor(() => {
+    expect(screen.getByText(/Continue/i)).not.toBeDisabled();
+  });
+  screen.debug();
   fireEvent.click(screen.getByText(/Continue/i));
 };
 
@@ -285,7 +297,13 @@ describe('Step 2: Address Input', () => {
     fireEvent.click(screen.getByText(/Continue/i));
     await waitFor(
       () => {
-        expect(screen.getByText('Address is required')).toBeInTheDocument();
+        expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Oops!',
+            message:
+              'You must select an address from the dropdown list. Please select an address and proceed.',
+          })
+        );
       },
       { timeout: 1000 }
     );
