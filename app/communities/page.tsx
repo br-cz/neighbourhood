@@ -103,6 +103,7 @@ export default function CommunitiesPage() {
                 leftSection={<IconPlus size={15} />}
                 onClick={open}
                 disabled={userCommunities.length === 3}
+                data-testid = "add-community-btn"
               >
                 Add New
               </Button>

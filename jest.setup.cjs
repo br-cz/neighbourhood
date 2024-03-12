@@ -60,12 +60,12 @@ jest.mock('@/src/hooks/usersCustomHooks', () => ({
   useCurrentUser: jest.fn(() => ({
     user: {
       id: 'user1',
-      username: 'testUser',
+      username: 'testUser1',
       email: 'test@example.com',
       postalCode: '12345',
       firstName: 'Test',
       lastName: 'User',
-      selectedCommunity: 'communityId',
+      selectedCommunity: 'community1',
       location: 'Test Location',
       // age: 30,
       // bio: 'This is a test bio.',
@@ -80,10 +80,23 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
   useCurrentCommunity: jest.fn(() => ({
     community: {
       id: 'community1',
-      name: 'Test Community',
+      name: 'Test Community1',
       location: 'Test Location',
       // coordinates: '123, 456',
       image: 'path/to/communityImage.jpg',
+      // members: ['user1', 'user2', 'user3'],
+      members: [
+        {
+          id: 'memberid1',
+          userId: 'user1',
+          user: {
+            id: 'user1',
+            username: 'testUser1',
+          },
+          _deleted: false,
+        },
+      ],
+      posts: ['post1', 'post2', 'post3'],
     },
   })),
 
@@ -95,7 +108,18 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
         location: 'Test Location',
         // coordinates: '123, 456',
         image: 'path/to/communityImage.jpg',
-        members: ['user1', 'user2', 'user3'],
+        // members: ['user1', 'user2', 'user3'],
+        members: [
+          {
+            id: 'memberid1',
+            userId: 'user1',
+            user: {
+              id: 'user1',
+              username: 'testUser1',
+            },
+            _deleted: false,
+          },
+        ],
         posts: ['post1', 'post2', 'post3'],
       },
 
@@ -136,12 +160,14 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
           lastName: 'User1',
           selectedCommunity: 'community1',
           location: 'Test Location',
+
           // age: 30,
           // bio: 'This is a test bio.',
           // profilePic: 'path/to/profilePic.jpg',
           // pets: 1,
           // kids: 2,
         },
+        _deleted: false,
       },
 
       {

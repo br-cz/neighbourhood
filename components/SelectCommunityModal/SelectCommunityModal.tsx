@@ -75,6 +75,7 @@ export default function SelectCommunityModal({
         }}
         centered
         scrollAreaComponent={ScrollArea.Autosize}
+        data-testid='select-community-modal'
       >
         <form onSubmit={formik.handleSubmit}>
           <SelectCommunity
@@ -87,7 +88,7 @@ export default function SelectCommunityModal({
             touched={formik.touched}
           />
           <Group justify="end" mt="xl" gap="xl">
-            <Button radius="md" onClick={onClose}>
+            <Button radius="md" onClick={onClose} data-testid='cancel-join-community-btn'>
               Cancel
             </Button>
             <Button

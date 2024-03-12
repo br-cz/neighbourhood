@@ -42,6 +42,8 @@ export default function CommunityCard({
   const buttonIcon =
     community.id === getCurrentCommunityID() ? <IconCheck size={15} /> : <IconPlus size={15} />;
 
+    console.log('CommunityCard Rendered, Community:', community);
+
   return (
     <Stack align="center">
       <Card
@@ -52,6 +54,7 @@ export default function CommunityCard({
           root: '.mantine-Card-root',
         }}
         styles={{ root: { padding: 30 } }}
+        data-testid='community-card'
       >
         <Grid align="stretch">
           <Grid.Col span={2}>
@@ -83,7 +86,7 @@ export default function CommunityCard({
               align="flex-end"
               style={{ height: '100%' }}
             >
-              <Button size="sm" variant="outline" onClick={onSelect} leftSection={buttonIcon}>
+              <Button size="sm" variant="outline" onClick={onSelect} leftSection={buttonIcon} data-testid='select-community-btn'>
                 {selectButtonText}
               </Button>
               <Button
@@ -92,6 +95,7 @@ export default function CommunityCard({
                 color="red"
                 disabled={disableLeaveButton || !currentUserMemberObject}
                 onClick={onDeselect}
+                data-testid='leave-community-btn'
               >
                 Leave
               </Button>
