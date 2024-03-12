@@ -116,6 +116,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
   return (
     <Modal
       opened={opened}
+      data-testid="customize-profile-modal"
       onClose={() => {
         onClose();
         formik.resetForm();
@@ -130,7 +131,13 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
     >
       <form onSubmit={formik.handleSubmit}>
         <Group justify="center">
-          <Box w={150} h={150} onClick={handleImageUploadClick} className={classes.avatar}>
+          <Box
+            w={150}
+            h={150}
+            onClick={handleImageUploadClick}
+            className={classes.avatar}
+            data-testid="profile-pic-upload"
+          >
             {previewImageUrl ? (
               <Image
                 src={previewImageUrl}
