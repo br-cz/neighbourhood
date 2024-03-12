@@ -3,6 +3,7 @@ import { getCommunity, listCommunities } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
 import { switchCommunity } from '@/src/graphql/mutations';
 import { updateCommunity } from '@/src/graphql/mutations';
+import { getUserAPI } from './user';
 
 const client = generateClient();
 export const getCurrentUserID = () => JSON.parse(localStorage.getItem('currentUserID')!);
@@ -30,6 +31,18 @@ export const getCommunityAPI = async (communityId: string) => {
   } catch (error: any) {
     throw new HttpError(error.message, error.statusCode || 500);
   }
+};
+
+export const getRelevantCommunitiesAPI = async (userId: string) => {
+  const user = await getUserAPI(userId);
+    if (user?.relevantCommunities) {
+      const communityPromises = user.relevantCommunities.map(communityId =>
+          getCommunityAPI(communityId)
+        );
+      const relevantCommunities = await Promise.all(communityPromises);
+      return relevantCommunities;
+  }
+  return null;
 };
 
 export const getCurrentCommunityAPI = async () => {

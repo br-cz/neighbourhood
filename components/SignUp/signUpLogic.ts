@@ -60,6 +60,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         kids: values.kids,
         pets: values.pets,
         postalCode: '',
+        relevantCommunities: values.relevantCommunities,
       };
 
       console.log('createUserInput:', createUserInput);
