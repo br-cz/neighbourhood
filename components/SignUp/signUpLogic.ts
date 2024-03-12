@@ -65,7 +65,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
       console.log('createUserInput:', createUserInput);
 
       await createUserAPI(createUserInput);
-      await createUserCommunityAPI(cognitoResponse.userId, values.selectedCommunity[0]);
+      await createUserCommunityAPI(cognitoResponse.userId, values.selectedCommunity);
     }
 
     console.log('Sign up success:', cognitoResponse.userId);
