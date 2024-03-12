@@ -9,14 +9,15 @@ interface CommunityCardProps {
   onSelect: () => void;
   currentUserID: string;
   onDeselect: () => void;
+  disableLeaveButton: boolean;
 }
-
 
 export default function CommunityCard({
   community,
   currentUserID,
   onSelect,
   onDeselect,
+  disableLeaveButton,
 }: CommunityCardProps) {
   // Get the current user's member object from the community
   const currentUserMemberObject = community.members?.items?.find(
@@ -41,15 +42,17 @@ export default function CommunityCard({
   const buttonIcon =
     community.id === getCurrentCommunityID() ? <IconCheck size={15} /> : <IconPlus size={15} />;
 
-
-
-
-
   return (
     <Stack align="center">
-      <Card shadow="md" withBorder w="32vw" classNames={{
-        root: '.mantine-Card-root',
-      }} styles={{root:{ padding:30}}}>
+      <Card
+        shadow="md"
+        withBorder
+        w="32vw"
+        classNames={{
+          root: '.mantine-Card-root',
+        }}
+        styles={{ root: { padding: 30 } }}
+      >
         <Grid align="stretch">
           <Grid.Col span={2}>
             <Avatar
@@ -87,7 +90,7 @@ export default function CommunityCard({
                 size="sm"
                 variant="filled"
                 color="red"
-                disabled={!currentUserMemberObject}
+                disabled={disableLeaveButton || !currentUserMemberObject}
                 onClick={onDeselect}
               >
                 Leave
