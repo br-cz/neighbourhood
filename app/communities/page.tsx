@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { useAuth } from '@/components/Authorization/useAuth';
-import { Button, Group, Title, Stack, Loader, Flex, Text, Modal } from '@mantine/core';
+import { Button, Group, Title, Stack, Loader, Flex, Text, Modal, Tooltip } from '@mantine/core';
 import CommunityCard from '@/components/CommunityCard/CommunityCard';
 import { IconPlus } from '@tabler/icons-react';
 import {
@@ -57,6 +57,7 @@ export default function CommunitiesPage() {
                 onDeselect={() => {
                   openConfirmation(), setSelectedCommunity(community);
                 }}
+                disableLeaveButton={userCommunities.length <= 1} // Pass true if there's only one community
               />
             ))}
             <Modal
@@ -92,9 +93,20 @@ export default function CommunitiesPage() {
               </Group>
             </Modal>
             {/* <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 1 }} /> */}
-            <Button size="md" variant="outline" leftSection={<IconPlus size={15} />} onClick={open}>
-              Add New
-            </Button>
+            <Tooltip
+              label="You can only join a maximum of 3 communities!"
+              disabled={userCommunities.length < 3}
+            >
+              <Button
+                size="md"
+                variant="outline"
+                leftSection={<IconPlus size={15} />}
+                onClick={open}
+                disabled={userCommunities.length === 3}
+              >
+                Add New
+              </Button>
+            </Tooltip>
           </Stack>
           <SelectCommunityModal
             opened={openedModal}

@@ -5,7 +5,6 @@ import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title, Text } fro
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
-import { useAuth } from '@/components/Authorization/useAuth';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
 import { PostCard } from '@/components/PostCard/PostCard';
 import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
@@ -18,10 +17,8 @@ export default function HomePage() {
   const { posts, loading } = useFetchPosts(refresh);
   const { userLikes } = useUserLikes();
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
-  const { user } = useAuth();
   const [sortQuery, setSortQuery] = useState<string | null>(null);
 
-  if (!user) return null;
   const toggleRefresh = () => setRefresh((flag) => !flag);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,10 +33,11 @@ export default function HomePage() {
         <Group>
           <Select
             radius="md"
-            placeholder="Date: New to Old"
+            placeholder="Sort by..."
+            defaultValue="Newly Posted"
             onChange={setSortQuery}
             value={sortQuery}
-            data={['Date: New to Old', 'Date: Old to New', 'First Name: (A-Z)', 'Last Name: (A-Z)']}
+            data={['Newly Posted', 'Oldest']}
           />
           <TextInput
             radius="md"

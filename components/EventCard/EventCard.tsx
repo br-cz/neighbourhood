@@ -3,7 +3,7 @@ import { Card, Image, Text, Button, Group, Center, Avatar, Stack } from '@mantin
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './EventCard.module.css';
-import { Event } from '@/src/API';
+import { Event } from '@/types/types';
 import { formatDate, formatTime } from '@/utils/timeUtils';
 import { retrieveImage as retrieveProfilePic } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 import { retrieveImage as retrieveEventImage } from '../utils/s3Helpers/EventImageS3Helper';

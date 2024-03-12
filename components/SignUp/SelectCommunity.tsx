@@ -12,9 +12,9 @@ interface SelectCommunityProps {
   loading: boolean;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   onChange?: (e: React.ChangeEvent<any>) => void;
-  selectedCommunity: string[];
-  errors: FormikErrors<{ selectedCommunity: string[] }>;
-  touched: FormikTouched<{ selectedCommunity: Boolean[] }>;
+  selectedCommunity: string;
+  errors: FormikErrors<{ selectedCommunity: string }>;
+  touched: FormikTouched<{ selectedCommunity: Boolean }>;
 }
 
 export const SelectCommunity: React.FC<SelectCommunityProps> = ({
@@ -26,23 +26,12 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
   errors,
   touched,
 }) => {
-  const handleSelectCommunity = (id: string, isSelected: boolean) => {
-    //console.log('id inside handleSelectCommunity', id);
-
-    const prevSelected = selectedCommunity;
-    const prevArray = Array.isArray(prevSelected) ? prevSelected : [];
-    //console.log('prevArray', prevArray);
-
-    let newValue;
-    if (isSelected) {
-      newValue = prevArray.includes(id) ? prevArray : [...prevArray, id];
-    } else {
-      newValue = prevArray.filter((existingId) => existingId !== id);
-    }
-
-    setFieldValue('selectedCommunity', newValue);
+  const handleSelectCommunity = (id: string) => {
+    setFieldValue('selectedCommunity', id);
   };
-  // console.log('Touched.selectedCommunity Error', touched.selectedCommunity); //This does not work for now, so not using it as a conditional for error message display
+
+  const isAnyCommunitySelected = !!selectedCommunity;
+
   return (
     <Box w="25vw">
       <Stack mt="lg" gap="md">
@@ -52,11 +41,13 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
               {errors.selectedCommunity}
             </Text>
           )}
-          {Object.values(communities).map((community: Community) => (
+          {communities.map((community: Community) => (
             <CommunityListItem
               key={community.id}
               community={community}
-              onSelect={(isSelected) => handleSelectCommunity(community.id, isSelected)}
+              selected={selectedCommunity === community.id}
+              onSelect={() => handleSelectCommunity(community.id)}
+              isAnyCommunitySelected={isAnyCommunitySelected}
             />
           ))}
         </SimpleGrid>
