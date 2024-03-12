@@ -30,7 +30,7 @@ export default function ProfilePage() {
             onClick={() => {
               setCustomizeProfileModalOpened(true);
             }}
-            data-testid="edit-card-btn"
+            data-testid="customize-profile-btn"
           >
             Customize
           </Button>
