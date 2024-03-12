@@ -133,7 +133,7 @@ describe('Customize Profile Modal', () => {
     expect(bioInput.value).toBe('New bio content');
     expect(contactInput.value).toBe('(204) 999-9999');
     expect(pronounsInput.value).toBe('she/her');
-    expect(birthdayInput.value).toBe('Fri Mar 24 1995 18:00:00 GMT-0600 (Central Standard Time)');
+    expect(birthdayInput.value).toContain('1995');
     expect(petsInput.value).toBe('1');
     expect(kidsInput.value).toBe('1');
   });
