@@ -100,7 +100,6 @@ export const SignUp = () => {
 
   const handleNext = async () => {
     const isValid = await handleValidate(active);
-    console.log(formik.values);
 
     if (active === 1 && !isAddressValid) {
       notifications.show({

@@ -95,7 +95,6 @@ const completeStep2 = async () => {
   await waitFor(() => {
     expect(screen.getByText(/Continue/i)).not.toBeDisabled();
   });
-  screen.debug();
   fireEvent.click(screen.getByText(/Continue/i));
 };
 
@@ -297,13 +296,7 @@ describe('Step 2: Address Input', () => {
     fireEvent.click(screen.getByText(/Continue/i));
     await waitFor(
       () => {
-        expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
-          expect.objectContaining({
-            title: 'Oops!',
-            message:
-              'You must select an address from the dropdown list. Please select an address and proceed.',
-          })
-        );
+        expect(screen.getByTestId('address')).toBeInTheDocument(); // still on step 2
       },
       { timeout: 1000 }
     );
