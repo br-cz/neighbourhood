@@ -17,7 +17,6 @@ import {
   faPeopleGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { useFormik } from 'formik';
-import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
 import { LoginDetails } from '@/components/SignUp/LoginDetails.tsx';
 import { AddressInput } from './AddressInput';
 import { SelectCommunity } from './SelectCommunity';
@@ -31,7 +30,6 @@ import { handleSignIn } from '../Authorization/loginForm.client';
 const client = generateClient({});
 
 export const SignUp = () => {
-  const { communities, loading } = useFetchAllCommunities();
   const [userId, setUserId] = useState<string | null>(null);
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [active, setActive] = useState(0);
@@ -293,8 +291,6 @@ export const SignUp = () => {
                 If you&apos;re in-between communities - don&apos;t worry, you can join more later.
               </Text>
               <SelectCommunity
-                communities={communities}
-                loading={loading}
                 setFieldValue={formik.setFieldValue}
                 onChange={formik.handleChange}
                 errors={formik.errors}
