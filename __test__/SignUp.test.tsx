@@ -327,7 +327,7 @@ describe('Step 3: Community Select', () => {
     fireEvent.click(screen.getByText(/Continue/i));
     await waitFor(
       () => {
-        expect(screen.getByText('You must select at least one community')).toBeInTheDocument();
+        expect(screen.getByText('Selecting a community required.')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
