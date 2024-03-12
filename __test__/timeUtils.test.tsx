@@ -76,15 +76,15 @@ describe('timeUtils', () => {
     });
 
     it('handles days ago correctly', () => {
-      const threeDaysAgo = generatePastDate('d', 4);
-      const sixDaysAgo = generatePastDate('d', 7);
+      const threeDaysAgo = generatePastDate('d', 3);
+      const sixDaysAgo = generatePastDate('d', 6);
       expect(formatPostedAt(threeDaysAgo)).toBe('3d ago');
       expect(formatPostedAt(sixDaysAgo)).toBe('6d ago');
     });
 
     it('handles weeks ago correctly', () => {
-      const oneWeekAgo = generatePastDate('w', 2);
-      const threeWeeksAgo = generatePastDate('w', 4);
+      const oneWeekAgo = generatePastDate('w', 1);
+      const threeWeeksAgo = generatePastDate('w', 3);
       expect(formatPostedAt(oneWeekAgo)).toBe('1w ago');
       expect(formatPostedAt(threeWeeksAgo)).toBe('3w ago');
     });
@@ -141,7 +141,7 @@ describe('timeUtils', () => {
   describe('utcToISO', () => {
     it('converts Mantine DateValue to ISO strings', () => {
       const dateValue = new Date('2023-08-29');
-      expect(utcToISO(dateValue)).toBe('2023-08-28');
+      expect(utcToISO(dateValue)).toBe('2023-08-29');
     });
 
     it('handles invalid inputs', () => {
