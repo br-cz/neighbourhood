@@ -25,7 +25,10 @@ export default function SelectCommunityModal({
 }: SelectCommunityModalProps) {
   const { user } = useAuth();
   const { communities, loading } = useFetchAllCommunities();
-  //console.log('Communities in selectCommunity Modal:', communities);
+
+  const availableCommunities = communities.filter(
+    (community: Community) => !userCommunities.some((uc: Community) => uc.id === community.id)
+  );
 
   const [isLoading, handlers] = useDisclosure();
   const formik = useFormik({
@@ -75,7 +78,7 @@ export default function SelectCommunityModal({
       >
         <form onSubmit={formik.handleSubmit}>
           <SelectCommunity
-            communities={communities}
+            communities={availableCommunities}
             loading={loading}
             setFieldValue={formik.setFieldValue}
             onChange={formik.handleChange}
