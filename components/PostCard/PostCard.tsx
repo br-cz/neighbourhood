@@ -84,6 +84,7 @@ export function PostCard({ post, isLiked }: PostCardProps) {
           variant={liked ? 'outline' : 'filled'}
           leftSection={<FontAwesomeIcon icon={faHeart} />}
           onClick={handleLike}
+          data-testid="like-button"
         >
           {liked ? 'Liked' : 'Like'}
         </Button>
@@ -107,6 +108,7 @@ export function PostCard({ post, isLiked }: PostCardProps) {
               size="sm"
               onChange={formik.handleChange}
               value={formik.values.content}
+              data-testid="comment-input"
               rightSectionWidth={42}
               rightSection={
                 <ActionIcon
@@ -114,6 +116,7 @@ export function PostCard({ post, isLiked }: PostCardProps) {
                   radius="xl"
                   color="dark.6"
                   variant="light"
+                  data-testid="submit-comment"
                   onClick={() => {
                     formik.validateForm().then((errors) => {
                       console.log(errors);
