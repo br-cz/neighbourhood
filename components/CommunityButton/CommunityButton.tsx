@@ -3,7 +3,6 @@ import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
 import classes from './CommunityButton.module.css';
-import { useData } from '@/contexts/DataContext';
 import { retrieveImage } from '../utils/s3Helpers/CommunityImageS3Helper';
 import { useCurrentCommunity } from '@/src/hooks/communityCustomHooks';
 
