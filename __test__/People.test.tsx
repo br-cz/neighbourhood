@@ -272,6 +272,18 @@ describe('People Page', () => {
   });
 
   //1.14
+  test('Clicking on a user opens a profile preview', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getAllByText('Bojangle Williams')[0]).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getAllByText('Bojangle Williams')[0]);
+    await waitFor(() => {
+      expect(screen.getByTestId('preview-card')).toBeInTheDocument();
+    });
+  });
+
+  //1.15
   test('Clicking on a friend renders their preview correctly', async () => {
     renderComponent();
     await waitFor(() => {
@@ -292,7 +304,7 @@ describe('People Page', () => {
     });
   });
 
-  //1.15
+  //1.16
   test('Clicking on a non-friend renders their preview correctly', async () => {
     renderComponent();
     await waitFor(() => {
@@ -313,7 +325,7 @@ describe('People Page', () => {
     });
   });
 
-  //1.16
+  //1.17
   test('Clicking on a friend that hasnt filled in their details returns N/A', async () => {
     renderComponent();
     await waitFor(() => {
@@ -332,7 +344,7 @@ describe('People Page', () => {
     });
   });
 
-  //1.17
+  //1.18
   test('Clicking on a user that hasnt filled in their details returns N/A', async () => {
     renderComponent();
     await waitFor(() => {
