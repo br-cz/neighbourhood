@@ -112,6 +112,7 @@ export const createUserAPI = async (user: any) => {
           contact: user.contact || null,
           birthday: user.birthday || null,
           pronouns: user.pronouns || null,
+          relevantCommunities: user.relevantCommunities || [],
         },
       },
     });
