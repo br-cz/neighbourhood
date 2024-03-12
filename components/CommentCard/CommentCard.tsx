@@ -20,7 +20,7 @@ export function CommentCard({ comment }: CommentCardProps) {
   }, [comment?.author?.profilePic]);
 
   return (
-    <Box className={classes.comment} data-testid="post-card">
+    <Box className={classes.comment} data-testid="comment-card">
       <Group align="center" gap="lg">
         <Group align="center" gap="xs">
           <Avatar src={profilePic} alt="Profile Pic" radius="xl" size={24} />
