@@ -57,6 +57,7 @@ export default function CommunitiesPage() {
                 onDeselect={() => {
                   openConfirmation(), setSelectedCommunity(community);
                 }}
+                disableLeaveButton={userCommunities.length <= 1} // Pass true if there's only one community
               />
             ))}
             <Modal

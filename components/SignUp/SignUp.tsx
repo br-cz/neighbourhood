@@ -40,7 +40,7 @@ export const SignUp = () => {
       password: '',
       confirmPassword: '',
       address: '',
-      selectedCommunity: '', //should eventually change to an array since it's a multi-select
+      selectedCommunity: '',
       preferredUsername: '',
       firstName: '',
       familyName: '',
