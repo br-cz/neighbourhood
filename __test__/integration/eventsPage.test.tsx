@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { render, waitFor, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import EventsPage from '@/app/events/page';
 import { DataProvider } from '@/contexts/DataContext';
-import { Visibility } from '@/src/API';
 import { MantineProvider } from '@mantine/core';
 import { CreateEventDrawer } from '@/components/CreateEventDrawer/CreateEventDrawer';
-import fs from 'fs';
-import path from 'path';
-import { prettyDOM } from '@testing-library/dom';
 
 let mockEvents = {
   events: [
