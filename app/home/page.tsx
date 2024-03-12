@@ -33,10 +33,11 @@ export default function HomePage() {
         <Group>
           <Select
             radius="md"
-            placeholder="Date: New to Old"
+            placeholder="Sort by..."
+            defaultValue="Newly Posted"
             onChange={setSortQuery}
             value={sortQuery}
-            data={['Date: New to Old', 'Date: Old to New', 'First Name: (A-Z)', 'Last Name: (A-Z)']}
+            data={['Newly Posted', 'Oldest']}
           />
           <TextInput
             radius="md"

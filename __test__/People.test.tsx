@@ -21,6 +21,19 @@ const mockData = {
       firstName: 'Bojangle',
       lastName: 'Williams',
       username: 'bjwilliams',
+      bio: 'I am a test user!',
+      contact: '(204) 456-7890',
+      address: '123 Test St.',
+      birthday: '1990-05-12',
+      pets: 2,
+      kids: 3,
+      pronouns: 'He/Him',
+    },
+    {
+      id: '9',
+      firstName: 'Duck',
+      lastName: 'Swanson',
+      username: 'dswanson',
     },
   ],
   incomingFriendRequests: [
@@ -45,6 +58,13 @@ const mockData = {
       firstName: 'Bobby',
       lastName: 'Biggs',
       username: 'bigrobert',
+      contact: '(204) 999-9999',
+      address: '999 Test St.',
+      birthday: '1980-05-12',
+      pets: 4,
+      kids: 1,
+      pronouns: 'They/Them',
+      bio: 'I am a test user also!',
     },
     {
       id: '5',
@@ -144,8 +164,8 @@ describe('People Page', () => {
   test('Renders user friends correctly', async () => {
     renderComponent();
     await waitFor(() => {
-      expect(screen.getAllByText('Bojangle Williams').length).toBe(numFriendCards);
-      expect(screen.getAllByText('bjwilliams').length).toBe(numFriendCards);
+      expect(screen.getAllByText('Bojangle Williams').length).toBe(2);
+      expect(screen.getAllByText('bjwilliams').length).toBe(2);
       expect(screen.getAllByTestId('friends-btn').length).toBe(numFriendCards);
     });
   });
@@ -248,6 +268,97 @@ describe('People Page', () => {
     await waitFor(() => {
       expect(useDeleteFriend).toHaveBeenCalled();
       expect(screen.getAllByTestId('friends-btn').length).toBe(numFriendCards - 1);
+    });
+  });
+
+  //1.14
+  test('Clicking on a user opens a profile preview', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getAllByText('Bojangle Williams')[0]).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getAllByText('Bojangle Williams')[0]);
+    await waitFor(() => {
+      expect(screen.getByTestId('preview-card')).toBeInTheDocument();
+    });
+  });
+
+  //1.15
+  test('Clicking on a friend renders their preview correctly', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getAllByText('Bojangle Williams')[0]).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getAllByText('Bojangle Williams')[0]);
+    await waitFor(() => {
+      expect(screen.getByTestId('preview-card')).toBeInTheDocument();
+      const previewCardText = screen.getByTestId('preview-card').textContent;
+      expect(previewCardText).toContain('Bojangle Williams');
+      expect(previewCardText).toContain('I am a test user!');
+      expect(previewCardText).toContain('123 Test St.');
+      expect(previewCardText).toContain('(204) 456-7890');
+      expect(previewCardText).toContain('1990');
+      expect(previewCardText).toContain('2');
+      expect(previewCardText).toContain('3');
+      expect(previewCardText).toContain('He/Him');
+    });
+  });
+
+  //1.16
+  test('Clicking on a non-friend renders their preview correctly', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getByText('Bobby Biggs')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText('Bobby Biggs'));
+    await waitFor(() => {
+      expect(screen.getByTestId('preview-card')).toBeInTheDocument();
+      const previewCardText = screen.getByTestId('preview-card').textContent;
+      expect(previewCardText).toContain('Bobby Biggs');
+      expect(previewCardText).toContain('I am a test user also!');
+      expect(previewCardText).not.toContain('999 Test St.');
+      expect(previewCardText).not.toContain('(204) 999-9999');
+      expect(previewCardText).not.toContain('1980');
+      expect(previewCardText).toContain('4');
+      expect(previewCardText).toContain('1');
+      expect(previewCardText).toContain('They/Them');
+    });
+  });
+
+  //1.17
+  test('Clicking on a friend that hasnt filled in their details returns N/A', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getAllByText('Duck Swanson')[0]).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getAllByText('Duck Swanson')[0]);
+    await waitFor(() => {
+      expect(screen.getByTestId('preview-card')).toBeInTheDocument();
+      const previewCardText = screen.getByTestId('preview-card').textContent;
+      expect(previewCardText).toContain('Duck Swanson');
+      expect(previewCardText).toContain('Excited to be part of the neighbourhood!');
+      expect(previewCardText).toContain('Contact: N/A');
+      expect(previewCardText).toContain('Birthday: N/A');
+      expect(previewCardText).toContain('Pets: N/A');
+      expect(previewCardText).toContain('Kids: N/A');
+    });
+  });
+
+  //1.18
+  test('Clicking on a user that hasnt filled in their details returns N/A', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getByText('Daniel Long')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText('Daniel Long'));
+    await waitFor(() => {
+      expect(screen.getByTestId('preview-card')).toBeInTheDocument();
+      const previewCardText = screen.getByTestId('preview-card').textContent;
+      expect(previewCardText).toContain('Daniel Long');
+      expect(previewCardText).toContain('Excited to be part of the neighbourhood!');
+      expect(previewCardText).toContain('Age:');
+      expect(previewCardText).toContain('Pets: N/A');
+      expect(previewCardText).toContain('Kids: N/A');
     });
   });
 });

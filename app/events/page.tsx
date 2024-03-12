@@ -11,7 +11,7 @@ import { CreateEventDrawer } from '@/components/CreateEventDrawer/CreateEventDra
 import { ViewEventModal } from '@/components/ViewEventModal/ViewEventModal';
 import { useAuth } from '@/components/Authorization/useAuth';
 import { useFetchEvents } from '@/src/hooks/eventsCustomHooks';
-import { Event } from '@/src/API';
+import { Event } from '@/types/types';
 import { filterAndSortEvents } from '@/components/utils/eventUtils';
 
 export default function EventsPage() {
@@ -48,7 +48,7 @@ export default function EventsPage() {
             placeholder="Newly Posted"
             onChange={setSortQuery}
             value={sortQuery}
-            data={['Newly Posted', 'Today', 'This Week', 'Next Week']}
+            data={['Newly Posted', 'Today', 'This Week', 'This Month']}
           />
           <TextInput
             radius="md"
