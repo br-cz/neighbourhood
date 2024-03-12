@@ -25,18 +25,21 @@ export default function SelectCommunityModal({
 }: SelectCommunityModalProps) {
   const { user } = useAuth();
   const { communities, loading } = useFetchAllCommunities();
-  //console.log('Communities in selectCommunity Modal:', communities);
+
+  const availableCommunities = communities.filter(
+    (community: Community) => !userCommunities.some((uc: Community) => uc.id === community.id)
+  );
 
   const [isLoading, handlers] = useDisclosure();
   const formik = useFormik({
     initialValues: {
-      selectedCommunity: [],
+      selectedCommunity: '',
     },
 
     validationSchema: selectedCommunityModalSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       handlers.open();
-      if (values.selectedCommunity.length + userCommunities.length > 3) {
+      if (values.selectedCommunity != '' && userCommunities.length == 3) {
         notifications.show({
           radius: 'md',
           color: 'red',
@@ -49,9 +52,7 @@ export default function SelectCommunityModal({
         onClose();
         return;
       }
-      values.selectedCommunity.forEach(async (communityId) => {
-        await commmunitySelectHandler(communityId, communities, user, userCommunities);
-      });
+      await commmunitySelectHandler(values.selectedCommunity, communities, user, userCommunities);
       handlers.close();
       formik.resetForm();
       onClose();
@@ -77,7 +78,7 @@ export default function SelectCommunityModal({
       >
         <form onSubmit={formik.handleSubmit}>
           <SelectCommunity
-            communities={communities}
+            communities={availableCommunities}
             loading={loading}
             setFieldValue={formik.setFieldValue}
             onChange={formik.handleChange}
@@ -109,7 +110,7 @@ export default function SelectCommunityModal({
               }}
               loading={isLoading}
             >
-              Select
+              Join
             </Button>
           </Group>
         </form>

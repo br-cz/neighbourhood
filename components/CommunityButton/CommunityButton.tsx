@@ -5,13 +5,14 @@ import Link from 'next/link';
 import classes from './CommunityButton.module.css';
 import { useData } from '@/contexts/DataContext';
 import { retrieveImage } from '../utils/s3Helpers/CommunityImageS3Helper';
+import { useCurrentCommunity } from '@/src/hooks/communityCustomHooks';
 
 interface CommunityButtonProps {
   active: boolean;
 }
 
 export function CommunityButton({ active }: CommunityButtonProps) {
-  const { community } = useData();
+  const { community } = useCurrentCommunity();
   const [communityImage, setCommunityImage] = useState<string>('');
 
   useEffect(() => {

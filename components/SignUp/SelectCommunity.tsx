@@ -11,23 +11,17 @@ interface SelectCommunityProps {
   loading: boolean;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   onChange?: (e: React.ChangeEvent<any>) => void;
-  selectedCommunity: string[];
-  errors: FormikErrors<{ selectedCommunity: string[] }>;
-  touched: FormikTouched<{ selectedCommunity: Boolean[] }>;
+  selectedCommunity: string;
+  errors: FormikErrors<{ selectedCommunity: string }>;
+  touched: FormikTouched<{ selectedCommunity: Boolean }>;
   coordinates: {
     lat: string;
     lng: string;
   };
 }
 
-interface NearestCommunity {
-  community: Community;
-  distanceKm: number;
-}
-
 export const SelectCommunity: React.FC<SelectCommunityProps> = ({
   communities,
-  loading,
   setFieldValue,
   onChange,
   selectedCommunity,
@@ -35,10 +29,6 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
   touched,
   coordinates,
 }) => {
-  const [nearestCommunities, setNearestCommunities] = useState<NearestCommunity[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedCommunityId, setSelectedCommunityId] = useState('');
-
   useEffect(() => {
     const fetchCommunities = async () => {
       if (!coordinates.lat || !coordinates.lng) return;
@@ -65,24 +55,12 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
     fetchCommunities();
   }, [coordinates]);
 
-  const handleSelectCommunity = (id: string, isSelected: boolean) => {
-    setSelectedCommunityId(id);
-    //console.log('id inside handleSelectCommunity', id);
-
-    const prevSelected = selectedCommunity;
-    const prevArray = Array.isArray(prevSelected) ? prevSelected : [];
-    //console.log('prevArray', prevArray);
-
-    let newValue;
-    if (isSelected) {
-      newValue = prevArray.includes(id) ? prevArray : [...prevArray, id];
-    } else {
-      newValue = prevArray.filter((existingId) => existingId !== id);
-    }
-
-    setFieldValue('selectedCommunity', newValue);
+  const handleSelectCommunity = (id: string) => {
+    setFieldValue('selectedCommunity', id);
   };
-  // console.log('Touched.selectedCommunity Error', touched.selectedCommunity); //This does not work for now, so not using it as a conditional for error message display
+
+  const isAnyCommunitySelected = !!selectedCommunity;
+
   return (
     <Box w="25vw">
       <Stack mt="lg" gap="md">
@@ -92,11 +70,13 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
               {errors.selectedCommunity}
             </Text>
           )}
-          {Object.values(communities).map((community: Community) => (
+          {communities.map((community: Community) => (
             <CommunityListItem
               key={community.id}
               community={community}
-              onSelect={(isSelected) => handleSelectCommunity(community.id, isSelected)}
+              selected={selectedCommunity === community.id}
+              onSelect={() => handleSelectCommunity(community.id)}
+              isAnyCommunitySelected={isAnyCommunitySelected}
             />
           ))}
         </SimpleGrid>
