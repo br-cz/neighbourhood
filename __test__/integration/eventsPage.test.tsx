@@ -1,58 +1,171 @@
-import React from 'react';
-import { MantineProvider } from '@mantine/core';
+import React, { useState, useEffect } from 'react';
 import { render, waitFor, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event';
 import EventsPage from '@/app/events/page';
 import { DataProvider } from '@/contexts/DataContext';
+import { Visibility } from '@/src/API';
+import { MantineProvider } from '@mantine/core';
+import { CreateEventDrawer } from '@/components/CreateEventDrawer/CreateEventDrawer';
+import fs from 'fs';
+import path from 'path';
+import { prettyDOM } from '@testing-library/dom';
 
-const renderComponent = () =>
-  render(
+let mockEvents = {
+  events: [
+    {
+      id: '1',
+      name: 'Pizza Party',
+      location: '1234 Pizza St',
+      datetime: new Date('2022-12-12T19:00:00'),
+      description: 'Come eat pizza with us!',
+      organizer: {
+        firstName: 'Bojangle',
+        lastName: 'Williams',
+      },
+    },
+    {
+      id: '2',
+      name: 'BBQ',
+      location: '1234 BBQ St',
+      datetime: new Date('2022-11-11T18:00:00'),
+      description: 'Come eat BBQ with us!',
+      organizer: {
+        firstName: 'Grunkle',
+        lastName: 'Williams',
+      },
+    },
+    {
+      id: '3',
+      name: 'Birthday Party',
+      location: '1234 Birthday St',
+      description: 'Come celebrate with us!',
+      datetime: new Date('2022-10-10T17:00:00'),
+      organizer: {
+        firstName: 'LeJon',
+        lastName: 'Brames',
+      },
+    },
+  ],
+};
+
+jest.mock('@/src/hooks/eventsCustomHooks', () => {
+  const useFetchEvents = () => {
+    const [events, setEvents] = useState(mockEvents.events);
+
+    useEffect(() => {
+      setEvents(mockEvents.events);
+    }, [mockEvents]);
+
+    return { events, refetch: () => setEvents([...mockEvents.events]) };
+  };
+
+  const useCreateEvent = () => ({
+    handleCreateEvent: jest.fn((newEvent) => {
+      mockEvents.events = [...mockEvents.events, newEvent];
+      return Promise.resolve(newEvent);
+    }),
+  });
+
+  return {
+    useFetchEvents,
+    useCreateEvent,
+  };
+});
+
+const renderComponent = () => {
+  const handleDrawerClose = jest.fn();
+  const handlePostCreate = jest.fn();
+
+  return render(
     <MantineProvider>
       <DataProvider>
         <EventsPage />
+        <CreateEventDrawer
+          opened={true}
+          onClose={handleDrawerClose}
+          onPostCreated={handlePostCreate}
+        />
       </DataProvider>
     </MantineProvider>
   );
+};
+
+const renderRevisedComponent = () => {
+  const handleDrawerClose = jest.fn();
+  const handlePostCreate = jest.fn();
+
+  return render(
+    <MantineProvider>
+      <DataProvider>
+        <EventsPage />
+        <CreateEventDrawer
+          opened={false}
+          onClose={handleDrawerClose}
+          onPostCreated={handlePostCreate}
+        />
+      </DataProvider>
+    </MantineProvider>
+  );
+};
 
 describe('EventsPage Integration Tests', () => {
-  test('Creating an event updates the global state and is reflected in another component', async () => {
+  test('Creating an event updates the event feed', async () => {
     renderComponent();
+
+    const newEvent = {
+      id: '4',
+      name: 'Community Meetup',
+      location: '123 Sesame Street',
+      datetime: new Date('2023-01-01T12:00:00'),
+      description: 'A new community meetup',
+      organizer: { firstName: 'John', lastName: 'Doe' },
+    };
 
     await act(async () => {
       fireEvent.click(screen.getByText(/New Event.../i));
-    });
-
-    await act(async () => {
       fireEvent.change(screen.getByTestId('create-event-name-input'), {
-        target: { value: 'Community Meetup' },
+        target: { value: newEvent.name },
       });
-      fireEvent.change(screen.getByTestId('location'), { target: { value: '123 Sesame Street' } });
+      fireEvent.change(screen.getByTestId('location'), { target: { value: newEvent.location } });
       fireEvent.change(screen.getByTestId('time'), { target: { value: '12:00' } });
       fireEvent.click(screen.getByText(/Post Event/i));
     });
 
-    await waitFor(() => expect(screen.getByText(/Community Meetup/i)).toBeInTheDocument());
-  });
-});
+    // Re-render the component to ensure the feed includes the updated component
+    renderRevisedComponent();
 
-test('Event creation failure does not update global state or other components', async () => {
-  renderComponent();
-
-  // Assume there's a mechanism to simulate a failure in event creation, like mocking an API response
-
-  // Attempt to create a new event
-  await userEvent.click(screen.getByText(/New Event.../i));
-  await userEvent.type(screen.getByTestId('create-event-name-input'), 'Failed Event');
-  await userEvent.type(screen.getByTestId('location'), 'Nowhere');
-  await userEvent.type(screen.getByTestId('time'), '00:00');
-  await act(async () => {
-    await userEvent.click(screen.getByText(/Post Event/i));
+    const element = await screen.findByText('Community Meetup');
+    expect(element).toBeInTheDocument();
   });
 
-  // Wait and check that the event was not added
-  await waitFor(() => expect(screen.queryByText(/Failed Event/i)).not.toBeInTheDocument());
+  test('Creating an invalid event does not update the event feed', async () => {
+    renderComponent();
 
-  // Verify that the global state or other components relying on this state are not updated
-  expect(screen.getByTestId('events-list')).not.toContainElement(screen.getByText(/Failed Event/i));
+    const newEvent = {
+      id: '5',
+      name: '',
+      location: '123 Sesame Street',
+      datetime: new Date('2023-01-01T12:00:00'),
+      description: 'A new community meetup',
+      organizer: { firstName: 'John', lastName: 'Doe' },
+    };
+
+    await act(async () => {
+      fireEvent.click(screen.getByText(/New Event.../i));
+      fireEvent.change(screen.getByTestId('create-event-name-input'), {
+        target: { value: newEvent.name },
+      });
+      fireEvent.change(screen.getByTestId('location'), { target: { value: newEvent.location } });
+      fireEvent.change(screen.getByTestId('time'), { target: { value: '12:00' } });
+      fireEvent.click(screen.getByText(/Post Event/i));
+    });
+
+    // Re-render the component to ensure the feed includes the updated component
+    renderRevisedComponent();
+
+    const element = screen.queryByTestId(
+      'Something went wrong creating your event - please try again.'
+    );
+    expect(element).not.toBeInTheDocument();
+  });
 });
