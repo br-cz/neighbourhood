@@ -232,12 +232,15 @@ import { MantineProvider } from '@mantine/core';
 
     const commentButton = screen.getAllByText('Comment')[0];
     fireEvent.click(commentButton);
-
     await waitFor(() => {
-      expect(notifications.show).toHaveBeenCalledWith(
-        expect.objectContaining({
-          title: 'Oops!',
-        })
-      );
+      expect(screen.getAllByTestId('comment-input')[0]).toBeInTheDocument();
+    });
+
+    fireEvent.change(screen.getAllByTestId('comment-input')[0], {
+      target: { value: '' },
+    });
+    fireEvent.click(screen.getAllByTestId('submit-comment')[0]);
+    await waitFor(() => {
+      expect(notifications.show).toHaveBeenCalledWith(expect.objectContaining({ title: 'Oops!' }));
     });
   });
