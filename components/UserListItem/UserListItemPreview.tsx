@@ -22,7 +22,7 @@ export function UserListItemPreview({ user, relationshipStatus }: UserListItemPr
   }, [user?.profilePic]);
 
   return (
-    <Box w={500} data-testid="profile-card">
+    <Box w={500} data-testid="preview-card">
       <Stack gap="xs">
         <Group>
           <Avatar src={profilePic} size={48} radius="xl" />
