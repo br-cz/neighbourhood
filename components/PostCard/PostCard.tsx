@@ -22,7 +22,7 @@ export function PostCard({ post, isLiked }: PostCardProps) {
   const [profilePic, setProfilePic] = useState<string>('');
   const { likePost, unlikePost } = usePostLikes(post.id);
   const [liked, setLiked] = useState(false);
-  const [comments, setComments] = useState(post.comments.items);
+  const [comments, setComments] = useState(post?.comments?.items);
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
   const { handleCreateComment } = useCreateComment();
 

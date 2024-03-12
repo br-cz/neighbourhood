@@ -1,5 +1,4 @@
-import { combineDateTime } from './timeUtils';
-import { Event } from '@/src/API';
+import { Event } from '@/types/types';
 
 export function sortByFirstName(a: any, b: any): number {
   const nameA = a?.firstName?.toLowerCase();
@@ -42,8 +41,8 @@ export function filterEventsForToday(events: Event[]): Event[] {
   const endOfToday = new Date();
   endOfToday.setHours(23, 59, 59, 999);
 
-  return events.filter((events) => {
-    const eventDate = new Date(events.datetime);
+  return events.filter((event) => {
+    const eventDate = new Date(event.datetime);
     return eventDate >= today && eventDate <= endOfToday;
   });
 }
@@ -60,15 +59,14 @@ export function filterEventsForWeek(events: Event[]): Event[] {
   });
 }
 
-export function filterEventsForNextWeek(events: Event[]): Event[] {
-  const startOfNextWeek = new Date();
-  startOfNextWeek.setDate(startOfNextWeek.getDate() - startOfNextWeek.getDay() + 7);
-  startOfNextWeek.setHours(0, 0, 0, 0);
-  const endOfNextWeek = new Date(startOfNextWeek);
-  endOfNextWeek.setDate(endOfNextWeek.getDate() + 7);
-  endOfNextWeek.setHours(23, 59, 59, 999);
+export function filterEventsForThisMonth(events: Event[]): Event[] {
+  const today = new Date();
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the month
+  endOfMonth.setHours(23, 59, 59, 999);
+
   return events.filter((event) => {
     const eventDate = new Date(event.datetime);
-    return eventDate >= startOfNextWeek && eventDate <= endOfNextWeek;
+    return eventDate >= startOfMonth && eventDate <= endOfMonth;
   });
 }
