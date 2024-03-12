@@ -131,13 +131,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
     >
       <form onSubmit={formik.handleSubmit}>
         <Group justify="center">
-          <Box
-            w={150}
-            h={150}
-            onClick={handleImageUploadClick}
-            className={classes.avatar}
-            data-testid="profile-pic-upload"
-          >
+          <Box w={150} h={150} onClick={handleImageUploadClick} className={classes.avatar}>
             {previewImageUrl ? (
               <Image
                 src={previewImageUrl}
@@ -154,6 +148,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
             </Stack>
             <input
               ref={fileInputRef}
+              data-testid="profile-pic-upload"
               type="file"
               style={{ display: 'none' }}
               onChange={handleFileChange}
