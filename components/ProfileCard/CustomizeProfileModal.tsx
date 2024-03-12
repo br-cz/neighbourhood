@@ -116,6 +116,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
   return (
     <Modal
       opened={opened}
+      data-testid="customize-profile-modal"
       onClose={() => {
         onClose();
         formik.resetForm();
@@ -147,6 +148,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
             </Stack>
             <input
               ref={fileInputRef}
+              data-testid="profile-pic-upload"
               type="file"
               style={{ display: 'none' }}
               onChange={handleFileChange}
