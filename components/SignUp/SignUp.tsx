@@ -47,6 +47,13 @@ export const SignUp = () => {
       firstName: '',
       familyName: '',
       phoneNumber: '',
+      bio: '',
+      pronouns: '',
+      profilePic: null,
+      birthday: '',
+      kids: 0,
+      pets: 0,
+      relevantCommunities: [],
     },
     validationSchema: signUpSchema,
     onSubmit: async (parameters) => {
