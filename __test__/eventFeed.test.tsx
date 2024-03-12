@@ -1,7 +1,6 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import { MantineProvider } from '@mantine/core';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { DataProvider } from '@/contexts/DataContext';
 import EventsPage from '@/app/events/page';
 
 const userHooks = require('@/src/hooks/usersCustomHooks');
@@ -61,9 +60,7 @@ afterEach(() => {
 const renderComponent = () =>
   render(
     <MantineProvider>
-      <DataProvider>
-        <EventsPage />
-      </DataProvider>
+      <EventsPage />
     </MantineProvider>
   );
 

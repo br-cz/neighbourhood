@@ -4,7 +4,6 @@ import { render, waitFor, screen } from '@testing-library/react';
 import { notifications } from '@mantine/notifications';
 import userEvent from '@testing-library/user-event';
 import ProfilePage from '@/app/profile/page';
-import { DataProvider } from '@/contexts/DataContext';
 
 const Auth = require('@aws-amplify/auth');
 const UserAPI = require('@/src/api/services/user');
@@ -13,9 +12,7 @@ const UserHooks = require('@/src/hooks/usersCustomHooks');
 const renderComponent = () =>
   render(
     <MantineProvider>
-      <DataProvider>
-        <ProfilePage />
-      </DataProvider>
+      <ProfilePage />
     </MantineProvider>
   );
 

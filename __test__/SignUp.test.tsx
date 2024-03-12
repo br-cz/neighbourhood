@@ -4,7 +4,6 @@ import { modals } from '@mantine/modals';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { SignUp } from '@/components/SignUp/SignUp';
-import { DataProvider } from '@/contexts/DataContext';
 import { EmailVerify } from '@/components/SignUp/EmailVerify';
 
 const mockVerificationCode = jest.fn();
@@ -37,18 +36,14 @@ afterEach(() => {
 const renderComponent = () =>
   render(
     <MantineProvider>
-      <DataProvider>
-        <SignUp />
-      </DataProvider>
+      <SignUp />
     </MantineProvider>
   );
 
 const renderEmailVerify = () =>
   render(
     <MantineProvider>
-      <DataProvider>
-        <EmailVerify verificationCode={mockVerificationCode} />
-      </DataProvider>
+      <EmailVerify verificationCode={mockVerificationCode} />
     </MantineProvider>
   );
 

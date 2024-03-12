@@ -8,7 +8,6 @@ import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
 import '@mantine/notifications/styles.css';
 import { theme } from '../theme';
-import { DataProvider } from '@/contexts/DataContext';
 
 export const metadata = {
   title: 'neighbourhood - your community at your fingertips',
@@ -42,7 +41,7 @@ export default function RootLayout({ children }: { children: any }) {
               radius: 'md',
             }}
           >
-            <DataProvider>{children}</DataProvider>
+            {children}
           </ModalsProvider>
         </MantineProvider>
       </body>

@@ -3,7 +3,6 @@ import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { DataProvider } from '@/contexts/DataContext';
 import CommunitiesPage from '@/app/communities/page';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { utilSignOut } from '@/utils/signOutUtils';
@@ -46,9 +45,7 @@ const routerMock: Partial<NextRouter> = {
 const renderComponent = () =>
   render(
     <MantineProvider>
-      <DataProvider>
-        <CommunitiesPage />
-      </DataProvider>
+      <CommunitiesPage />
     </MantineProvider>
   );
 

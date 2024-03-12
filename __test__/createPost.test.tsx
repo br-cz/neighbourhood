@@ -3,7 +3,6 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import HomePage from '@/app/home/page';
-import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
@@ -100,9 +99,7 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
 const renderComponent = () =>
   render(
     <MantineProvider>
-      <DataProvider>
-        <HomePage />
-      </DataProvider>
+      <HomePage />
     </MantineProvider>
   );
 

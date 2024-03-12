@@ -2,7 +2,6 @@
 import { MantineProvider } from '@mantine/core';
   import { notifications } from '@mantine/notifications';
   import { render, waitFor, screen, fireEvent } from '@testing-library/react';
-  import { DataProvider } from '@/contexts/DataContext';
   import HomePage from '@/app/home/page';
 
   const userHooks = require('@/src/hooks/usersCustomHooks');
@@ -92,9 +91,7 @@ import { MantineProvider } from '@mantine/core';
   const renderComponent = () =>
     render(
       <MantineProvider>
-        <DataProvider>
-          <HomePage />
-        </DataProvider>
+        <HomePage />
       </MantineProvider>
     );
 

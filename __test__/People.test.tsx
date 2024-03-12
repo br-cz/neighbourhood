@@ -2,7 +2,6 @@
 import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { DataProvider } from '@/contexts/DataContext';
 import PeoplePage from '@/app/people/page';
 import {
   useCreateFriend,
@@ -105,9 +104,7 @@ jest.mock('@/src/hooks/friendsCustomHooks', () => ({
 const renderComponent = () =>
   render(
     <MantineProvider>
-      <DataProvider>
-        <PeoplePage />
-      </DataProvider>
+      <PeoplePage />
     </MantineProvider>
   );
 

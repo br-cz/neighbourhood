@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { notifications } from '@mantine/notifications';
-import { DataProvider } from '@/contexts/DataContext';
 import ProfilePage from '@/app/profile/page';
 import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
@@ -50,9 +49,7 @@ afterEach(() => {
 const renderComponent = () =>
   render(
     <MantineProvider>
-      <DataProvider>
-        <ProfilePage />
-      </DataProvider>
+      <ProfilePage />
     </MantineProvider>
   );
 
