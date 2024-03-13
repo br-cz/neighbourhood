@@ -25,7 +25,11 @@ export function CommunityButton({ active }: CommunityButtonProps) {
     <Link href="/communities" passHref className={classes.link} data-testid="community">
       <UnstyledButton className={`${classes.community} ${active ? classes.active : ''}`}>
         <Group>
-          <Avatar src={communityImage} size="md" radius="xl" />
+          <Avatar
+            src={community?.image ? community.image : './img/placeholder-img.jpg'}
+            size="md"
+            radius="xl"
+          />
 
           <div style={{ flex: 1 }}>
             <Text size="sm" fw={600}>

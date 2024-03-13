@@ -1,17 +1,24 @@
 import { notifications } from '@mantine/notifications';
 import { switchCommunityAPI } from '@/src/api/services/community';
-import { getCurrentCommunityID } from '@/src/hooks/communityCustomHooks';
-import { Community, UserCommunity } from '@/src/API';
-import { deleteUserCommunityAPI } from '@/src/api/services/user';
-import { communityUpdateSubject } from '@/src/hooks/communityCustomHooks';
-import { updateUserSelectedCommunity, getCurrentUserAPI } from '@/src/api/services/user';
 import { getCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { getCurrentCommunityID, communityUpdateSubject } from '@/src/hooks/communityCustomHooks';
+import {
+  updateUserSelectedCommunity,
+  getCurrentUserAPI,
+  deleteUserCommunityAPI,
+} from '@/src/api/services/user';
+import { Community, UserCommunity } from '@/src/API';
 
 const triggerCommunityUpdate = () => {
   communityUpdateSubject.next();
 };
-// Utility function for handling community switch
-export const handleSwitch = async (user: any, community: Community, toggleRefresh: () => void) => {
+
+export const switchCommunity = async (
+  user: any,
+  community: Community,
+  setSelectedCommunity: (communityId: string) => void
+) => {
+  setSelectedCommunity(community.id);
   const currentUser = await getCurrentUser();
   if (currentUser) {
     try {
@@ -23,16 +30,14 @@ export const handleSwitch = async (user: any, community: Community, toggleRefres
       localStorage.setItem('currentCommunity', JSON.stringify(community));
       notifications.show({
         radius: 'md',
-        title: 'Update!',
-        color: 'green',
-        message: `You have now switched to ${community.name} community`,
+        title: 'Welcome back!',
+        message: `You've switched to the ${community.name} community.`,
       });
-      toggleRefresh();
-      triggerCommunityUpdate(); //Trigger community update so that all components start updating the community data
+      triggerCommunityUpdate();
     } catch (error) {
       notifications.show({
         radius: 'md',
-        title: 'Sorry!',
+        title: 'Oops!',
         color: 'red',
         message: 'Failed to switch the community. Please try again.',
       });
@@ -40,24 +45,14 @@ export const handleSwitch = async (user: any, community: Community, toggleRefres
   }
 };
 
-// Utility function for handling community deselect
-export const handleDeselect = async (
+export const leaveCommunity = async (
   user: any,
   community: Community,
   userCommunities: Community[],
   userCommunityList: UserCommunity[],
+  setSelectedCommunity: (communityId: string) => void,
   toggleRefresh: () => void
 ) => {
-  if (userCommunities.length === 1) {
-    notifications.show({
-      radius: 'md',
-      title: 'Oops!',
-      color: 'yellow',
-      message: 'You cannot leave the community as you are a member of only one community',
-    });
-    return;
-  }
-
   const relationship = userCommunityList.find(
     (userCommunity: UserCommunity) =>
       userCommunity.communityId === community.id &&
@@ -69,9 +64,8 @@ export const handleDeselect = async (
     await deleteUserCommunityAPI(relationship.id);
     notifications.show({
       radius: 'md',
-      color: 'grey',
-      title: 'We are sorry to see you go!',
-      message: `You are no longer part of ${community.name}`,
+      title: 'Sorry to see you go!',
+      message: `You are no longer part of ${community.name}. Your neighbours will miss you!`,
     });
     if (community.id === getCurrentCommunityID()) {
       const otherCommunities = userCommunities.filter((c) => c.id !== getCurrentCommunityID());
@@ -79,7 +73,7 @@ export const handleDeselect = async (
       if (otherCommunities.length > 0) {
         const randomIndex = Math.floor(Math.random() * otherCommunities.length);
         const randomCommunity = otherCommunities[randomIndex];
-        handleSwitch(user, randomCommunity, toggleRefresh);
+        switchCommunity(user, randomCommunity, setSelectedCommunity);
       }
     }
     toggleRefresh();

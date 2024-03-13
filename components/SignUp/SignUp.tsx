@@ -292,8 +292,6 @@ export const SignUp = () => {
               <SelectCommunity
                 setFieldValue={formik.setFieldValue}
                 onChange={formik.handleChange}
-                errors={formik.errors}
-                touched={formik.touched}
                 coordinates={coordinates}
                 selectedCommunity={formik.values.selectedCommunity}
               />

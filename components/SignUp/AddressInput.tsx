@@ -71,6 +71,7 @@ export const AddressInput: React.FC<AddressInputProps> = ({
         <TextInput
           label="Address"
           name="address"
+          placeholder="Enter a location"
           value={localAddress}
           onChange={handleInputChange}
           onBlur={onBlur}
