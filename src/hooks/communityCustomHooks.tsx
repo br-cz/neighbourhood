@@ -1,14 +1,13 @@
+import { Subject } from 'rxjs';
 import { useState, useEffect } from 'react';
 import {
   getAllUserCommunitiesAPI,
   getCommunityAPI,
-  getAllCommunitiesAPI,
-  getAllCommunityDetails,
   getRelevantCommunitiesAPI,
+  getAllCommunityDetailsAPI,
 } from '../api/services/community';
-
-import { Subject } from 'rxjs';
 import { getCurrentUserID } from './usersCustomHooks';
+
 export const communityUpdateSubject = new Subject<void>();
 
 export const getCurrentCommunityID = () => JSON.parse(localStorage.getItem('currentCommunityID')!);
@@ -86,7 +85,7 @@ export const useFetchAllCommunities = (refresh: boolean = false) => {
     const fetchAllCommunities = async () => {
       try {
         setLoading(true);
-        const response = await getAllCommunityDetails();
+        const response = await getAllCommunityDetailsAPI();
         const allMembers = JSON.parse(JSON.stringify(response));
         setCommunities(allMembers.data.listCommunities.items);
       } catch (err: any) {
@@ -111,7 +110,7 @@ export const useFetchRelevantCommunities = (refresh: boolean = false) => {
     const fetchRelevantCommunities = async () => {
       try {
         setLoading(true);
-        const response = await getRelevantCommunitiesAPI(getCurrentUserID()) ?? [];
+        const response = (await getRelevantCommunitiesAPI(getCurrentUserID())) ?? [];
         setRelevantCommunities(response);
       } catch (err: any) {
         setError(err);

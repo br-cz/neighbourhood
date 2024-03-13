@@ -61,5 +61,11 @@ export const useCurrentUser = (refresh: boolean = false) => {
     }
   };
 
-  return { currentUser, loading, error, updateUserProfile };
+  return {
+    currentUser,
+    loading,
+    error,
+    selectedCommunity: currentUser?.selectedCommunity,
+    updateUserProfile,
+  };
 };

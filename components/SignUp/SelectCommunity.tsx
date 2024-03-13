@@ -1,17 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, SimpleGrid, Stack, Text, Loader, Center, Flex, Paper } from '@mantine/core';
-import { FormikErrors, FormikTouched } from 'formik';
+import { Box, SimpleGrid, Stack, Text, Loader, Center, Flex, Paper, Group } from '@mantine/core';
 import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
-import { CommunityWithDistance, getClosestCommunities } from '../utils/relevantCommunitiesHelpers/getClosestCommunities';
+import {
+  CommunityWithDistance,
+  getClosestCommunities,
+} from '../utils/relevantCommunitiesHelpers/getClosestCommunities';
 
 interface SelectCommunityProps {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   onChange?: (e: React.ChangeEvent<any>) => void;
   selectedCommunity: string;
-  errors: FormikErrors<{ selectedCommunity: string }>;
-  touched: FormikTouched<{ selectedCommunity: Boolean }>;
+
   coordinates: {
     lat: string;
     lng: string;
@@ -22,8 +23,6 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
   setFieldValue,
   onChange,
   selectedCommunity,
-  errors,
-  touched,
   coordinates,
 }) => {
   const [nearestCommunities, setNearestCommunities] = useState<CommunityWithDistance[]>([]);
@@ -37,7 +36,6 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
         setRetrievingError(true);
         return;
       }
-
       setIsLoading(true);
       try {
         const response = await getClosestCommunities(`${coordinates.lat}, ${coordinates.lng}`);
@@ -49,13 +47,18 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
           setNoCommunities(true);
           return;
         }
+        filteredCommunities.sort((a: CommunityWithDistance, b: CommunityWithDistance) =>
+          a.community.name.localeCompare(b.community.name)
+        );
         setNearestCommunities(filteredCommunities);
-        const relevantCommunities = filteredCommunities.map((element: CommunityWithDistance) => element.community.id);
+        const relevantCommunities = filteredCommunities.map(
+          (element: CommunityWithDistance) => element.community.id
+        );
         setFieldValue('relevantCommunities', relevantCommunities);
       } catch (error) {
         setRetrievingError(true);
       } finally {
-        setIsLoading(false); // End loading
+        setIsLoading(false);
       }
     };
 
@@ -73,14 +76,10 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
       <Stack mt="lg" gap="md">
         {isLoading ? (
           <Center>
-            <Flex
-              direction={{ base: 'column', sm: 'row' }}
-              gap={{ base: 'sm', sm: 'lg' }}
-              justify={{ sm: 'center' }}
-            >
-              <Loader />
-              <Text mt="sm">Retrieving communities...</Text>
-            </Flex>
+            <Group>
+              <Loader size="xs" type="dots" />
+              <Text c="dimmed">Searching for communities...</Text>
+            </Group>
           </Center>
         ) : noCommunities ? (
           <Paper withBorder shadow="md" p="md" radius="md" mt="md">
@@ -100,22 +99,17 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
           </Paper>
         ) : (
           <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange} data-testid="communities">
-          {errors.selectedCommunity && (
-            <Text c="red" fz="sm">
-              {errors.selectedCommunity}
-            </Text>
-          )}
-          {Object.values(nearestCommunities).map((element: CommunityWithDistance) => (
-            <CommunityListItem
-              key={element.community.id}
-              community={element.community}
-              onSelect={() => handleSelectCommunity(element.community.id)}
-              selected={selectedCommunity === element.community.id}
-              isAnyCommunitySelected={isAnyCommunitySelected}
-            />
-          ))}
+            {Object.values(nearestCommunities).map((element: CommunityWithDistance) => (
+              <CommunityListItem
+                key={element.community.id}
+                community={element.community}
+                onSelect={() => handleSelectCommunity(element.community.id)}
+                selected={selectedCommunity === element.community.id}
+                isAnyCommunitySelected={isAnyCommunitySelected}
+              />
+            ))}
           </SimpleGrid>
-      )}
+        )}
       </Stack>
     </Box>
   );
