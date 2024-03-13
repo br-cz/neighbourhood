@@ -1,8 +1,7 @@
 import { generateClient } from '@aws-amplify/api';
 import { getCommunity, listCommunities } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
-import { switchCommunity } from '@/src/graphql/mutations';
-import { updateCommunity } from '@/src/graphql/mutations';
+import { switchCommunity, updateCommunity } from '@/src/graphql/mutations';
 import { getUserAPI } from './user';
 
 const client = generateClient();
@@ -13,7 +12,7 @@ export const switchCommunityAPI = async (userId: string, communityId: string) =>
   try {
     const response = await client.graphql({
       query: switchCommunity,
-      variables: { userId: userId, communityId: communityId },
+      variables: { userId, communityId },
     });
     return response.data.switchCommunity;
   } catch (error: any) {
@@ -35,12 +34,12 @@ export const getCommunityAPI = async (communityId: string) => {
 
 export const getRelevantCommunitiesAPI = async (userId: string) => {
   const user = await getUserAPI(userId);
-    if (user?.relevantCommunities) {
-      const communityPromises = user.relevantCommunities.map(communityId =>
-          getCommunityAPI(communityId)
-        );
-      const relevantCommunities = await Promise.all(communityPromises);
-      return relevantCommunities;
+  if (user?.relevantCommunities) {
+    const communityPromises = user.relevantCommunities.map((communityId) =>
+      getCommunityAPI(communityId)
+    );
+    const relevantCommunities = await Promise.all(communityPromises);
+    return relevantCommunities;
   }
   return null;
 };
@@ -100,7 +99,7 @@ export const getAllCommunitiesAPI = async () => {
   }
 };
 
-export const getAllCommunityDetails = async () => {
+export const getAllCommunityDetailsAPI = async () => {
   const getAllCommunityDetails = /* GraphQL */ `
     query getAllCommunityDetails {
       listCommunities {

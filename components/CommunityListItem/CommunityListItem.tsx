@@ -34,13 +34,19 @@ export function CommunityListItem({
   return (
     <div
       className={`${classes.community} ${selected ? classes.active : ''}`}
+      onKeyDown={onSelect}
       onClick={onSelect}
       role="button"
       tabIndex={0}
       data-testid={`communities-item-${community.id}`}
     >
       <Group>
-        <Avatar src={communityImage} size="lg" radius="xl" style={{ opacity: itemStyle.opacity }} />
+        <Avatar
+          src={community?.image ? community.image : './img/placeholder-img.jpg'}
+          size="lg"
+          radius="xl"
+          style={{ opacity: itemStyle.opacity }}
+        />
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={600} style={{ color: itemStyle.color }}>
             {community.name}
