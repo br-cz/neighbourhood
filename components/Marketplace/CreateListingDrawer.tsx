@@ -78,7 +78,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         console.error('Error creating listing:', error);
         notifications.show({
           title: 'Oops!',
-          message: 'Something went wrong creating your event - please try again.',
+          message: 'Something went wrong creating your listing - please try again.',
           color: 'red.6',
         });
       } finally {
@@ -108,6 +108,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         mt="xs"
         onLoad={() => URL.revokeObjectURL(imageUrl)}
         style={{ maxWidth: 400, maxHeight: 250 }}
+        data-testid="image-preview"
       />
     );
   });
@@ -136,7 +137,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
       }}
       position="right"
       title={
-        <Title order={3} component="p">
+        <Title order={3} component="p" data-testid="create-listing-drawer">
           New Listing
         </Title>
       }
@@ -243,6 +244,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               onClick={handleRemoveImage}
               disabled={previews.length === 0}
               ml={5}
+              data-testid="remove-image"
             >
               <FontAwesomeIcon icon={faTrash} size="xs" />
             </ActionIcon>
@@ -256,6 +258,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               accept={IMAGE_MIME_TYPE}
               radius="md"
               mt={5}
+              data-testid="dropzone"
             >
               <Stack
                 align="center"
@@ -294,7 +297,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
           <Button
             radius="md"
             type="button"
-            data-testid="submit button"
+            data-testid="submit-button"
             onClick={() => {
               formik.validateForm().then((errors) => {
                 if (Object.keys(errors).length === 0 && !loading) {

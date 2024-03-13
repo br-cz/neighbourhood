@@ -34,6 +34,7 @@ export default function MarketplacePage() {
             defaultValue="Newly Listed"
             onChange={setSortQuery}
             data={['Newly Listed', 'Price: Low to High', 'Price: High to Low']}
+            data-testid="sort-marketplace"
           />
           <TextInput
             radius="md"

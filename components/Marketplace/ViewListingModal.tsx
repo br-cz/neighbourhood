@@ -34,7 +34,7 @@ export function ViewListingModal({ opened, onClose, item }: ViewListingModalProp
       opened={opened}
       onClose={onClose}
       title={
-        <Title order={2} component="p">
+        <Title order={2} component="p" data-testid="listing-modal-title">
           {item?.title}
         </Title>
       }
@@ -57,25 +57,25 @@ export function ViewListingModal({ opened, onClose, item }: ViewListingModalProp
         {item.description && (
           <div>
             <Title order={6}>Description</Title>
-            <Text fz="sm">{item?.description}</Text>
+            <Text fz="sm" data-testid="listing-modal-description">{item?.description}</Text>
           </div>
         )}
 
         <Title order={6}>Seller</Title>
         <Group gap="xs" align="center">
           <Avatar src={profilePic} alt={item.seller.firstName} radius="xl" />
-          <Text size="sm" c="dimmed">
+          <Text size="sm" c="dimmed" data-testid="listing-modal-seller">
             {item.seller.firstName} {item.seller.lastName}
           </Text>
         </Group>
         <Group gap="lg" mt="xs">
           <div>
             <Title order={6}>Price</Title>
-            <Text fz="sm">${item?.price}</Text>
+            <Text fz="sm" data-testid="listing-modal-price">${item?.price}</Text>
           </div>
           <div>
             <Title order={6}>If Interested, Contact</Title>
-            <Text fz="sm">{item?.contact}</Text>
+            <Text fz="sm" data-testid="listing-modal-contact">{item?.contact}</Text>
           </div>
         </Group>
       </Stack>
