@@ -3,6 +3,12 @@
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
+enum PostType {
+  THOUGHT
+  EVENT_ANNOUNCEMENT
+  ITEM_FOR_SALE
+}
+
 enum Visibility {
   PUBLIC
   FRIENDS_ONLY
@@ -13,7 +19,7 @@ enum Visibility {
 type FriendRequest @model {
   id: ID!
   senderId: ID! # Explicit foreign key for the sender
-  receiverId: ID! # ditto
+  receiverId: ID! # Explicit foreign key for the receiver
   sender: User! @belongsTo(fields: ["senderId"])
   receiver: User! @belongsTo(fields: ["receiverId"])
 }
@@ -23,13 +29,12 @@ type User @model {
   username: String!
   email: String!
   postalCode: String!
-  address: String
   firstName: String!
   lastName: String!
   communities: [Community!]! @manyToMany(relationName: "UserCommunity")
   selectedCommunity: String! #Store selected community's id
   posts: [Post!]! @hasMany
-  friends: [String!]
+  friends: [User] @hasMany
   friendRequests: [FriendRequest!]! @hasMany
   events: [Event!]! @hasMany
   itemsForSale: [ItemForSale!]! @hasMany
@@ -37,15 +42,12 @@ type User @model {
   likedEvents: [Event!]! @manyToMany(relationName: "UserLikedEvents")
   likedItems: [ItemForSale!]! @manyToMany(relationName: "UserLikedItems")
   location: String
+  age: Int
   bio: String
   profilePic: String
-  pronouns: String
-  contact: String
-  birthday: AWSDate
   pets: Int
   kids: Int
   comments: [Comment] @hasMany
-  relevantCommunities: [String!]
 }
 
 type Community @model {
@@ -54,7 +56,7 @@ type Community @model {
   location: String!
   coordinates: String!
   image: String
-  members: [User!] @manyToMany(relationName: "UserCommunity")
+  members: [User!]! @manyToMany(relationName: "UserCommunity")
   posts: [Post!]! @hasMany
   events: [Event] @hasMany
   itemsForSale: [ItemForSale] @hasMany
@@ -66,6 +68,7 @@ type Post @model {
   community: Community! @belongsTo
   images: [String]
   content: String!
+  postType: PostType!
   likedBy: [User!]! @manyToMany(relationName: "UserLikedPosts")
   comments: [Comment!]! @hasMany
   visibility: Visibility!
@@ -111,7 +114,6 @@ type Query {
   getCommunityPosts(communityId: ID!): [Post!]
   getCommunityEvents(communityId: ID!): [Event!]
   getUserFriends(userId: ID!): [User!]
-  getUserRelevantCommunities(userId: ID!): [Community!]
   pendingFriendRequests(userId: ID!): [FriendRequest!]
   sentFriendRequests(userId: ID!): [FriendRequest!]
 }
@@ -133,7 +135,6 @@ type Mutation {
     visibility: Visibility!
   ): ItemForSale
   addFriend(userId: ID!, friendId: ID!): User
-  removeFriend(userId: ID!, friendId: ID!): String
   likeEvent(userId: ID!, eventId: ID!): Event
   unlikeEvent(userId: ID!, eventId: ID!): Event
   likeItemForSale(userId: ID!, itemId: ID!): ItemForSale
@@ -141,6 +142,4 @@ type Mutation {
   sendFriendRequest(senderId: ID!, receiverId: ID!): FriendRequest
   acceptFriendRequest(requestId: ID!): FriendRequest
   declineFriendRequest(requestId: ID!): FriendRequest
-  addRelevantCommunity(userId: ID!, communityId: ID!): User
-  removeRelevantCommunity(userId: ID!, communityId: ID!): User
 }

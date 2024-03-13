@@ -25,6 +25,7 @@ export default function CommunitiesPage() {
   const [openConfirmationModal, { open: openConfirmation, close: closeConfirmation }] =
     useDisclosure(false);
   const { userCommunityList } = useFetchAllUserCommunities(refresh);
+
   const userCommunities = Object.values(communities).filter((community: Community) =>
     community.members?.items?.some((member) => member?.user?.id === user && !member?._deleted)
   );

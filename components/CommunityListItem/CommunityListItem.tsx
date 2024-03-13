@@ -39,7 +39,7 @@ export function CommunityListItem({
       tabIndex={0}
       data-testid={`communities-item-${community.id}`}
     >
-      <Group>
+      <Group w="20vw">
         <Avatar src={communityImage} size="lg" radius="xl" style={{ opacity: itemStyle.opacity }} />
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={600} style={{ color: itemStyle.color }}>
