@@ -5,7 +5,7 @@ import { createUserCommunityAPI } from '@/src/api/services/user';
 export const communitySelectHandler = async (
   communityId: string,
   communities: Community[],
-  user: string,
+  userId: string,
   userCommunities: Community[]
 ) => {
   const community = communities.find(
@@ -13,22 +13,19 @@ export const communitySelectHandler = async (
   ) as unknown as Community;
 
   const isMember = community?.members?.items.some(
-    (member: any) => member.userId === user && !member?._deleted
+    (member: any) => member.userId === userId && !member?._deleted
   );
 
   if (!isMember && userCommunities?.length < 3) {
     try {
-      await createUserCommunityAPI(user, community.id);
+      await createUserCommunityAPI(userId, community.id);
       notifications.show({
         radius: 'md',
-        title: 'Welcome to your new neighbourhood!',
+        title: 'Woo-hoo!',
         color: 'yellow.6',
-        message: `You are now part of ${community.name}. Good to have you on board!`,
+        message: `You are now part of ${community.name}!`,
       });
     } catch (error) {
-      console.log(isMember);
-      console.log(error);
-      console.log(communityId, communities, user, userCommunities);
       notifications.show({
         radius: 'md',
         title: 'Oops!',

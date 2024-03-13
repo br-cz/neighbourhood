@@ -41,7 +41,7 @@ export default function SelectCommunityModal({
     validationSchema: selectedCommunityModalSchema,
     onSubmit: async (values) => {
       handlers.open();
-      await communitySelectHandler(values.selectedCommunity, communities, user, userCommunities);
+      await communitySelectHandler(values.selectedCommunity, communities, user.id, userCommunities);
       handlers.close();
       onClose();
       onUpdate();
