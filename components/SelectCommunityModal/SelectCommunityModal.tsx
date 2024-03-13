@@ -6,7 +6,10 @@ import { Button, Group, Modal, ScrollArea } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconPlus } from '@tabler/icons-react';
 import { useFormik } from 'formik';
-import { useFetchAllCommunities, useFetchRelevantCommunities } from '@/src/hooks/communityCustomHooks';
+import {
+  useFetchAllCommunities,
+  useFetchRelevantCommunities,
+} from '@/src/hooks/communityCustomHooks';
 import { Community } from '@/src/API';
 import { selectedCommunityModalSchema } from './selectCommunityModalValidation';
 import { commmunitySelectHandler } from './communitySelectHandler';
@@ -33,7 +36,9 @@ export default function SelectCommunityModal({
   );
 
   if (relevantCommunities?.length > 0) {
-    availableCommunities = relevantCommunities;
+    availableCommunities = relevantCommunities.filter(
+      (community: Community) => !userCommunities.some((uc: Community) => uc.id === community.id)
+    );
   }
 
   const [isLoading, handlers] = useDisclosure();
