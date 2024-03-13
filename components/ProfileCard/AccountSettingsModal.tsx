@@ -66,7 +66,7 @@ export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalPr
         <form>
           <Box>
             <PasswordInput
-              label="Current Password"
+              label="Old Password"
               name="oldPassword"
               value={formik.values.oldPassword}
               radius="md"
