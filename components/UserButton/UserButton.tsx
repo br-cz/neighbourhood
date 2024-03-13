@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
-import Link from 'next/link';
 import classes from './UserButton.module.css';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface UserButtonProps {
   active: boolean;
+  setActiveTab: (tab: string) => void;
 }
 
-export function UserButton({ active }: UserButtonProps) {
+export function UserButton({ active, setActiveTab }: UserButtonProps) {
   const { currentUser } = useCurrentUser();
   const [profilePic, setProfilePic] = useState<string>('');
 
@@ -22,23 +22,25 @@ export function UserButton({ active }: UserButtonProps) {
   }, [currentUser?.profilePic]);
 
   return (
-    <Link href="/profile" passHref className={classes.link} data-testid="profile">
-      <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
-        <Group>
-          <Avatar src={profilePic} size="md" radius="xl" />
-          <div style={{ flex: 1 }}>
-            <Text size="sm" fw={600}>
-              My Profile
-            </Text>
+    <UnstyledButton
+      onClick={() => setActiveTab('profile')}
+      className={`${classes.user} ${active ? classes.active : ''}`}
+      data-testid="profile"
+    >
+      <Group>
+        <Avatar src={profilePic} size="md" radius="xl" />
+        <div style={{ flex: 1 }}>
+          <Text size="sm" fw={600}>
+            My Profile
+          </Text>
 
-            <Text c="dimmed" size="xs" data-testid="current-user-info">
-              {currentUser?.firstName} {currentUser?.lastName}
-            </Text>
-          </div>
+          <Text c="dimmed" size="xs" data-testid="current-user-info">
+            {currentUser?.firstName} {currentUser?.lastName}
+          </Text>
+        </div>
 
-          <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} />
-        </Group>
-      </UnstyledButton>
-    </Link>
+        <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} />
+      </Group>
+    </UnstyledButton>
   );
 }

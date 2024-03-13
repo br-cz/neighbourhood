@@ -6,10 +6,8 @@ import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title, Text } fro
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { EventCard } from '@/components/EventCard/EventCard';
-import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { CreateEventDrawer } from '@/components/CreateEventDrawer/CreateEventDrawer';
 import { ViewEventModal } from '@/components/ViewEventModal/ViewEventModal';
-import { useAuth } from '@/components/Authorization/useAuth';
 import { useFetchEvents } from '@/src/hooks/eventsCustomHooks';
 import { Event } from '@/types/types';
 import { filterAndSortEvents } from '@/components/utils/eventUtils';
@@ -20,7 +18,6 @@ export default function EventsPage() {
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const [viewEventModalOpened, setViewEventModalOpened] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const { user } = useAuth();
   const { events, loading } = useFetchEvents(refresh);
   const toggleRefresh = () => setRefresh((flag) => !flag);
   const [sortQuery, setSortQuery] = useState<string | null>(null);
@@ -36,18 +33,16 @@ export default function EventsPage() {
     setViewEventModalOpened(true);
   };
 
-  if (!user) return null;
-
   return (
-    <NeighbourhoodShell>
+    <>
       <Group justify="space-between" m="20">
         <Title order={1}>Events</Title>
         <Group>
           <Select
             radius="md"
-            placeholder="Newly Posted"
+            placeholder="Sort by..."
             onChange={setSortQuery}
-            value={sortQuery}
+            defaultValue="Newly Posted"
             data={['Newly Posted', 'Today', 'This Week', 'This Month']}
           />
           <TextInput
@@ -70,13 +65,13 @@ export default function EventsPage() {
         </Group>
       ) : events.length === 0 ? (
         <Group justify="center" mt="200">
-          <Text size="xl" c="dimmed">
+          <Text size="lg" c="dimmed">
             No one is hosting an event yet, be the first one!
           </Text>
         </Group>
       ) : filteredAndSortedEvents.length === 0 ? (
         <Group justify="center" mt="200">
-          <Text size="xl" c="dimmed">
+          <Text size="lg" c="dimmed">
             There is no event that matches your search query
           </Text>
         </Group>
@@ -106,6 +101,6 @@ export default function EventsPage() {
           event={selectedEvent}
         />
       )}
-    </NeighbourhoodShell>
+    </>
   );
 }

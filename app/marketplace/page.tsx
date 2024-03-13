@@ -5,8 +5,6 @@ import { Button, Group, Select, TextInput, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
-import { useAuth } from '@/components/Authorization/useAuth';
 import { MarketplaceFeed } from '@/components/Marketplace/MarketplaceFeed';
 import { CreateListingDrawer } from '@/components/Marketplace/CreateListingDrawer';
 
@@ -16,15 +14,13 @@ export default function MarketplacePage() {
   const [sortQuery, setSortQuery] = useState<string | null>('Newly Listed');
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const toggleRefresh = () => setRefresh((flag) => !flag);
-  const { user } = useAuth();
-  if (!user) return null;
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
   return (
-    <NeighbourhoodShell>
+    <>
       <Group justify="space-between" m="20">
         <Title order={1}>Marketplace</Title>
         <Group>
@@ -55,6 +51,6 @@ export default function MarketplacePage() {
         onClose={drawerHandlers.close}
         onPostCreated={toggleRefresh}
       />
-    </NeighbourhoodShell>
+    </>
   );
 }

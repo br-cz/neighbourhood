@@ -6,7 +6,6 @@ import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { useDisclosure } from '@mantine/hooks';
-import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { useAuth } from '@/components/Authorization/useAuth';
 import CommunityCard from '@/components/CommunityCard/CommunityCard';
 import {
@@ -85,10 +84,8 @@ export default function CommunitiesPage() {
     });
   };
 
-  if (!user) return null;
-
   return (
-    <NeighbourhoodShell>
+    <>
       <Group justify="space-between" m={20}>
         <Title order={1}>My Communities</Title>
       </Group>
@@ -98,7 +95,7 @@ export default function CommunitiesPage() {
         </Group>
       ) : (
         <>
-          <Stack mt="md" gap="xl" align="center">
+          <Stack mt="lg" gap="xl" align="center">
             <SimpleGrid cols={1} spacing="xs" mt="sm" data-testid="joined-communities">
               {userCommunities.map((community: Community) => (
                 <CommunityCard
@@ -142,6 +139,6 @@ export default function CommunitiesPage() {
           />
         </>
       )}
-    </NeighbourhoodShell>
+    </>
   );
 }

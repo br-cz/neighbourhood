@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
-import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
 import { CreatePostDrawer } from '@/components/CreatePostDrawer/CreatePostDrawer';
 import { PostCard } from '@/components/PostCard/PostCard';
 import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
@@ -27,7 +26,7 @@ export default function HomePage() {
 
   const filteredAndSortedPosts = filterAndSortPosts(posts, searchQuery, sortQuery);
   return (
-    <NeighbourhoodShell>
+    <>
       <Group justify="space-between" m="20">
         <Title order={1}>Feed</Title>
         <Group>
@@ -36,7 +35,6 @@ export default function HomePage() {
             placeholder="Sort by..."
             defaultValue="Newly Posted"
             onChange={setSortQuery}
-            value={sortQuery}
             data={['Newly Posted', 'Oldest']}
           />
           <TextInput
@@ -58,14 +56,14 @@ export default function HomePage() {
         </Group>
       ) : posts.length === 0 ? (
         <Group justify="center" mt="200">
-          <Text size="xl" c="dimmed">
+          <Text size="lg" c="dimmed">
             No one has shared anything yet in this community, be the first one to share!
           </Text>
         </Group>
       ) : filteredAndSortedPosts.length === 0 ? (
         <Group justify="center" mt="200">
-          <Text size="xl" c="dimmed">
-            There is no post that matches your search query
+          <Text size="lg" c="dimmed">
+            There is no post that matches your search query.
           </Text>
         </Group>
       ) : (
@@ -85,6 +83,6 @@ export default function HomePage() {
         onClose={drawerHandlers.close}
         onPostCreated={toggleRefresh}
       />
-    </NeighbourhoodShell>
+    </>
   );
 }
