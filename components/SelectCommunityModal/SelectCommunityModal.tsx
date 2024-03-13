@@ -49,12 +49,10 @@ export default function SelectCommunityModal({
     },
   });
 
-  let availableCommunities = communities.filter(
+  const initialCommunities = relevantCommunities?.length > 0 ? relevantCommunities : communities;
+  const availableCommunities = initialCommunities.filter(
     (community: Community) => !userCommunities.some((uc: Community) => uc.id === community.id)
   );
-  if (relevantCommunities?.length > 0) {
-    availableCommunities = relevantCommunities;
-  }
   availableCommunities.sort((a: Community, b: Community) => a.name.localeCompare(b.name));
 
   return (

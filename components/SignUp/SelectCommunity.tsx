@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, SimpleGrid, Stack, Text, Loader, Center, Flex, Paper } from '@mantine/core';
+import { Box, SimpleGrid, Stack, Text, Loader, Center, Flex, Paper, Group } from '@mantine/core';
 import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 import {
   CommunityWithDistance,
@@ -76,14 +76,10 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
       <Stack mt="lg" gap="md">
         {isLoading ? (
           <Center>
-            <Flex
-              direction={{ base: 'column', sm: 'row' }}
-              gap={{ base: 'sm', sm: 'lg' }}
-              justify={{ sm: 'center' }}
-            >
-              <Loader />
-              <Text mt="sm">Retrieving communities...</Text>
-            </Flex>
+            <Group>
+              <Loader size="xs" type="dots" />
+              <Text c="dimmed">Searching for communities...</Text>
+            </Group>
           </Center>
         ) : noCommunities ? (
           <Paper withBorder shadow="md" p="md" radius="md" mt="md">
