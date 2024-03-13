@@ -73,7 +73,7 @@ export default function LoginForm() {
       handlers,
       setErrorMessage,
     });
-    router.push('/home');
+    router.push('/app');
     notifications.show({
       radius: 'md',
       title: 'Hey, Neighbour! 👋 ',
