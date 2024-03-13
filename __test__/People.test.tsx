@@ -339,8 +339,8 @@ describe('People Page', () => {
       expect(previewCardText).toContain('Excited to be part of the neighbourhood!');
       expect(previewCardText).toContain('Contact: N/A');
       expect(previewCardText).toContain('Birthday: N/A');
-      expect(previewCardText).toContain('Pets: N/A');
-      expect(previewCardText).toContain('Kids: N/A');
+      expect(previewCardText).toContain('Pets: 0');
+      expect(previewCardText).toContain('Kids: 0');
     });
   });
 
@@ -357,8 +357,8 @@ describe('People Page', () => {
       expect(previewCardText).toContain('Daniel Long');
       expect(previewCardText).toContain('Excited to be part of the neighbourhood!');
       expect(previewCardText).toContain('Age:');
-      expect(previewCardText).toContain('Pets: N/A');
-      expect(previewCardText).toContain('Kids: N/A');
+      expect(previewCardText).toContain('Pets: 0');
+      expect(previewCardText).toContain('Kids: 0');
     });
   });
 });
