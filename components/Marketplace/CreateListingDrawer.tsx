@@ -108,6 +108,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
         mt="xs"
         onLoad={() => URL.revokeObjectURL(imageUrl)}
         style={{ maxWidth: 400, maxHeight: 250 }}
+        data-testid="image-preview"
       />
     );
   });
@@ -243,6 +244,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               onClick={handleRemoveImage}
               disabled={previews.length === 0}
               ml={5}
+              data-testid="remove-image"
             >
               <FontAwesomeIcon icon={faTrash} size="xs" />
             </ActionIcon>
@@ -256,6 +258,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               accept={IMAGE_MIME_TYPE}
               radius="md"
               mt={5}
+              data-testid="dropzone"
             >
               <Stack
                 align="center"

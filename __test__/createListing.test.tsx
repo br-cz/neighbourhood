@@ -3,6 +3,7 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent, cleanup} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MarketplacePage from '@/app/marketplace/page';
+import { CreateListingDrawer } from '@/components/Marketplace/CreateListingDrawer';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
 import userEvent from '@testing-library/user-event';
@@ -22,9 +23,9 @@ jest.mock('formik', () => ({
     errors: {},
     touched: {},
     validateForm: jest.fn().mockResolvedValue({
-        title: 'Title is required',
-        price: 'Price is required',
-        contact: 'Contact is required',
+      title: 'Title is required',
+      price: 'Price is required',
+      contact: 'Contact is required',
     }),
     setFieldValue: jest.fn(),
     setFieldTouched: jest.fn(),
@@ -46,10 +47,27 @@ const renderComponent = () =>
     </MantineProvider>
   );
 
+const renderDrawerWithImage = () =>
+  render(
+    <MantineProvider>
+      <CreateListingDrawer opened={true} onClose={() => {}} onPostCreated={() => {}} />
+    </MantineProvider>
+  );
+
 describe('MarketplacePage - Create Listing', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     cleanup();
+    // Clear input fields
+    const titleInput = screen.queryByTestId('title-input');
+    const priceInput = screen.queryByTestId('price-input');
+    const descriptionInput = screen.queryByTestId('description');
+    const contactInput = screen.queryByTestId('contact');
+    
+    if (titleInput) userEvent.clear(titleInput);
+    if (priceInput) userEvent.clear(priceInput);
+    if (descriptionInput) userEvent.clear(descriptionInput);
+    if (contactInput) userEvent.clear(contactInput);
   });
 
   //1.1
@@ -95,7 +113,6 @@ describe('MarketplacePage - Create Listing', () => {
         expect(screen.getByTestId('title-input')).toHaveValue('Test Item');
         expect(screen.getByTestId('price-input')).toHaveValue('$100');
         expect(screen.getByTestId('description')).toHaveValue('This is a test description');
-        //expect(screen.getByTestId('contact')).toHaveValue('(123) 456-7890');
       },
       { timeout: 2000 }
     );
@@ -198,15 +215,12 @@ describe('MarketplacePage - Create Listing', () => {
     await waitFor(() => {
       expect(screen.getByTestId('title-input')).toBeInTheDocument();
     });
-    fireEvent.change(screen.getByTestId('title-input'), {
-      target: { value: 'Test Item' },
-    });
-    fireEvent.change(screen.getByTestId('title-input'), 'Test Item');
-    fireEvent.change(screen.getByTestId('price-input'), '100');
-    fireEvent.change(screen.getByTestId('description'), 'This is a test description');
-    fireEvent.change(screen.getByTestId('contact'), '1234567890');
+    userEvent.type(screen.getByTestId('title-input'), 'Test Item');
+    userEvent.type(screen.getByTestId('price-input'), '100');
+    userEvent.type(screen.getByTestId('description'), 'This is a test description');
+    userEvent.type(screen.getByTestId('contact'), '1234567890');
 
-    fireEvent.click(screen.getByTestId('submit-button'));
+    userEvent.click(screen.getByTestId('submit-button'));
 
     await waitFor(
       () => {
