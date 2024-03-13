@@ -28,8 +28,14 @@ window.ResizeObserver = ResizeObserver;
 
 //Global mocks
 
+// jest.mock('@/components/Authorization/useAuth', () => ({
+//   useAuth: () => ({ user: { loggedIn: true } }),
+// }));
+
 jest.mock('@/components/Authorization/useAuth', () => ({
-  useAuth: () => ({ user: { loggedIn: true } }),
+  useAuth: jest.fn(() => ({
+    user: 'user1',
+  })),
 }));
 
 const closestCommunityMock = jest.fn().mockResolvedValue([
@@ -77,10 +83,31 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(() => '/mocked-path'),
 }));
 
+// jest.mock('@/src/hooks/usersCustomHooks', () => ({
+//   getCurrentUser: jest.fn(),
+//   useCurrentUser: jest.fn(() => ({
+//     user: {
+//       id: 'user1',
+//       username: 'testUser1',
+//       email: 'test@example.com',
+//       postalCode: '12345',
+//       firstName: 'Test',
+//       lastName: 'User',
+//       selectedCommunity: 'community1',
+//       location: 'Test Location',
+//       // age: 30,
+//       // bio: 'This is a test bio.',
+//       // profilePic: 'path/to/profilePic.jpg',
+//       // pets: 1,
+//       // kids: 2,
+//     },
+//   })),
+// }));
+
 jest.mock('@/src/hooks/usersCustomHooks', () => ({
-  getCurrentUser: jest.fn(),
+  getCurrentUser: jest.fn(), // Keep this mock as-is, assuming it's used within the fetchCurrentUser function.
   useCurrentUser: jest.fn(() => ({
-    user: {
+    currentUser: {
       id: 'user1',
       username: 'testUser1',
       email: 'test@example.com',
@@ -88,13 +115,25 @@ jest.mock('@/src/hooks/usersCustomHooks', () => ({
       firstName: 'Test',
       lastName: 'User',
       selectedCommunity: 'community1',
-      location: 'Test Location',
+      location: 'Test Location1',
+      // Uncomment or add more fields as necessary based on what you test.
       // age: 30,
       // bio: 'This is a test bio.',
       // profilePic: 'path/to/profilePic.jpg',
       // pets: 1,
       // kids: 2,
     },
+    loading: false, // Reflect the initial loading state; adjust based on what you're testing.
+    error: null, // Reflect the initial error state; adjust as necessary for error handling tests.
+    updateUserProfile: jest.fn(async (values, profilePicFile) => {
+      // Implement mock logic for updateUserProfile here.
+      // You could return a new user object reflecting the update.
+      // This is a simplified example; adjust the logic to match your application's behavior.
+      return {
+        ...values, // Spread the updated values to simulate updating the user profile.
+        profilePic: profilePicFile ? 'path/to/newProfilePic.jpg' : 'path/to/profilePic.jpg',
+      };
+    }),
   })),
 }));
 
@@ -103,101 +142,213 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
     community: {
       id: 'community1',
       name: 'Test Community1',
-      location: 'Test Location',
-      // coordinates: '123, 456',
-      image: 'path/to/communityImage.jpg',
-      // members: ['user1', 'user2', 'user3'],
-      members: [
-        {
-          id: 'memberid1',
-          userId: 'user1',
-          user: {
-            id: 'user1',
-            username: 'testUser1',
+      image: 'community-image-url',
+      location: 'Community Location1',
+      posts: {
+        items: [{ id: 'post1' }],
+      },
+      members: {
+        items: [
+          {
+            _deleted: false,
+            id: 'member1',
+            userId: 'user1',
+            user: {
+              id: 'user1',
+              friends: [],
+            },
           },
-          _deleted: false,
-        },
-      ],
-      posts: ['post1', 'post2', 'post3'],
+        ],
+      },
     },
   })),
 
   useFetchAllCommunities: jest.fn(() => ({
     communities: [
+      // items: [
       {
         id: 'community1',
         name: 'Test Community1',
-        location: 'Test Location',
-        // coordinates: '123, 456',
-        image: 'path/to/communityImage.jpg',
-        // members: ['user1', 'user2', 'user3'],
-        members: [
-          {
-            id: 'memberid1',
-            userId: 'user1',
-            user: {
-              id: 'user1',
-              username: 'testUser1',
+        image: 'community-image-url',
+        location: 'Community Location1',
+        posts: {
+          items: [{ id: 'post1' }],
+        },
+        members: {
+          items: [
+            {
+              _deleted: false,
+              id: 'member1',
+              userId: 'user1',
+              user: {
+                id: 'user1',
+                friends: [],
+              },
             },
-            _deleted: false,
-          },
-        ],
-        posts: ['post1', 'post2', 'post3'],
+          ],
+        },
       },
-
       {
         id: 'community2',
         name: 'Test Community2',
-        location: 'Test Location',
-        // coordinates: '123, 456',
-        image: 'path/to/communityImage.jpg',
-        members: ['user1', 'user2', 'user3'],
-        posts: ['post1', 'post2', 'post3'],
+        image: 'community-image-url',
+        location: 'Community Location2',
+        posts: {
+          items: [{ id: 'post1' }],
+        },
+        members: {
+          items: [
+            {
+              _deleted: false,
+              id: 'member2',
+              userId: 'user3',
+              user: {
+                id: 'user3',
+                friends: [],
+              },
+            },
+          ],
+        },
       },
       {
         id: 'community3',
         name: 'Test Community3',
-        location: 'Test Location',
-        // coordinates: '123, 456',
-        image: 'path/to/communityImage.jpg',
-        members: ['user1', 'user2', 'user3'],
-        posts: ['post1', 'post2', 'post3'],
+        image: 'community-image-url',
+        location: 'Community Location3',
+        posts: {
+          items: [{ id: 'post1' }],
+        },
+        members: {
+          items: [
+            {
+              _deleted: false,
+              id: 'member3',
+              userId: 'user3',
+              user: {
+                id: 'user3',
+                friends: [],
+              },
+            },
+          ],
+        },
       },
     ],
+    // ],
     loading: false,
   })),
 
+
+
+  // {
+  //   id: 'community1',
+  //   name: 'Test Community1',
+  //   location: 'Test Location',
+  //   // coordinates: '123, 456',
+  //   image: 'path/to/communityImage.jpg',
+  //   // members: ['user1', 'user2', 'user3'],
+  //   members: [
+  //     {
+  //       id: 'memberid1',
+  //       userId: 'user1',
+  //       user: {
+  //         id: 'user1',
+  //         username: 'testUser1',
+  //       },
+  //       _deleted: false,
+  //     },
+  //   ],
+  //   posts: ['post1', 'post2', 'post3'],
+  // },
+
+  // {
+  //   id: 'community2',
+  //   name: 'Test Community2',
+  //   location: 'Test Location',
+  //   // coordinates: '123, 456',
+  //   image: 'path/to/communityImage.jpg',
+  //   members: ['user1', 'user2', 'user3'],
+  //   posts: ['post1', 'post2', 'post3'],
+  // },
+  // {
+  //   id: 'community3',
+  //   name: 'Test Community3',
+  //   location: 'Test Location',
+  //   // coordinates: '123, 456',
+  //   image: 'path/to/communityImage.jpg',
+  //   members: ['user1', 'user2', 'user3'],
+  //   posts: ['post1', 'post2', 'post3'],
+  // },
+
   useFetchRelevantCommunities: jest.fn(() => ({
-    communities : [
+    communities: [
+      // items: [
       {
         id: 'community1',
         name: 'Test Community1',
-        location: 'Test Location',
-        // coordinates: '123, 456',
-        image: 'path/to/communityImage.jpg',
-        members: ['user1', 'user2', 'user3'],
-        posts: ['post1', 'post2', 'post3'],
+        image: 'community-image-url',
+        location: 'Community Location1',
+        posts: {
+          items: [{ id: 'post1' }],
+        },
+        members: {
+          items: [
+            {
+              _deleted: false,
+              id: 'member1',
+              userId: 'user1',
+              user: {
+                id: 'user1',
+                friends: [],
+              },
+            },
+          ],
+        },
       },
-
       {
         id: 'community2',
         name: 'Test Community2',
-        location: 'Test Location',
-        // coordinates: '123, 456',
-        image: 'path/to/communityImage.jpg',
-        members: ['user1', 'user2', 'user3'],
-        posts: ['post1', 'post2', 'post3'],
+        image: 'community-image-url',
+        location: 'Community Location2',
+        posts: {
+          items: [{ id: 'post1' }],
+        },
+        members: {
+          items: [
+            {
+              _deleted: false,
+              id: 'member2',
+              userId: 'user3',
+              user: {
+                id: 'user3',
+                friends: [],
+              },
+            },
+          ],
+        },
       },
       {
         id: 'community3',
         name: 'Test Community3',
-        location: 'Test Location',
-        // coordinates: '123, 456',
-        image: 'path/to/communityImage.jpg',
-        members: ['user1', 'user2', 'user3'],
-        posts: ['post1', 'post2', 'post3'],
+        image: 'community-image-url',
+        location: 'Community Location3',
+        posts: {
+          items: [{ id: 'post1' }],
+        },
+        members: {
+          items: [
+            {
+              _deleted: false,
+              id: 'member3',
+              userId: 'user3',
+              user: {
+                id: 'user3',
+                friends: [],
+              },
+            },
+          ],
+        },
       },
-    ]
+    ],
   })),
 
   useFetchAllUserCommunities: jest.fn(() => ({
@@ -214,7 +365,7 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
           firstName: 'Test',
           lastName: 'User1',
           selectedCommunity: 'community1',
-          location: 'Test Location',
+          location: 'Test Location1',
 
           // age: 30,
           // bio: 'This is a test bio.',
@@ -237,7 +388,7 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
           firstName: 'Test',
           lastName: 'User2',
           selectedCommunity: 'community2',
-          location: 'Test Location',
+          location: 'Test Location2',
           // age: 30,
           // bio: 'This is a test bio.',
           // profilePic: 'path/to/profilePic.jpg',
@@ -257,7 +408,7 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
           firstName: 'Test',
           lastName: 'User3',
           selectedCommunity: 'community3',
-          location: 'Test Location',
+          location: 'Test Location3',
           // age: 30,
           // bio: 'This is a test bio.',
           // profilePic: 'path/to/profilePic.jpg',
@@ -270,6 +421,14 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
   })),
 
 }));
+
+
+
+
+
+
+
+
 
 jest.mock('@/src/api/services/user', () => ({
   updateUserEmailAPI: jest.fn(),
