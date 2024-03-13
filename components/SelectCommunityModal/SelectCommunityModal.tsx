@@ -1,16 +1,20 @@
 'use client';
+
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
-import { useAuth } from '@/components/Authorization/useAuth';
 import { Button, Group, Modal, ScrollArea } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconPlus } from '@tabler/icons-react';
-import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
-import { Community } from '@/src/API';
-import { SelectCommunity } from '../SignUp/SelectCommunity';
 import { useFormik } from 'formik';
+import {
+  useFetchAllCommunities,
+  useFetchRelevantCommunities,
+} from '@/src/hooks/communityCustomHooks';
+import { Community } from '@/src/API';
 import { selectedCommunityModalSchema } from './selectCommunityModalValidation';
 import { commmunitySelectHandler } from './communitySelectHandler';
+import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
+import { useAuth } from '../Authorization/useAuth';
 
 interface SelectCommunityModalProps {
   opened: boolean;
@@ -24,11 +28,18 @@ export default function SelectCommunityModal({
   onClose,
 }: SelectCommunityModalProps) {
   const { user } = useAuth();
-  const { communities, loading } = useFetchAllCommunities();
+  const { communities } = useFetchAllCommunities();
+  const { relevantCommunities } = useFetchRelevantCommunities();
 
-  const availableCommunities = communities.filter(
+  let availableCommunities = communities.filter(
     (community: Community) => !userCommunities.some((uc: Community) => uc.id === community.id)
   );
+
+  if (relevantCommunities?.length > 0) {
+    availableCommunities = relevantCommunities.filter(
+      (community: Community) => !userCommunities.some((uc: Community) => uc.id === community.id)
+    );
+  }
 
   const [isLoading, handlers] = useDisclosure();
   const formik = useFormik({
@@ -39,7 +50,7 @@ export default function SelectCommunityModal({
     validationSchema: selectedCommunityModalSchema,
     onSubmit: async (values) => {
       handlers.open();
-      if (values.selectedCommunity != '' && userCommunities.length == 3) {
+      if (values.selectedCommunity !== '' && userCommunities.length === 3) {
         notifications.show({
           radius: 'md',
           color: 'red',
@@ -78,15 +89,14 @@ export default function SelectCommunityModal({
         data-testid='select-community-modal'
       >
         <form onSubmit={formik.handleSubmit}>
-          <SelectCommunity
-            communities={availableCommunities}
-            loading={loading}
-            setFieldValue={formik.setFieldValue}
-            onChange={formik.handleChange}
-            selectedCommunity={formik.values.selectedCommunity}
-            errors={formik.errors}
-            touched={formik.touched}
-          />
+          {availableCommunities.map((community: Community) => (
+            <CommunityListItem
+              community={community}
+              onSelect={() => formik.setFieldValue('selectedCommunity', community.id)}
+              selected={formik.values.selectedCommunity === community.id}
+              isAnyCommunitySelected={!!formik.values.selectedCommunity}
+            />
+          ))}
           <Group justify="end" mt="xl" gap="xl">
             <Button radius="md" onClick={onClose} data-testid='cancel-join-community-btn'>
               Cancel

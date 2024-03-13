@@ -135,7 +135,7 @@ type EagerCommunity = {
   readonly location: string;
   readonly coordinates: string;
   readonly image?: string | null;
-  readonly members: UserCommunity[];
+  readonly members?: UserCommunity[] | null;
   readonly posts: Post[];
   readonly events?: (Event | null)[] | null;
   readonly itemsForSale?: (ItemForSale | null)[] | null;

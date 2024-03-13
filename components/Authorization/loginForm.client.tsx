@@ -44,6 +44,10 @@ export async function handleSignIn({
       });
       localStorage.setItem('currentCommunityID', JSON.stringify(communityID));
       localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
+      console.log('Logged in user:', user.data.getUser);
+      console.log('Logged in community:', community.data.getCommunity);
+      console.log('Logged in with ID:', userId);
+      console.log('Logged in with community ID:', communityID);
     }
   } catch (error) {
     handlers.close();
@@ -59,10 +63,10 @@ export default function LoginForm() {
   const [loading, handlers] = useDisclosure(false);
   const router = useRouter();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handlers.open();
-    handleSignIn({
+    await handleSignIn({
       username: email,
       password: pass,
       clientInput: client,

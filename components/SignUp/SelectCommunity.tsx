@@ -1,31 +1,67 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Box, SimpleGrid, Stack, Text, LoadingOverlay } from '@mantine/core';
-import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
-import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
-import { Community } from '@/types/types';
+import React, { useState, useEffect } from 'react';
+import { Box, SimpleGrid, Stack, Text, Loader, Center, Flex, Paper } from '@mantine/core';
 import { FormikErrors, FormikTouched } from 'formik';
+import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
+import { CommunityWithDistance, getClosestCommunities } from '../utils/relevantCommunitiesHelpers/getClosestCommunities';
 
 interface SelectCommunityProps {
-  communities: Community[];
-  loading: boolean;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   onChange?: (e: React.ChangeEvent<any>) => void;
   selectedCommunity: string;
   errors: FormikErrors<{ selectedCommunity: string }>;
   touched: FormikTouched<{ selectedCommunity: Boolean }>;
+  coordinates: {
+    lat: string;
+    lng: string;
+  };
 }
 
 export const SelectCommunity: React.FC<SelectCommunityProps> = ({
-  communities,
-  loading,
   setFieldValue,
   onChange,
   selectedCommunity,
   errors,
   touched,
+  coordinates,
 }) => {
+  const [nearestCommunities, setNearestCommunities] = useState<CommunityWithDistance[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [noCommunities, setNoCommunities] = useState(false);
+  const [retrievingError, setRetrievingError] = useState(false);
+
+  useEffect(() => {
+    const fetchCommunities = async () => {
+      if (!coordinates.lat || !coordinates.lng) {
+        setRetrievingError(true);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const response = await getClosestCommunities(`${coordinates.lat}, ${coordinates.lng}`);
+
+        const filteredCommunities = response
+          .filter((element: CommunityWithDistance) => element.distanceKm <= 10)
+          .slice(0, 5);
+        if (filteredCommunities.length === 0) {
+          setNoCommunities(true);
+          return;
+        }
+        setNearestCommunities(filteredCommunities);
+        const relevantCommunities = filteredCommunities.map((element: CommunityWithDistance) => element.community.id);
+        setFieldValue('relevantCommunities', relevantCommunities);
+      } catch (error) {
+        setRetrievingError(true);
+      } finally {
+        setIsLoading(false); // End loading
+      }
+    };
+
+    fetchCommunities();
+  }, [coordinates]);
+
   const handleSelectCommunity = (id: string) => {
     setFieldValue('selectedCommunity', id);
   };
@@ -35,22 +71,51 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
   return (
     <Box w="25vw">
       <Stack mt="lg" gap="md">
-        <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange} data-testid="communities">
+        {isLoading ? (
+          <Center>
+            <Flex
+              direction={{ base: 'column', sm: 'row' }}
+              gap={{ base: 'sm', sm: 'lg' }}
+              justify={{ sm: 'center' }}
+            >
+              <Loader />
+              <Text mt="sm">Retrieving communities...</Text>
+            </Flex>
+          </Center>
+        ) : noCommunities ? (
+          <Paper withBorder shadow="md" p="md" radius="md" mt="md">
+            <Text size="lg" fw={700} ta="center">
+              No Communities Available 😔
+            </Text>
+            <Text size="sm" mt="sm" ta="center">
+              Neighbourhood is currently only available in Winnipeg and surrounding areas. <br />
+              Please go back and select a different address.
+            </Text>
+          </Paper>
+        ) : retrievingError ? (
+          <Paper withBorder shadow="md" p="md" radius="md" mt="md">
+            <Text size="sm" mt="sm" ta="center">
+              There was an error retrieving the communities. Please try again later.
+            </Text>
+          </Paper>
+        ) : (
+          <SimpleGrid cols={1} spacing="xs" mt="sm" onChange={onChange} data-testid="communities">
           {errors.selectedCommunity && (
             <Text c="red" fz="sm">
               {errors.selectedCommunity}
             </Text>
           )}
-          {communities.map((community: Community) => (
+          {Object.values(nearestCommunities).map((element: CommunityWithDistance) => (
             <CommunityListItem
-              key={community.id}
-              community={community}
-              selected={selectedCommunity === community.id}
-              onSelect={() => handleSelectCommunity(community.id)}
+              key={element.community.id}
+              community={element.community}
+              onSelect={() => handleSelectCommunity(element.community.id)}
+              selected={selectedCommunity === element.community.id}
               isAnyCommunitySelected={isAnyCommunitySelected}
             />
           ))}
-        </SimpleGrid>
+          </SimpleGrid>
+      )}
       </Stack>
     </Box>
   );

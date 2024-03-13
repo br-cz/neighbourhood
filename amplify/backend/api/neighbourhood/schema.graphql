@@ -54,7 +54,7 @@ type Community @model {
   location: String!
   coordinates: String!
   image: String
-  members: [User!]! @manyToMany(relationName: "UserCommunity")
+  members: [User!] @manyToMany(relationName: "UserCommunity")
   posts: [Post!]! @hasMany
   events: [Event] @hasMany
   itemsForSale: [ItemForSale] @hasMany
