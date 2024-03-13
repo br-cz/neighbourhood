@@ -109,7 +109,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   return (
     <Box w={400} mt={20}>
       <Group justify="center">
-        <Box w={100} h={100} onClick={handleImageUploadClick} className={classes.avatar}>
+        <Box w={100} h={100} onClick={handleImageUploadClick} className={classes.avatarUpload}>
           {previewImageUrl ? (
             <Image
               src={previewImageUrl}
@@ -118,7 +118,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
           ) : (
             <Avatar radius="xl" size={100} />
           )}
-          <Stack gap="xs" className={classes.avatarOverlay}>
+          <Stack gap="xs" className={classes.avatarUploadOverlay}>
             <FontAwesomeIcon icon={faPencil} />
             <Text fz="xs" fw={500}>
               Edit

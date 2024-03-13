@@ -60,7 +60,7 @@ describe('Profile Page', () => {
       expect(screen.getByText('I am a test user!')).toBeInTheDocument();
       expect(screen.getByText('(204) 456-7890')).toBeInTheDocument();
       expect(screen.getByText('123 Test St.')).toBeInTheDocument();
-      expect(screen.getByText('May 12, 1990')).toBeInTheDocument();
+      expect(screen.getByText('May 12, 1990 (33 years)')).toBeInTheDocument();
       expect(screen.getByText('He/Him')).toBeInTheDocument();
       expect(screen.getByText('2')).toBeInTheDocument();
       expect(screen.getByText('3')).toBeInTheDocument();

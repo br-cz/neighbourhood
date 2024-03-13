@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Box, Stack, Title } from '@mantine/core';
-import { formatDate } from '@/utils/timeUtils';
+import { formatDate, getAge } from '@/utils/timeUtils';
 import { User } from '@/types/types';
 import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
@@ -31,7 +31,7 @@ export function UserListItemPreview({ user, relationshipStatus }: UserListItemPr
               {user?.firstName} {user?.lastName}
             </Title>
             <Text c="dimmed" size="xs">
-              {user?.bio || 'Excited to be part of the neighbourhood!'}
+              {user?.bio ? user?.bio : 'Excited to be part of the neighbourhood!'}
             </Text>
           </Stack>
         </Group>
@@ -40,10 +40,10 @@ export function UserListItemPreview({ user, relationshipStatus }: UserListItemPr
             <Group gap={50} mt="xs">
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Contact:</b> {user?.contact || 'N/A'}
+                  <b>Contact:</b> {user?.contact ? user?.contact : 'N/A'}
                 </Text>
                 <Text size="xs">
-                  <b>Address:</b> {user?.address || 'N/A'}
+                  <b>Address:</b> {user?.address ? user?.address.split(',')[0] : 'N/A'}
                 </Text>
                 <Text size="xs">
                   <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -51,18 +51,18 @@ export function UserListItemPreview({ user, relationshipStatus }: UserListItemPr
               </Stack>
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Pronouns:</b> {user?.pronouns || 'N/A'}
+                  <b>Pronouns:</b> {user?.pronouns ? user?.pronouns : 'N/A'}
                 </Text>
                 <Text size="xs">
-                  {/* Add age here */}
-                  <b>Birthday:</b> {user?.birthday || 'N/A'}
+                  <b>Birthday:</b>{' '}
+                  {user?.birthday ? `${user?.birthday} (${getAge(user?.birthday)} years)` : 'N/A'}
                 </Text>
                 <Group>
                   <Text size="xs">
-                    <b>Pets:</b> {user?.pets || 'N/A'}
+                    <b>Pets:</b> {user?.pets ? user?.pets : 0}
                   </Text>
                   <Text size="xs">
-                    <b>Kids:</b> {user?.kids || 'N/A'}
+                    <b>Kids:</b> {user?.kids ? user?.kids : 0}
                   </Text>
                 </Group>
               </Stack>
@@ -73,7 +73,7 @@ export function UserListItemPreview({ user, relationshipStatus }: UserListItemPr
             <Group gap={50} mt="xs">
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Pronouns:</b> {user?.pronouns || 'N/A'}
+                  <b>Pronouns:</b> {user?.pronouns ? user?.pronouns : 'N/A'}
                 </Text>
                 <Text size="xs">
                   <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -81,15 +81,14 @@ export function UserListItemPreview({ user, relationshipStatus }: UserListItemPr
               </Stack>
               <Stack gap="xs">
                 <Text size="xs">
-                  {/* Add age here */}
-                  <b>Age:</b>
+                  <b>Age:</b> {user?.birthday ? `${getAge(user?.birthday)} years` : 'N/A'}
                 </Text>
                 <Group>
                   <Text size="xs">
-                    <b>Pets:</b> {user?.pets || 'N/A'}
+                    <b>Pets:</b> {user?.pets ? user?.pets : 0}
                   </Text>
                   <Text size="xs">
-                    <b>Kids:</b> {user?.kids || 'N/A'}
+                    <b>Kids:</b> {user?.kids ? user?.kids : 0}
                   </Text>
                 </Group>
               </Stack>
