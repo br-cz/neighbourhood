@@ -1,12 +1,13 @@
+import { Subject } from 'rxjs';
 import { useState, useEffect } from 'react';
 import {
   getAllUserCommunitiesAPI,
   getCommunityAPI,
-  getAllCommunitiesAPI,
-  getAllCommunityDetails,
+  getRelevantCommunitiesAPI,
+  getAllCommunityDetailsAPI,
 } from '../api/services/community';
+import { getCurrentUserID } from './usersCustomHooks';
 
-import { Subject } from 'rxjs';
 export const communityUpdateSubject = new Subject<void>();
 
 export const getCurrentCommunityID = () => JSON.parse(localStorage.getItem('currentCommunityID')!);
@@ -84,7 +85,7 @@ export const useFetchAllCommunities = (refresh: boolean = false) => {
     const fetchAllCommunities = async () => {
       try {
         setLoading(true);
-        const response = await getAllCommunityDetails();
+        const response = await getAllCommunityDetailsAPI();
         const allMembers = JSON.parse(JSON.stringify(response));
         setCommunities(allMembers.data.listCommunities.items);
       } catch (err: any) {
@@ -98,6 +99,30 @@ export const useFetchAllCommunities = (refresh: boolean = false) => {
   }, [refresh]);
 
   return { communities, loading, error };
+};
+
+export const useFetchRelevantCommunities = (refresh: boolean = false) => {
+  const [relevantCommunities, setRelevantCommunities] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRelevantCommunities = async () => {
+      try {
+        setLoading(true);
+        const response = (await getRelevantCommunitiesAPI(getCurrentUserID())) ?? [];
+        setRelevantCommunities(response);
+      } catch (err: any) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRelevantCommunities();
+  }, [refresh]);
+
+  return { relevantCommunities, loading, error };
 };
 
 export const useFetchAllUserCommunities = (refresh: boolean = false) => {

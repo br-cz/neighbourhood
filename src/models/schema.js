@@ -434,7 +434,7 @@ export const schema = {
                     },
                     "isRequired": true,
                     "attributes": [],
-                    "isArrayNullable": false,
+                    "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
@@ -1427,5 +1427,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "bba794366e09540ce31dc82eefdae246"
+    "version": "bc499130ed109479f2a2df2e3d806ee5"
 };

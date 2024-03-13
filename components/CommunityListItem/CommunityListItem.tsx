@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useToggle } from '@mantine/hooks';
-import { Group, Avatar, Text } from '@mantine/core';
+import { Group, Avatar, Text, Box } from '@mantine/core';
 import classes from './CommunityListItem.module.css';
-import { Community } from '@/types/types';
+import { Community } from '@/src/API';
 import { retrieveImage } from '../utils/s3Helpers/CommunityImageS3Helper';
 
 interface CommunityListItemProps {
@@ -33,15 +32,22 @@ export function CommunityListItem({
   };
 
   return (
-    <div
+    <Box
       className={`${classes.community} ${selected ? classes.active : ''}`}
+      onKeyDown={onSelect}
       onClick={onSelect}
       role="button"
       tabIndex={0}
+      w={400}
       data-testid={`communities-item-${community.id}`}
     >
       <Group>
-        <Avatar src={communityImage} size="lg" radius="xl" style={{ opacity: itemStyle.opacity }} />
+        <Avatar
+          src={community?.image ? community.image : './img/placeholder-img.jpg'}
+          size="lg"
+          radius="xl"
+          style={{ opacity: itemStyle.opacity }}
+        />
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={600} style={{ color: itemStyle.color }}>
             {community.name}
@@ -51,6 +57,6 @@ export function CommunityListItem({
           </Text>
         </div>
       </Group>
-    </div>
+    </Box>
   );
 }

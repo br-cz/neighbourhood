@@ -15,9 +15,5 @@
 }
 
 .community.active {
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
-}
-
-.error-message {
-  color: var(--mantine-color-red-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8));
 }

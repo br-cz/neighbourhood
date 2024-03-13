@@ -4,7 +4,6 @@ import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
 import classes from './UserButton.module.css';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
-import { getInitials } from '../utils/utilFunctions';
 import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface UserButtonProps {
@@ -26,9 +25,7 @@ export function UserButton({ active }: UserButtonProps) {
     <Link href="/profile" passHref className={classes.link} data-testid="profile">
       <UnstyledButton className={`${classes.user} ${active ? classes.active : ''}`}>
         <Group>
-          <Avatar src={profilePic} size="md" radius="xl">
-            {getInitials(currentUser?.firstName, currentUser?.lastName)}
-          </Avatar>
+          <Avatar src={profilePic} size="md" radius="xl" />
           <div style={{ flex: 1 }}>
             <Text size="sm" fw={600}>
               My Profile

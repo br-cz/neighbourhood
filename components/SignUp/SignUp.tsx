@@ -17,7 +17,6 @@ import {
   faPeopleGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { useFormik } from 'formik';
-import { useFetchAllCommunities } from '@/src/hooks/communityCustomHooks';
 import { LoginDetails } from '@/components/SignUp/LoginDetails.tsx';
 import { AddressInput } from './AddressInput';
 import { SelectCommunity } from './SelectCommunity';
@@ -31,10 +30,11 @@ import { handleSignIn } from '../Authorization/loginForm.client';
 const client = generateClient({});
 
 export const SignUp = () => {
-  const { communities, loading } = useFetchAllCommunities();
   const [userId, setUserId] = useState<string | null>(null);
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [active, setActive] = useState(0);
+  const [isAddressValid, setIsAddressValid] = useState(false);
+  const [coordinates, setCoordinates] = useState({ lat: '', lng: '' });
   const nextStep = () => setActive((current) => (current < 5 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const [isLoading, handlers] = useDisclosure(false);
@@ -56,6 +56,7 @@ export const SignUp = () => {
       birthday: '',
       kids: 0,
       pets: 0,
+      relevantCommunities: [],
     },
     validationSchema: signUpSchema,
     onSubmit: async (parameters) => {
@@ -89,8 +90,26 @@ export const SignUp = () => {
     return currentStepFields.every((field) => !errors[field as keyof typeof formik.values]);
   };
 
+  const handleAddressSelection = (isSelected: boolean) => {
+    setIsAddressValid(isSelected);
+  };
+
+  const handleCoordinatesChange = (newCoordinates: any) => {
+    setCoordinates(newCoordinates);
+  };
+
   const handleNext = async () => {
     const isValid = await handleValidate(active);
+
+    if (active === 1 && !isAddressValid) {
+      notifications.show({
+        title: 'Oops!',
+        message:
+          'You must select an address from the dropdown list. Please select an address and proceed.',
+        color: 'red',
+      });
+      return;
+    }
     if (isValid) {
       nextStep();
     } else {
@@ -252,6 +271,9 @@ export const SignUp = () => {
                 onBlur={formik.handleBlur}
                 error={formik.errors}
                 touched={formik.touched}
+                setFieldValue={formik.setFieldValue}
+                onAddressSelection={handleAddressSelection}
+                onCoordinatesChange={handleCoordinatesChange}
               />
             </Stack>
           </Stepper.Step>
@@ -268,12 +290,9 @@ export const SignUp = () => {
                 If you&apos;re in-between communities - don&apos;t worry, you can join more later.
               </Text>
               <SelectCommunity
-                communities={communities}
-                loading={loading}
                 setFieldValue={formik.setFieldValue}
                 onChange={formik.handleChange}
-                errors={formik.errors}
-                touched={formik.touched}
+                coordinates={coordinates}
                 selectedCommunity={formik.values.selectedCommunity}
               />
             </Stack>
