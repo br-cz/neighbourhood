@@ -4,9 +4,11 @@ import {
   getCommunityAPI,
   getAllCommunitiesAPI,
   getAllCommunityDetails,
+  getRelevantCommunitiesAPI,
 } from '../api/services/community';
 
 import { Subject } from 'rxjs';
+import { getCurrentUserID } from './usersCustomHooks';
 export const communityUpdateSubject = new Subject<void>();
 
 export const getCurrentCommunityID = () => JSON.parse(localStorage.getItem('currentCommunityID')!);
@@ -98,6 +100,30 @@ export const useFetchAllCommunities = (refresh: boolean = false) => {
   }, [refresh]);
 
   return { communities, loading, error };
+};
+
+export const useFetchRelevantCommunities = (refresh: boolean = false) => {
+  const [relevantCommunities, setRelevantCommunities] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRelevantCommunities = async () => {
+      try {
+        setLoading(true);
+        const response = await getRelevantCommunitiesAPI(getCurrentUserID()) ?? [];
+        setRelevantCommunities(response);
+      } catch (err: any) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRelevantCommunities();
+  }, [refresh]);
+
+  return { relevantCommunities, loading, error };
 };
 
 export const useFetchAllUserCommunities = (refresh: boolean = false) => {

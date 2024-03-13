@@ -32,6 +32,28 @@ jest.mock('@/components/Authorization/useAuth', () => ({
   useAuth: () => ({ user: { loggedIn: true } }),
 }));
 
+const closestCommunityMock = jest.fn().mockResolvedValue([
+  {
+    community: {
+      id: 'community1',
+      name: 'Community 1',
+      address: '123 Fake St',
+    },
+    distanceKm: 5,
+  },
+  {
+    community: {
+      id: 'community2',
+      name: 'Community 2',
+      address: '456 Fake St',
+    },
+    distanceKm: 10,
+  },
+]);
+jest.mock('@/components/utils/relevantCommunitiesHelpers/getClosestCommunities', () => ({
+  getClosestCommunities: closestCommunityMock,
+}));
+
 jest.mock('@aws-amplify/auth', () => ({
   updateUserAttributes: jest.fn(),
   updatePassword: jest.fn().mockResolvedValue(true),
@@ -119,6 +141,39 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
       },
     ],
     loading: false,
+  })),
+
+  useFetchRelevantCommunities: jest.fn(() => ({
+    communities : [
+      {
+        id: 'community1',
+        name: 'Test Community1',
+        location: 'Test Location',
+        // coordinates: '123, 456',
+        image: 'path/to/communityImage.jpg',
+        members: ['user1', 'user2', 'user3'],
+        posts: ['post1', 'post2', 'post3'],
+      },
+
+      {
+        id: 'community2',
+        name: 'Test Community2',
+        location: 'Test Location',
+        // coordinates: '123, 456',
+        image: 'path/to/communityImage.jpg',
+        members: ['user1', 'user2', 'user3'],
+        posts: ['post1', 'post2', 'post3'],
+      },
+      {
+        id: 'community3',
+        name: 'Test Community3',
+        location: 'Test Location',
+        // coordinates: '123, 456',
+        image: 'path/to/communityImage.jpg',
+        members: ['user1', 'user2', 'user3'],
+        posts: ['post1', 'post2', 'post3'],
+      },
+    ]
   })),
 
   useFetchAllUserCommunities: jest.fn(() => ({
@@ -263,4 +318,12 @@ jest.mock('@mantine/modals', () => ({
       onConfirm();
     }),
   },
+}));
+
+
+jest.mock('@/src/hooks/googleMapsAPI', () => ({
+  useGoogleMapsApi: jest.fn(() => ({
+    isLoaded: true,
+    loadError: null, // Adjust according to your needs, could be an error object in other scenarios
+  })),
 }));

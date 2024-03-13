@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useToggle } from '@mantine/hooks';
 import { Group, Avatar, Text } from '@mantine/core';
 import classes from './CommunityListItem.module.css';
-import { Community } from '@/types/types';
+import { Community } from '@/src/API';
 import { retrieveImage } from '../utils/s3Helpers/CommunityImageS3Helper';
 
 interface CommunityListItemProps {

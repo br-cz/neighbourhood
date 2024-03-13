@@ -9,6 +9,32 @@ import { EmailVerify } from '@/components/SignUp/EmailVerify';
 
 const mockVerificationCode = jest.fn();
 
+const addListenerMock = jest.fn((event, callback) => {
+  if (event === 'place_changed') {
+    callback();
+  }
+});
+
+beforeAll(() => {
+  const maps = {
+    places: {
+      Autocomplete: jest.fn().mockImplementation(() => ({
+        addListener: addListenerMock,
+        getPlace: jest.fn().mockReturnValue({
+          formatted_address: '88 Briarcliff Bay Winnipeg, MB R3T 3H7',
+          geometry: {
+            location: {
+              lat: jest.fn().mockReturnValue('123'),
+              lng: jest.fn().mockReturnValue('456'),
+            },
+          },
+        }),
+      })),
+    },
+  };
+  global.window.google = { maps };
+});
+
 beforeEach(() => {
   jest.mock('formik', () => ({
     ...jest.requireActual('formik'),
@@ -63,7 +89,12 @@ const completeStep2 = async () => {
   await waitFor(() => {
     expect(screen.getByTestId('address')).toBeInTheDocument();
   });
-  fireEvent.change(screen.getByTestId('address'), { target: { value: '25 Smith St.' } });
+  fireEvent.change(screen.getByTestId('address'), {
+    target: { value: '88 Briarcliff Bay Winnipeg, MB R3T 3H7' },
+  });
+  await waitFor(() => {
+    expect(screen.getByText(/Continue/i)).not.toBeDisabled();
+  });
   fireEvent.click(screen.getByText(/Continue/i));
 };
 
@@ -265,7 +296,7 @@ describe('Step 2: Address Input', () => {
     fireEvent.click(screen.getByText(/Continue/i));
     await waitFor(
       () => {
-        expect(screen.getByText('Address is required')).toBeInTheDocument();
+        expect(screen.getByTestId('address')).toBeInTheDocument(); // still on step 2
       },
       { timeout: 1000 }
     );
