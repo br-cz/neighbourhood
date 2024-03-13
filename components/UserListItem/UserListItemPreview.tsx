@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Box, Stack, Title } from '@mantine/core';
 import { formatDate, getAge } from '@/utils/timeUtils';
-import { User } from '@/src/API';
+import { User } from '@/types/types';
 import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface UserListItemPreviewProps {
