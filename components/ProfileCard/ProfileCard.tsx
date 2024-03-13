@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Box, Stack, Title, Loader } from '@mantine/core';
 import classes from './ProfileCard.module.css';
-import { formatDate, formatUTCDate } from '@/utils/timeUtils';
+import { formatDate, formatUTCDate, getAge } from '@/utils/timeUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { retrieveImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 
@@ -45,10 +45,10 @@ export function ProfileCard({ refresh }: ProfileCardProps) {
                 <Group gap={50} mt="xs">
                   <Stack gap="xs">
                     <Text size="sm">
-                      <b>Contact:</b> {user?.contact || '---'}
+                      <b>Contact:</b> {user?.contact || 'N/A'}
                     </Text>
                     <Text size="sm">
-                      <b>Address:</b> {user?.address || '---'}
+                      <b>Address:</b> {user?.address.split(',')[0] || 'N/A'}
                     </Text>
                     <Text size="sm">
                       <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -56,17 +56,20 @@ export function ProfileCard({ refresh }: ProfileCardProps) {
                   </Stack>
                   <Stack gap="xs">
                     <Text size="sm">
-                      <b>Pronouns:</b> {user?.pronouns || '---'}
+                      <b>Pronouns:</b> {user?.pronouns || 'N/A'}
                     </Text>
                     <Text size="sm">
-                      <b>Birthday:</b> {user?.birthday ? formatUTCDate(user?.birthday) : 'N/A'}
+                      <b>Birthday:</b>{' '}
+                      {user?.birthday
+                        ? `${formatUTCDate(user?.birthday)} (${getAge(user?.birthday)} years)`
+                        : 'N/A'}
                     </Text>
                     <Group>
                       <Text size="sm">
-                        <b>Pets:</b> {user?.pets || '---'}
+                        <b>Pets:</b> {user?.pets || '0'}
                       </Text>
                       <Text size="sm">
-                        <b>Kids:</b> {user?.kids || '---'}
+                        <b>Kids:</b> {user?.kids || '0'}
                       </Text>
                     </Group>
                   </Stack>
