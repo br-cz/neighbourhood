@@ -60,162 +60,162 @@ describe('MarketplacePage - Create Listing', () => {
     expect(screen.getByText(/New Listing.../i)).toBeInTheDocument();
   });
 
-  // //1.2
-  // test('Render create listings drawer after button click', async () => {
-  //   renderComponent();
-  //   await userEvent.click(screen.getByText(/New Listing.../i));
-  //   expect(screen.getByTestId(/create-listing-drawer/i)).toBeInTheDocument();
-  // });
+  //1.2
+  test('Render create listings drawer after button click', async () => {
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Listing.../i));
+    expect(screen.getByTestId(/create-listing-drawer/i)).toBeInTheDocument();
+  });
 
-  // //1.3
-  // test('Render listings drawer with the correct fields', async () => {
-  //   renderComponent();
-  //   await userEvent.click(screen.getByText(/New Listing.../i));
-  //   await waitFor(() => {
-  //       expect(screen.getByTestId('title-input')).toBeInTheDocument();
-  //       expect(screen.getByTestId('price-input')).toBeInTheDocument();
-  //       expect(screen.getByTestId('description')).toBeInTheDocument();
-  //       expect(screen.getByTestId('contact')).toBeInTheDocument();
-  //   });
-  // });
+  //1.3
+  test('Render listings drawer with the correct fields', async () => {
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Listing.../i));
+    await waitFor(() => {
+        expect(screen.getByTestId('title-input')).toBeInTheDocument();
+        expect(screen.getByTestId('price-input')).toBeInTheDocument();
+        expect(screen.getByTestId('description')).toBeInTheDocument();
+        expect(screen.getByTestId('contact')).toBeInTheDocument();
+    });
+  });
 
-  // //1.4
-  // test('Drawer fields are selectable and change to the correctly inputted values', async () => {
-  //   //First render the component
-  //   renderComponent();
-  //   await userEvent.click(screen.getByText(/New Listing.../i));
+  //1.4
+  test('Drawer fields are selectable and change to the correctly inputted values', async () => {
+    //First render the component
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Listing.../i));
 
-  //   await userEvent.type(screen.getByTestId('title-input'), 'Test Item');
-  //   await userEvent.type(screen.getByTestId('price-input'), '100');
-  //   await userEvent.type(screen.getByTestId('description'), 'This is a test description');
-  //   await userEvent.type(screen.getByTestId('contact'), '1234567890');
+    await userEvent.type(screen.getByTestId('title-input'), 'Test Item');
+    await userEvent.type(screen.getByTestId('price-input'), '100');
+    await userEvent.type(screen.getByTestId('description'), 'This is a test description');
+    await userEvent.type(screen.getByTestId('contact'), '1234567890');
 
-  //   await waitFor(
-  //     () => {
-  //       expect(screen.getByTestId('title-input')).toHaveValue('Test Item');
-  //       expect(screen.getByTestId('price-input')).toHaveValue('$100');
-  //       expect(screen.getByTestId('description')).toHaveValue('This is a test description');
-  //       //expect(screen.getByTestId('contact')).toHaveValue('(123) 456-7890');
-  //     },
-  //     { timeout: 2000 }
-  //   );
-  // });
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('title-input')).toHaveValue('Test Item');
+        expect(screen.getByTestId('price-input')).toHaveValue('$100');
+        expect(screen.getByTestId('description')).toHaveValue('This is a test description');
+        //expect(screen.getByTestId('contact')).toHaveValue('(123) 456-7890');
+      },
+      { timeout: 2000 }
+    );
+  });
 
-  // //1.5
-  // test('Drawer does not close if listing title is missing', async () => {
-  //   //First render the component
-  //   renderComponent();
-  //   await userEvent.click(screen.getByText(/New Listing.../i));
+  //1.5
+  test('Drawer does not close if listing title is missing', async () => {
+    //First render the component
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Listing.../i));
 
-  //   userEvent.type(screen.getByTestId('price-input'), '100');
-  //   userEvent.type(screen.getByTestId('description'), 'This is a test description');
-  //   userEvent.type(screen.getByTestId('contact'), '1234567890');
+    userEvent.type(screen.getByTestId('price-input'), '100');
+    userEvent.type(screen.getByTestId('description'), 'This is a test description');
+    userEvent.type(screen.getByTestId('contact'), '1234567890');
 
-  //   // Submit the form without filling in the required fields
-  //   await userEvent.click(screen.getByText(/Post Item/i));
+    // Submit the form without filling in the required fields
+    await userEvent.click(screen.getByText(/Post Item/i));
 
-  //   await waitFor(
-  //     () => {
-  //       expect(screen.getByTestId('title-input')).toBeInTheDocument();
-  //       expect(screen.getByTestId('price-input')).toBeInTheDocument();
-  //       expect(screen.getByTestId('description')).toBeInTheDocument();
-  //       expect(screen.getByTestId('contact')).toBeInTheDocument();
-  //       expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
-  //         expect.objectContaining({
-  //           title: 'Oops!',
-  //         })
-  //       );
-  //     },
-  //     { timeout: 2000 }
-  //   );
-  // });
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('title-input')).toBeInTheDocument();
+        expect(screen.getByTestId('price-input')).toBeInTheDocument();
+        expect(screen.getByTestId('description')).toBeInTheDocument();
+        expect(screen.getByTestId('contact')).toBeInTheDocument();
+        expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Oops!',
+          })
+        );
+      },
+      { timeout: 2000 }
+    );
+  });
 
-  // //1.6
-  // test('Drawer does not close if price is missing', async () => {
-  //   //First render the component
-  //   renderComponent();
-  //   await userEvent.click(screen.getByText(/New Listing.../i));
+  //1.6
+  test('Drawer does not close if price is missing', async () => {
+    //First render the component
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Listing.../i));
 
-  //   userEvent.type(screen.getByTestId('title-input'), 'Test Item');
-  //   userEvent.type(screen.getByTestId('description'), 'This is a test description');
-  //   userEvent.type(screen.getByTestId('contact'), '1234567890');
+    userEvent.type(screen.getByTestId('title-input'), 'Test Item');
+    userEvent.type(screen.getByTestId('description'), 'This is a test description');
+    userEvent.type(screen.getByTestId('contact'), '1234567890');
 
 
-  //   // Submit the form without filling in the required fields
-  //   await userEvent.click(screen.getByText(/Post Item/i));
+    // Submit the form without filling in the required fields
+    await userEvent.click(screen.getByText(/Post Item/i));
 
-  //   await waitFor(
-  //     () => {
-  //       expect(screen.getByTestId('title-input')).toBeInTheDocument();
-  //       expect(screen.getByTestId('price-input')).toBeInTheDocument();
-  //       expect(screen.getByTestId('description')).toBeInTheDocument();
-  //       expect(screen.getByTestId('contact')).toBeInTheDocument();
-  //       expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
-  //         expect.objectContaining({
-  //           title: 'Oops!',
-  //         })
-  //       );
-  //     },
-  //     { timeout: 2000 }
-  //   );
-  // });
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('title-input')).toBeInTheDocument();
+        expect(screen.getByTestId('price-input')).toBeInTheDocument();
+        expect(screen.getByTestId('description')).toBeInTheDocument();
+        expect(screen.getByTestId('contact')).toBeInTheDocument();
+        expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Oops!',
+          })
+        );
+      },
+      { timeout: 2000 }
+    );
+  });
 
-  // //1.7
-  // test('Drawer does not close if contact is missing', async () => {
-  //   //First render the component
-  //   renderComponent();
-  //   await userEvent.click(screen.getByText(/New Listing.../i));
+  //1.7
+  test('Drawer does not close if contact is missing', async () => {
+    //First render the component
+    renderComponent();
+    await userEvent.click(screen.getByText(/New Listing.../i));
 
-  //   userEvent.type(screen.getByTestId('title-input'), 'Test Item');
-  //   userEvent.type(screen.getByTestId('price-input'), '100');
-  //   userEvent.type(screen.getByTestId('description'), 'This is a test description');
+    userEvent.type(screen.getByTestId('title-input'), 'Test Item');
+    userEvent.type(screen.getByTestId('price-input'), '100');
+    userEvent.type(screen.getByTestId('description'), 'This is a test description');
 
-  //   // Submit the form without filling in the required fields
-  //   await userEvent.click(screen.getByText(/Post Item/i));
+    // Submit the form without filling in the required fields
+    await userEvent.click(screen.getByText(/Post Item/i));
 
-  //   await waitFor(
-  //     () => {
-  //       expect(screen.getByTestId('title-input')).toBeInTheDocument();
-  //       expect(screen.getByTestId('price-input')).toBeInTheDocument();
-  //       expect(screen.getByTestId('description')).toBeInTheDocument();
-  //       expect(screen.getByTestId('contact')).toBeInTheDocument();
-  //       expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
-  //         expect.objectContaining({
-  //           title: 'Oops!',
-  //         })
-  //       );
-  //     },
-  //     { timeout: 2000 }
-  //   );
-  // });
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('title-input')).toBeInTheDocument();
+        expect(screen.getByTestId('price-input')).toBeInTheDocument();
+        expect(screen.getByTestId('description')).toBeInTheDocument();
+        expect(screen.getByTestId('contact')).toBeInTheDocument();
+        expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Oops!',
+          })
+        );
+      },
+      { timeout: 2000 }
+    );
+  });
 
-  // //1.8
-  // test('Drawer closes on valid form submission', async () => {
-  //   //Here we are testing if the drawer closes after a valid form submission
-  //   renderComponent();
-  //   fireEvent.click(screen.getByText(/New Listing.../i));
+  //1.8
+  test('Drawer closes on valid form submission', async () => {
+    //Here we are testing if the drawer closes after a valid form submission
+    renderComponent();
+    fireEvent.click(screen.getByText(/New Listing.../i));
 
-  //   await waitFor(() => {
-  //     expect(screen.getByTestId('title-input')).toBeInTheDocument();
-  //   });
-  //   fireEvent.change(screen.getByTestId('title-input'), {
-  //     target: { value: 'Test Item' },
-  //   });
-  //   fireEvent.change(screen.getByTestId('title-input'), 'Test Item');
-  //   fireEvent.change(screen.getByTestId('price-input'), '100');
-  //   fireEvent.change(screen.getByTestId('description'), 'This is a test description');
-  //   fireEvent.change(screen.getByTestId('contact'), '1234567890');
+    await waitFor(() => {
+      expect(screen.getByTestId('title-input')).toBeInTheDocument();
+    });
+    fireEvent.change(screen.getByTestId('title-input'), {
+      target: { value: 'Test Item' },
+    });
+    fireEvent.change(screen.getByTestId('title-input'), 'Test Item');
+    fireEvent.change(screen.getByTestId('price-input'), '100');
+    fireEvent.change(screen.getByTestId('description'), 'This is a test description');
+    fireEvent.change(screen.getByTestId('contact'), '1234567890');
 
-  //   fireEvent.click(screen.getByTestId('submit-button'));
+    fireEvent.click(screen.getByTestId('submit-button'));
 
-  //   await waitFor(
-  //     () => {
-  //       expect(screen.queryByTestId('title-input')).not.toBeInTheDocument();
-  //       expect(screen.queryByTestId('price-input')).not.toBeInTheDocument();
-  //       expect(screen.queryByTestId('description')).not.toBeInTheDocument();
-  //       expect(screen.queryByTestId('contact')).not.toBeInTheDocument();
-  //     },
-  //     { timeout: 2000 }
-  //   );
-  // });
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('title-input')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('price-input')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('description')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('contact')).not.toBeInTheDocument();
+      },
+      { timeout: 2000 }
+    );
+  });
 });
