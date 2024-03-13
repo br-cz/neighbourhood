@@ -27,6 +27,7 @@ export default function CommunitiesPage() {
   const [selectedCommunity, setSelectedCommunity] = useState<string>();
   const [openedModal, { open, close }] = useDisclosure(false);
   const { userCommunityList } = useFetchAllUserCommunities(refresh);
+
   const userCommunities = Object.values(communities).filter((community: Community) =>
     community.members?.items?.some((member) => member?.user?.id === user && !member?._deleted)
   );
