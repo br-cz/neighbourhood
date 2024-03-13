@@ -2,7 +2,7 @@ import { notifications } from '@mantine/notifications';
 import { Community } from '@/src/API';
 import { createUserCommunityAPI } from '@/src/api/services/user';
 
-export const commmunitySelectHandler = async (
+export const communitySelectHandler = async (
   communityId: string,
   communities: Community[],
   user: string,
@@ -26,6 +26,9 @@ export const commmunitySelectHandler = async (
         message: `You are now part of ${community.name}. Good to have you on board!`,
       });
     } catch (error) {
+      console.log(isMember);
+      console.log(error);
+      console.log(communityId, communities, user, userCommunities);
       notifications.show({
         radius: 'md',
         title: 'Oops!',

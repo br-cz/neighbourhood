@@ -11,7 +11,7 @@ import {
 } from '@/src/hooks/communityCustomHooks';
 import { Community } from '@/src/API';
 import { selectedCommunityModalSchema } from './selectCommunityModalValidation';
-import { commmunitySelectHandler } from './communitySelectHandler';
+import { communitySelectHandler } from './communitySelectHandler';
 import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
@@ -41,7 +41,7 @@ export default function SelectCommunityModal({
     validationSchema: selectedCommunityModalSchema,
     onSubmit: async (values) => {
       handlers.open();
-      await commmunitySelectHandler(values.selectedCommunity, communities, user, userCommunities);
+      await communitySelectHandler(values.selectedCommunity, communities, user, userCommunities);
       handlers.close();
       onClose();
       onUpdate();
