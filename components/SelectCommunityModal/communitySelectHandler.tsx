@@ -1,51 +1,43 @@
-import { Community } from '@/src/API';
 import { notifications } from '@mantine/notifications';
+import { Community } from '@/src/API';
 import { createUserCommunityAPI } from '@/src/api/services/user';
 
-export const commmunitySelectHandler = async (
+export const communitySelectHandler = async (
   communityId: string,
   communities: Community[],
-  user: string,
+  userId: string,
   userCommunities: Community[]
 ) => {
   const community = communities.find(
-    (community: Community) => community.id === communityId
+    (c: Community) => c.id === communityId
   ) as unknown as Community;
 
   const isMember = community?.members?.items.some(
-    (member: any) => member.userId === user && !member?._deleted
+    (member: any) => member.userId === userId && !member?._deleted
   );
 
   if (!isMember && userCommunities?.length < 3) {
     try {
-      await createUserCommunityAPI(user, community.id);
+      await createUserCommunityAPI(userId, community.id);
       notifications.show({
         radius: 'md',
-        title: 'Yay!',
-        color: 'green',
-        message: `You are now part of ${community.name}`,
+        title: 'Woo-hoo!',
+        color: 'yellow.6',
+        message: `You are now part of ${community.name}!`,
       });
     } catch (error) {
       notifications.show({
         radius: 'md',
-        title: 'Sorry!',
+        title: 'Oops!',
         color: 'red',
         message: 'Failed to add your community. Please try again.',
       });
     }
-  } else if (!isMember && userCommunities?.length >= 3) {
-    //Probably redundant, as the formik validation + higher level checks should prevent this.
-    notifications.show({
-      radius: 'md',
-      title: 'Oops!',
-      color: 'yellow',
-      message: 'You can only join a maximum of 3 communities',
-    });
   } else {
     notifications.show({
       radius: 'md',
       title: 'Oops!',
-      color: 'yellow',
+      color: 'red',
       message: `You are already part of ${community.name}`,
     });
   }

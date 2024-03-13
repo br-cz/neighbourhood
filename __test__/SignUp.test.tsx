@@ -358,7 +358,7 @@ describe('Step 3: Community Select', () => {
     fireEvent.click(screen.getByText(/Continue/i));
     await waitFor(
       () => {
-        expect(screen.getByText('Selecting a community required.')).toBeInTheDocument();
+        expect(screen.getByTestId('communities-item-community1')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );
