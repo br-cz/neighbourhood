@@ -4,7 +4,7 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { notifications } from '@mantine/notifications';
 import { DataProvider } from '@/contexts/DataContext';
-import ProfilePage from '@/app/profile/page';
+import ProfilePage from '@/components/Profile/ProfilePage';
 import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 function createMockImageFile(filename = 'test-image.jpg', type = 'image/jpeg') {
