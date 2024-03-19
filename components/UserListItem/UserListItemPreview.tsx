@@ -75,7 +75,7 @@ export function UserListItemPreview({ user, relationshipStatus }: UserListItemPr
             <Group gap={50} mt="xs">
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Pronouns:</b> {user?.pronouns || 'N/B'}
+                  <b>Pronouns:</b> {user?.pronouns || 'N/A'}
                 </Text>
                 <Text size="xs">
                   <b>Joined:</b> {formatDate(user?.createdAt)}
@@ -83,7 +83,7 @@ export function UserListItemPreview({ user, relationshipStatus }: UserListItemPr
               </Stack>
               <Stack gap="xs">
                 <Text size="xs">
-                  <b>Age:</b> {user?.birthday ? `${getAge(user?.birthday)} years` : 'N/B'}
+                  <b>Age:</b> {user?.birthday ? `${getAge(user?.birthday)} years` : 'N/A'}
                 </Text>
                 <Group>
                   <Text size="xs">
