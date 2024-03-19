@@ -25,6 +25,7 @@ import { useCurrentUser, userUpdateSubject } from '@/src/hooks/usersCustomHooks'
 import classes from './ProfileCard.module.css';
 import { utcToISO } from '@/utils/timeUtils';
 import { retrieveImage, storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { handleContactChange } from '@/utils/contactUtils';
 
 interface CustomizeProfileModalProps {
   opened: boolean;
@@ -106,13 +107,6 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
     }
   };
 
-  const handleContactChange = (e: any) => {
-    const { value } = e.target;
-    const numericPhoneNumber = value.replace(/\D/g, '');
-    const formattedPhoneNumber = numericPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-    formik.setFieldValue('contact', formattedPhoneNumber);
-  };
-
   return (
     <Modal
       opened={opened}
@@ -189,7 +183,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
                 placeholder={user?.contact}
                 {...formik.getFieldProps('contact')}
                 data-testid="contact"
-                onChange={handleContactChange}
+                onChange={(e) => handleContactChange(e, formik.setFieldValue)}
                 maxLength={14}
               />
             </Grid.Col>
