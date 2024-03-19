@@ -9,7 +9,6 @@ import { PostCard } from '@/components/Home/PostCard/PostCard';
 import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
 import { Post } from '@/types/types';
 import { filterAndSortPosts } from '@/components/utils/postUtils';
-import { useAuth } from '@/components/Authorization/useAuth';
 
 export default function HomePage() {
   const [refresh, setRefresh] = useState(false);
@@ -18,8 +17,6 @@ export default function HomePage() {
   const { userLikes } = useUserLikes();
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const [sortQuery, setSortQuery] = useState<string | null>(null);
-  const { user } = useAuth();
-  if (!user) return null;
 
   const toggleRefresh = () => setRefresh((flag) => !flag);
 
