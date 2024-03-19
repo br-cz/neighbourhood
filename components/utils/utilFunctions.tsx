@@ -10,7 +10,7 @@ export const isValidUrl = (urlString: string) => {
 };
 
 export async function retrieveImageURLFromS3(imageKey: string) {
-    const cachedValue = await redis.get(imageKey);
+    const cachedValue = await redis.get<string>(imageKey);
     if (cachedValue) {
         return cachedValue;
     }
