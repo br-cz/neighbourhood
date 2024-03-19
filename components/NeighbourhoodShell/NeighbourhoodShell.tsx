@@ -4,7 +4,7 @@ import { modals } from '@mantine/modals';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
-import { Navbar } from '@/components/Navbar/Navbar';
+import { Navbar } from '@/components/NeighbourhoodShell/Navbar/Navbar';
 import { utilSignOut } from '@/utils/signOutUtils';
 
 interface NeighbourhoodShellProps {

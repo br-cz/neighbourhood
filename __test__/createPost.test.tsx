@@ -2,7 +2,7 @@ import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import HomePage from '@/app/home/page';
+import HomePage from '@/components/Home/HomePage';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
 import userEvent from '@testing-library/user-event';
