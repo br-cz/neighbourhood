@@ -8,22 +8,22 @@ export function useAuth(redirectUrl: string = '/') {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  async function checkUser() {
-    try {
-      const { userId } = await getCurrentUser();
-      setUser(userId);
-      setLoading(false);
-    } catch (err) {
-      router.push(redirectUrl);
-      notifications.show({
-        radius: 'md',
-        title: 'You were logged out!',
-        message: 'Please log in to continue to Neighbourhood.',
-      });
-    }
-  }
-
   useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const { userId } = await getCurrentUser();
+        setUser(userId);
+        setLoading(false);
+      } catch (error) {
+        router.push(redirectUrl);
+        notifications.show({
+          radius: 'md',
+          title: 'You were logged out!',
+          message: 'Please log in to continue to Neighbourhood.',
+        });
+      }
+    };
+
     checkUser();
   }, []);
 
