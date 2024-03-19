@@ -37,6 +37,7 @@
     "@next/bundle-analyzer": "^14.0.1",
     "@parcel/watcher": "^2.4.0",
     "@tabler/icons-react": "^2.40.0",
+    "@upstash/redis": "^1.28.4",
     "amazon-cognito-identity-js": "^6.3.7",
     "aws-amplify": "^6.0.16",
     "axios": "^1.6.7",
