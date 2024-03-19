@@ -40,24 +40,24 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
         />
       </a>
 
-      <Text className={classes.title} fw={700} c="dark.6" fz="lg" component="a" truncate="end">
+      <Text className={classes.title} fw={700} c="dark.6" fz="lg" component="a" truncate="end" data-testid="listing-title">
         {item?.title}
       </Text>
 
-      <Text className={classes.price} fw={500} fz="md" mt={0} component="a">
+      <Text className={classes.price} fw={500} fz="md" mt={0} component="a" data-testid="listing-price">
         ${item?.price}
       </Text>
 
       <Group>
         <Center>
           <Avatar src={profilePic} size={23} radius="xl" mr={7} />
-          <Text fz="sm" c="dimmed" truncate="end">
+          <Text fz="sm" c="dimmed" truncate="end" data-testid="seller">
             {item?.seller?.firstName} {item?.seller?.lastName}
           </Text>
         </Center>
       </Group>
 
-      <Text className={classes.details} c="dark.6" fz="sm" truncate="end">
+      <Text className={classes.details} c="dark.6" fz="sm" truncate="end" data-testid="description">
         {item?.description}
       </Text>
 
@@ -69,6 +69,7 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
             leftSection={<FontAwesomeIcon icon={faBars} />}
             variant="filled"
             onClick={onView}
+            data-testid="view-button"
           >
             View
           </Button>

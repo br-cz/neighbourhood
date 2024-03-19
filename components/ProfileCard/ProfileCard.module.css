@@ -24,11 +24,20 @@
   height: 150px;
   border-radius: 100%;
   overflow: hidden;
+  border: 1px solid var(--mantine-color-dark-0);
+}
+
+.avatarUpload {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  overflow: hidden;
   cursor: pointer;
   border: 1px solid var(--mantine-color-dark-0);
 }
 
-.avatarOverlay {
+.avatarUploadOverlay {
   opacity: 0;
   display: flex;
   position: absolute;
@@ -44,7 +53,7 @@
   transition: opacity 0.2s ease 0s, transform 0.2s ease 0s;
 }
 
-.avatar:hover .avatarOverlay {
+.avatarUpload:hover .avatarUploadOverlay {
   opacity: 1;
   transform: scale(1.03);
 }

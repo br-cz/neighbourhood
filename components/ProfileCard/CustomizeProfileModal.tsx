@@ -131,7 +131,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
     >
       <form onSubmit={formik.handleSubmit}>
         <Group justify="center">
-          <Box w={150} h={150} onClick={handleImageUploadClick} className={classes.avatar}>
+          <Box w={150} h={150} onClick={handleImageUploadClick} className={classes.avatarUpload}>
             {previewImageUrl ? (
               <Image
                 src={previewImageUrl}
@@ -140,7 +140,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
             ) : (
               <Avatar radius="xl" size={150} src={profilePic} />
             )}
-            <Stack gap="xs" className={classes.avatarOverlay}>
+            <Stack gap="xs" className={classes.avatarUploadOverlay}>
               <FontAwesomeIcon icon={faPencil} size="lg" />
               <Text fz="sm" fw={500}>
                 Edit
