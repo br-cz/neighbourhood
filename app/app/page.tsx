@@ -6,7 +6,7 @@ import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/Neighbourhoo
 import { useAuth } from '@/components/Authorization/useAuth';
 
 export default function AppPage() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('app');
   const { user } = useAuth();
   if (!user) return null;
 
