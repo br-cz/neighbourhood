@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import Router from '@/components/NeighbourhoodShell/Router/Router';
 import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
-import { useAuth } from '@/components/Authorization/useAuth';
+//import { useAuth } from '@/components/Authorization/useAuth';
 
 export default function AppPage() {
   const [activeTab, setActiveTab] = useState('app');
-  const { user } = useAuth();
-  if (!user) return null;
+  //const { user } = useAuth();
+  //if (!user) return null;
 
   return (
     <NeighbourhoodShell activeTab={activeTab} setActiveTab={setActiveTab}>
