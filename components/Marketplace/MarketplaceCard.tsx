@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Card, Image, Text, Button, Group, Center, Avatar } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
 import { ItemForSale } from '@/src/API';
-import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveItemImage } from '../utils/s3Helpers/ItemForSaleImageS3Helper';
 
 interface MarketplaceCardProps {
   item: ItemForSale;
@@ -13,22 +11,8 @@ interface MarketplaceCardProps {
 }
 
 export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-  const [itemImage, setItemImage] = useState<string>('');
-
-  useEffect(() => {
-    if (!item?.seller) return;
-    retrieveProfilePicture(item?.seller?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [item?.seller?.profilePic]);
-
-  useEffect(() => {
-    if (!item) return;
-    retrieveItemImage(item.id).then((image) => {
-      setItemImage(image);
-    });
-  }, [item?.images]);
+  const itemImage = item.images?.[0] || './img/placeholder-img.jpg';
+  const profilePic = item.seller?.profilePic || './img/placeholder-profile.jpg';
 
   return (
     <Card withBorder radius="md" className={classes.card} data-testid="marketplace-card">
@@ -40,11 +24,26 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
         />
       </a>
 
-      <Text className={classes.title} fw={700} c="dark.6" fz="lg" component="a" truncate="end" data-testid="listing-title">
+      <Text
+        className={classes.title}
+        fw={700}
+        c="dark.6"
+        fz="lg"
+        component="a"
+        truncate="end"
+        data-testid="listing-title"
+      >
         {item?.title}
       </Text>
 
-      <Text className={classes.price} fw={500} fz="md" mt={0} component="a" data-testid="listing-price">
+      <Text
+        className={classes.price}
+        fw={500}
+        fz="md"
+        mt={0}
+        component="a"
+        data-testid="listing-price"
+      >
         ${item?.price}
       </Text>
 

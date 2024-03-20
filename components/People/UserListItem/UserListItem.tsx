@@ -30,19 +30,12 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const [status, setStatus] = useState(relationshipStatus);
   const [active, setActive] = useState(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const [profilePic, setProfilePic] = useState<string>('');
+  const profilePic = user?.profilePic || './img/placeholder-profile.jpg';
   const { handleCreateFriendRequest, error } = useCreateFriendRequest();
   const { handleCreateFriend, error: createFriendError } = useCreateFriend();
   const { handleDeleteFriend } = useDeleteFriend();
   const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
   const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
-
-  useEffect(() => {
-    if (!user) return;
-    retrieveImage(user?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [user?.profilePic]);
 
   const handleButtonClicked = () => {
     if (!popoverOpened) {
