@@ -3,11 +3,9 @@ FROM node:18
 
 # Define the build-time environment variable
 ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-ARG NEXT_PUBLIC_REDIS_TOKEN
 
 # Set the environment variable in the image
 ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-ENV NEXT_PUBLIC_REDIS_TOKEN=${NEXT_PUBLIC_REDIS_TOKEN}
 
 # Set the working directory in the container
 WORKDIR /app

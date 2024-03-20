@@ -9,7 +9,7 @@ import { NextRouter } from 'next/router';
 import { DataProvider } from '@/contexts/DataContext';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { utilSignOut } from '@/utils/signOutUtils';
-import AppPage from '@/app/neighbourhood/page';
+import AppPage from '@/app/app/page';
 
 const mockLikePost = jest.fn();
 const mockUnlikePost = jest.fn();
