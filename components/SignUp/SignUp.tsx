@@ -162,7 +162,7 @@ export const SignUp = () => {
       if (formik.values.profilePic && userId) {
         await storeImage(formik.values.profilePic, userId);
       }
-      router.push('/app');
+      router.push('/neighbourhood');
       notifications.show({
         radius: 'md',
         title: 'Hey, Neighbour! 👋 ',
