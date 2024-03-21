@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react';
 import { Card, Image, Text, Button, Group, Center, Avatar, Stack } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './EventCard.module.css';
 import { Event } from '@/types/types';
 import { formatDate, formatTime } from '@/utils/timeUtils';
-import { retrieveImage as retrieveProfilePic } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveEventImage } from '../../utils/s3Helpers/EventImageS3Helper';
 
 interface EventCardProps {
   event: Event;
@@ -14,22 +11,8 @@ interface EventCardProps {
 }
 
 export function EventCard({ event, onView }: EventCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-  const [eventImage, setEventImage] = useState<string>('');
-
-  useEffect(() => {
-    if (!event?.organizer) return;
-    retrieveProfilePic(event?.organizer?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [event?.organizer?.profilePic]);
-
-  useEffect(() => {
-    if (!event) return;
-    retrieveEventImage(event.id).then((image) => {
-      setEventImage(image);
-    });
-  }, [event?.images]);
+  const eventImage = event.images?.[0] || './img/placeholder-img.jpg';
+  const profilePic = event.organizer?.profilePic || './img/placeholder-profile.jpg';
 
   return (
     <Card withBorder radius="md" className={classes.card} data-testid="event-card">
