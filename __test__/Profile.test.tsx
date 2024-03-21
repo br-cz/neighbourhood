@@ -2,7 +2,7 @@
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
-import ProfilePage from '@/app/profile/page';
+import ProfilePage from '@/components/Profile/ProfilePage';
 
 const mockData = {
   currentUser: {
