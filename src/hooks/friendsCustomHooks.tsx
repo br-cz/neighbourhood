@@ -52,15 +52,10 @@ export const useFetchIncomingFriendRequests = () => {
           .map((item: any) => item.sender); // Extract the sender information from each filtered item
         const requestsWithImages = await Promise.all(
           filteredFriendRequests.map(async (request: any) => {
-            const profilePicture = await retrieveProfilePicture(request.sender.id).catch(
-              () => null
-            );
+            const profilePicture = await retrieveProfilePicture(request.id).catch(() => null);
             return {
               ...request,
-              sender: {
-                ...request.sender,
-                profilePic: profilePicture,
-              },
+              profilePic: profilePicture,
             };
           })
         );
@@ -98,18 +93,12 @@ export const useFetchOutgoingFriendRequests = () => {
         const filteredFriendRequests = jsonFriendRequests.items
           .filter((item: any) => item.sender.id === parsedUserData.id && !item._deleted)
           .map((item: any) => item.receiver); // Extract the sender information from each filtered item
-        console.log('Outgoing:', filteredFriendRequests);
         const requestsWithImages = await Promise.all(
           filteredFriendRequests.map(async (request: any) => {
-            const profilePicture = await retrieveProfilePicture(request.receiver.id).catch(
-              () => null
-            );
+            const profilePicture = await retrieveProfilePicture(request.id).catch(() => null);
             return {
               ...request,
-              receiver: {
-                ...request.receiver,
-                profilePic: profilePicture,
-              },
+              profilePic: profilePicture,
             };
           })
         );
