@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
-import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
+import { UnstyledButton, Group, Avatar, Text, rem, Skeleton } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarProfileButton.module.css';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
-import { retrieveImage } from '../../../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface NavbarProfileButtonProps {
   active: boolean;
@@ -12,14 +10,7 @@ interface NavbarProfileButtonProps {
 
 export function NavbarProfileButton({ active, setActiveTab }: NavbarProfileButtonProps) {
   const { currentUser } = useCurrentUser();
-  const [profilePic, setProfilePic] = useState<string>('');
-
-  useEffect(() => {
-    if (!currentUser) return;
-    retrieveImage(currentUser?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [currentUser?.profilePic]);
+  const profilePic = currentUser?.profilePic || './img/placeholder-profile.jpg';
 
   return (
     <UnstyledButton
@@ -28,15 +19,23 @@ export function NavbarProfileButton({ active, setActiveTab }: NavbarProfileButto
       data-testid="profile"
     >
       <Group>
-        <Avatar src={profilePic} size="md" radius="xl" />
+        {currentUser ? (
+          <Avatar src={profilePic} size="md" radius="xl" />
+        ) : (
+          <Skeleton width={36} height={36} radius="xl" />
+        )}
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={600}>
             My Profile
           </Text>
 
-          <Text c="dimmed" size="xs" data-testid="current-user-info">
-            {currentUser?.firstName} {currentUser?.lastName}
-          </Text>
+          {currentUser ? (
+            <Text c="dimmed" size="xs" data-testid="current-user-info">
+              {currentUser?.firstName} {currentUser?.lastName}
+            </Text>
+          ) : (
+            <Skeleton mt={4} width={90} height={4} />
+          )}
         </div>
 
         <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} />
