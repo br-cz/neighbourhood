@@ -10,6 +10,7 @@ import {
 import { getCurrentUser, getCurrentUserID } from './usersCustomHooks';
 import { Post, CommentDataInput, PostDataInput, Visibility } from '@/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
+import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const useCreatePost = () => {
   const [error, setError] = useState<string | undefined>();
@@ -57,7 +58,19 @@ export const useFetchPosts = (refresh: boolean = false) => {
             post.author.id === user!.id ||
             (post.visibility === Visibility.FRIENDS_ONLY && user!.friends?.includes(post.author.id))
         );
-        setPosts(visiblePosts);
+        const postsWithImages = await Promise.all(
+          visiblePosts.map(async (post: any) => {
+            const profilePicture = await retrieveProfilePicture(post.author.id).catch(() => null);
+            return {
+              ...post,
+              author: {
+                ...post.author,
+                profilePic: profilePicture,
+              },
+            };
+          })
+        );
+        setPosts(postsWithImages);
       } catch (err: any) {
         console.error('Error fetching posts:', err);
         setError(err);

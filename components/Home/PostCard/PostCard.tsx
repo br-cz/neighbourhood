@@ -11,7 +11,6 @@ import classes from './PostCard.module.css';
 import { createCommentSchema } from './createCommentSchema';
 import { useCreateComment, usePostLikes } from '@/src/hooks/postsCustomHooks';
 import { PostCommentList } from './PostCommentList';
-import { retrieveImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface PostCardProps {
   post: Post;
@@ -19,19 +18,12 @@ interface PostCardProps {
 }
 
 export function PostCard({ post, isLiked }: PostCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
+  const profilePic = post.author?.profilePic || './img/placeholder-profile.jpg';
   const { likePost, unlikePost } = usePostLikes(post.id);
   const [liked, setLiked] = useState(false);
   const [comments, setComments] = useState(post?.comments?.items);
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
   const { handleCreateComment } = useCreateComment();
-
-  useEffect(() => {
-    if (!post?.author) return;
-    retrieveImage(post?.author?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [post?.author?.profilePic]);
 
   useEffect(() => {
     setLiked(isLiked);

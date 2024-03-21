@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Group, Avatar, Text, Button, Title, Popover } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
@@ -18,7 +18,6 @@ import {
 import * as APITypes from '@/src/API';
 import { User } from '@/types/types';
 import { UserListItemPreview } from './UserListItemPreview';
-import { retrieveImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface UserListItemProps {
   user: User;
