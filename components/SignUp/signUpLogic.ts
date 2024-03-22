@@ -17,7 +17,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
     .toLowerCase()
     .replace(/^\w/, (c: string) => c.toUpperCase());
   values.bio = parameters.bio.trim();
-  values.phoneNumber = parameters.phoneNumber.trim();
+  values.contact = parameters.contact.trim();
   values.pronouns = parameters.pronouns;
   values.profilePic = parameters.profilePic;
   values.birthday = parameters.birthday;
@@ -53,7 +53,7 @@ export const processSignUp = async (parameters: any, nextStep: () => void, handl
         firstName: values.firstName,
         lastName: values.familyName,
         bio: values.bio,
-        contact: values.phoneNumber,
+        contact: values.contact,
         pronouns: values.pronouns,
         profilePic: avatarURL,
         birthday: values.birthday,

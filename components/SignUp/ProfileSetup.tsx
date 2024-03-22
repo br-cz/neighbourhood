@@ -25,7 +25,7 @@ interface ProfileSetupProps {
   preferredUsername: string;
   firstName: string;
   familyName: string;
-  phoneNumber: string;
+  contact: string;
   bio: string;
   pronouns: string;
   profilePic: File | null;
@@ -40,7 +40,7 @@ interface ProfileSetupProps {
     firstName?: string;
     familyName?: string;
     bio?: string;
-    phoneNumber?: string;
+    contact?: string;
     pronouns?: string;
     profilePic?: string;
     birthday?: string;
@@ -52,7 +52,7 @@ interface ProfileSetupProps {
     bio?: boolean;
     firstName?: boolean;
     familyName?: boolean;
-    phoneNumber?: boolean;
+    contact?: boolean;
     pronouns?: boolean;
     profilePic?: boolean;
     birthday?: boolean;
@@ -65,7 +65,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   preferredUsername,
   firstName,
   familyName,
-  phoneNumber,
+  contact,
   bio,
   pronouns,
   profilePic,
@@ -242,12 +242,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
             <TextInput
               label="Phone Number"
               name="phoneNumber"
-              value={phoneNumber}
+              value={contact}
               onChange={(e) => handleContactChange(e, setFieldValue)}
               placeholder="Optional"
               maxLength={14}
               onBlur={onBlur}
-              error={touched.phoneNumber && errors.phoneNumber ? errors.phoneNumber : undefined}
+              error={touched.contact && errors.contact ? errors.contact : undefined}
               radius="md"
               data-testid="phone"
               rightSection={
