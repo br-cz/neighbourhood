@@ -3,7 +3,7 @@ import { MantineProvider } from '@mantine/core';
   import { notifications } from '@mantine/notifications';
   import { render, waitFor, screen, fireEvent } from '@testing-library/react';
   import { DataProvider } from '@/contexts/DataContext';
-  import HomePage from '@/app/home/page';
+  import HomePage from '@/components/Home/HomePage';
 
   const userHooks = require('@/src/hooks/usersCustomHooks');
 

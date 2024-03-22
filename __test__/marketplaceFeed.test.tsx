@@ -2,7 +2,7 @@
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
-import MarketplacePage from '@/app/marketplace/page';
+import MarketplacePage from '@/components/Marketplace/MarketplacePage';
 import { MarketplaceFeed } from '@/components/Marketplace/MarketplaceFeed';
 import { CreateListingDrawer } from '@/components/Marketplace/CreateListingDrawer';
 
