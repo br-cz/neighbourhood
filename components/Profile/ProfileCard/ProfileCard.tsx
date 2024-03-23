@@ -48,7 +48,7 @@ export function ProfileCard({ refresh }: ProfileCardProps) {
                       <b>Contact:</b> {user?.contact || 'N/A'}
                     </Text>
                     <Text size="sm">
-                      <b>Address:</b> {user?.address.split(',')[0] || 'N/A'}
+                      <b>Address:</b> {user?.address?.split(',')[0] || 'N/A'}
                     </Text>
                     <Text size="sm">
                       <b>Joined:</b> {formatDate(user?.createdAt)}

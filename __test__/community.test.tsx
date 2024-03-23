@@ -1,7 +1,7 @@
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
-import CommunitiesPage from '@/app/communities/page';
+import CommunitiesPage from '@/components/Communities/CommunitiesPage';
 import { fireEvent } from '@testing-library/react';
 
 const renderComponent = () =>
