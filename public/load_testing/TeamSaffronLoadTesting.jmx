@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan">
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreatePost GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;query&quot;: &quot;mutation CreatePost($input: CreatePostInput!) { createPost(input: $input) { id content } }&quot;,&#xd;
+  &quot;variables&quot;: {&#xd;
+    &quot;input&quot;: {&#xd;
+      &quot;content&quot;: &quot;Load testing PAUSE&quot;,&#xd;
+      &quot;communityPostsId&quot;: &quot;4a29e27c-4bee-432b-a136-f85cc97a6ab9&quot;,&#xd;
+      &quot;userPostsId&quot;: &quot;dccd3538-c0b1-70d5-bb86-d4a9af27ea70&quot;,&#xd;
+      &quot;visibility&quot;: &quot;PUBLIC&quot;&#xd;
+    }&#xd;
+  }&#xd;
+}&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateEvent GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;query&quot;: &quot;mutation CreateEvent($input: CreateEventInput!) { createEvent(input: $input) { id name description images location datetime community { id name location coordinates image createdAt updatedAt _version _deleted _lastChangedAt __typename } organizer { id username email postalCode address firstName lastName selectedCommunity friends location bio profilePic pronouns contact birthday pets kids relevantCommunities createdAt updatedAt _version _deleted _lastChangedAt __typename } likedBy { nextToken startedAt __typename } visibility createdAt updatedAt _version _deleted _lastChangedAt userEventsId communityEventsId __typename } }&quot;,&#xd;
+  &quot;variables&quot;: {&#xd;
+    &quot;input&quot;: {&#xd;
+      &quot;name&quot;: &quot;Load test event&quot;,&#xd;
+      &quot;description&quot;: &quot;&quot;,&#xd;
+      &quot;images&quot;: [null],&#xd;
+      &quot;location&quot;: &quot;E2-165&quot;,&#xd;
+      &quot;datetime&quot;: &quot;2024-03-22T16:30:00.802Z&quot;,&#xd;
+      &quot;communityEventsId&quot;: &quot;4a29e27c-4bee-432b-a136-f85cc97a6ab9&quot;,&#xd;
+      &quot;userEventsId&quot;: &quot;dccd3538-c0b1-70d5-bb86-d4a9af27ea70&quot;,&#xd;
+      &quot;visibility&quot;: &quot;PUBLIC&quot;&#xd;
+    }&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GetCommunityPosts GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;query&quot;:&quot;query GetCommunity($id: ID!) {\n  getCommunity(id: $id) {\n    id\n    name\n    location\n    coordinates\n    image\n    members {\n      nextToken\n      startedAt\n      __typename\n    }\n    posts {\n      nextToken\n      startedAt\n      __typename\n    }\n    events {\n      nextToken\n      startedAt\n      __typename\n    }\n    itemsForSale {\n      nextToken\n      startedAt\n      __typename\n    }\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;id&quot;:&quot;4a29e27c-4bee-432b-a136-f85cc97a6ab9&quot;}}&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreatePostComment GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;query&quot;:&quot;mutation CreateComment($input: CreateCommentInput!, $condition: ModelCommentConditionInput) {\n  createComment(input: $input, condition: $condition) {\n    id\n    post {\n      id\n      images\n      content\n      visibility\n      createdAt\n      updatedAt\n      _version\n      _deleted\n      _lastChangedAt\n      userPostsId\n      communityPostsId\n      __typename\n    }\n    author {\n      id\n      username\n      email\n      postalCode\n      address\n      firstName\n      lastName\n      selectedCommunity\n      friends\n      location\n      bio\n      profilePic\n      pronouns\n      contact\n      birthday\n      pets\n      kids\n      relevantCommunities\n      createdAt\n      updatedAt\n      _version\n      _deleted\n      _lastChangedAt\n      __typename\n    }\n    content\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    userCommentsId\n    postCommentsId\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;input&quot;:{&quot;content&quot;:&quot;Comment&quot;,&quot;postCommentsId&quot;:&quot;810c4327-b172-4da0-8294-eb553a87cd07&quot;,&quot;userCommentsId&quot;:&quot;dccd3538-c0b1-70d5-bb86-d4a9af27ea70&quot;}}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GetUserFriends GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;query&quot;:&quot;query GetUser($id: ID!) {\n  getUser(id: $id) {\n    id\n    username\n    email\n    postalCode\n    address\n    firstName\n    lastName\n    communities {\n      nextToken\n      startedAt\n      __typename\n    }\n    selectedCommunity\n    posts {\n      nextToken\n      startedAt\n      __typename\n    }\n    friends\n    friendRequests {\n      nextToken\n      startedAt\n      __typename\n    }\n    events {\n      nextToken\n      startedAt\n      __typename\n    }\n    itemsForSale {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedPosts {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedEvents {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedItems {\n      nextToken\n      startedAt\n      __typename\n    }\n    location\n    bio\n    profilePic\n    pronouns\n    contact\n    birthday\n    pets\n    kids\n    comments {\n      nextToken\n      startedAt\n      __typename\n    }\n    relevantCommunities\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;id&quot;:&quot;5cdd2518-4061-7085-753d-26056e65188d&quot;}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GetUser GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;query&quot;:&quot;query GetUser($id: ID!) {\n  getUser(id: $id) {\n    id\n    username\n    email\n    postalCode\n    address\n    firstName\n    lastName\n    communities {\n      nextToken\n      startedAt\n      __typename\n    }\n    selectedCommunity\n    posts {\n      nextToken\n      startedAt\n      __typename\n    }\n    friends\n    friendRequests {\n      nextToken\n      startedAt\n      __typename\n    }\n    events {\n      nextToken\n      startedAt\n      __typename\n    }\n    itemsForSale {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedPosts {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedEvents {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedItems {\n      nextToken\n      startedAt\n      __typename\n    }\n    location\n    bio\n    profilePic\n    pronouns\n    contact\n    birthday\n    pets\n    kids\n    comments {\n      nextToken\n      startedAt\n      __typename\n    }\n    relevantCommunities\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;id&quot;:&quot;1c5d6548-f071-704d-ac84-e6bd3b9b78da&quot;}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="SetUpProfile GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;query&quot;:&quot;mutation UpdateUser($input: UpdateUserInput!, $condition: ModelUserConditionInput) {\n  updateUser(input: $input, condition: $condition) {\n    id\n    username\n    email\n    postalCode\n    address\n    firstName\n    lastName\n    communities {\n      nextToken\n      startedAt\n      __typename\n    }\n    selectedCommunity\n    posts {\n      nextToken\n      startedAt\n      __typename\n    }\n    friends\n    friendRequests {\n      nextToken\n      startedAt\n      __typename\n    }\n    events {\n      nextToken\n      startedAt\n      __typename\n    }\n    itemsForSale {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedPosts {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedEvents {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedItems {\n      nextToken\n      startedAt\n      __typename\n    }\n    location\n    bio\n    profilePic\n    pronouns\n    contact\n    birthday\n    pets\n    kids\n    comments {\n      nextToken\n      startedAt\n      __typename\n    }\n    relevantCommunities\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;input&quot;:{&quot;id&quot;:&quot;dccd3538-c0b1-70d5-bb86-d4a9af27ea70&quot;,&quot;username&quot;:&quot;sheluvqtip&quot;,&quot;email&quot;:&quot;sheluvqtip@gmail.com&quot;,&quot;firstName&quot;:&quot;Q&quot;,&quot;lastName&quot;:&quot;Tip&quot;,&quot;selectedCommunity&quot;:&quot;4a29e27c-4bee-432b-a136-f85cc97a6ab9&quot;,&quot;postalCode&quot;:&quot;&quot;,&quot;address&quot;:&quot;addy&quot;,&quot;profilePic&quot;:&quot;UserProfilePictures/dccd3538-c0b1-70d5-bb86-d4a9af27ea70-1710300532268-21cbd6c7efa053011d8d03b67dbea45d.jpg&quot;,&quot;bio&quot;:&quot;New bio&quot;,&quot;kids&quot;:0,&quot;pets&quot;:0,&quot;contact&quot;:&quot;&quot;,&quot;birthday&quot;:&quot;2024-03-16&quot;,&quot;pronouns&quot;:&quot;&quot;,&quot;_version&quot;:18}}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UpdateProfile GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;query&quot;:&quot;mutation UpdateUser($input: UpdateUserInput!, $condition: ModelUserConditionInput) {\n  updateUser(input: $input, condition: $condition) {\n    id\n    username\n    email\n    postalCode\n    address\n    firstName\n    lastName\n    communities {\n      nextToken\n      startedAt\n      __typename\n    }\n    selectedCommunity\n    posts {\n      nextToken\n      startedAt\n      __typename\n    }\n    friends\n    friendRequests {\n      nextToken\n      startedAt\n      __typename\n    }\n    events {\n      nextToken\n      startedAt\n      __typename\n    }\n    itemsForSale {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedPosts {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedEvents {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedItems {\n      nextToken\n      startedAt\n      __typename\n    }\n    location\n    bio\n    profilePic\n    pronouns\n    contact\n    birthday\n    pets\n    kids\n    comments {\n      nextToken\n      startedAt\n      __typename\n    }\n    relevantCommunities\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;input&quot;:{&quot;id&quot;:&quot;dccd3538-c0b1-70d5-bb86-d4a9af27ea70&quot;,&quot;username&quot;:&quot;sheluvqtip&quot;,&quot;email&quot;:&quot;sheluvqtip@gmail.com&quot;,&quot;firstName&quot;:&quot;Q&quot;,&quot;lastName&quot;:&quot;Tip&quot;,&quot;selectedCommunity&quot;:&quot;4a29e27c-4bee-432b-a136-f85cc97a6ab9&quot;,&quot;postalCode&quot;:&quot;&quot;,&quot;address&quot;:&quot;addy&quot;,&quot;profilePic&quot;:&quot;UserProfilePictures/dccd3538-c0b1-70d5-bb86-d4a9af27ea70-1710300532268-21cbd6c7efa053011d8d03b67dbea45d.jpg&quot;,&quot;bio&quot;:&quot;New bio&quot;,&quot;kids&quot;:0,&quot;pets&quot;:0,&quot;contact&quot;:&quot;&quot;,&quot;birthday&quot;:&quot;2024-03-16&quot;,&quot;pronouns&quot;:&quot;&quot;,&quot;_version&quot;:18}}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UpdateLogin GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;query&quot;:&quot;mutation UpdateUser($input: UpdateUserInput!, $condition: ModelUserConditionInput) {\n  updateUser(input: $input, condition: $condition) {\n    id\n    username\n    email\n    postalCode\n    address\n    firstName\n    lastName\n    communities {\n      nextToken\n      startedAt\n      __typename\n    }\n    selectedCommunity\n    posts {\n      nextToken\n      startedAt\n      __typename\n    }\n    friends\n    friendRequests {\n      nextToken\n      startedAt\n      __typename\n    }\n    events {\n      nextToken\n      startedAt\n      __typename\n    }\n    itemsForSale {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedPosts {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedEvents {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedItems {\n      nextToken\n      startedAt\n      __typename\n    }\n    location\n    bio\n    profilePic\n    pronouns\n    contact\n    birthday\n    pets\n    kids\n    comments {\n      nextToken\n      startedAt\n      __typename\n    }\n    relevantCommunities\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;input&quot;:{&quot;id&quot;:&quot;dccd3538-c0b1-70d5-bb86-d4a9af27ea70&quot;,&quot;username&quot;:&quot;sheluvqtip&quot;,&quot;email&quot;:&quot;sheluvqtip@gmail.com&quot;,&quot;firstName&quot;:&quot;Q&quot;,&quot;lastName&quot;:&quot;Tip&quot;,&quot;selectedCommunity&quot;:&quot;4a29e27c-4bee-432b-a136-f85cc97a6ab9&quot;,&quot;postalCode&quot;:&quot;&quot;,&quot;address&quot;:&quot;addy&quot;,&quot;profilePic&quot;:&quot;UserProfilePictures/dccd3538-c0b1-70d5-bb86-d4a9af27ea70-1710300532268-21cbd6c7efa053011d8d03b67dbea45d.jpg&quot;,&quot;bio&quot;:&quot;New bio&quot;,&quot;kids&quot;:0,&quot;pets&quot;:0,&quot;contact&quot;:&quot;&quot;,&quot;birthday&quot;:&quot;2024-03-16&quot;,&quot;pronouns&quot;:&quot;&quot;,&quot;_version&quot;:18}}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">x-api-key</stringProp>
+                <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="AttempGetUser GraphQL Query">
+          <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">/graphql</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;query&quot;:&quot;query GetUser($id: ID!) {\n  getUser(id: $id) {\n    id\n    username\n    email\n    postalCode\n    address\n    firstName\n    lastName\n    communities {\n      nextToken\n      startedAt\n      __typename\n    }\n    selectedCommunity\n    posts {\n      nextToken\n      startedAt\n      __typename\n    }\n    friends\n    friendRequests {\n      nextToken\n      startedAt\n      __typename\n    }\n    events {\n      nextToken\n      startedAt\n      __typename\n    }\n    itemsForSale {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedPosts {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedEvents {\n      nextToken\n      startedAt\n      __typename\n    }\n    likedItems {\n      nextToken\n      startedAt\n      __typename\n    }\n    location\n    bio\n    profilePic\n    pronouns\n    contact\n    birthday\n    pets\n    kids\n    comments {\n      nextToken\n      startedAt\n      __typename\n    }\n    relevantCommunities\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;id&quot;:&quot;5cdd2518-4061-7085-753d-26056e65188d&quot;}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="785231124">Unauthorized</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_message</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">1</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="false">
+        <intProp name="ThreadGroup.num_threads">20</intProp>
+        <intProp name="ThreadGroup.ramp_time">0</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">200</stringProp>
+        </LoopController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GetCommunity GraphQL Query">
+            <stringProp name="HTTPSampler.domain">4ilwnzjnq5gwxd2ffbpatajmhe.appsync-api.ca-central-1.amazonaws.com</stringProp>
+            <stringProp name="HTTPSampler.protocol">https</stringProp>
+            <stringProp name="HTTPSampler.path">/graphql</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&quot;query&quot;:&quot;query GetCommunity($id: ID!) {\n  getCommunity(id: $id) {\n    id\n    name\n    location\n    coordinates\n    image\n    members {\n      nextToken\n      startedAt\n      __typename\n    }\n    posts {\n      nextToken\n      startedAt\n      __typename\n    }\n    events {\n      nextToken\n      startedAt\n      __typename\n    }\n    itemsForSale {\n      nextToken\n      startedAt\n      __typename\n    }\n    createdAt\n    updatedAt\n    _version\n    _deleted\n    _lastChangedAt\n    __typename\n  }\n}\n&quot;,&quot;variables&quot;:{&quot;id&quot;:&quot;17b85438-7fcf-4f78-b5ef-cee07c6dedae&quot;}}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">x-api-key</stringProp>
+                  <stringProp name="Header.value">da2-34d5af7xuzfujbqvh4fwsqb2ha</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Constant Throughput Timer">
+          <intProp name="calcMode">0</intProp>
+          <doubleProp>
+            <name>throughput</name>
+            <value>200.0</value>
+            <savedValue>0.0</savedValue>
+          </doubleProp>
+        </ConstantThroughputTimer>
+        <hashTree/>
+        <RunTime guiclass="RunTimeGui" testclass="RunTime" testname="Runtime Controller">
+          <stringProp name="RunTime.seconds">60</stringProp>
+        </RunTime>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
