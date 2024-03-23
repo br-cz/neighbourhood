@@ -12,6 +12,8 @@ const containerStyling = {
   height: '100vh',
 };
 export default function MainPage() {
+  console.log('in login');
+
   return (
     <div style={containerStyling}>
       <Box>

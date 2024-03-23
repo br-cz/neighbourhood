@@ -2,7 +2,7 @@ import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent, cleanup} from '@testing-library/react';
 import '@testing-library/jest-dom';
-import MarketplacePage from '@/app/marketplace/page';
+import MarketplacePage from '@/components/Marketplace/MarketplacePage';
 import { CreateListingDrawer } from '@/components/Marketplace/CreateListingDrawer';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';

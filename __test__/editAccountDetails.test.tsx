@@ -3,7 +3,7 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen } from '@testing-library/react';
 import { notifications } from '@mantine/notifications';
 import userEvent from '@testing-library/user-event';
-import ProfilePage from '@/app/profile/page';
+import ProfilePage from '@/components/Profile/ProfilePage';
 import { DataProvider } from '@/contexts/DataContext';
 
 const Auth = require('@aws-amplify/auth');

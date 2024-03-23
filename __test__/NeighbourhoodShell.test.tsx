@@ -3,13 +3,95 @@ import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { DataProvider } from '@/contexts/DataContext';
-import CommunitiesPage from '@/app/communities/page';
-import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
-import { utilSignOut } from '@/utils/signOutUtils';
 import { notifications } from '@mantine/notifications';
 import { signOut } from 'aws-amplify/auth';
 import { NextRouter } from 'next/router';
+import { DataProvider } from '@/contexts/DataContext';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { utilSignOut } from '@/utils/signOutUtils';
+import AppPage from '@/app/neighbourhood/page';
+
+const mockLikePost = jest.fn();
+const mockUnlikePost = jest.fn();
+const mockHandleCreateComment = jest.fn();
+
+const mockData = {
+  posts: [
+    {
+      id: '1',
+      content: 'This is a test post!',
+      author: {
+        firstName: 'Bojangle',
+        lastName: 'Williams',
+      },
+      comments: {
+        items: [
+          {
+            id: 'comment1',
+            content: 'This is the first comment',
+            author: { id: 'author1', firstName: 'Commenter', lastName: 'One' },
+          },
+          {
+            id: 'comment2',
+            content: 'This is the second comment',
+            author: { id: 'author2', firstName: 'Commenter', lastName: 'Two' },
+          },
+        ],
+      },
+      isLiked: false,
+    },
+    {
+      id: '2',
+      content: 'This is a second test post post!',
+      author: {
+        firstName: 'Grunkle',
+        lastName: 'Williams',
+      },
+      comments: { items: [] },
+      isLiked: false,
+    },
+    {
+      id: '3',
+      content: 'This is a third test post!',
+      author: {
+        firstName: 'LeJon',
+        lastName: 'Brames',
+      },
+      comments: { items: [] },
+      isLiked: false,
+    },
+  ],
+};
+
+jest.mock('@/src/hooks/postsCustomHooks', () => ({
+  useFetchPosts: jest.fn(() => ({
+    ...mockData,
+    refetch: jest.fn(),
+  })),
+  useCreatePost: jest.fn(() => ({
+    createPost: jest.fn(),
+  })),
+  usePostLikes: jest.fn(() => ({
+    likePost: mockLikePost,
+    unlikePost: mockUnlikePost,
+  })),
+  useUserLikes: jest.fn(() => ({
+    userLikes: {
+      get: () => false,
+    },
+  })),
+  useCreateComment: jest.fn(() => ({
+    handleCreateComment: mockHandleCreateComment.mockImplementation(async (commentData) => ({
+      ...commentData,
+      id: 'newComment',
+      createdAt: new Date().toISOString(),
+    })),
+  })),
+}));
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 jest.mock('@mantine/notifications', () => ({
   notifications: {
@@ -20,9 +102,7 @@ jest.mock('@mantine/notifications', () => ({
 const localStorageMock = (() => {
   let store: { [key: string]: string } = {};
   return {
-    getItem: jest.fn((key: string) => {
-      return store[key] || null;
-    }),
+    getItem: jest.fn((key: string) => store[key] || null),
     setItem: jest.fn((key: string, value: string) => {
       store[key] = value.toString();
     }),
@@ -47,7 +127,7 @@ const renderComponent = () =>
   render(
     <MantineProvider>
       <DataProvider>
-        <CommunitiesPage />
+        <AppPage />
       </DataProvider>
     </MantineProvider>
   );

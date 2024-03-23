@@ -2,7 +2,7 @@
 import { MantineProvider } from '@mantine/core';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
-import EventsPage from '@/app/events/page';
+import EventsPage from '@/components/Events/EventsPage';
 
 const userHooks = require('@/src/hooks/usersCustomHooks');
 

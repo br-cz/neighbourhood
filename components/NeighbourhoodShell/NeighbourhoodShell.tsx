@@ -1,19 +1,23 @@
 import React from 'react';
-import { signOut } from '@aws-amplify/auth';
 import { AppShell, Group, Burger, Button, Title, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
-import { Navbar } from '@/components/Navbar/Navbar';
+import { Navbar } from '@/components/NeighbourhoodShell/Navbar/Navbar';
 import { utilSignOut } from '@/utils/signOutUtils';
 
 interface NeighbourhoodShellProps {
   children: React.ReactNode;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
-export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children }) => {
+export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({
+  children,
+  activeTab,
+  setActiveTab,
+}) => {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const router = useRouter();
@@ -74,7 +78,7 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({ children
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        <Navbar />
+        <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
       </AppShell.Navbar>
       <AppShell.Main m="xl" mt="xs">
         {children}
