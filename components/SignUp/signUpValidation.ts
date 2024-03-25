@@ -32,4 +32,5 @@ export const signUpSchema = object({
   address: string().required('Address is required'),
   selectedCommunity: string().required('Selecting a community required.'),
   phoneNumber: string().matches(/^\(\d{3}\) \d{3}-\d{4}$/, 'Phone number must be valid.'),
+  birthday: string().required('Birthday is required'),
 });
