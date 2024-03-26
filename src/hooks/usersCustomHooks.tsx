@@ -44,17 +44,14 @@ export const useCurrentUser = (refresh: boolean = false) => {
     return () => subscription.unsubscribe();
   }, [refresh]);
 
-  const updateUserProfile = async (values: any, profilePicFile?: File) => {
+  const updateUserProfile = async (values: any, profilePicUrl?: string) => {
     try {
-      let profilePicUrl = currentUser!.profilePic;
-      if (profilePicFile) {
-        profilePicUrl = await storeImage(profilePicFile, currentUser!.id);
-      }
-      const updatedUser = await updateUserAPI({
+      let userData = {
         ...currentUser,
         ...values,
-        profilePic: profilePicUrl,
-      });
+      };
+      userData.profilePic = profilePicUrl || currentUser.profilePic;
+      const updatedUser = await updateUserAPI(userData);
       setCurrentUser(updatedUser);
     } catch (err) {
       throw new HttpError('Error updating user profile', 500);

@@ -26,6 +26,7 @@ import { signUpSchema } from './signUpValidation';
 import { processSignUp } from './signUpLogic';
 import { storeImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 import { handleSignIn } from '../Authorization/loginForm.client';
+import { getUserAPI, updateUserProfilePicAPI } from '@/src/api/services/user';
 
 const client = generateClient({});
 
@@ -160,7 +161,12 @@ export const SignUp = () => {
         setErrorMessage: (message) => console.error(message),
       });
       if (formik.values.profilePic && userId) {
-        await storeImage(formik.values.profilePic, userId);
+        const user = await getUserAPI(userId);
+        if (!user) {
+          throw new Error('User could not be retrieved when trying to store profile pic');
+        }
+        const imageUrl = await storeImage(formik.values.profilePic, user.id);
+        await updateUserProfilePicAPI(user.id, imageUrl, user._version);
       }
       router.push('/neighbourhood');
       notifications.show({
