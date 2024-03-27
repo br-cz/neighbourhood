@@ -7,6 +7,7 @@ import {
   CommunityWithDistance,
   getClosestCommunities,
 } from '../utils/relevantCommunitiesHelpers/getClosestCommunities';
+import { SCHOOL_COMMUNITY_IDS } from '../utils/communityUtils';
 
 interface SelectCommunityProps {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
@@ -41,8 +42,7 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
         const response = await getClosestCommunities(`${coordinates.lat}, ${coordinates.lng}`);
 
         const filteredCommunities = response
-          .filter((element: CommunityWithDistance) => element.distanceKm <= 10)
-          .slice(0, 5);
+          .filter((element: CommunityWithDistance) => element.distanceKm <= 10 || (SCHOOL_COMMUNITY_IDS.includes(element.community.id) && element.distanceKm <= 100));
         if (filteredCommunities.length === 0) {
           setNoCommunities(true);
           return;

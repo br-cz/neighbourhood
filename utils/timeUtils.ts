@@ -87,3 +87,46 @@ export function combineDateTime(date: Date, time: string) {
 
   return dateTime.toISOString();
 }
+
+export function dateIsToday(isoDate: string): boolean {
+  const date = new Date(isoDate);
+  const now = new Date();
+  return (
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear()
+  );
+}
+
+export function dateIsThisWeek(isoDate: string): boolean {
+  const date = new Date(isoDate);
+  const now = new Date();
+  const firstDayOfWeek = new Date(
+    now.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1))
+  );
+  firstDayOfWeek.setHours(0, 0, 0, 0);
+
+  const lastDayOfWeek = new Date(firstDayOfWeek);
+  lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+  lastDayOfWeek.setHours(23, 59, 59, 999);
+
+  return date >= firstDayOfWeek && date <= lastDayOfWeek;
+}
+
+export function dateIsThisMonth(isoDate: string): boolean {
+  const date = new Date(isoDate);
+  const now = new Date();
+  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+  return date >= firstDayOfMonth && date <= lastDayOfMonth;
+}
+
+export function dateIsThisYear(isoDate: string): boolean {
+  const date = new Date(isoDate);
+  const now = new Date();
+  const firstDayOfYear = new Date(now.getFullYear(), 0, 1);
+  const lastDayOfYear = new Date(now.getFullYear() + 1, 0, 0, 23, 59, 59, 999);
+
+  return date >= firstDayOfYear && date <= lastDayOfYear;
+}
