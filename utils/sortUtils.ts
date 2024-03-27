@@ -34,6 +34,14 @@ export function sortByOldToNew(a: any, b: any): number {
   return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
 }
 
+export function sortByPriceLowHigh(a: any, b: any): number {
+  return a.price - b.price;
+}
+
+export function sortByPriceHighLow(a: any, b: any): number {
+  return b.price - a.price;
+}
+
 export function filterEventsForToday(events: Event[]): Event[] {
   const today = new Date();
   // startOfToday.setHours(0, 0, 0, 0);   //Enabling this will cause you to see events that may have already passed, not sure if we want that
