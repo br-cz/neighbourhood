@@ -196,7 +196,7 @@ describe('Neighbourhood Shell', () => {
   });
 
   //1.8
-  test('utilSignOut should sign out the user, clear localStorage, navigate to home, and show a notification', async () => {
+  test('utilSinOut should sign out the user, clear localStorage, navigate to home, and show a notification', async () => {
     // Call the utility function with the mocked router
     await utilSignOut({ router: routerMock as NextRouter });
 

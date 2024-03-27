@@ -34,7 +34,7 @@ export function NavbarProfileButton({ active, setActiveTab }: NavbarProfileButto
               {currentUser?.firstName} {currentUser?.lastName}
             </Text>
           ) : (
-            <Skeleton data-testid="current-user-info" mt={4} width={90} height={4} />
+            <Skeleton mt={4} width={90} height={4} />
           )}
         </div>
 
