@@ -1,4 +1,5 @@
 import { getUrl, remove } from '@aws-amplify/storage';
+import { redis } from '../ConfigureRedis';
 
 export const isValidUrl = (urlString: string) => {
     try {
@@ -9,6 +10,10 @@ export const isValidUrl = (urlString: string) => {
 };
 
 export async function retrieveImageURLFromS3(imageKey: string) {
+    const cachedValue = await redis.get<string>(imageKey);
+    if (cachedValue) {
+        return cachedValue;
+    }
     try {
         const result = await getUrl({
         key: imageKey,
@@ -17,6 +22,10 @@ export async function retrieveImageURLFromS3(imageKey: string) {
           expiresIn: 3600,
         },
       });
+      if (result.url.toString()) {
+        await redis.set(imageKey, result.url.toString());
+        await redis.expire(imageKey, 3000);
+      }
       return result.url.toString();
     } catch (error) {
       throw new Error(`Error retrieving user profile picture from S3: ${error}`);
