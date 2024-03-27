@@ -7,6 +7,7 @@ import {
   getAllCommunityDetailsAPI,
 } from '../api/services/community';
 import { getCurrentUserID } from './usersCustomHooks';
+import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const communityUpdateSubject = new Subject<void>();
 
@@ -29,7 +30,19 @@ export const useFetchMembers = () => {
         const filteredMembers = jsonMembers.data.listUserCommunities.items.filter(
           (item: any) => item.communityId === communityId
         );
-        setMembers(filteredMembers);
+        const membersWithImages = await Promise.all(
+          filteredMembers.map(async (item: any) => {
+            const profilePicture = await retrieveProfilePicture(item.userId).catch(() => null);
+            return {
+              ...item,
+              user: {
+                ...item.user,
+                profilePic: profilePicture,
+              },
+            };
+          })
+        );
+        setMembers(membersWithImages);
       } catch (err: any) {
         setError(err);
       } finally {

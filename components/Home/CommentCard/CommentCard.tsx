@@ -1,23 +1,14 @@
-import { useEffect, useState } from 'react';
 import { Text, Avatar, Group, Box } from '@mantine/core';
 import classes from './CommentCard.module.css';
 import { formatPostedAt } from '@/utils/timeUtils';
 import { CommentItem } from '@/types/types';
-import { retrieveImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface CommentCardProps {
   comment: CommentItem;
 }
 
 export function CommentCard({ comment }: CommentCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-
-  useEffect(() => {
-    if (!comment?.author) return;
-    retrieveImage(comment?.author?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [comment?.author?.profilePic]);
+  const profilePic = comment.author?.profilePic || './img/placeholder-profile.jpg';
 
   return (
     <Box className={classes.comment} data-testid="comment-card">

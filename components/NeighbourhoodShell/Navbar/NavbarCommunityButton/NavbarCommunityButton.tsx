@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
+import { UnstyledButton, Group, Avatar, Text, rem, Skeleton } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarCommunityButton.module.css';
 import { retrieveImage } from '../../../utils/s3Helpers/CommunityImageS3Helper';
@@ -12,14 +12,8 @@ interface NavbarCommunityButtonProps {
 
 export function NavbarCommunityButton({ active, setActiveTab }: NavbarCommunityButtonProps) {
   const { community } = useCurrentCommunity();
-  const [communityImage, setCommunityImage] = useState<string>('');
+  const communityImage = community?.image || './img/placeholder-img.jpg';
 
-  useEffect(() => {
-    if (!community) return;
-    retrieveImage(community?.id).then((image) => {
-      setCommunityImage(image);
-    });
-  }, [community?.image]);
   return (
     <UnstyledButton
       onClick={() => setActiveTab('communities')}
@@ -27,16 +21,24 @@ export function NavbarCommunityButton({ active, setActiveTab }: NavbarCommunityB
       data-testid="community"
     >
       <Group>
-        <Avatar src={communityImage || './img/placeholder-img.jpg'} size="md" radius="xl" />
+        {community ? (
+          <Avatar src={communityImage} size="md" radius="xl" />
+        ) : (
+          <Skeleton width={36} height={36} radius="xl" />
+        )}
 
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={600}>
             My Community
           </Text>
 
-          <Text c="dimmed" size="xs">
-            {community?.name}
-          </Text>
+          {community ? (
+            <Text c="dimmed" size="xs">
+              {community?.name}
+            </Text>
+          ) : (
+            <Skeleton mt={4} width={90} height={4} />
+          )}
         </div>
 
         <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} />
