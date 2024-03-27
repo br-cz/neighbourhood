@@ -71,6 +71,13 @@ export const getAllUserCommunitiesAPI = async (communityId: string) => {
             lastName
             username
             profilePic
+            bio
+            pronouns
+            address
+            contact
+            birthday
+            pets
+            kids
           }
           communityId
           userId
