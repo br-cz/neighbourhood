@@ -58,7 +58,7 @@ export function ViewListingModal({ opened, onClose, item }: ViewListingModalProp
           <div>
             <Title order={6}>Price</Title>
             <Text fz="sm" data-testid="listing-modal-price">
-              ${item?.price}
+              {item?.price > 0 ? `$${item?.price}` : 'FREE'}
             </Text>
           </div>
           <div>

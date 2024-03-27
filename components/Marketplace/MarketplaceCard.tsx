@@ -3,7 +3,7 @@ import { Card, Image, Text, Button, Group, Center, Avatar } from '@mantine/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
-import { ItemForSale } from '@/src/API';
+import { ItemForSale } from '@/types/types';
 
 interface MarketplaceCardProps {
   item: ItemForSale;
@@ -44,7 +44,7 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
         component="a"
         data-testid="listing-price"
       >
-        ${item?.price}
+        {item?.price > 0 ? `$${item?.price}` : 'FREE'}
       </Text>
 
       <Group>

@@ -21,6 +21,7 @@ export function PostCard({ post, isLiked }: PostCardProps) {
   const profilePic = post.author?.profilePic || './img/placeholder-profile.jpg';
   const { likePost, unlikePost } = usePostLikes(post.id);
   const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likeCount || 0);
   const [comments, setComments] = useState(post?.comments?.items);
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
   const { handleCreateComment } = useCreateComment();
@@ -48,9 +49,11 @@ export function PostCard({ post, isLiked }: PostCardProps) {
   const handleLike = async () => {
     if (liked) {
       await unlikePost();
+      setLikeCount(likeCount! - 1);
       setLiked(false);
     } else {
       await likePost();
+      setLikeCount(likeCount! + 1);
       setLiked(true);
     }
   };
