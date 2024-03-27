@@ -39,6 +39,14 @@ export function sortByLikeCount(a: any, b: any): number {
   return b.likeCount - a.likeCount;
 }
 
+export function sortByPriceLowHigh(a: any, b: any): number {
+  return a.price - b.price;
+}
+
+export function sortByPriceHighLow(a: any, b: any): number {
+  return b.price - a.price;
+}
+
 export function sortByEventDate(a: Event, b: Event): number {
   return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
 }
