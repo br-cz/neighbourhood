@@ -3,7 +3,7 @@ import { Card, Image, Text, Button, Group, Center, Avatar } from '@mantine/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
-import { ItemForSale } from '@/src/API';
+import { ItemForSale } from '@/types/types';
 import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 import { retrieveImage as retrieveItemImage } from '../utils/s3Helpers/ItemForSaleImageS3Helper';
 

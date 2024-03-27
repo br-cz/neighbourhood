@@ -25,6 +25,13 @@ export const fetchAllFriendRequestsAPI = async () => {
             lastName
             username
             profilePic
+            bio
+            pronouns
+            address
+            contact
+            birthday
+            pets
+            kids
           }
           sender {
             id
@@ -33,6 +40,13 @@ export const fetchAllFriendRequestsAPI = async () => {
             lastName
             username
             profilePic
+            bio
+            pronouns
+            address
+            contact
+            birthday
+            pets
+            kids
           }
         }
       }
