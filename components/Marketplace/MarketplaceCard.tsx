@@ -40,12 +40,27 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
         />
       </a>
 
-      <Text className={classes.title} fw={700} c="dark.6" fz="lg" component="a" truncate="end" data-testid="listing-title">
+      <Text
+        className={classes.title}
+        fw={700}
+        c="dark.6"
+        fz="lg"
+        component="a"
+        truncate="end"
+        data-testid="listing-title"
+      >
         {item?.title}
       </Text>
 
-      <Text className={classes.price} fw={500} fz="md" mt={0} component="a" data-testid="listing-price">
-        ${item?.price}
+      <Text
+        className={classes.price}
+        fw={500}
+        fz="md"
+        mt={0}
+        component="a"
+        data-testid="listing-price"
+      >
+        {item?.price > 0 ? `$${item?.price}` : 'FREE'}
       </Text>
 
       <Group>
