@@ -57,6 +57,7 @@ export const searchPosts = /* GraphQL */ `query SearchPosts($communityId: ID!, $
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -203,6 +204,7 @@ export const getCommunityPosts = /* GraphQL */ `query GetCommunityPosts($communi
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -982,6 +984,7 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -1009,6 +1012,7 @@ export const listPosts = /* GraphQL */ `query ListPosts(
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1041,6 +1045,7 @@ export const syncPosts = /* GraphQL */ `query SyncPosts(
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1064,6 +1069,7 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1595,6 +1601,7 @@ export const getUserLikedPosts = /* GraphQL */ `query GetUserLikedPosts($id: ID!
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt

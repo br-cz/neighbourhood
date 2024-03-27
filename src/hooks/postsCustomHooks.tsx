@@ -22,6 +22,7 @@ export const useCreatePost = () => {
       const communityId = getCurrentCommunityID();
       const newPostData: PostDataInput = {
         ...postData,
+        likeCount: 0,
         userPostsId: userId,
         communityPostsId: communityId,
       };
