@@ -38,7 +38,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
   const [previewImageUrl, setPreviewImageUrl] = useState(user?.profilePic || '');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [loading, loadingToggle] = useDisclosure();
+  const [loading, loadingToggle] = useDisclosure(false);
 
   useEffect(() => {
     if (!user) return;
@@ -75,12 +75,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
           return;
         }
       }
-      const updatedValues = { ...values, profilePic: imageUrl };
-      await updateUserProfile(updatedValues).then(() => {
-        onUpdate();
-        onClose();
-        formik.resetForm();
-        setPreviewImageUrl(user?.profilePic || '');
+      await updateUserProfile(values, imageUrl).then(() => {
         notifications.show({
           radius: 'md',
           title: 'Profile Updated',
@@ -89,6 +84,10 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
       });
       loadingToggle.close();
       userUpdateSubject.next();
+      onUpdate();
+      onClose();
+      setSelectedFile(null);
+      formik.resetForm();
     },
     enableReinitialize: true,
   });
@@ -121,6 +120,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
         onClose();
         formik.resetForm();
         setPreviewImageUrl(profilePic || '');
+        setSelectedFile(null);
       }}
       title={
         <Title order={2} component="p">
@@ -249,13 +249,13 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
           <Button
             mt="md"
             loading={loading}
+            disabled={!formik.dirty && selectedFile == null}
             onClick={() => {
-              loadingToggle.open();
+              loadingToggle.toggle();
               formik.validateForm().then((errors) => {
                 if (Object.keys(errors).length === 0) {
                   formik.submitForm();
                 } else {
-                  loadingToggle.close();
                   notifications.show({
                     radius: 'md',
                     color: 'red.6',
@@ -264,6 +264,7 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
                   });
                 }
               });
+              loadingToggle.toggle();
             }}
           >
             Save Changes

@@ -201,12 +201,16 @@ describe('Customize Profile Modal', () => {
   });
 
   //1.9
-  test('Customize profile modal can be closed', async () => {
+  test('Customize profile modal can be closed with changes', async () => {
     renderComponent();
     fireEvent.click(screen.getByTestId('customize-profile-btn'));
     await waitFor(() => {
       expect(screen.getByText('Customize Profile')).toBeInTheDocument();
     });
+
+    const bioInput = (await screen.findByLabelText('Bio')) as HTMLInputElement;
+    fireEvent.change(bioInput, { target: { value: 'New bio content' } });
+
     fireEvent.click(screen.getByText('Save Changes'));
     await waitFor(() => {
       expect(screen.queryByText('Customize Profile')).not.toBeInTheDocument();

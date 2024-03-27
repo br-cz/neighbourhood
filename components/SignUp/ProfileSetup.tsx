@@ -198,7 +198,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
               defaultValue={new Date()}
               radius="md"
               name="birthday"
-              placeholder="Optional"
+              placeholder="Required"
               label="Birthday"
               value={selectedDate}
               onChange={handleDateChange}
@@ -221,6 +221,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
                   </Text>
                 </Tooltip>
               }
+              required
             />
           </Grid.Col>
           <Grid.Col span={6}>

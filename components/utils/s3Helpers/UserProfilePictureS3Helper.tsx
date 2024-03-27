@@ -7,8 +7,8 @@ import { deleteImageFromS3, retrieveImageURLFromS3 } from '../utilFunctions';
 ConfigureAmplifyClientSide();
 
 function generateKey(fileName: string, userId: string) {
-    const timestamp = Date.now();
-    return `UserProfilePictures/${userId}-${timestamp}-${fileName}`;
+  const timestamp = Date.now();
+  return `UserProfilePictures/${userId}-${timestamp}-${fileName}`;
 }
 
 export async function retrieveImage(userId: string) {
@@ -17,7 +17,11 @@ export async function retrieveImage(userId: string) {
     if (user.profilePic) {
       if (user.profilePic.includes(userId)) {
         let imageKey = user.profilePic;
-        if (imageKey.includes('https://neighbourhooda920d24246fa4325ad39f863f5b37e50195636-dev.s3.ca-central-1.amazonaws.com')) {
+        if (
+          imageKey.includes(
+            'https://neighbourhooda920d24246fa4325ad39f863f5b37e50195636-dev.s3.ca-central-1.amazonaws.com'
+          )
+        ) {
           const parsedUrl = new URL(imageKey);
           imageKey = decodeURIComponent(parsedUrl.pathname.replace(/\+/g, ' ').substring(1));
         }
@@ -45,14 +49,14 @@ export async function storeImage(file: File, userId: string) {
         data: file,
       }).result;
 
-      await updateUserProfilePicAPI(user.id, uploadResult.key, user._version);
+      //await updateUserProfilePicAPI(user.id, uploadResult.key, user._version);
 
       return uploadResult.key;
     }
     throw new Error('userId given to store user profile picture is invalid');
   } catch (error) {
-      throw new Error(`Error occured when uploading user profile pic to S3: ${error}`);
-    }
+    throw new Error(`Error occured when uploading user profile pic to S3: ${error}`);
+  }
 }
 
 export async function clearImage(userId: string) {
