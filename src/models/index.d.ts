@@ -178,6 +178,7 @@ type EagerPost = {
   readonly images?: (string | null)[] | null;
   readonly content: string;
   readonly likedBy: UserLikedPosts[];
+  readonly likeCount?: number | null;
   readonly comments: Comment[];
   readonly visibility: Visibility | keyof typeof Visibility;
   readonly createdAt?: string | null;
@@ -197,6 +198,7 @@ type LazyPost = {
   readonly images?: (string | null)[] | null;
   readonly content: string;
   readonly likedBy: AsyncCollection<UserLikedPosts>;
+  readonly likeCount?: number | null;
   readonly comments: AsyncCollection<Comment>;
   readonly visibility: Visibility | keyof typeof Visibility;
   readonly createdAt?: string | null;

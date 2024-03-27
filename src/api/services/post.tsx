@@ -67,6 +67,7 @@ export const getCommunityPostsAPI = async (communityId: string) => {
                 }
               }
             }
+            likeCount
             comments {
               items {
                 content
@@ -156,6 +157,34 @@ export const updatePostImageAPI = async (postId: string, image: string, _version
   }
 };
 
+export const updatePostLikeCountAPI = async (postId: string, adjustment: number) => {
+  try {
+    const postResponse = await getPostAPI(postId);
+    if (!postResponse) {
+      throw new Error('Post not found');
+    }
+    const { _version, likeCount = 0 } = postResponse;
+    const newLikeCount = Math.max(likeCount! + adjustment, 0);
+    const updatedPost = await client.graphql({
+      query: updatePost,
+      variables: {
+        input: {
+          id: postId,
+          likeCount: newLikeCount,
+          _version,
+        },
+      },
+    });
+    console.log('Post updated successfully:', updatedPost.data.updatePost);
+    return updatedPost.data.updatePost;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error updating post like count: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
+};
+
 export const createLikeAPI = async (postId: string) => {
   const userId = getCurrentUserID();
   try {
@@ -168,6 +197,7 @@ export const createLikeAPI = async (postId: string) => {
         },
       },
     });
+    await updatePostLikeCountAPI(postId, 1);
     return createUserLikedPostsResponse.data.createUserLikedPosts;
   } catch (error: any) {
     throw new HttpError(
@@ -179,7 +209,7 @@ export const createLikeAPI = async (postId: string) => {
 
 export const deleteLikeAPI = async (like: UserLikedPosts) => {
   try {
-    return await client.graphql({
+    const deleteUserLikedPostsResponse = await client.graphql({
       query: deleteUserLikedPosts,
       variables: {
         input: {
@@ -188,6 +218,8 @@ export const deleteLikeAPI = async (like: UserLikedPosts) => {
         },
       },
     });
+    await updatePostLikeCountAPI(like.postId, -1);
+    return deleteUserLikedPostsResponse.data.deleteUserLikedPosts;
   } catch (error: any) {
     throw new HttpError(`Error deleting like: ${error.message}`, error.statusCode || 500);
   }
