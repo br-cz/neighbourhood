@@ -1,4 +1,4 @@
-import { object, string, ref, array } from 'yup';
+import { object, string, ref } from 'yup';
 
 const nameRegex = /^(?!.*(.)\1{3})[a-zA-ZÀ-ÿ-_'"]+(?:\s[a-zA-ZÀ-ÿ-_'"]+)*$/;
 const today = new Date();
@@ -31,5 +31,5 @@ export const signUpSchema = object({
     .max(20, 'Username must be 20 characters or less'),
   address: string().required('Address is required'),
   selectedCommunity: string().required('Selecting a community required.'),
-  phoneNumber: string().matches(/^\(\d{3}\) \d{3}-\d{4}$/, 'Phone number must be valid.'),
+  contact: string().matches(/^\(\d{3}\) \d{3}-\d{4}$/, 'Phone number must be valid'),
 });

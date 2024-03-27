@@ -382,7 +382,7 @@ describe('Step 4: Profile Setup', () => {
   });
 
   //4.2
-  test('Step 4 community items are selectable and changeable', async () => {
+  test('Step 4 profile items are selectable and changeable', async () => {
     renderComponent();
     await completeStep1();
     await completeStep2();
@@ -528,7 +528,7 @@ describe('Step 4: Profile Setup', () => {
     fireEvent.click(screen.getByText(/Create Profile/i));
     await waitFor(
       () => {
-        expect(screen.getByText('Phone number must be valid.')).toBeInTheDocument();
+        expect(screen.getByText('Phone number must be valid')).toBeInTheDocument();
       },
       { timeout: 1000 }
     );

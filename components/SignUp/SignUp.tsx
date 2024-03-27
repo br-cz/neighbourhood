@@ -49,7 +49,7 @@ export const SignUp = () => {
       preferredUsername: '',
       firstName: '',
       familyName: '',
-      phoneNumber: '',
+      contact: '',
       bio: '',
       pronouns: '',
       profilePic: null,
@@ -77,7 +77,7 @@ export const SignUp = () => {
         'familyName',
         'preferredUsername',
         'bio',
-        'phoneNumber',
+        'contact',
         'profilePic',
         'kids',
         'pets',
@@ -314,7 +314,7 @@ export const SignUp = () => {
                 familyName={formik.values.familyName}
                 preferredUsername={formik.values.preferredUsername}
                 bio={formik.values.bio}
-                phoneNumber={formik.values.phoneNumber}
+                contact={formik.values.contact}
                 pronouns={formik.values.pronouns}
                 birthday={formik.values.birthday}
                 kids={formik.values.kids}
