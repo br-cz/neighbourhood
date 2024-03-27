@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Text, Group, Avatar, Image, Stack, Title } from '@mantine/core';
 import classes from './ViewListingModal.module.css';
-import { ItemForSale } from '@/src/API';
+import { ItemForSale } from '@/types/types';
 
 interface ViewListingModalProps {
   opened: boolean;
