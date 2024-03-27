@@ -28,7 +28,13 @@ export default function HomePage() {
             placeholder="Sort by..."
             defaultValue="Newly Posted"
             onChange={setSortQuery}
-            data={['Newly Posted', 'Oldest']}
+            data={[
+              'Newly Posted',
+              'Oldest',
+              'Popular (This Week)',
+              'Popular (This Month)',
+              'Popular (All Time)',
+            ]}
           />
           <TextInput
             radius="md"

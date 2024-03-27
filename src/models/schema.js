@@ -587,6 +587,13 @@ export const schema = {
                         ]
                     }
                 },
+                "likeCount": {
+                    "name": "likeCount",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "comments": {
                     "name": "comments",
                     "isArray": true,
@@ -1427,5 +1434,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "bc499130ed109479f2a2df2e3d806ee5"
+    "version": "7ec9dde77008352dc2b78d86ee21e490"
 };
