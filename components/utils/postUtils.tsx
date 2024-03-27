@@ -19,21 +19,21 @@ export const filterAndSortPosts = (
   );
 
   switch (sortQuery) {
-    case 'Oldest':
-      filteredPosts.sort(sortByOldToNew);
-      break;
     case 'Newly Posted':
       filteredPosts.sort(sortByNewToOld);
       break;
-    case 'Popular (All Time)':
+    case 'Oldest':
+      filteredPosts.sort(sortByOldToNew);
+      break;
+    case 'Popular (This Week)':
+      filteredPosts = filteredPosts.filter((post) => dateIsThisWeek(post.createdAt));
       filteredPosts.sort(sortByLikeCount);
       break;
     case 'Popular (This Month)':
       filteredPosts = filteredPosts.filter((post) => dateIsThisMonth(post.createdAt));
       filteredPosts.sort(sortByLikeCount);
       break;
-    case 'Popular (This Week)':
-      filteredPosts = filteredPosts.filter((post) => dateIsThisWeek(post.createdAt));
+    case 'Popular (All Time)':
       filteredPosts.sort(sortByLikeCount);
       break;
     default:

@@ -1,15 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  Text,
-  Avatar,
-  Group,
-  Box,
-  Button,
-  Collapse,
-  TextInput,
-  ActionIcon,
-  Tooltip,
-} from '@mantine/core';
+import { Text, Avatar, Group, Box, Button, Collapse, TextInput, ActionIcon } from '@mantine/core';
 import { useFormik } from 'formik';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
