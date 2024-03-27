@@ -1,5 +1,4 @@
 import { Event } from '@/types/types';
-import { dateIsThisMonth, dateIsThisWeek, dateIsToday } from './timeUtils';
 
 export function sortByFirstName(a: any, b: any): number {
   const nameA = a?.firstName?.toLowerCase();
@@ -49,16 +48,4 @@ export function sortByPriceHighLow(a: any, b: any): number {
 
 export function sortByEventDate(a: Event, b: Event): number {
   return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
-}
-
-export function filterEventsForToday(events: Event[]): Event[] {
-  return events.filter((event) => dateIsToday(event.datetime));
-}
-
-export function filterEventsForWeek(events: Event[]): Event[] {
-  return events.filter((event) => dateIsThisWeek(event.datetime));
-}
-
-export function filterEventsForThisMonth(events: Event[]): Event[] {
-  return events.filter((event) => dateIsThisMonth(event.datetime));
 }
