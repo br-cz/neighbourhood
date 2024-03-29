@@ -64,6 +64,7 @@ export interface Post {
   community: Community;
   content: string;
   likedBy?: User[];
+  likeCount?: number;
   comments: Comments;
   visibility: Visibility;
   createdAt: string;

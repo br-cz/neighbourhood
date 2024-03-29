@@ -26,6 +26,7 @@ import { useCreateListing } from '@/src/hooks/marketplaceCustomHooks';
 import { createListingSchema } from './createListingValidation';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { storeImage } from '@/components/utils/s3Helpers/ItemForSaleImageS3Helper';
+import { handleContactChange } from '@/utils/contactUtils';
 
 interface CreateListingDrawerProps {
   opened: boolean;
@@ -90,13 +91,6 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
     },
     enableReinitialize: true,
   });
-
-  const handleContactChange = (e: any) => {
-    const { value } = e.target;
-    const numericPhoneNumber = value.replace(/\D/g, '');
-    const formattedPhoneNumber = numericPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-    formik.setFieldValue('contact', formattedPhoneNumber);
-  };
 
   const previews = files.map((file: FileWithPath, index: any) => {
     const imageUrl = URL.createObjectURL(file);
@@ -206,7 +200,7 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
               value={formik.values.contact}
               mt="md"
               data-testid="contact"
-              onChange={handleContactChange}
+              onChange={(e) => handleContactChange(e, formik.setFieldValue)}
               maxLength={14}
               required
             />

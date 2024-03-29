@@ -621,6 +621,7 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -690,6 +691,7 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -759,6 +761,7 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -786,6 +789,7 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -844,6 +848,7 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -902,6 +907,7 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1572,6 +1578,7 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1631,6 +1638,7 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1690,6 +1698,7 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
