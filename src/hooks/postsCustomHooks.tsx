@@ -6,6 +6,7 @@ import {
   listUserLikedPostsAPI,
   deleteLikeAPI,
   createLikeAPI,
+  deletePostAPI,
 } from '../api/services/post';
 import { getCurrentUser, getCurrentUserID } from './usersCustomHooks';
 import { Post, CommentDataInput, PostDataInput, Visibility } from '@/types/types';
@@ -39,6 +40,25 @@ export const useCreatePost = () => {
   return { handleCreatePost, error };
 };
 
+export const useDeletePost = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+
+  const handleDeletePost = async (post: Post) => {
+    setLoading(true);
+    try {
+      await deletePostAPI(post);
+      setLoading(false);
+    } catch (err: any) {
+      console.error('Error deleting post:', err);
+      setError(err.message || 'An error occurred');
+      setLoading(false);
+    }
+  };
+
+  return { handleDeletePost, loading, error };
+};
+
 export const useFetchPosts = (refresh: boolean = false) => {
   const [posts, setPosts] = useState<any>([]);
   const [loading, setLoading] = useState(true);
@@ -54,9 +74,11 @@ export const useFetchPosts = (refresh: boolean = false) => {
         const jsonPosts = JSON.parse(JSON.stringify(response));
         const visiblePosts = jsonPosts.data.getCommunity.posts.items.filter(
           (post: Post) =>
-            post.visibility === Visibility.PUBLIC ||
-            post.author.id === user!.id ||
-            (post.visibility === Visibility.FRIENDS_ONLY && user!.friends?.includes(post.author.id))
+            post._deleted !== true &&
+            (post.visibility === Visibility.PUBLIC ||
+              post.author.id === user!.id ||
+              (post.visibility === Visibility.FRIENDS_ONLY &&
+                user!.friends?.includes(post.author.id)))
         );
         setPosts(visiblePosts);
       } catch (err: any) {
