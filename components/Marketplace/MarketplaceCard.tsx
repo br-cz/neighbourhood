@@ -66,8 +66,8 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
       <Group>
         <Center>
           <Avatar src={profilePic} size={23} radius="xl" mr={7} />
-          <Text fz="sm" c="dimmed" truncate="end" data-testid="seller">
-            {item?.seller?.firstName} {item?.seller?.lastName}
+          <Text fz="sm" c="dimmed" truncate="end" data-testid="seller" style={{ maxWidth: '100px' }}>
+            {`${item?.seller?.firstName} ${item?.seller?.lastName}`}
           </Text>
         </Center>
       </Group>

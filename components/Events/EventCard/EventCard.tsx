@@ -41,21 +41,21 @@ export function EventCard({ event, onView }: EventCardProps) {
         />
       </a>
 
-      <Text className={classes.title} fw={600} fz="lg" component="a">
+      <Text className={classes.title} fw={600} fz="lg" component="a" truncate="end">
         {event?.name}
       </Text>
 
       <Group>
         <Center>
           <Avatar src={profilePic} size={23} radius="xl" mr="xs" />
-          <Text fz="sm" c="dimmed">
+          <Text fz="sm" c="dimmed" truncate="end" style={{ maxWidth: '140px' }}>
             {event?.organizer?.firstName} {event?.organizer?.lastName}
           </Text>
         </Center>
       </Group>
 
       <Stack gap="0" className={classes.details}>
-        <Text fz="sm">
+        <Text fz="sm" truncate="end">
           <b>Location:</b> {event?.location}
         </Text>
         <Text fz="sm">
