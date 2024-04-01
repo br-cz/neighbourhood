@@ -17,7 +17,7 @@ export default function MainPage() {
   return (
     <div style={containerStyling}>
       <Box>
-        <Image src="/logo.svg" width={450} height={100} alt="Neighbourhood Logo" />
+        <Image src="/logo.svg" width={450} height={100} alt="Neighbourhood Logo" priority />
         <LoginForm />
       </Box>
     </div>
