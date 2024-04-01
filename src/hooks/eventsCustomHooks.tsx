@@ -113,7 +113,7 @@ export const useEventSaves = (eventId: string) => {
   return { isSaved, saveEvent, unsaveEvent, error };
 };
 
-export const useUserEventSaves = () => {
+export const useUserEventSaves = (refresh: boolean) => {
   const [userEventSaves, setUserEventSaves] = useState(new Map());
   const userId = getCurrentUserID();
 
@@ -134,7 +134,7 @@ export const useUserEventSaves = () => {
     };
 
     fetchUserSaves();
-  }, [userId]);
+  }, [userId, refresh]);
 
-  return { userEventSaves };
+  return { saves: userEventSaves };
 };

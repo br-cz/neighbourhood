@@ -19,6 +19,13 @@ export default function EventsPage() {
     setSearchQuery(event.target.value);
   };
 
+  const handleSortChange = (value: string | null) => {
+    setSortQuery(value);
+    if (value === 'Saved') {
+      toggleRefresh();
+    }
+  };
+
   return (
     <>
       <Group justify="space-between" m="20">
@@ -27,7 +34,7 @@ export default function EventsPage() {
           <Select
             radius="md"
             placeholder="Sort by..."
-            onChange={setSortQuery}
+            onChange={handleSortChange}
             defaultValue="Newly Posted"
             data={['Newly Posted', 'Today', 'This Week', 'This Month', 'Saved']}
           />

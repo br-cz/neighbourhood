@@ -6,6 +6,7 @@ import EventsPage from '@/components/Events/EventsPage';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
 import userEvent from '@testing-library/user-event';
+
 jest.mock('formik', () => ({
   ...jest.requireActual('formik'),
   useFormik: jest.fn().mockImplementation(() => ({
@@ -33,6 +34,26 @@ jest.mock('formik', () => ({
     })),
     submitForm: jest.fn(),
     resetForm: jest.fn(),
+  })),
+}));
+
+jest.mock('@/src/hooks/eventsCustomHooks', () => ({
+  useFetchEvents: jest.fn(() => ({
+    events: [],
+    loading: false,
+    refetch: jest.fn(),
+  })),
+  useCreateEvent: jest.fn(() => ({
+    createEvent: jest.fn(),
+  })),
+  useEventSaves: jest.fn(() => ({
+    saveEvent: jest.fn(),
+    unsaveEvent: jest.fn(),
+  })),
+  useUserEventSaves: jest.fn(() => ({
+    userEventSaves: {
+      get: () => false,
+    },
   })),
 }));
 

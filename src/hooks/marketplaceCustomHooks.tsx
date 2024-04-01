@@ -113,7 +113,7 @@ export const useListingSaves = (listingId: string) => {
   return { isSaved, saveListing, unsaveListing, error };
 };
 
-export const useUserListingSaves = () => {
+export const useUserListingSaves = (refresh: boolean) => {
   const [userListingSaves, setUserListingSaves] = useState(new Map());
   const userId = getCurrentUserID();
 
@@ -134,7 +134,7 @@ export const useUserListingSaves = () => {
     };
 
     fetchUserSaves();
-  }, [userId]);
+  }, [userId, refresh]);
 
-  return { userListingSaves };
+  return { saves: userListingSaves };
 };

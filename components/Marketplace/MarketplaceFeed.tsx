@@ -16,15 +16,10 @@ export function MarketplaceFeed({
   sortQuery: string | null;
 }) {
   const { listings, loading } = useFetchListings(refresh);
-  const { userListingSaves } = useUserListingSaves();
+  const { saves } = useUserListingSaves(refresh);
   const [viewListingModalOpened, setViewListingModalOpened] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
-  const filteredAndSortedListings = filterAndSortListings(
-    listings,
-    searchQuery,
-    sortQuery,
-    userListingSaves
-  );
+  const filteredAndSortedListings = filterAndSortListings(listings, searchQuery, sortQuery, saves);
 
   const handleViewListing = (item: any) => {
     setSelectedListing(item);
@@ -61,7 +56,7 @@ export function MarketplaceFeed({
               key={item.id}
               item={item}
               onView={() => handleViewListing(item)}
-              isSaved={userListingSaves.get(item.id)}
+              isSaved={saves ? saves.get(item.id) : false}
             />
           ))}
         </SimpleGrid>

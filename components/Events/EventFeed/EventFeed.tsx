@@ -16,15 +16,10 @@ export function EventFeed({
   sortQuery: string | null;
 }) {
   const { events, loading } = useFetchEvents(refresh);
-  const { userEventSaves } = useUserEventSaves();
+  const { saves } = useUserEventSaves(refresh);
   const [viewEventModalOpened, setViewEventModalOpened] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const filteredAndSortedEvents = filterAndSortEvents(
-    events,
-    searchQuery,
-    sortQuery,
-    userEventSaves
-  );
+  const filteredAndSortedEvents = filterAndSortEvents(events, searchQuery, sortQuery, saves);
   const handleViewEvent = (event: any) => {
     setSelectedEvent(event);
     setViewEventModalOpened(true);
@@ -60,7 +55,7 @@ export function EventFeed({
               key={event.id}
               event={event}
               onView={() => handleViewEvent(event)}
-              isSaved={userEventSaves.get(event.id)}
+              isSaved={saves ? saves.get(event.id) : false}
             />
           ))}
         </SimpleGrid>

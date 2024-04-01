@@ -62,9 +62,22 @@ jest.mock('@/src/hooks/eventsCustomHooks', () => {
     }),
   });
 
+  const useEventSaves = () => ({
+    saveEvent: jest.fn(),
+    unsaveEvent: jest.fn(),
+  });
+
+  const useUserEventSaves = () => ({
+    userEventSaves: {
+      get: () => false,
+    },
+  });
+
   return {
     useFetchEvents,
     useCreateEvent,
+    useEventSaves,
+    useUserEventSaves,
   };
 });
 
