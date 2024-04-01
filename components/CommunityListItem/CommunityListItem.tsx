@@ -43,7 +43,7 @@ export function CommunityListItem({
     >
       <Group>
         <Avatar
-          src={community?.image ? community.image : './img/placeholder-img.jpg'}
+          src={communityImage || './img/placeholder-img.jpg'}
           size="lg"
           radius="xl"
           style={{ opacity: itemStyle.opacity }}

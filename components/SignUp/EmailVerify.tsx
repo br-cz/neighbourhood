@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, PinInput, Stack } from '@mantine/core';
 
 interface EmailVerifyProps {
@@ -6,10 +6,7 @@ interface EmailVerifyProps {
 }
 
 export const EmailVerify: React.FC<EmailVerifyProps> = ({ verificationCode }) => {
-  const [code, setCode] = useState('');
-
   const handleChange = (value: string) => {
-    setCode(value);
     if (value.length === 6) {
       verificationCode(value);
     }

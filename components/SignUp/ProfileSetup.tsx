@@ -28,7 +28,6 @@ interface ProfileSetupProps {
   contact: string;
   bio: string;
   pronouns: string;
-  profilePic: File | null;
   birthday: string;
   kids: number;
   pets: number;
@@ -68,8 +67,6 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   contact,
   bio,
   pronouns,
-  profilePic,
-  birthday,
   kids,
   pets,
   setFieldValue,
