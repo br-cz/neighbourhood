@@ -1,18 +1,14 @@
-import {
-  filterEventsForThisMonth,
-  filterEventsForToday,
-  filterEventsForWeek,
-  sortByNewToOld,
-} from '@/utils/sortUtils';
+import { sortByEventDate, sortByNewToOld } from '@/utils/sortUtils';
 import { Event } from '@/types/types';
+import { dateIsThisMonth, dateIsThisWeek, dateIsToday } from '@/utils/timeUtils';
 
 export const filterAndSortEvents = (
   events: Event[],
   searchQuery: string,
   sortQuery: string | null
 ): Event[] => {
-  const filteredEvents = events.filter(
-    (event) =>
+  let filteredEvents = events.filter(
+    (event: Event) =>
       event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -21,27 +17,29 @@ export const filterAndSortEvents = (
         .includes(searchQuery.toLowerCase())
   );
 
-  const eventsToSort = (() => {
-    switch (sortQuery) {
-      case 'Today':
-        return filterEventsForToday(filteredEvents);
-      case 'This Week':
-        return filterEventsForWeek(filteredEvents);
-      case 'This Month':
-        return filterEventsForThisMonth(filteredEvents);
-      default:
-        return filteredEvents;
-    }
-  })();
+  switch (sortQuery) {
+    case 'Newly Posted':
+      filteredEvents.sort(sortByNewToOld);
+      break;
+    case 'Upcoming':
+      filteredEvents.sort(sortByEventDate);
+      break;
+    case 'Today':
+      filteredEvents = filteredEvents.filter((event) => dateIsToday(event.datetime));
+      filteredEvents.sort(sortByEventDate);
+      break;
+    case 'This Week':
+      filteredEvents = filteredEvents.filter((event) => dateIsThisWeek(event.datetime));
+      filteredEvents.sort(sortByEventDate);
+      break;
+    case 'This Month':
+      filteredEvents = filteredEvents.filter((event) => dateIsThisMonth(event.datetime));
+      filteredEvents.sort(sortByEventDate);
+      break;
+    default:
+      filteredEvents.sort(sortByNewToOld);
+      break;
+  }
 
-  const sortedEvents = eventsToSort.sort((a, b) => {
-    switch (sortQuery) {
-      case 'Newly Posted':
-        return sortByNewToOld(a, b);
-      default:
-        return sortByNewToOld(a, b);
-    }
-  });
-
-  return sortedEvents;
+  return filteredEvents;
 };
