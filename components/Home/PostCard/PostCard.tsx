@@ -33,7 +33,7 @@ interface PostCardProps {
 
 export function PostCard({ post, isLiked, onUpdate }: PostCardProps) {
   const { currentUser } = useCurrentUser();
-  const [profilePic, setProfilePic] = useState<string>('');
+  const profilePic = post.author?.profilePic || './img/placeholder-profile.jpg';
   const { handleDeletePost } = useDeletePost();
   const { likePost, unlikePost } = usePostLikes(post.id);
   const [liked, setLiked] = useState(false);
@@ -41,13 +41,6 @@ export function PostCard({ post, isLiked, onUpdate }: PostCardProps) {
   const [comments, setComments] = useState(post?.comments?.items);
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
   const { handleCreateComment } = useCreateComment();
-
-  useEffect(() => {
-    if (!post?.author) return;
-    retrieveImage(post?.author?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [post?.author?.profilePic]);
 
   useEffect(() => {
     setLiked(isLiked);

@@ -29,7 +29,7 @@ export default function EventsPage() {
             placeholder="Sort by..."
             onChange={setSortQuery}
             defaultValue="Newly Posted"
-            data={['Newly Posted', 'Today', 'This Week', 'This Month']}
+            data={['Newly Posted', 'Upcoming', 'Today', 'This Week', 'This Month']}
           />
           <TextInput
             radius="md"

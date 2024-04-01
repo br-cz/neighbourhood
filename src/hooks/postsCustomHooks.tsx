@@ -11,6 +11,7 @@ import {
 import { getCurrentUser, getCurrentUserID } from './usersCustomHooks';
 import { Post, CommentDataInput, PostDataInput, Visibility } from '@/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
+import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const useCreatePost = () => {
   const [error, setError] = useState<string | undefined>();
@@ -80,7 +81,37 @@ export const useFetchPosts = (refresh: boolean = false) => {
               (post.visibility === Visibility.FRIENDS_ONLY &&
                 user!.friends?.includes(post.author.id)))
         );
-        setPosts(visiblePosts);
+         const postsWithImages = await Promise.all(
+           visiblePosts.map(async (post: any) => {
+             const profilePicture = await retrieveProfilePicture(post.author.id).catch(() => null);
+             const updatedPost = {
+               ...post,
+               author: {
+                 ...post.author,
+                 profilePic: profilePicture,
+               },
+             };
+             if (updatedPost.comments && updatedPost.comments.items.length > 0) {
+               const commentsWithImages = await Promise.all(
+                 updatedPost.comments.items.map(async (comment: any) => {
+                   const commentProfilePicture = await retrieveProfilePicture(
+                     comment.author.id
+                   ).catch(() => null);
+                   return {
+                     ...comment,
+                     author: {
+                       ...comment.author,
+                       profilePic: commentProfilePicture,
+                     },
+                   };
+                 })
+               );
+               updatedPost.comments.items = commentsWithImages;
+             }
+             return updatedPost;
+           })
+         );
+        setPosts(postsWithImages);
       } catch (err: any) {
         console.error('Error fetching posts:', err);
         setError(err);
