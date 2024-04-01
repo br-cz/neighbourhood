@@ -83,6 +83,9 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
   useCreatePost: jest.fn(() => ({
     createPost: jest.fn(),
   })),
+  useDeletePost: jest.fn(() => ({
+    handleDeletePost: jest.fn(),
+  })),
   useCreateComment: jest.fn(() => ({
     createComment: jest.fn(),
   })),
