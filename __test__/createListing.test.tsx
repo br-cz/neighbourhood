@@ -39,6 +39,26 @@ jest.mock('formik', () => ({
   })),
 }));
 
+jest.mock('@/src/hooks/marketplaceCustomHooks', () => ({
+  useFetchListings: jest.fn(() => ({
+    listings: [],
+    loading: false,
+    refetch: jest.fn(),
+  })),
+  useCreateListing: jest.fn(() => ({
+    createdListing: jest.fn(),
+  })),
+  useListingSaves: jest.fn(() => ({
+    saveListing: jest.fn(),
+    unsaveListing: jest.fn(),
+  })),
+  useUserListingSaves: jest.fn(() => ({
+    userListingSaves: {
+      get: () => false,
+    },
+  })),
+}));
+
 const renderComponent = () =>
   render(
     <MantineProvider>

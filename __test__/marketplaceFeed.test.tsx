@@ -51,6 +51,15 @@ jest.mock('@/src/hooks/marketplaceCustomHooks', () => ({
   useCreateListing: jest.fn(() => ({
     createdListing: jest.fn(),
   })),
+  useListingSaves: jest.fn(() => ({
+    saveListing: jest.fn(),
+    unsaveListing: jest.fn(),
+  })),
+  useUserListingSaves: jest.fn(() => ({
+    userListingSaves: {
+      get: () => false,
+    },
+  })),
 }));
 
 afterEach(() => {

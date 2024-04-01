@@ -83,6 +83,7 @@ export interface Event {
   organizer: User;
   attendees?: User[];
   likedBy?: User[];
+  saveCount?: number;
   visibility: Visibility;
   _version: number;
   _deleted?: boolean;
@@ -98,6 +99,7 @@ export interface ItemForSale {
   seller: User;
   community: Community;
   likedBy: User[];
+  saveCount?: number;
   visibility: Visibility;
   _version: number;
   _deleted?: boolean;
