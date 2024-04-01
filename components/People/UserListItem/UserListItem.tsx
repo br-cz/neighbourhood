@@ -30,8 +30,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const [active, setActive] = useState(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
   const profilePic = user?.profilePic || './img/placeholder-profile.jpg';
-  const { handleCreateFriendRequest, error } = useCreateFriendRequest();
-  const { handleCreateFriend, error: createFriendError } = useCreateFriend();
+  const { handleCreateFriendRequest } = useCreateFriendRequest();
+  const { handleCreateFriend } = useCreateFriend();
   const { handleDeleteFriend } = useDeleteFriend();
   const { handleDeleteIncomingFriendRequest } = useDeleteIncomingFriendRequest();
   const { handleDeleteOutgoingFriendRequest } = useDeleteOutgoingFriendRequest();
@@ -41,6 +41,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       setActive((a: boolean) => !a);
       setPopoverOpened((o: boolean) => !o);
     }
+    onUpdate();
   };
 
   const handlePreviewClicked = () => {

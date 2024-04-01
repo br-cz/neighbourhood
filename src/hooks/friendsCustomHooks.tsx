@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
 import * as APITypes from '@/src/API';
 import { useFetchMembers } from './communityCustomHooks';
-import { addFriendAPI, createFriendRequestAPI, deleteFriendRequestAPI, fetchAllFriendRequestsAPI, getFriendsAPI, removeFriendAPI } from '../api/services/friend';
+import {
+  addFriendAPI,
+  createFriendRequestAPI,
+  deleteFriendRequestAPI,
+  fetchAllFriendRequestsAPI,
+  getFriendsAPI,
+  removeFriendAPI,
+} from '../api/services/friend';
 import { getUserAPI } from '../api/services/user';
 import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
@@ -15,10 +22,12 @@ export const useCreateFriendRequest = () => {
     try {
       const userData = localStorage.getItem('currentUser')!;
       const parsedUserData = JSON.parse(userData);
+      const updatedFriendRequestData = {
+        ...friendRequestData,
+        senderId: parsedUserData.id,
+      };
 
-      friendRequestData.senderId = parsedUserData.id;
-
-      const friendRequestResponse = await createFriendRequestAPI(friendRequestData);
+      const friendRequestResponse = await createFriendRequestAPI(updatedFriendRequestData);
       console.log('friendRequest created:', friendRequestResponse);
 
       sentFriendRequest(JSON.stringify(friendRequestResponse));
@@ -201,6 +210,7 @@ const addFriend = async (userId: string, newFriendId: string) => {
   } catch (error) {
     console.error('Error in addFriend:', error);
   }
+  return null;
 };
 
 export const useCreateFriend = () => {
@@ -244,9 +254,10 @@ export const useDeleteFriend = () => {
 
       setDeletedFriend(JSON.parse(JSON.stringify(res)));
       console.log('Friendship deleted successfully');
-    } catch (caughtError) {
-      console.error('Error deleting friend:', caughtError);
-      throw caughtError;
+    } catch (err: any) {
+      console.error('Error deleting friend:', err);
+      setError(err);
+      throw err;
     }
   };
 
@@ -261,6 +272,7 @@ const fetchFriendsInfo = async (friendsIds: string[]) => {
   } catch (error) {
     console.error("Error fetching friends' information:", error);
   }
+  return null;
 };
 
 export const useFetchFriends = () => {
@@ -278,7 +290,6 @@ export const useFetchFriends = () => {
         const friendsIds = await getFriendsAPI(parsedUserData.id);
         const parsedFriendIds = JSON.parse(JSON.stringify(friendsIds));
         console.log(parsedFriendIds);
-
         const friendsInfo = (await fetchFriendsInfo(parsedFriendIds)) || [];
         console.log(friendsInfo);
         const friendsWithImages = await Promise.all(
