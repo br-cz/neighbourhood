@@ -11,6 +11,7 @@ const mockEvents = [
     datetime: '2024-01-02:00:00',
     location: 'Test Location',
     visibility: Visibility.PUBLIC,
+    _version: 1,
   },
   {
     id: '2',
@@ -21,6 +22,7 @@ const mockEvents = [
     datetime: '2024-01-05T12:00:00',
     location: 'Test Location',
     visibility: Visibility.PUBLIC,
+    _version: 1,
   },
   {
     id: '3',
@@ -36,6 +38,7 @@ const mockEvents = [
     datetime: '2024-01-15T20:00:00',
     location: 'Test Location',
     visibility: Visibility.PUBLIC,
+    _version: 1,
   },
 ];
 

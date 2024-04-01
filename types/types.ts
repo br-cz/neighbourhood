@@ -68,6 +68,8 @@ export interface Post {
   comments: Comments;
   visibility: Visibility;
   createdAt: string;
+  _version: number;
+  _deleted?: boolean;
 }
 
 export interface Event {
@@ -82,6 +84,8 @@ export interface Event {
   attendees?: User[];
   likedBy?: User[];
   visibility: Visibility;
+  _version: number;
+  _deleted?: boolean;
 }
 
 export interface ItemForSale {
@@ -95,6 +99,8 @@ export interface ItemForSale {
   community: Community;
   likedBy: User[];
   visibility: Visibility;
+  _version: number;
+  _deleted?: boolean;
 }
 
 export interface FriendRequest {

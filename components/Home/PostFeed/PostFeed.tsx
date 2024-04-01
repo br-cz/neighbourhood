@@ -8,10 +8,12 @@ export function PostFeed({
   refresh,
   searchQuery,
   sortQuery,
+  onUpdate,
 }: {
   refresh: boolean;
   searchQuery: string;
   sortQuery: string | null;
+  onUpdate?: () => void;
 }) {
   const { posts, loading } = useFetchPosts(refresh);
   const { userLikes } = useUserLikes();
@@ -43,7 +45,12 @@ export function PostFeed({
           data-testid="post-feed"
         >
           {filteredAndSortedPosts.map((post: Post) => (
-            <PostCard key={post.id} post={post} isLiked={userLikes.get(post.id)} />
+            <PostCard
+              key={post.id}
+              post={post}
+              isLiked={userLikes.get(post.id)}
+              onUpdate={onUpdate}
+            />
           ))}
         </SimpleGrid>
       )}
