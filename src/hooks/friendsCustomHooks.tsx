@@ -10,6 +10,7 @@ import {
   removeFriendAPI,
 } from '../api/services/friend';
 import { getUserAPI } from '../api/services/user';
+import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const useCreateFriendRequest = () => {
   const [friendRequest, sentFriendRequest] = useState<string>('');
@@ -21,7 +22,6 @@ export const useCreateFriendRequest = () => {
     try {
       const userData = localStorage.getItem('currentUser')!;
       const parsedUserData = JSON.parse(userData);
-
       const updatedFriendRequestData = {
         ...friendRequestData,
         senderId: parsedUserData.id,
@@ -59,8 +59,16 @@ export const useFetchIncomingFriendRequests = () => {
         const filteredFriendRequests = jsonFriendRequests.items
           .filter((item: any) => item.receiver.id === parsedUserData.id && !item._deleted)
           .map((item: any) => item.sender); // Extract the sender information from each filtered item
-
-        setIncomingFriendRequests(filteredFriendRequests);
+        const requestsWithImages = await Promise.all(
+          filteredFriendRequests.map(async (request: any) => {
+            const profilePicture = await retrieveProfilePicture(request.id).catch(() => null);
+            return {
+              ...request,
+              profilePic: profilePicture,
+            };
+          })
+        );
+        setIncomingFriendRequests(requestsWithImages);
       } catch (err: any) {
         setError(err);
       } finally {
@@ -94,8 +102,16 @@ export const useFetchOutgoingFriendRequests = () => {
         const filteredFriendRequests = jsonFriendRequests.items
           .filter((item: any) => item.sender.id === parsedUserData.id && !item._deleted)
           .map((item: any) => item.receiver); // Extract the sender information from each filtered item
-
-        setOutgoingFriendRequests(filteredFriendRequests);
+        const requestsWithImages = await Promise.all(
+          filteredFriendRequests.map(async (request: any) => {
+            const profilePicture = await retrieveProfilePicture(request.id).catch(() => null);
+            return {
+              ...request,
+              profilePic: profilePicture,
+            };
+          })
+        );
+        setOutgoingFriendRequests(requestsWithImages);
       } catch (err: any) {
         setError(err);
       } finally {
@@ -194,7 +210,6 @@ const addFriend = async (userId: string, newFriendId: string) => {
   } catch (error) {
     console.error('Error in addFriend:', error);
   }
-
   return null;
 };
 
@@ -261,7 +276,7 @@ const fetchFriendsInfo = async (friendsIds: string[]) => {
 };
 
 export const useFetchFriends = () => {
-  const [friends, setFriend] = useState<any>([]);
+  const [friends, setFriends] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -275,10 +290,18 @@ export const useFetchFriends = () => {
         const friendsIds = await getFriendsAPI(parsedUserData.id);
         const parsedFriendIds = JSON.parse(JSON.stringify(friendsIds));
         console.log(parsedFriendIds);
-
-        const friendsInfo = await fetchFriendsInfo(parsedFriendIds);
+        const friendsInfo = (await fetchFriendsInfo(parsedFriendIds)) || [];
         console.log(friendsInfo);
-        setFriend(friendsInfo);
+        const friendsWithImages = await Promise.all(
+          friendsInfo.map(async (friend: any) => {
+            const profilePicture = await retrieveProfilePicture(friend.id).catch(() => null);
+            return {
+              ...friend,
+              profilePic: profilePicture,
+            };
+          })
+        );
+        setFriends(friendsWithImages);
       } catch (err: any) {
         setError(err);
         console.log(err);
