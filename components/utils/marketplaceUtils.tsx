@@ -1,10 +1,16 @@
-import { sortByPriceHighLow, sortByPriceLowHigh, sortByNewToOld } from '@/utils/sortUtils';
+import {
+  sortByPriceHighLow,
+  sortByPriceLowHigh,
+  sortByNewToOld,
+  filterSavedListings,
+} from '@/utils/sortUtils';
 import { ItemForSale } from '@/types/types';
 
 export const filterAndSortListings = (
   listings: ItemForSale[],
   searchQuery: string,
-  sortQuery: string | null
+  sortQuery: string | null,
+  userListingSaves: Map<string, boolean>
 ): ItemForSale[] => {
   const filteredListings = listings.filter(
     (item: ItemForSale) =>
@@ -16,18 +22,23 @@ export const filterAndSortListings = (
   );
 
   let sortedListings: ItemForSale[] = [];
+
   switch (sortQuery) {
+    case 'Newly Listed':
+      sortedListings = filteredListings.sort(sortByNewToOld);
+      break;
     case 'Price: Low to High':
       sortedListings = filteredListings.sort(sortByPriceLowHigh);
       break;
     case 'Price: High to Low':
       sortedListings = filteredListings.sort(sortByPriceHighLow);
       break;
-    case 'Newly Listed':
-      sortedListings = filteredListings.sort(sortByNewToOld);
+    case 'Saved':
+      sortedListings = filterSavedListings(filteredListings, userListingSaves);
+      sortedListings.sort(sortByNewToOld);
       break;
     default:
-      sortedListings = filteredListings;
+      sortedListings = filteredListings.sort(sortByNewToOld);
       break;
   }
 

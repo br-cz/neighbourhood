@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Image, Text, Button, Group, Center, Avatar } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBookmark } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
 import { ItemForSale } from '@/types/types';
 import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
 import { retrieveImage as retrieveItemImage } from '../utils/s3Helpers/ItemForSaleImageS3Helper';
+import { useListingSaves } from '@/src/hooks/marketplaceCustomHooks';
 
 interface MarketplaceCardProps {
   item: ItemForSale;
   onView: () => void;
+  isSaved: boolean;
 }
 
-export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
+export function MarketplaceCard({ item, onView, isSaved }: MarketplaceCardProps) {
   const [profilePic, setProfilePic] = useState<string>('');
   const [itemImage, setItemImage] = useState<string>('');
+  const { saveListing, unsaveListing } = useListingSaves(item.id);
+  const [saved, setSaved] = useState(false);
+  const [saveCount, setSaveCount] = useState(item.saveCount || 0);
 
   useEffect(() => {
     if (!item?.seller) return;
@@ -29,6 +34,22 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
       setItemImage(image);
     });
   }, [item?.images]);
+
+  useEffect(() => {
+    setSaved(isSaved);
+  }, [isSaved]);
+
+  const handleSave = async () => {
+    if (saved) {
+      setSaveCount(saveCount! - 1);
+      setSaved(false);
+      await unsaveListing();
+    } else {
+      setSaveCount(saveCount! + 1);
+      setSaved(true);
+      await saveListing();
+    }
+  };
 
   return (
     <Card withBorder radius="md" className={classes.card} data-testid="marketplace-card">
@@ -87,6 +108,16 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
             data-testid="view-button"
           >
             View
+          </Button>
+          <Button
+            radius="md"
+            size="compact-sm"
+            variant={saved ? 'outline' : 'filled'}
+            leftSection={<FontAwesomeIcon icon={faBookmark} />}
+            onClick={handleSave}
+            data-testid="listing-save-button"
+          >
+            {saved ? 'Saved' : 'Save'}
           </Button>
         </Group>
       </Group>

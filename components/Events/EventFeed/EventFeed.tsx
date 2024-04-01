@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Group, Loader, SimpleGrid, Text } from '@mantine/core';
-import { useFetchEvents } from '@/src/hooks/eventsCustomHooks';
+import { useFetchEvents, useUserEventSaves } from '@/src/hooks/eventsCustomHooks';
 import { filterAndSortEvents } from '@/components/utils/eventUtils';
 import { Event } from '@/types/types';
 import { EventCard } from '@/components/Events/EventCard/EventCard';
@@ -16,9 +16,15 @@ export function EventFeed({
   sortQuery: string | null;
 }) {
   const { events, loading } = useFetchEvents(refresh);
+  const { userEventSaves } = useUserEventSaves();
   const [viewEventModalOpened, setViewEventModalOpened] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const filteredAndSortedEvents = filterAndSortEvents(events, searchQuery, sortQuery);
+  const filteredAndSortedEvents = filterAndSortEvents(
+    events,
+    searchQuery,
+    sortQuery,
+    userEventSaves
+  );
   const handleViewEvent = (event: any) => {
     setSelectedEvent(event);
     setViewEventModalOpened(true);
@@ -50,7 +56,12 @@ export function EventFeed({
           data-testid="event-feed"
         >
           {filteredAndSortedEvents.map((event: Event) => (
-            <EventCard key={event.id} event={event} onView={() => handleViewEvent(event)} />
+            <EventCard
+              key={event.id}
+              event={event}
+              onView={() => handleViewEvent(event)}
+              isSaved={userEventSaves.get(event.id)}
+            />
           ))}
         </SimpleGrid>
       )}

@@ -29,7 +29,7 @@ export default function MarketplacePage() {
             placeholder="Sort by..."
             defaultValue="Newly Listed"
             onChange={setSortQuery}
-            data={['Newly Listed', 'Price: Low to High', 'Price: High to Low']}
+            data={['Newly Listed', 'Price: Low to High', 'Price: High to Low', 'Saved']}
             data-testid="sort-marketplace"
           />
           <TextInput

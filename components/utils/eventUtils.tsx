@@ -2,6 +2,7 @@ import {
   filterEventsForThisMonth,
   filterEventsForToday,
   filterEventsForWeek,
+  filterSavedEvents,
   sortByNewToOld,
 } from '@/utils/sortUtils';
 import { Event } from '@/types/types';
@@ -9,7 +10,8 @@ import { Event } from '@/types/types';
 export const filterAndSortEvents = (
   events: Event[],
   searchQuery: string,
-  sortQuery: string | null
+  sortQuery: string | null,
+  userEventSaves: Map<string, boolean>
 ): Event[] => {
   const filteredEvents = events.filter(
     (event) =>
@@ -29,6 +31,8 @@ export const filterAndSortEvents = (
         return filterEventsForWeek(filteredEvents);
       case 'This Month':
         return filterEventsForThisMonth(filteredEvents);
+      case 'Saved':
+        return filterSavedEvents(filteredEvents, userEventSaves);
       default:
         return filteredEvents;
     }

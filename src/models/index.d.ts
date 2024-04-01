@@ -263,6 +263,7 @@ type EagerEvent = {
   readonly community: Community;
   readonly organizer: User;
   readonly likedBy: UserLikedEvents[];
+  readonly saveCount?: number | null;
   readonly visibility: Visibility | keyof typeof Visibility;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -284,6 +285,7 @@ type LazyEvent = {
   readonly community: AsyncItem<Community>;
   readonly organizer: AsyncItem<User>;
   readonly likedBy: AsyncCollection<UserLikedEvents>;
+  readonly saveCount?: number | null;
   readonly visibility: Visibility | keyof typeof Visibility;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -311,6 +313,7 @@ type EagerItemForSale = {
   readonly seller: User;
   readonly community: Community;
   readonly likedBy: UserLikedItems[];
+  readonly saveCount?: number | null;
   readonly visibility: Visibility | keyof typeof Visibility;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -332,6 +335,7 @@ type LazyItemForSale = {
   readonly seller: AsyncItem<User>;
   readonly community: AsyncItem<Community>;
   readonly likedBy: AsyncCollection<UserLikedItems>;
+  readonly saveCount?: number | null;
   readonly visibility: Visibility | keyof typeof Visibility;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

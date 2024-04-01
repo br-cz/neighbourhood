@@ -277,6 +277,7 @@ export const getCommunityEvents = /* GraphQL */ `query GetCommunityEvents($commu
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1233,6 +1234,7 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1258,6 +1260,7 @@ export const listEvents = /* GraphQL */ `query ListEvents(
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -1296,6 +1299,7 @@ export const syncEvents = /* GraphQL */ `query SyncEvents(
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -1367,6 +1371,7 @@ export const getItemForSale = /* GraphQL */ `query GetItemForSale($id: ID!) {
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1395,6 +1400,7 @@ export const listItemForSales = /* GraphQL */ `query ListItemForSales(
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -1433,6 +1439,7 @@ export const syncItemForSales = /* GraphQL */ `query SyncItemForSales(
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -1720,6 +1727,7 @@ export const getUserLikedEvents = /* GraphQL */ `query GetUserLikedEvents($id: I
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -1838,6 +1846,7 @@ export const getUserLikedItems = /* GraphQL */ `query GetUserLikedItems($id: ID!
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt
