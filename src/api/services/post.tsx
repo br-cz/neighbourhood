@@ -6,8 +6,9 @@ import {
   updatePost,
   createUserLikedPosts,
   deleteUserLikedPosts,
+  deletePost,
 } from '@/src/graphql/mutations';
-import { CommentDataInput, PostDataInput } from '@/types/types';
+import { CommentDataInput, PostDataInput, Post } from '@/types/types';
 import { HttpError } from '@/src/models/error/HttpError';
 import { UserLikedPosts } from '@/src/API';
 import { getCurrentUserID } from '@/src/hooks/usersCustomHooks';
@@ -58,6 +59,8 @@ export const getCommunityPostsAPI = async (communityId: string) => {
             createdAt
             userPostsId
             visibility
+            _version
+            _deleted
             likedBy {
               items {
                 userId
@@ -97,6 +100,24 @@ export const getCommunityPostsAPI = async (communityId: string) => {
       `Error retrieving community posts: ${error.message}`,
       error.statusCode || 500
     );
+  }
+};
+
+export const deletePostAPI = async (post: Post) => {
+  try {
+    const response = await client.graphql({
+      query: deletePost,
+      variables: {
+        input: {
+          id: post.id,
+          _version: post._version,
+        },
+      },
+    });
+    console.log('Post deleted successfully:', response.data.deletePost);
+    return response.data.deletePost;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting post: ${error.message}`, error.statusCode || 500);
   }
 };
 

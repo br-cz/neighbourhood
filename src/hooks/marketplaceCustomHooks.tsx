@@ -9,6 +9,8 @@ import {
   listUserSavedListingsAPI,
 } from '../api/services/marketplace';
 import { ItemForSale, Visibility } from '@/types/types';
+import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveItemImage } from '@/components/utils/s3Helpers/ItemForSaleImageS3Helper';
 
 export const useCreateListing = () => {
   const handleCreateListing = async (itemData: any) => {
@@ -48,7 +50,25 @@ export const useFetchListings = (refresh: boolean = false) => {
             (listing.visibility === Visibility.FRIENDS_ONLY &&
               user!.friends!.includes(listing.seller.id))
         );
-        setListings(visibleListings);
+
+        const listingsWithImages = await Promise.all(
+          visibleListings.map(async (listing: any) => {
+            const itemImage = await retrieveItemImage(listing.id).catch(() => null);
+            const profilePicture = await retrieveProfilePicture(listing.seller.id).catch(
+              () => null
+            );
+            return {
+              ...listing,
+              images: [itemImage],
+              seller: {
+                ...listing.seller,
+                profilePic: profilePicture,
+              },
+            };
+          })
+        );
+
+        setListings(listingsWithImages);
       } catch (err) {
         setError(err);
       } finally {

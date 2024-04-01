@@ -2,10 +2,10 @@ import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 import EventsPage from '@/components/Events/EventsPage';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('formik', () => ({
   ...jest.requireActual('formik'),

@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Image, Text, Button, Group, Center, Avatar } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBookmark } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
 import { ItemForSale } from '@/types/types';
-import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveItemImage } from '../utils/s3Helpers/ItemForSaleImageS3Helper';
 import { useListingSaves } from '@/src/hooks/marketplaceCustomHooks';
 
 interface MarketplaceCardProps {
@@ -15,25 +13,11 @@ interface MarketplaceCardProps {
 }
 
 export function MarketplaceCard({ item, onView, isSaved }: MarketplaceCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-  const [itemImage, setItemImage] = useState<string>('');
+  const itemImage = item.images?.[0] || './img/placeholder-img.jpg';
+  const profilePic = item.seller?.profilePic || './img/placeholder-profile.jpg';
   const { saveListing, unsaveListing } = useListingSaves(item.id);
   const [saved, setSaved] = useState(false);
   const [saveCount, setSaveCount] = useState(item.saveCount || 0);
-
-  useEffect(() => {
-    if (!item?.seller) return;
-    retrieveProfilePicture(item?.seller?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [item?.seller?.profilePic]);
-
-  useEffect(() => {
-    if (!item) return;
-    retrieveItemImage(item.id).then((image) => {
-      setItemImage(image);
-    });
-  }, [item?.images]);
 
   useEffect(() => {
     setSaved(isSaved);

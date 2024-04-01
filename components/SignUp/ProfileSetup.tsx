@@ -68,8 +68,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   contact,
   bio,
   pronouns,
-  profilePic,
-  birthday,
+  // These variables are used via setFieldValue, but not recognized by eslint
+  profilePic, // eslint-disable-line @typescript-eslint/no-unused-vars
+  birthday, // eslint-disable-line @typescript-eslint/no-unused-vars
   kids,
   pets,
   setFieldValue,

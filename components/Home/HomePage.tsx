@@ -49,7 +49,12 @@ export default function HomePage() {
           </Button>
         </Group>
       </Group>
-      <PostFeed refresh={refresh} searchQuery={searchQuery} sortQuery={sortQuery} />
+      <PostFeed
+        refresh={refresh}
+        searchQuery={searchQuery}
+        sortQuery={sortQuery}
+        onUpdate={toggleRefresh}
+      />
       <CreatePostDrawer
         opened={drawerOpened}
         onClose={drawerHandlers.close}

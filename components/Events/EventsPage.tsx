@@ -36,7 +36,7 @@ export default function EventsPage() {
             placeholder="Sort by..."
             onChange={handleSortChange}
             defaultValue="Newly Posted"
-            data={['Newly Posted', 'Today', 'This Week', 'This Month', 'Saved']}
+            data={['Newly Posted', 'Upcoming', 'Today', 'This Week', 'This Month', 'Saved']}
           />
           <TextInput
             radius="md"

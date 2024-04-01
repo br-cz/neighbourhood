@@ -5,8 +5,6 @@ import { faBars, faBookmark } from '@fortawesome/free-solid-svg-icons';
 import classes from './EventCard.module.css';
 import { Event } from '@/types/types';
 import { formatDate, formatTime } from '@/utils/timeUtils';
-import { retrieveImage as retrieveProfilePic } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveEventImage } from '../../utils/s3Helpers/EventImageS3Helper';
 import { useEventSaves } from '@/src/hooks/eventsCustomHooks';
 
 interface EventCardProps {
@@ -16,25 +14,11 @@ interface EventCardProps {
 }
 
 export function EventCard({ event, onView, isSaved }: EventCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-  const [eventImage, setEventImage] = useState<string>('');
+  const eventImage = event.images?.[0] || './img/placeholder-img.jpg';
+  const profilePic = event.organizer?.profilePic || './img/placeholder-profile.jpg';
   const { saveEvent, unsaveEvent } = useEventSaves(event.id);
   const [saved, setSaved] = useState(false);
   const [saveCount, setSaveCount] = useState(event.saveCount || 0);
-
-  useEffect(() => {
-    if (!event?.organizer) return;
-    retrieveProfilePic(event?.organizer?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [event?.organizer?.profilePic]);
-
-  useEffect(() => {
-    if (!event) return;
-    retrieveEventImage(event.id).then((image) => {
-      setEventImage(image);
-    });
-  }, [event?.images]);
 
   useEffect(() => {
     setSaved(isSaved);
