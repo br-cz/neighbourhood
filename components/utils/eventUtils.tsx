@@ -42,7 +42,7 @@ export const filterAndSortEvents = (
       filteredEvents.sort(sortByEventDate);
       break;
     default:
-      filteredEvents.sort(sortByEventDate);
+      filteredEvents.sort(sortByNewToOld);
       break;
   }
 
