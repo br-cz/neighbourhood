@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Modal, Text, Group, Avatar, Image, Stack, Title } from '@mantine/core';
 import classes from './ViewEventModal.module.css';
 import { Event } from '@/src/API';
 import { formatDate, formatTime } from '@/utils/timeUtils';
-import { retrieveImage as retrieveProfilePicture } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveEventImage } from '../../utils/s3Helpers/EventImageS3Helper';
 
 interface ViewEventModalProps {
   opened: boolean;
@@ -13,22 +11,8 @@ interface ViewEventModalProps {
 }
 
 export function ViewEventModal({ opened, onClose, event }: ViewEventModalProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-  const [eventImage, setEventImage] = useState<string>('');
-
-  useEffect(() => {
-    if (!event?.organizer) return;
-    retrieveProfilePicture(event?.organizer?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [event?.organizer?.profilePic]);
-
-  useEffect(() => {
-    if (!event) return;
-    retrieveEventImage(event.id).then((image) => {
-      setEventImage(image);
-    });
-  }, [event?.images]);
+  const eventImage = event.images?.[0] || './img/placeholder-img.jpg';
+  const profilePic = event.organizer?.profilePic || './img/placeholder-profile.jpg';
 
   return (
     <Modal
