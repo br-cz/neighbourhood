@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Group, Avatar, Text, Box } from '@mantine/core';
+import { Group, Avatar, Text, Box, Skeleton } from '@mantine/core';
 import classes from './CommunityListItem.module.css';
 import { Community } from '@/src/API';
 import { retrieveImage } from '../utils/s3Helpers/CommunityImageS3Helper';
@@ -22,7 +22,11 @@ export function CommunityListItem({
   useEffect(() => {
     if (!community) return;
     retrieveImage(community?.id).then((image) => {
-      setCommunityImage(image);
+      if (!image) {
+        setCommunityImage(`https://api.dicebear.com/8.x/initials/svg?seed=${community.name.toUpperCase()}`);
+      } else {
+        setCommunityImage(image);
+      }
     });
   }, [community?.image]);
 
@@ -32,6 +36,7 @@ export function CommunityListItem({
   };
 
   return (
+    communityImage ? (
     <Box
       className={`${classes.community} ${selected ? classes.active : ''}`}
       onKeyDown={onSelect}
@@ -58,5 +63,5 @@ export function CommunityListItem({
         </div>
       </Group>
     </Box>
-  );
+  ) : <Skeleton height={100} width={400} />);
 }
