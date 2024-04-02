@@ -12,8 +12,8 @@ export function CommentCard({ comment }: CommentCardProps) {
   const { currentUser } = useCurrentUser();
   let profilePic = comment.author?.profilePic || './img/placeholder-profile.jpg';
 
-  if (currentUser?.id === comment.author.id) {
-    profilePic = currentUser.profilePic;
+  if (currentUser?.id === comment.author?.id) {
+    profilePic = currentUser?.profilePic;
   }
 
   return (
