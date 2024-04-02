@@ -7,9 +7,10 @@ import {
   deleteLikeAPI,
   createLikeAPI,
   deletePostAPI,
+  deleteCommentAPI,
 } from '../api/services/post';
 import { getCurrentUser, getCurrentUserID } from './usersCustomHooks';
-import { Post, CommentDataInput, PostDataInput, Visibility } from '@/types/types';
+import { Post, CommentDataInput, PostDataInput, Visibility, CommentItem } from '@/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
 import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
@@ -81,36 +82,38 @@ export const useFetchPosts = (refresh: boolean = false) => {
               (post.visibility === Visibility.FRIENDS_ONLY &&
                 user!.friends?.includes(post.author.id)))
         );
-         const postsWithImages = await Promise.all(
-           visiblePosts.map(async (post: any) => {
-             const profilePicture = await retrieveProfilePicture(post.author.id).catch(() => null);
-             const updatedPost = {
-               ...post,
-               author: {
-                 ...post.author,
-                 profilePic: profilePicture,
-               },
-             };
-             if (updatedPost.comments && updatedPost.comments.items.length > 0) {
-               const commentsWithImages = await Promise.all(
-                 updatedPost.comments.items.map(async (comment: any) => {
-                   const commentProfilePicture = await retrieveProfilePicture(
-                     comment.author.id
-                   ).catch(() => null);
-                   return {
-                     ...comment,
-                     author: {
-                       ...comment.author,
-                       profilePic: commentProfilePicture,
-                     },
-                   };
-                 })
-               );
-               updatedPost.comments.items = commentsWithImages;
-             }
-             return updatedPost;
-           })
-         );
+        const postsWithImages = await Promise.all(
+          visiblePosts.map(async (post: any) => {
+            const profilePicture = await retrieveProfilePicture(post.author.id).catch(() => null);
+            const updatedPost = {
+              ...post,
+              author: {
+                ...post.author,
+                profilePic: profilePicture,
+              },
+            };
+            if (updatedPost.comments && updatedPost.comments.items.length > 0) {
+              const commentsWithImages = await Promise.all(
+                updatedPost.comments.items
+                  .filter((comment: any) => !comment._deleted)
+                  .map(async (comment: any) => {
+                    const commentProfilePicture = await retrieveProfilePicture(
+                      comment.author.id
+                    ).catch(() => null);
+                    return {
+                      ...comment,
+                      author: {
+                        ...comment.author,
+                        profilePic: commentProfilePicture,
+                      },
+                    };
+                  })
+              );
+              updatedPost.comments.items = commentsWithImages;
+            }
+            return updatedPost;
+          })
+        );
         setPosts(postsWithImages);
       } catch (err: any) {
         console.error('Error fetching posts:', err);
@@ -147,6 +150,25 @@ export const useCreateComment = () => {
   };
 
   return { handleCreateComment, error };
+};
+
+export const useDeleteComment = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+
+  const handleDeleteComment = async (comment: CommentItem) => {
+    setLoading(true);
+    try {
+      await deleteCommentAPI(comment);
+      setLoading(false);
+    } catch (err: any) {
+      console.error('Error deleting comment:', err);
+      setError(err.message || 'An error occurred');
+      setLoading(false);
+    }
+  };
+
+  return { handleDeleteComment, loading, error };
 };
 
 export const usePostLikes = (postId: string) => {
