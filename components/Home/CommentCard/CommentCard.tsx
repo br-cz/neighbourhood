@@ -5,6 +5,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { formatPostedAt } from '@/utils/timeUtils';
 import { useDeleteComment } from '@/src/hooks/postsCustomHooks';
 import { CommentItem } from '@/types/types';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 import classes from './CommentCard.module.css';
 
 interface CommentCardProps {
@@ -14,8 +15,13 @@ interface CommentCardProps {
 }
 
 export function CommentCard({ comment, isAuthor, onDeleteComment }: CommentCardProps) {
-  const profilePic = comment.author?.profilePic || './img/placeholder-profile.jpg';
+  const { currentUser } = useCurrentUser();
   const { handleDeleteComment } = useDeleteComment();
+  let profilePic = comment.author?.profilePic || './img/placeholder-profile.jpg';
+
+  if (isAuthor) {
+    profilePic = currentUser?.profilePic;
+  }
 
   const handleDelete = () => {
     handleDeleteComment(comment);
