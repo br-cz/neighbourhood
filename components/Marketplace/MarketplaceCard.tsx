@@ -5,7 +5,6 @@ import {
   Text,
   Button,
   Group,
-  Center,
   Avatar,
   Title,
   ActionIcon,
@@ -90,7 +89,7 @@ export function MarketplaceCard({
         />
       </a>
 
-      <Group gap={6} align="center">
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
         <Text
           className={classes.title}
           fw={700}
