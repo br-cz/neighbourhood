@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
 import { Navbar } from '@/components/NeighbourhoodShell/Navbar/Navbar';
-import { utilSignOut } from '@/utils/signOutUtils';
+import { handleSignOut } from '@/utils/authUtils';
 
 interface NeighbourhoodShellProps {
   children: React.ReactNode;
@@ -22,10 +22,6 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const router = useRouter();
 
-  const handleSignOut = async () => {
-    await utilSignOut({ router });
-  };
-
   const openSignOutModal = () => {
     modals.openConfirmModal({
       title: (
@@ -37,7 +33,7 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({
       confirmProps: { size: 'xs', radius: 'md' },
       cancelProps: { size: 'xs', radius: 'md' },
       labels: { confirm: 'Confirm', cancel: 'Back' },
-      onConfirm: () => handleSignOut(),
+      onConfirm: () => handleSignOut({ router }),
     });
   };
 

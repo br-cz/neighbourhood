@@ -78,6 +78,7 @@ export default function CommunityCard({
                     onSelect();
                   }}
                   leftSection={isSelected ? <FontAwesomeIcon icon={faCheck} /> : null}
+                  data-testid="select-community-btn"
                 >
                   {isSelected ? 'Selected' : 'Select'}
                 </Button>
@@ -94,6 +95,7 @@ export default function CommunityCard({
                     color="red"
                     disabled={disableLeaveButton || !currentUser}
                     onClick={onLeave}
+                    data-testid="leave-community-btn"
                   >
                     Leave
                   </Button>
