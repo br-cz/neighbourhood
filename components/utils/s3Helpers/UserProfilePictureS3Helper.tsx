@@ -17,7 +17,6 @@ export async function retrieveImage(userId: string) {
     if (user.profilePic) {
       if (user.profilePic.includes(userId)) {
         let imageKey = user.profilePic;
-        //console.log('retrievuser user profle');
         if (
           imageKey.includes(
             'https://neighbourhooda920d24246fa4325ad39f863f5b37e50195636-dev.s3.ca-central-1.amazonaws.com'
