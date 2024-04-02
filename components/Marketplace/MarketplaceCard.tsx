@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Image, Text, Button, Group, Center, Avatar } from '@mantine/core';
+import { Card, Image, Text, Button, Group, Avatar } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
@@ -63,13 +63,11 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
         {item?.price > 0 ? `$${item?.price}` : 'FREE'}
       </Text>
 
-      <Group>
-        <Center>
-          <Avatar src={profilePic} size={23} radius="xl" mr={7} />
-          <Text fz="sm" c="dimmed" truncate="end" data-testid="seller" style={{ maxWidth: '100px' }}>
-            {`${item?.seller?.firstName} ${item?.seller?.lastName}`}
-          </Text>
-        </Center>
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Avatar src={profilePic} size={23} radius="xl" mr={7} />
+        <Text fz="sm" c="dimmed" truncate="end" data-testid="seller">
+          {`${item?.seller?.firstName} ${item?.seller?.lastName}`}
+        </Text>
       </Group>
 
       <Text className={classes.details} c="dark.6" fz="sm" truncate="end" data-testid="description">

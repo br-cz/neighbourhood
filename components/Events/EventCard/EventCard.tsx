@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Image, Text, Button, Group, Center, Avatar, Stack } from '@mantine/core';
+import { Card, Image, Text, Button, Group, Avatar, Stack } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import classes from './EventCard.module.css';
@@ -45,13 +45,11 @@ export function EventCard({ event, onView }: EventCardProps) {
         {event?.name}
       </Text>
 
-      <Group>
-        <Center>
-          <Avatar src={profilePic} size={23} radius="xl" mr="xs" />
-          <Text fz="sm" c="dimmed" truncate="end" style={{ maxWidth: '140px' }}>
-            {event?.organizer?.firstName} {event?.organizer?.lastName}
-          </Text>
-        </Center>
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Avatar src={profilePic} size={23} radius="xl" mr="xs" />
+        <Text fz="sm" c="dimmed" truncate="end">
+          {event?.organizer?.firstName} {event?.organizer?.lastName}
+        </Text>
       </Group>
 
       <Stack gap="0" className={classes.details}>
