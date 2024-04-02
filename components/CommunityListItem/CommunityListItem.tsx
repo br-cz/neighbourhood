@@ -23,7 +23,9 @@ export function CommunityListItem({
     if (!community) return;
     retrieveImage(community?.id).then((image) => {
       if (!image) {
-        setCommunityImage(`https://api.dicebear.com/8.x/initials/svg?seed=${community.name.toUpperCase()}`);
+        setCommunityImage(
+          `https://api.dicebear.com/8.x/initials/svg?seed=${community.name.toUpperCase()}&scale=60&fontFamily=Helvetica,sans-serif&fontWeight=500`
+        );
       } else {
         setCommunityImage(image);
       }
@@ -35,8 +37,7 @@ export function CommunityListItem({
     color: !isAnyCommunitySelected || selected ? 'inherit' : '#b0b0b0',
   };
 
-  return (
-    communityImage ? (
+  return communityImage ? (
     <Box
       className={`${classes.community} ${selected ? classes.active : ''}`}
       onKeyDown={onSelect}
@@ -63,5 +64,7 @@ export function CommunityListItem({
         </div>
       </Group>
     </Box>
-  ) : <Skeleton height={100} width={400} />);
+  ) : (
+    <Skeleton height={100} width={400} />
+  );
 }

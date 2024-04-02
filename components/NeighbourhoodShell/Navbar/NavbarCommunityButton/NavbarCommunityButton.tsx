@@ -19,7 +19,7 @@ export function NavbarCommunityButton({ active, setActiveTab }: NavbarCommunityB
     retrieveImage(community?.id).then((image) => {
       if (!image) {
         setCommunityImage(
-          `https://api.dicebear.com/8.x/initials/svg?seed=${community.name.toUpperCase()}`
+          `https://api.dicebear.com/8.x/initials/svg?seed=${community.name.toUpperCase()}&scale=60&fontFamily=Helvetica,sans-serif&fontWeight=500`
         );
       } else {
         setCommunityImage(image);
