@@ -1,12 +1,11 @@
 import React from 'react';
 import { MantineProvider } from '@mantine/core';
-import { render, waitFor, screen, act } from '@testing-library/react';
+import { render, waitFor, screen, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import HomePage from '@/components/Home/HomePage';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
-import userEvent from '@testing-library/user-event';
-import { cleanup } from '@testing-library/react';
 
 const mockData = {
   posts: [
@@ -82,6 +81,9 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
   })),
   useCreatePost: jest.fn(() => ({
     createPost: jest.fn(),
+  })),
+  useDeletePost: jest.fn(() => ({
+    handleDeletePost: jest.fn(),
   })),
   useCreateComment: jest.fn(() => ({
     createComment: jest.fn(),
@@ -178,25 +180,7 @@ describe('Home page - Create Post', () => {
     );
   });
 
-  // //1.6
-  // test('Drawer closes on valid form submission', async () => {
-  //   renderComponent();
-
-  //   await userEvent.click(screen.getByText(/New Post.../i));
-
-  //   userEvent.type(screen.getByTestId('post-content'), 'This is a test post');
-
-  //   await userEvent.click(screen.getByTestId(/post-button/i));
-
-  //   await waitFor(
-  //     () => {
-  //       expect(screen.queryByTestId('post-content')).not.toBeInTheDocument();
-  //     },
-  //     { timeout: 2000 }
-  //   );
-  // });
-
-  //1.7
+  //1.6
   test('Drawer does not close if post-content is too short', async () => {
     renderComponent();
     await userEvent.click(screen.getByText(/New Post.../i));

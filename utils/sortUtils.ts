@@ -1,5 +1,4 @@
-import { Event } from '@/types/types';
-import { dateIsThisMonth, dateIsThisWeek, dateIsToday } from './timeUtils';
+import { Event, ItemForSale, Post } from '@/types/types';
 
 export function sortByFirstName(a: any, b: any): number {
   const nameA = a?.firstName?.toLowerCase();
@@ -35,30 +34,25 @@ export function sortByOldToNew(a: any, b: any): number {
   return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
 }
 
-export function sortByLikeCount(a: any, b: any): number {
-  return b.likeCount - a.likeCount;
+export function sortByLikeCount(a: Post, b: Post): number {
+  return b.likeCount! - a.likeCount!;
 }
 
-export function sortByPriceLowHigh(a: any, b: any): number {
+export function sortByPriceLowHigh(a: ItemForSale, b: ItemForSale): number {
   return a.price - b.price;
 }
 
-export function sortByPriceHighLow(a: any, b: any): number {
+export function sortByPriceHighLow(a: ItemForSale, b: ItemForSale): number {
   return b.price - a.price;
+}
+
+export function filterSavedListings(
+  listings: ItemForSale[],
+  saved: Map<string, boolean>
+): ItemForSale[] {
+  return listings.filter((listing) => saved.has(listing.id));
 }
 
 export function sortByEventDate(a: Event, b: Event): number {
   return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
-}
-
-export function filterEventsForToday(events: Event[]): Event[] {
-  return events.filter((event) => dateIsToday(event.datetime));
-}
-
-export function filterEventsForWeek(events: Event[]): Event[] {
-  return events.filter((event) => dateIsThisWeek(event.datetime));
-}
-
-export function filterEventsForThisMonth(events: Event[]): Event[] {
-  return events.filter((event) => dateIsThisMonth(event.datetime));
 }

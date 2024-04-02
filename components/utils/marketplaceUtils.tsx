@@ -4,9 +4,10 @@ import { ItemForSale } from '@/types/types';
 export const filterAndSortListings = (
   listings: ItemForSale[],
   searchQuery: string,
-  sortQuery: string | null
+  sortQuery: string | null,
+  userListingSaves: Map<string, boolean>
 ): ItemForSale[] => {
-  const filteredListings = listings.filter(
+  let filteredListings = listings.filter(
     (item: ItemForSale) =>
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -15,21 +16,24 @@ export const filterAndSortListings = (
         .includes(searchQuery.toLowerCase())
   );
 
-  let sortedListings: ItemForSale[] = [];
   switch (sortQuery) {
+    case 'Newly Listed':
+      filteredListings = filteredListings.sort(sortByNewToOld);
+      break;
     case 'Price: Low to High':
-      sortedListings = filteredListings.sort(sortByPriceLowHigh);
+      filteredListings = filteredListings.sort(sortByPriceLowHigh);
       break;
     case 'Price: High to Low':
-      sortedListings = filteredListings.sort(sortByPriceHighLow);
+      filteredListings = filteredListings.sort(sortByPriceHighLow);
       break;
-    case 'Newly Listed':
-      sortedListings = filteredListings.sort(sortByNewToOld);
+    case 'Saved':
+      filteredListings = filteredListings.filter((listing) => userListingSaves.has(listing.id));
+      filteredListings.sort(sortByNewToOld);
       break;
     default:
-      sortedListings = filteredListings;
+      filteredListings = filteredListings.sort(sortByNewToOld);
       break;
   }
 
-  return sortedListings;
+  return filteredListings;
 };

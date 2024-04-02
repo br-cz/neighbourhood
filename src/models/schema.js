@@ -838,6 +838,13 @@ export const schema = {
                         ]
                     }
                 },
+                "saveCount": {
+                    "name": "saveCount",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "visibility": {
                     "name": "visibility",
                     "isArray": false,
@@ -978,6 +985,13 @@ export const schema = {
                             "itemForSale"
                         ]
                     }
+                },
+                "saveCount": {
+                    "name": "saveCount",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "visibility": {
                     "name": "visibility",
@@ -1434,5 +1448,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "7ec9dde77008352dc2b78d86ee21e490"
+    "version": "fedde9e71aaa5a66ed68306a35e6c433"
 };

@@ -431,6 +431,7 @@ export const sellItem = /* GraphQL */ `mutation SellItem(
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -582,6 +583,7 @@ export const likeEvent = /* GraphQL */ `mutation LikeEvent($userId: ID!, $eventI
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -649,6 +651,7 @@ export const unlikeEvent = /* GraphQL */ `mutation UnlikeEvent($userId: ID!, $ev
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -716,6 +719,7 @@ export const likeItemForSale = /* GraphQL */ `mutation LikeItemForSale($userId: 
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -783,6 +787,7 @@ export const unlikeItemForSale = /* GraphQL */ `mutation UnlikeItemForSale($user
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -2207,6 +2212,7 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -2277,6 +2283,7 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -2347,6 +2354,7 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -2417,6 +2425,7 @@ export const createItemForSale = /* GraphQL */ `mutation CreateItemForSale(
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -2487,6 +2496,7 @@ export const updateItemForSale = /* GraphQL */ `mutation UpdateItemForSale(
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -2557,6 +2567,7 @@ export const deleteItemForSale = /* GraphQL */ `mutation DeleteItemForSale(
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -2973,6 +2984,7 @@ export const createUserLikedEvents = /* GraphQL */ `mutation CreateUserLikedEven
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -3036,6 +3048,7 @@ export const updateUserLikedEvents = /* GraphQL */ `mutation UpdateUserLikedEven
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -3099,6 +3112,7 @@ export const deleteUserLikedEvents = /* GraphQL */ `mutation DeleteUserLikedEven
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -3162,6 +3176,7 @@ export const createUserLikedItems = /* GraphQL */ `mutation CreateUserLikedItems
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -3225,6 +3240,7 @@ export const updateUserLikedItems = /* GraphQL */ `mutation UpdateUserLikedItems
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -3288,6 +3304,7 @@ export const deleteUserLikedItems = /* GraphQL */ `mutation DeleteUserLikedItems
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt

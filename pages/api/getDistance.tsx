@@ -12,7 +12,10 @@ interface ErrorResponse {
   error: string;
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse<DistanceResponse | ErrorResponse>) => {
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse<DistanceResponse | ErrorResponse>
+) => {
   const { origin, destination } = req.query;
 
   // Ensure origin and destination are strings, TypeScript doesn't know the type of query parameters
@@ -24,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<DistanceResponse
 
   try {
     const response = await axios.get(url);
-    const data = response.data;
+    const { data } = response;
 
     if (data.status !== 'OK') {
       return res.status(404).json({ error: 'No results found.' });
