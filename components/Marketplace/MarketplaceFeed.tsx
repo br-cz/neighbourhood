@@ -3,7 +3,7 @@ import { Group, Loader, SimpleGrid, Text } from '@mantine/core';
 import { ItemForSale } from '@/types/types';
 import { MarketplaceCard } from '@/components/Marketplace/MarketplaceCard';
 import { ViewListingModal } from '@/components/Marketplace/ViewListingModal';
-import { useFetchListings } from '@/src/hooks/marketplaceCustomHooks';
+import { useFetchListings, useUserListingSaves } from '@/src/hooks/marketplaceCustomHooks';
 import { filterAndSortListings } from '@/components/utils/marketplaceUtils';
 
 export function MarketplaceFeed({
@@ -16,9 +16,10 @@ export function MarketplaceFeed({
   sortQuery: string | null;
 }) {
   const { listings, loading } = useFetchListings(refresh);
+  const { saves } = useUserListingSaves(refresh);
   const [viewListingModalOpened, setViewListingModalOpened] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
-  const filteredAndSortedListings = filterAndSortListings(listings, searchQuery, sortQuery);
+  const filteredAndSortedListings = filterAndSortListings(listings, searchQuery, sortQuery, saves);
 
   const handleViewListing = (item: any) => {
     setSelectedListing(item);
@@ -51,7 +52,12 @@ export function MarketplaceFeed({
           data-testid="marketplace-feed"
         >
           {filteredAndSortedListings.map((item: ItemForSale) => (
-            <MarketplaceCard key={item.id} item={item} onView={() => handleViewListing(item)} />
+            <MarketplaceCard
+              key={item.id}
+              item={item}
+              onView={() => handleViewListing(item)}
+              isSaved={saves ? saves.get(item.id) : false}
+            />
           ))}
         </SimpleGrid>
       )}

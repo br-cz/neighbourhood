@@ -19,6 +19,13 @@ export default function MarketplacePage() {
     setSearchQuery(event.target.value);
   };
 
+  const handleSortChange = (value: string | null) => {
+    setSortQuery(value);
+    if (value === 'Saved') {
+      toggleRefresh();
+    }
+  };
+
   return (
     <>
       <Group justify="space-between" m="20">
@@ -28,8 +35,8 @@ export default function MarketplacePage() {
             radius="md"
             placeholder="Sort by..."
             defaultValue="Newly Listed"
-            onChange={setSortQuery}
-            data={['Newly Listed', 'Price: Low to High', 'Price: High to Low']}
+            onChange={handleSortChange}
+            data={['Newly Listed', 'Price: Low to High', 'Price: High to Low', 'Saved']}
             data-testid="sort-marketplace"
           />
           <TextInput

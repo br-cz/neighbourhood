@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, SimpleGrid, Stack, Text, Loader, Center, Flex, Paper, Group } from '@mantine/core';
+import { Box, SimpleGrid, Stack, Text, Loader, Center, Paper, Group } from '@mantine/core';
 import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 import {
   CommunityWithDistance,
@@ -41,8 +41,11 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
       try {
         const response = await getClosestCommunities(`${coordinates.lat}, ${coordinates.lng}`);
 
-        const filteredCommunities = response
-          .filter((element: CommunityWithDistance) => element.distanceKm <= 10 || (SCHOOL_COMMUNITY_IDS.includes(element.community.id) && element.distanceKm <= 100));
+        const filteredCommunities = response.filter(
+          (element: CommunityWithDistance) =>
+            element.distanceKm <= 10 ||
+            (SCHOOL_COMMUNITY_IDS.includes(element.community.id) && element.distanceKm <= 100)
+        );
         if (filteredCommunities.length === 0) {
           setNoCommunities(true);
           return;
