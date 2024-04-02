@@ -114,7 +114,7 @@ export const deleteEventAPI = async (event: Event) => {
     console.log('Event deleted successfully:', response.data.deleteEvent);
     return response.data.deleteEvent;
   } catch (error: any) {
-    throw new HttpError(`Error deleting event API: ${error.message}`, error.statusCode || 500);
+    throw new HttpError(`Error deleting event: ${error.message}`, error.statusCode || 500);
   }
 };
 
