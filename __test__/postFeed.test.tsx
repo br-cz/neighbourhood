@@ -35,6 +35,7 @@ const mockData = {
         ],
       },
       isLiked: false,
+      isAuthor: false,
     },
     {
       id: '2',
@@ -45,6 +46,7 @@ const mockData = {
       },
       comments: { items: [] },
       isLiked: false,
+      isAuthor: false,
     },
     {
       id: '3',
@@ -55,6 +57,7 @@ const mockData = {
       },
       comments: { items: [] },
       isLiked: false,
+      isAuthor: false,
     },
   ],
 };

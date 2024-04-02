@@ -59,7 +59,7 @@ export function EventFeed({
               key={event.id}
               event={event}
               isSaved={saves ? saves.get(event.id) : false}
-              isOrganizer={currentUser?.id === event.organizer.id}
+              isOrganizer={event.organizer?.id === currentUser?.id}
               onView={() => handleViewEvent(event)}
               onUpdate={onUpdate}
             />

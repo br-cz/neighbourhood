@@ -25,8 +25,8 @@ import classes from './PostCard.module.css';
 
 interface PostCardProps {
   post: Post;
-  isLiked: boolean;
-  isAuthor: boolean;
+  isLiked?: boolean;
+  isAuthor?: boolean;
   onUpdate?: () => void;
 }
 
@@ -41,7 +41,7 @@ export function PostCard({ post, isLiked, isAuthor, onUpdate }: PostCardProps) {
   const { handleCreateComment } = useCreateComment();
 
   useEffect(() => {
-    setLiked(isLiked);
+    setLiked(isLiked!);
   }, [isLiked]);
 
   const formik = useFormik({

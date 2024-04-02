@@ -21,7 +21,7 @@ import classes from './EventCard.module.css';
 
 interface EventCardProps {
   event: Event;
-  isSaved: boolean;
+  isSaved?: boolean;
   isOrganizer?: boolean;
   onView: () => void;
   onUpdate?: () => void;
@@ -36,7 +36,7 @@ export function EventCard({ event, isSaved, isOrganizer, onView, onUpdate }: Eve
   const [saveCount, setSaveCount] = useState(event.saveCount || 0);
 
   useEffect(() => {
-    setSaved(isSaved);
+    setSaved(isSaved!);
   }, [isSaved]);
 
   const handleDelete = () => {

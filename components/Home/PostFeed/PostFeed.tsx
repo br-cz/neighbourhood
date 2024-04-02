@@ -51,7 +51,7 @@ export function PostFeed({
               key={post.id}
               post={post}
               isLiked={userLikes.get(post.id)}
-              isAuthor={post.author.id === currentUser.id}
+              isAuthor={post.author?.id === currentUser?.id}
               onUpdate={onUpdate}
             />
           ))}
