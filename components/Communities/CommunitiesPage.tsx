@@ -30,6 +30,9 @@ export default function CommunitiesPage() {
   const userCommunities = Object.values(communities).filter((community: Community) =>
     community.members?.items?.some((member) => member?.user?.id === user && !member?._deleted)
   );
+
+  console.log(JSON.stringify(userCommunities, null, 2));
+
   userCommunities.sort((a: Community, b: Community) => a.name.localeCompare(b.name));
 
   useEffect(() => {
@@ -123,6 +126,7 @@ export default function CommunitiesPage() {
                 leftSection={<FontAwesomeIcon icon={faPlusCircle} />}
                 onClick={open}
                 disabled={userCommunities.length === 3}
+                data-testid="add-community-btn"
               >
                 Add New
               </Button>

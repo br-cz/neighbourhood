@@ -1,27 +1,72 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Image, Text, Button, Group, Avatar } from '@mantine/core';
+import React, { useState, useEffect } from 'react';
+import {
+  Card,
+  Image,
+  Text,
+  Button,
+  Group,
+  Center,
+  Avatar,
+  Title,
+  ActionIcon,
+  Tooltip,
+} from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBookmark, faTrash } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
 import { ItemForSale } from '@/types/types';
-import { useListingSaves } from '@/src/hooks/marketplaceCustomHooks';
+import { useDeleteListing, useListingSaves } from '@/src/hooks/marketplaceCustomHooks';
 
 interface MarketplaceCardProps {
   item: ItemForSale;
+  isSaved?: boolean;
+  isSeller?: boolean;
   onView: () => void;
-  isSaved: boolean;
+  onUpdate?: () => void;
 }
 
-export function MarketplaceCard({ item, onView, isSaved }: MarketplaceCardProps) {
+export function MarketplaceCard({
+  item,
+  isSaved,
+  isSeller,
+  onView,
+  onUpdate,
+}: MarketplaceCardProps) {
   const itemImage = item.images?.[0] || './img/placeholder-img.jpg';
   const profilePic = item.seller?.profilePic || './img/placeholder-profile.jpg';
+  const { handleDeleteListing } = useDeleteListing();
   const { saveListing, unsaveListing } = useListingSaves(item.id);
   const [saved, setSaved] = useState(false);
   const [saveCount, setSaveCount] = useState(item.saveCount || 0);
 
   useEffect(() => {
-    setSaved(isSaved);
+    setSaved(isSaved!);
   }, [isSaved]);
+
+  const handleDelete = () => {
+    handleDeleteListing(item);
+    onUpdate?.();
+  };
+
+  const openDeleteModal = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Delete listing?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete your listing? This action cannot be undone.
+        </Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md', color: 'red.6' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Delete', cancel: 'Back' },
+      onConfirm: () => handleDelete(),
+    });
+  };
 
   const handleSave = async () => {
     if (saved) {
@@ -45,17 +90,34 @@ export function MarketplaceCard({ item, onView, isSaved }: MarketplaceCardProps)
         />
       </a>
 
-      <Text
-        className={classes.title}
-        fw={700}
-        c="dark.6"
-        fz="lg"
-        component="a"
-        truncate="end"
-        data-testid="listing-title"
-      >
-        {item?.title}
-      </Text>
+      <Group gap={6} align="center">
+        <Text
+          className={classes.title}
+          fw={700}
+          c="dark.6"
+          fz="lg"
+          component="a"
+          truncate="end"
+          data-testid="listing-title"
+        >
+          {item?.title}
+        </Text>
+        {isSeller && (
+          <Tooltip label="Delete listing">
+            <ActionIcon
+              color="red.7"
+              radius="xl"
+              variant="subtle"
+              size="sm"
+              className={classes.title}
+              onClick={openDeleteModal}
+              data-testid="delete-listing-btn"
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Tooltip>
+        )}
+      </Group>
 
       <Text
         className={classes.price}
@@ -94,12 +156,12 @@ export function MarketplaceCard({ item, onView, isSaved }: MarketplaceCardProps)
           <Button
             radius="md"
             size="compact-sm"
-            variant={saved ? 'outline' : 'filled'}
+            variant={saved || isSaved ? 'outline' : 'filled'}
             leftSection={<FontAwesomeIcon icon={faBookmark} />}
             onClick={handleSave}
             data-testid="listing-save-button"
           >
-            {saved ? 'Saved' : 'Save'}
+            {saved || isSaved ? 'Saved' : 'Save'}
           </Button>
         </Group>
       </Group>

@@ -46,13 +46,6 @@ export function sortByPriceHighLow(a: ItemForSale, b: ItemForSale): number {
   return b.price - a.price;
 }
 
-export function filterSavedListings(
-  listings: ItemForSale[],
-  saved: Map<string, boolean>
-): ItemForSale[] {
-  return listings.filter((listing) => saved.has(listing.id));
-}
-
 export function sortByEventDate(a: Event, b: Event): number {
   return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
 }

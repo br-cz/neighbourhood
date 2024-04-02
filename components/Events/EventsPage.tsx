@@ -51,7 +51,12 @@ export default function EventsPage() {
           </Button>
         </Group>
       </Group>
-      <EventFeed refresh={refresh} searchQuery={searchQuery} sortQuery={sortQuery} />
+      <EventFeed
+        refresh={refresh}
+        searchQuery={searchQuery}
+        sortQuery={sortQuery}
+        onUpdate={toggleRefresh}
+      />
       <CreateEventDrawer
         opened={drawerOpened}
         onClose={drawerHandlers.close}
