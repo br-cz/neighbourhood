@@ -46,7 +46,8 @@
     "formik": "^2.4.5",
     "next": "14.0.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "redis": "^4.6.13"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^0.10.3",

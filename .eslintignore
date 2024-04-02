@@ -1,6 +1,7 @@
 *.cjs
 *.mjs
 *.js
+*.test.tsx
 src/models/models
 
 amplify-codegen-temp/models/models
