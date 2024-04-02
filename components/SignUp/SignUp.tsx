@@ -149,6 +149,9 @@ export const SignUp = () => {
       const username = formik.values.email;
       const { password } = formik.values;
 
+      if (formik.values.profilePic && userId) {
+        await storeImage(formik.values.profilePic, userId);
+      }
       await handleSignIn({
         username,
         password,
@@ -158,9 +161,6 @@ export const SignUp = () => {
         handlers,
         setErrorMessage: (message) => console.error(message),
       });
-      if (formik.values.profilePic && userId) {
-        await storeImage(formik.values.profilePic, userId);
-      }
     } catch (error) {
       console.error('Verification Error:', error);
       notifications.show({

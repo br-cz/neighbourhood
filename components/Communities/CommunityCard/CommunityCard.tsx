@@ -1,8 +1,9 @@
-import React from 'react';
-import { Avatar, Text, Stack, Button, Grid, Group, Box, Tooltip } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
+import { Avatar, Text, Stack, Button, Grid, Group, Box, Tooltip, Skeleton } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Community, User } from '@/src/API';
+import { retrieveImage } from '@/components/utils/s3Helpers/CommunityImageS3Helper';
 import classes from './CommunityCard.module.css';
 
 interface CommunityCardProps {
@@ -29,18 +30,28 @@ export default function CommunityCard({
   const numberOfFriendsInCommunity = friendsInCommunity.length;
   const activeMembersCount =
     community?.members?.items?.filter((member) => !member?._deleted).length ?? 0;
+  const [communityImage, setCommunityImage] = useState<string>('');
 
-  return (
+  useEffect(() => {
+    if (!community) return;
+    retrieveImage(community?.id).then((image) => {
+      if (!image) {
+        setCommunityImage(
+          `https://api.dicebear.com/8.x/initials/svg?seed=${community.name.toUpperCase()}&scale=60&fontFamily=Helvetica,sans-serif&fontWeight=500`
+        );
+      } else {
+        setCommunityImage(image);
+      }
+    });
+  }, [community?.image]);
+
+  return communityImage ? (
     <Box w={800} className={classes.card} data-testid="community-card">
       <Grid>
         <Grid.Col span={8}>
           <Group gap={50} align="center">
             <Box w={100} h={100}>
-              <Avatar
-                src={community?.image ?? './img/placeholder-img.jpg'}
-                className={classes.avatar}
-                radius="xl"
-              />
+              <Avatar src={communityImage} className={classes.avatar} radius="xl" />
             </Box>
             <Stack gap={5}>
               <Text size="lg" fw={600} truncate="end">
@@ -95,5 +106,7 @@ export default function CommunityCard({
         </Grid.Col>
       </Grid>
     </Box>
+  ) : (
+    <Skeleton height={150} width={800} />
   );
 }

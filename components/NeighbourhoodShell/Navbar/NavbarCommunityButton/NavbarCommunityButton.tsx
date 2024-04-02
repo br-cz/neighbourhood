@@ -12,7 +12,20 @@ interface NavbarCommunityButtonProps {
 
 export function NavbarCommunityButton({ active, setActiveTab }: NavbarCommunityButtonProps) {
   const { community } = useCurrentCommunity();
-  const communityImage = community?.image || './img/placeholder-img.jpg';
+  const [communityImage, setCommunityImage] = useState<string>('');
+
+  useEffect(() => {
+    if (!community) return;
+    retrieveImage(community?.id).then((image) => {
+      if (!image) {
+        setCommunityImage(
+          `https://api.dicebear.com/8.x/initials/svg?seed=${community.name.toUpperCase()}&scale=60&fontFamily=Helvetica,sans-serif&fontWeight=500`
+        );
+      } else {
+        setCommunityImage(image);
+      }
+    });
+  }, [community?.image]);
 
   return (
     <UnstyledButton

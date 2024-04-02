@@ -43,7 +43,7 @@ export const SelectCommunity: React.FC<SelectCommunityProps> = ({
 
         const filteredCommunities = response.filter(
           (element: CommunityWithDistance) =>
-            element.distanceKm <= 10 ||
+            element.distanceKm <= 7 ||
             (SCHOOL_COMMUNITY_IDS.includes(element.community.id) && element.distanceKm <= 100)
         );
         if (filteredCommunities.length === 0) {

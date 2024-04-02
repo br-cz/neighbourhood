@@ -21,7 +21,7 @@ export function PostCommentList({ comments, onDeleteComment }: PostCommentListPr
       >
         {comments?.items?.length > 0 &&
           comments.items
-            .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
             .map((comment) => (
               <CommentCard
                 key={comment.id}
