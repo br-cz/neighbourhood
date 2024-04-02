@@ -19,7 +19,7 @@ export function CommentCard({ comment, isAuthor, onDeleteComment }: CommentCardP
   const { handleDeleteComment } = useDeleteComment();
   let profilePic = comment.author?.profilePic || './img/placeholder-profile.jpg';
 
-  if (currentUser?.id === comment.author?.id) {
+  if (isAuthor) {
     profilePic = currentUser?.profilePic;
   }
 
