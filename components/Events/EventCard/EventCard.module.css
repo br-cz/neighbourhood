@@ -3,7 +3,9 @@
   background-color: var(--mantine-color-body);
   border-radius: var(--mantine-radius-md);
   padding: var(--mantine-spacing-md);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .card:hover {
@@ -15,7 +17,7 @@
 }
 
 .details {
-    margin-top: var(--mantine-spacing-xs);
+  margin-top: var(--mantine-spacing-xs);
 }
 
 .title {

@@ -18,6 +18,7 @@ const mockData = {
       },
       comments: { items: [] },
       isLiked: false,
+      isAuthor: false,
     },
     {
       id: '2',
@@ -28,6 +29,7 @@ const mockData = {
       },
       comments: { items: [] },
       isLiked: false,
+      isAuthor: false,
     },
     {
       id: '3',
@@ -38,6 +40,7 @@ const mockData = {
       },
       comments: { items: [] },
       isLiked: false,
+      isAuthor: false,
     },
   ],
 };
@@ -87,6 +90,9 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
   })),
   useCreateComment: jest.fn(() => ({
     createComment: jest.fn(),
+  })),
+  useDeleteComment: jest.fn(() => ({
+    handleDeleteComment: jest.fn(),
   })),
   usePostLikes: jest.fn(() => ({
     likePost: jest.fn(),

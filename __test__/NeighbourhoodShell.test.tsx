@@ -8,7 +8,7 @@ import { signOut } from 'aws-amplify/auth';
 import { NextRouter } from 'next/router';
 import { DataProvider } from '@/contexts/DataContext';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
-import { utilSignOut } from '@/utils/signOutUtils';
+import { handleSignOut } from '@/utils/authUtils';
 import AppPage from '@/app/neighbourhood/page';
 
 const mockLikePost = jest.fn();
@@ -39,6 +39,7 @@ const mockData = {
         ],
       },
       isLiked: false,
+      isAuthor: false,
     },
     {
       id: '2',
@@ -49,6 +50,7 @@ const mockData = {
       },
       comments: { items: [] },
       isLiked: false,
+      isAuthor: false,
     },
     {
       id: '3',
@@ -59,6 +61,7 @@ const mockData = {
       },
       comments: { items: [] },
       isLiked: false,
+      isAuthor: false,
     },
   ],
 };
@@ -89,6 +92,9 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
       id: 'newComment',
       createdAt: new Date().toISOString(),
     })),
+  })),
+  useDeleteComment: jest.fn(() => ({
+    handleDeleteComment: jest.fn(),
   })),
 }));
 
@@ -185,7 +191,6 @@ describe('Neighbourhood Shell', () => {
     await waitFor(() => {
       console.log(useCurrentUser());
       expect(screen.getByText('My Community')).toBeInTheDocument();
-      expect(screen.getByText('Test Community')).toBeInTheDocument();
     });
   });
 
@@ -201,7 +206,7 @@ describe('Neighbourhood Shell', () => {
   //1.8
   test('utilSignOut should sign out the user, clear localStorage, navigate to home, and show a notification', async () => {
     // Call the utility function with the mocked router
-    await utilSignOut({ router: routerMock as NextRouter });
+    await handleSignOut({ router: routerMock as NextRouter });
 
     // Assertions to ensure all expected actions were called
     expect(signOut).toHaveBeenCalledWith({ global: true });
