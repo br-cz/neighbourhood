@@ -72,14 +72,14 @@ export function formatPostedAt(isoDate: string): string {
 
 export function combineDateTime(date: Date, time: string) {
   const dateTime = new Date(date);
+  let timeToParse = time;
 
-  //Time is '' if user doesnt put a specific time
   if (time === '') {
-    time = '00:00';
+    timeToParse = '00:00';
   }
 
   //Given the HH:MM format, we parse each into a proper number
-  const [hours, minutes] = time.split(':').map((num) => parseInt(num, 10));
+  const [hours, minutes] = timeToParse.split(':').map((num) => parseInt(num, 10));
 
   dateTime.setHours(hours);
   dateTime.setMinutes(minutes);

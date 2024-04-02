@@ -1,38 +1,46 @@
 import { useState, useEffect } from 'react';
-import { Text, Avatar, Group, Box, Button, Collapse, TextInput, ActionIcon } from '@mantine/core';
+import {
+  Text,
+  Avatar,
+  Group,
+  Box,
+  Button,
+  Collapse,
+  TextInput,
+  ActionIcon,
+  Title,
+} from '@mantine/core';
 import { useFormik } from 'formik';
+import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faComment, faHeart, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Post } from '@/types/types';
 import { formatPostedAt } from '@/utils/timeUtils';
 import classes from './PostCard.module.css';
 import { createCommentSchema } from './createCommentSchema';
-import { useCreateComment, usePostLikes } from '@/src/hooks/postsCustomHooks';
+import { useCreateComment, useDeletePost, usePostLikes } from '@/src/hooks/postsCustomHooks';
 import { PostCommentList } from './PostCommentList';
 import { retrieveImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 interface PostCardProps {
   post: Post;
   isLiked: boolean;
+  onUpdate?: () => void;
 }
 
-export function PostCard({ post, isLiked }: PostCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
+export function PostCard({ post, isLiked, onUpdate }: PostCardProps) {
+  const { currentUser } = useCurrentUser();
+  const profilePic = post.author?.profilePic || './img/placeholder-profile.jpg';
+  const { handleDeletePost } = useDeletePost();
   const { likePost, unlikePost } = usePostLikes(post.id);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount || 0);
   const [comments, setComments] = useState(post?.comments?.items);
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
   const { handleCreateComment } = useCreateComment();
-
-  useEffect(() => {
-    if (!post?.author) return;
-    retrieveImage(post?.author?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [post?.author?.profilePic]);
 
   useEffect(() => {
     setLiked(isLiked);
@@ -53,6 +61,30 @@ export function PostCard({ post, isLiked }: PostCardProps) {
       formik.resetForm();
     },
   });
+
+  const handleDelete = () => {
+    handleDeletePost(post);
+    onUpdate?.();
+  };
+
+  const openDeleteModal = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Delete post?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete your post? This action cannot be undone.
+        </Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md', color: 'red.6' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Delete', cancel: 'Back' },
+      onConfirm: () => handleDelete(),
+    });
+  };
 
   const handleLike = async () => {
     if (liked) {
@@ -76,6 +108,18 @@ export function PostCard({ post, isLiked }: PostCardProps) {
         <Text size="xs" c="dimmed">
           {formatPostedAt(post.createdAt)}
         </Text>
+        {currentUser?.id === post.author.id && (
+          <ActionIcon
+            color="red.6"
+            radius="xl"
+            variant="subtle"
+            size="sm"
+            onClick={openDeleteModal}
+            data-testid="remove-image"
+          >
+            <FontAwesomeIcon icon={faTrash} size="xs" />
+          </ActionIcon>
+        )}
       </Group>
       <Text mt="xs" size="sm">
         {post.content}

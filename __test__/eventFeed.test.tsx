@@ -52,6 +52,15 @@ jest.mock('@/src/hooks/eventsCustomHooks', () => ({
   useCreateEvent: jest.fn(() => ({
     createEvent: jest.fn(),
   })),
+  useEventSaves: jest.fn(() => ({
+    saveEvent: jest.fn(),
+    unsaveEvent: jest.fn(),
+  })),
+  useUserEventSaves: jest.fn(() => ({
+    userEventSaves: {
+      get: () => false,
+    },
+  })),
 }));
 
 afterEach(() => {
@@ -74,75 +83,75 @@ describe('Events Page', () => {
     _version: 1,
   });
 
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    //1.1
-    test('Renders the initial Events page correctly', async () => {
-      renderComponent();
-      expect(screen.getByRole('heading', { name: 'Events' })).toBeInTheDocument();
-    });
+  //1.1
+  test('Renders the initial Events page correctly', async () => {
+    renderComponent();
+    expect(screen.getByRole('heading', { name: 'Events' })).toBeInTheDocument();
+  });
 
-    //1.2
-    test('Renders the Event feed component correctly', async () => {
-      renderComponent();
-      await waitFor(() => {
-        expect(screen.getByTestId('event-feed')).toBeInTheDocument();
-      });
-    });
-
-    //1.3
-    test('Renders an array of Event Cards correctly', async () => {
-      renderComponent();
-      await waitFor(() => {
-        expect(screen.getAllByTestId('event-card').length).toBeGreaterThan(0);
-      });
-    });
-
-    //1.4
-    test('Renders an appropriate # of event cards to events in the community', async () => {
-      renderComponent();
-      await waitFor(() => {
-        expect(screen.getAllByTestId('event-card').length).toBe(mockData.events.length);
-      });
-    });
-
-    test('Renders event card content correctly', async () => {
-      renderComponent();
-      await waitFor(() => {
-        expect(screen.getByText('Pizza Party')).toBeInTheDocument();
-        expect(screen.getByText('1234 Pizza St')).toBeInTheDocument();
-        expect(screen.getByText('Bojangle Williams')).toBeInTheDocument();
-        expect(screen.getByText('December 12, 2022')).toBeInTheDocument();
-        expect(screen.getByText('7:00 PM')).toBeInTheDocument();
-        expect(screen.getAllByText('View').length).toBeGreaterThan(0);
-      });
-    });
-
-    test('Event cards can be viewed to see additional details', async () => {
-      renderComponent();
-      expect(screen.queryByTestId('view-event-modal')).not.toBeInTheDocument();
-      fireEvent.click(screen.getAllByText('View')[0]);
-      await waitFor(() => {
-        expect(screen.getByTestId('view-event-modal')).toBeInTheDocument();
-      });
-    });
-
-    test('Event cards close properly after having their modal opened', async () => {
-      renderComponent();
-      expect(screen.queryByTestId('view-event-modal')).not.toBeInTheDocument();
-      fireEvent.click(screen.getAllByText('View')[0]);
-      await waitFor(() => {
-        expect(screen.getByTestId('view-event-modal')).toBeInTheDocument();
-        expect(screen.getByText('Description')).toBeInTheDocument();
-      });
-      const closeButton = screen.getByLabelText('Close Modal');
-      expect(closeButton).toBeInTheDocument();
-      fireEvent.click(closeButton);
-
-      await waitFor(() => {
-        expect(screen.queryByText('Description')).not.toBeInTheDocument();
-      });
+  //1.2
+  test('Renders the Event feed component correctly', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getByTestId('event-feed')).toBeInTheDocument();
     });
   });
+
+  //1.3
+  test('Renders an array of Event Cards correctly', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getAllByTestId('event-card').length).toBeGreaterThan(0);
+    });
+  });
+
+  //1.4
+  test('Renders an appropriate # of event cards to events in the community', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getAllByTestId('event-card').length).toBe(mockData.events.length);
+    });
+  });
+
+  test('Renders event card content correctly', async () => {
+    renderComponent();
+    await waitFor(() => {
+      expect(screen.getByText('Pizza Party')).toBeInTheDocument();
+      expect(screen.getByText('1234 Pizza St')).toBeInTheDocument();
+      expect(screen.getByText('Bojangle Williams')).toBeInTheDocument();
+      expect(screen.getByText('December 12, 2022')).toBeInTheDocument();
+      expect(screen.getByText('7:00 PM')).toBeInTheDocument();
+      expect(screen.getAllByText('View').length).toBeGreaterThan(0);
+    });
+  });
+
+  test('Event cards can be viewed to see additional details', async () => {
+    renderComponent();
+    expect(screen.queryByTestId('view-event-modal')).not.toBeInTheDocument();
+    fireEvent.click(screen.getAllByText('View')[0]);
+    await waitFor(() => {
+      expect(screen.getByTestId('view-event-modal')).toBeInTheDocument();
+    });
+  });
+
+  test('Event cards close properly after having their modal opened', async () => {
+    renderComponent();
+    expect(screen.queryByTestId('view-event-modal')).not.toBeInTheDocument();
+    fireEvent.click(screen.getAllByText('View')[0]);
+    await waitFor(() => {
+      expect(screen.getByTestId('view-event-modal')).toBeInTheDocument();
+      expect(screen.getByText('Description')).toBeInTheDocument();
+    });
+    const closeButton = screen.getByLabelText('Close Modal');
+    expect(closeButton).toBeInTheDocument();
+    fireEvent.click(closeButton);
+
+    await waitFor(() => {
+      expect(screen.queryByText('Description')).not.toBeInTheDocument();
+    });
+  });
+});
