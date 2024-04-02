@@ -186,6 +186,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             placeholder="Pick a date"
             mt="md"
             data-testid="date"
+            minDate={new Date()}
             onChange={(value) => formik.setFieldValue('date', value)}
           />
 

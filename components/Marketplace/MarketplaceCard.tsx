@@ -5,7 +5,6 @@ import {
   Text,
   Button,
   Group,
-  Center,
   Avatar,
   Title,
   ActionIcon,
@@ -90,7 +89,7 @@ export function MarketplaceCard({
         />
       </a>
 
-      <Group gap={6} align="center">
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
         <Text
           className={classes.title}
           fw={700}
@@ -130,13 +129,11 @@ export function MarketplaceCard({
         {item?.price > 0 ? `$${item?.price}` : 'FREE'}
       </Text>
 
-      <Group>
-        <Center>
-          <Avatar src={profilePic} size={23} radius="xl" mr={7} />
-          <Text fz="sm" c="dimmed" truncate="end" data-testid="seller">
-            {item?.seller?.firstName} {item?.seller?.lastName}
-          </Text>
-        </Center>
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Avatar src={profilePic} size={23} radius="xl" mr={7} />
+        <Text fz="sm" c="dimmed" truncate="end" data-testid="seller">
+          {`${item?.seller?.firstName} ${item?.seller?.lastName}`}
+        </Text>
       </Group>
 
       <Text className={classes.details} c="dark.6" fz="sm" truncate="end" data-testid="description">

@@ -5,7 +5,6 @@ import {
   Text,
   Button,
   Group,
-  Center,
   Avatar,
   Stack,
   Title,
@@ -86,8 +85,8 @@ export function EventCard({ event, isSaved, isOrganizer, onView, onUpdate }: Eve
         />
       </a>
 
-      <Group gap={6} align="center">
-        <Text fw={600} fz="lg" component="a" className={classes.title}>
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Text fw={600} fz="lg" component="a" className={classes.title} truncate="end">
           {event?.name}
         </Text>
         {isOrganizer && (
@@ -107,17 +106,15 @@ export function EventCard({ event, isSaved, isOrganizer, onView, onUpdate }: Eve
         )}
       </Group>
 
-      <Group>
-        <Center>
-          <Avatar src={profilePic} size={23} radius="xl" mr="xs" />
-          <Text fz="sm" c="dimmed">
-            {event?.organizer?.firstName} {event?.organizer?.lastName}
-          </Text>
-        </Center>
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Avatar src={profilePic} size={23} radius="xl" mr="xs" />
+        <Text fz="sm" c="dimmed" truncate="end">
+          {event?.organizer?.firstName} {event?.organizer?.lastName}
+        </Text>
       </Group>
 
       <Stack gap="0" className={classes.details}>
-        <Text fz="sm">
+        <Text fz="sm" truncate="end">
           <b>Location:</b> {event?.location}
         </Text>
         <Text fz="sm">
