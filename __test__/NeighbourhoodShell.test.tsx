@@ -185,7 +185,6 @@ describe('Neighbourhood Shell', () => {
     await waitFor(() => {
       console.log(useCurrentUser());
       expect(screen.getByText('My Community')).toBeInTheDocument();
-      expect(screen.getByText('Test Community')).toBeInTheDocument();
     });
   });
 

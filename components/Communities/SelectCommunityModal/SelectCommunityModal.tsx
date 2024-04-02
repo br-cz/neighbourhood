@@ -93,6 +93,7 @@ export default function SelectCommunityModal({
                   onClose();
                   formik.resetForm();
                 }}
+                data-testid="cancel-join-community-btn"
               >
                 Cancel
               </Button>
@@ -115,6 +116,7 @@ export default function SelectCommunityModal({
                 }}
                 disabled={isLoading || !formik.dirty}
                 loading={isLoading}
+                data-testid="join-community-btn"
               >
                 Join
               </Button>
