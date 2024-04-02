@@ -1,21 +1,36 @@
 import { useEffect, useState } from 'react';
-import { Card, Image, Text, Button, Group, Center, Avatar, Stack } from '@mantine/core';
+import {
+  Card,
+  Image,
+  Text,
+  Button,
+  Group,
+  Center,
+  Avatar,
+  Stack,
+  Title,
+  ActionIcon,
+} from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faBookmark } from '@fortawesome/free-solid-svg-icons';
-import classes from './EventCard.module.css';
-import { Event } from '@/types/types';
+import { faBars, faBookmark, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { formatDate, formatTime } from '@/utils/timeUtils';
-import { useEventSaves } from '@/src/hooks/eventsCustomHooks';
+import { useDeleteEvent, useEventSaves } from '@/src/hooks/eventsCustomHooks';
+import { Event } from '@/types/types';
+import classes from './EventCard.module.css';
 
 interface EventCardProps {
   event: Event;
-  onView: () => void;
   isSaved: boolean;
+  isOrganizer?: boolean;
+  onView: () => void;
+  onUpdate?: () => void;
 }
 
-export function EventCard({ event, onView, isSaved }: EventCardProps) {
+export function EventCard({ event, isSaved, isOrganizer, onView, onUpdate }: EventCardProps) {
   const eventImage = event.images?.[0] || './img/placeholder-img.jpg';
   const profilePic = event.organizer?.profilePic || './img/placeholder-profile.jpg';
+  const { handleDeleteEvent } = useDeleteEvent();
   const { saveEvent, unsaveEvent } = useEventSaves(event.id);
   const [saved, setSaved] = useState(false);
   const [saveCount, setSaveCount] = useState(event.saveCount || 0);
@@ -23,6 +38,30 @@ export function EventCard({ event, onView, isSaved }: EventCardProps) {
   useEffect(() => {
     setSaved(isSaved);
   }, [isSaved]);
+
+  const handleDelete = () => {
+    handleDeleteEvent(event);
+    onUpdate?.();
+  };
+
+  const openDeleteModal = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Delete event?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete your event? This action cannot be undone.
+        </Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md', color: 'red.6' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Delete', cancel: 'Back' },
+      onConfirm: () => handleDelete(),
+    });
+  };
 
   const handleSave = async () => {
     if (saved) {
@@ -46,9 +85,24 @@ export function EventCard({ event, onView, isSaved }: EventCardProps) {
         />
       </a>
 
-      <Text className={classes.title} fw={600} fz="lg" component="a">
-        {event?.name}
-      </Text>
+      <Group gap={6} align="center">
+        <Text fw={600} fz="lg" component="a" className={classes.title}>
+          {event?.name}
+        </Text>
+        {isOrganizer && (
+          <ActionIcon
+            color="red.7"
+            radius="xl"
+            variant="subtle"
+            size="sm"
+            className={classes.title}
+            onClick={openDeleteModal}
+            data-testid="delete-event-btn"
+          >
+            <FontAwesomeIcon icon={faTrash} size="xs" />
+          </ActionIcon>
+        )}
+      </Group>
 
       <Group>
         <Center>
@@ -85,12 +139,12 @@ export function EventCard({ event, onView, isSaved }: EventCardProps) {
           <Button
             radius="md"
             size="compact-sm"
-            variant={saved ? 'outline' : 'filled'}
+            variant={saved || isSaved ? 'outline' : 'filled'}
             leftSection={<FontAwesomeIcon icon={faBookmark} />}
             onClick={handleSave}
             data-testid="event-save-button"
           >
-            {saved ? 'Saved' : 'Save'}
+            {saved || isSaved ? 'Saved' : 'Save'}
           </Button>
         </Group>
       </Group>

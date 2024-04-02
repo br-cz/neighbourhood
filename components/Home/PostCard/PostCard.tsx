@@ -16,23 +16,21 @@ import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faComment, faHeart, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Post } from '@/types/types';
-import { formatPostedAt } from '@/utils/timeUtils';
-import classes from './PostCard.module.css';
-import { createCommentSchema } from './createCommentSchema';
-import { useCreateComment, useDeletePost, usePostLikes } from '@/src/hooks/postsCustomHooks';
 import { PostCommentList } from './PostCommentList';
-import { retrieveImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
-import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
+import { createCommentSchema } from './createCommentSchema';
+import { formatPostedAt } from '@/utils/timeUtils';
+import { useCreateComment, useDeletePost, usePostLikes } from '@/src/hooks/postsCustomHooks';
+import { Post } from '@/types/types';
+import classes from './PostCard.module.css';
 
 interface PostCardProps {
   post: Post;
   isLiked: boolean;
+  isAuthor: boolean;
   onUpdate?: () => void;
 }
 
-export function PostCard({ post, isLiked, onUpdate }: PostCardProps) {
-  const { currentUser } = useCurrentUser();
+export function PostCard({ post, isLiked, isAuthor, onUpdate }: PostCardProps) {
   const profilePic = post.author?.profilePic || './img/placeholder-profile.jpg';
   const { handleDeletePost } = useDeletePost();
   const { likePost, unlikePost } = usePostLikes(post.id);
@@ -88,13 +86,13 @@ export function PostCard({ post, isLiked, onUpdate }: PostCardProps) {
 
   const handleLike = async () => {
     if (liked) {
-      await unlikePost();
       setLikeCount(likeCount! - 1);
       setLiked(false);
+      await unlikePost();
     } else {
-      await likePost();
       setLikeCount(likeCount! + 1);
       setLiked(true);
+      await likePost();
     }
   };
 
@@ -108,14 +106,14 @@ export function PostCard({ post, isLiked, onUpdate }: PostCardProps) {
         <Text size="xs" c="dimmed">
           {formatPostedAt(post.createdAt)}
         </Text>
-        {currentUser?.id === post.author.id && (
+        {isAuthor && (
           <ActionIcon
             color="red.6"
             radius="xl"
             variant="subtle"
             size="sm"
             onClick={openDeleteModal}
-            data-testid="remove-image"
+            data-testid="delete-post-btn"
           >
             <FontAwesomeIcon icon={faTrash} size="xs" />
           </ActionIcon>
@@ -128,12 +126,12 @@ export function PostCard({ post, isLiked, onUpdate }: PostCardProps) {
         <Button
           size="xs"
           radius="md"
-          variant={liked ? 'outline' : 'filled'}
+          variant={liked || isLiked ? 'outline' : 'filled'}
           leftSection={<FontAwesomeIcon icon={faHeart} />}
           onClick={handleLike}
           data-testid="like-button"
         >
-          {liked ? 'Liked' : 'Like'}
+          {liked || isLiked ? 'Liked' : 'Like'}
         </Button>
         <Button
           size="xs"

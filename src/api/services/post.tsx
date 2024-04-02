@@ -59,8 +59,6 @@ export const getCommunityPostsAPI = async (communityId: string) => {
             createdAt
             userPostsId
             visibility
-            _version
-            _deleted
             likedBy {
               items {
                 userId
@@ -84,6 +82,8 @@ export const getCommunityPostsAPI = async (communityId: string) => {
                 createdAt
               }
             }
+            _version
+            _deleted
           }
         }
       }

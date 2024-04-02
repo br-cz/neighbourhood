@@ -2,12 +2,14 @@ import { generateClient } from '@aws-amplify/api';
 import {
   createEvent,
   createUserLikedEvents,
+  deleteEvent,
   deleteUserLikedEvents,
   updateEvent,
 } from '@/src/graphql/mutations';
 import { getEvent, listUserLikedEvents } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
 import { getCurrentUserID } from './community';
+import { Event } from '@/types/types';
 import { UserLikedEvents } from '@/src/API';
 
 const client = generateClient();
@@ -59,6 +61,8 @@ export const getCommunityEventsAPI = async (communityId: string) => {
               lastName
               profilePic
             }
+            _version
+            _deleted
           }
         }
       }
@@ -93,6 +97,24 @@ export const createEventAPI = async (userId: string, communityId: string, eventD
     return response.data.createEvent;
   } catch (error: any) {
     throw new HttpError(`Error creating event: ${error.message}`, error.statusCode || 500);
+  }
+};
+
+export const deleteEventAPI = async (event: Event) => {
+  try {
+    const response = await client.graphql({
+      query: deleteEvent,
+      variables: {
+        input: {
+          id: event.id,
+          _version: event._version,
+        },
+      },
+    });
+    console.log('Event deleted successfully:', response.data.deleteEvent);
+    return response.data.deleteEvent;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting event API: ${error.message}`, error.statusCode || 500);
   }
 };
 

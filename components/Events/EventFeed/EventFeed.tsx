@@ -5,18 +5,22 @@ import { filterAndSortEvents } from '@/components/utils/eventUtils';
 import { Event } from '@/types/types';
 import { EventCard } from '@/components/Events/EventCard/EventCard';
 import { ViewEventModal } from '@/components/Events/ViewEventModal/ViewEventModal';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 export function EventFeed({
   refresh,
   searchQuery,
   sortQuery,
+  onUpdate,
 }: {
   refresh: boolean;
   searchQuery: string;
   sortQuery: string | null;
+  onUpdate: () => void;
 }) {
   const { events, loading } = useFetchEvents(refresh);
   const { saves } = useUserEventSaves(refresh);
+  const { currentUser } = useCurrentUser();
   const [viewEventModalOpened, setViewEventModalOpened] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const filteredAndSortedEvents = filterAndSortEvents(events, searchQuery, sortQuery, saves);
@@ -54,8 +58,10 @@ export function EventFeed({
             <EventCard
               key={event.id}
               event={event}
-              onView={() => handleViewEvent(event)}
               isSaved={saves ? saves.get(event.id) : false}
+              isOrganizer={currentUser?.id === event.organizer.id}
+              onView={() => handleViewEvent(event)}
+              onUpdate={onUpdate}
             />
           ))}
         </SimpleGrid>
