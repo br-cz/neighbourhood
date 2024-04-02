@@ -20,13 +20,14 @@ export function UserList({ searchQuery, sortQuery }: UserListProps) {
   const [outgoingRequests, setOutgoingRequests] = useState<any>([]);
   const [noRelationshipFriends, setNoRelationshipFriends] = useState<any>([]);
   // Fetches raw lists of users
+
   const {
     friends: userFriends,
     incomingFriendRequests,
     outgoingFriendRequests,
     noneFriends,
-    refetch,
     loading,
+    refetch,
   } = useFetchCommunityMembers();
 
   const numRequests = incomingFriendRequests.length;

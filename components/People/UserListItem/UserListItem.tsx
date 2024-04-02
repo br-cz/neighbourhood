@@ -42,6 +42,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       setPopoverOpened((o: boolean) => !o);
     }
     onUpdate();
+    console.log('On update called from UserList Item');
   };
 
   const handlePreviewClicked = () => {
@@ -191,8 +192,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           variant="outline"
           leftSection={<FontAwesomeIcon icon={faSmile} />}
           onClick={() => {
-            handleButtonClicked();
             handleRemoveFriend();
+            handleButtonClicked();
           }}
           data-testid="friends-btn"
         >
@@ -208,8 +209,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           variant="outline"
           leftSection={<FontAwesomeIcon icon={faClock} />}
           onClick={() => {
-            handleButtonClicked();
             handleCancelRequest();
+            handleButtonClicked();
           }}
           data-testid="outgoing-request-btn"
         >
@@ -225,8 +226,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             size="xs"
             leftSection={<FontAwesomeIcon icon={faCheck} />}
             onClick={() => {
-              handleButtonClicked();
               handleAcceptRequest();
+              handleButtonClicked();
             }}
             data-testid="accept-request-btn"
           >
@@ -238,8 +239,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             color="red"
             leftSection={<FontAwesomeIcon icon={faXmark} />}
             onClick={() => {
-              handleButtonClicked();
               handleDeclineRequest();
+              handleButtonClicked();
             }}
             data-testid="decline-request-btn"
           >
@@ -256,8 +257,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
           size="xs"
           leftSection={<FontAwesomeIcon icon={faUserPlus} />}
           onClick={() => {
-            handleButtonClicked();
             handleAddFriend();
+            handleButtonClicked();
           }}
           data-testid="add-friend-btn"
         >

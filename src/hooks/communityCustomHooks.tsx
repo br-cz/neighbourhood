@@ -18,6 +18,8 @@ export const useFetchMembers = () => {
   const [members, setMembers] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reload, setReload] = useState(false); // Add a state to trigger re-fetch
+  const refetch = () => setReload(!reload);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -51,9 +53,9 @@ export const useFetchMembers = () => {
     };
 
     fetchMembers();
-  }, []);
+  }, [reload]);
 
-  return { members, loading, error };
+  return { members, loading, error, refetch };
 };
 
 export const useCurrentCommunity = () => {
