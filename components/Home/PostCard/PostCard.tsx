@@ -22,7 +22,6 @@ import classes from './PostCard.module.css';
 import { createCommentSchema } from './createCommentSchema';
 import { useCreateComment, useDeletePost, usePostLikes } from '@/src/hooks/postsCustomHooks';
 import { PostCommentList } from './PostCommentList';
-import { retrieveImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 interface PostCardProps {

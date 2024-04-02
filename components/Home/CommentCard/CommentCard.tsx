@@ -2,13 +2,19 @@ import { Text, Avatar, Group, Box } from '@mantine/core';
 import classes from './CommentCard.module.css';
 import { formatPostedAt } from '@/utils/timeUtils';
 import { CommentItem } from '@/types/types';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 interface CommentCardProps {
   comment: CommentItem;
 }
 
 export function CommentCard({ comment }: CommentCardProps) {
-  const profilePic = comment.author?.profilePic || './img/placeholder-profile.jpg';
+  const { currentUser } = useCurrentUser();
+  let profilePic = comment.author?.profilePic || './img/placeholder-profile.jpg';
+
+  if (currentUser?.id === comment.author.id) {
+    profilePic = currentUser.profilePic;
+  }
 
   return (
     <Box className={classes.comment} data-testid="comment-card">
