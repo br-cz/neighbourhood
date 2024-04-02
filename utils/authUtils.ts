@@ -57,7 +57,7 @@ export async function handleSignIn({
       setErrorMessage('Oops! Check your details and try again.');
     }
   } finally {
-    router.push('/neighbourhood');
+    router.push('/dashboard');
     if (firstLogin) {
       notifications.show({
         radius: 'md',
