@@ -62,6 +62,10 @@ jest.mock('@/src/hooks/eventsCustomHooks', () => {
     }),
   });
 
+  const useDeleteEvent = () => ({
+    handleDeleteEvent: jest.fn(),
+  });
+
   const useEventSaves = () => ({
     saveEvent: jest.fn(),
     unsaveEvent: jest.fn(),
@@ -76,6 +80,7 @@ jest.mock('@/src/hooks/eventsCustomHooks', () => {
   return {
     useFetchEvents,
     useCreateEvent,
+    useDeleteEvent,
     useEventSaves,
     useUserEventSaves,
   };

@@ -7,6 +7,7 @@ import {
   listUserSavedEventsAPI,
   createEventSaveAPI,
   deleteEventSaveAPI,
+  deleteEventAPI,
 } from '../api/services/event';
 import { Event, Visibility } from '@/types/types';
 import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
@@ -31,6 +32,25 @@ export const useCreateEvent = () => {
   return { handleCreateEvent };
 };
 
+export const useDeleteEvent = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+
+  const handleDeleteEvent = async (event: Event) => {
+    setLoading(true);
+    try {
+      await deleteEventAPI(event);
+      setLoading(false);
+    } catch (err: any) {
+      console.error('Error deleting post:', err);
+      setError(err.message || 'An error occurred');
+      setLoading(false);
+    }
+  };
+
+  return { handleDeleteEvent, loading, error };
+};
+
 export const useFetchEvents = (refresh: boolean = false) => {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,10 +65,11 @@ export const useFetchEvents = (refresh: boolean = false) => {
         const fetchedEvents = await getCommunityEventsAPI(communityId);
         const visibleEvents = fetchedEvents.filter(
           (event: Event) =>
-            event.visibility === Visibility.PUBLIC ||
-            event.organizer.id === user!.id ||
-            (event.visibility === Visibility.FRIENDS_ONLY &&
-              user!.friends!.includes(event.organizer.id))
+            event._deleted !== true &&
+            (event.visibility === Visibility.PUBLIC ||
+              event.organizer.id === user!.id ||
+              (event.visibility === Visibility.FRIENDS_ONLY &&
+                user!.friends!.includes(event.organizer.id)))
         );
 
         const eventsWithImages = await Promise.all(

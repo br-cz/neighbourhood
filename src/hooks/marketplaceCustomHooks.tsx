@@ -4,6 +4,7 @@ import { getCurrentUserID, getCurrentUser } from './usersCustomHooks';
 import {
   createItemForSaleAPI,
   createListingSaveAPI,
+  deleteItemForSaleAPI,
   deleteListingSaveAPI,
   getCommunityItemsForSaleAPI,
   listUserSavedListingsAPI,
@@ -31,6 +32,25 @@ export const useCreateListing = () => {
   return { handleCreateListing };
 };
 
+export const useDeleteListing = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+
+  const handleDeleteListing = async (item: ItemForSale) => {
+    setLoading(true);
+    try {
+      await deleteItemForSaleAPI(item);
+      setLoading(false);
+    } catch (err: any) {
+      console.error('Error deleting listing:', err);
+      setError(err.message || 'An error occurred');
+      setLoading(false);
+    }
+  };
+
+  return { handleDeleteListing, loading, error };
+};
+
 export const useFetchListings = (refresh: boolean = false) => {
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,10 +65,11 @@ export const useFetchListings = (refresh: boolean = false) => {
         const fetchedListings = await getCommunityItemsForSaleAPI(communityId);
         const visibleListings = fetchedListings.filter(
           (listing: ItemForSale) =>
-            listing.visibility === Visibility.PUBLIC ||
-            listing.seller.id === user!.id ||
-            (listing.visibility === Visibility.FRIENDS_ONLY &&
-              user!.friends!.includes(listing.seller.id))
+            listing._deleted !== true &&
+            (listing.visibility === Visibility.PUBLIC ||
+              listing.seller.id === user!.id ||
+              (listing.visibility === Visibility.FRIENDS_ONLY &&
+                user!.friends!.includes(listing.seller.id)))
         );
 
         const listingsWithImages = await Promise.all(

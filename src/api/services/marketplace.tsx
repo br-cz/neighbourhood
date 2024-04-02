@@ -2,6 +2,7 @@ import { generateClient } from '@aws-amplify/api';
 import {
   createItemForSale,
   createUserLikedItems,
+  deleteItemForSale,
   deleteUserLikedItems,
   updateItemForSale,
 } from '@/src/graphql/mutations';
@@ -9,6 +10,7 @@ import { getItemForSale, listUserLikedItems } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
 import { getCurrentUserID } from './community';
 import { UserLikedItems } from '@/src/API';
+import { ItemForSale } from '@/types/types';
 
 const client = generateClient();
 
@@ -52,6 +54,7 @@ export const getCommunityItemsForSaleAPI = async (communityId: string) => {
             userItemsForSaleId
             title
             updatedAt
+            _version
             _deleted
           }
         }
@@ -87,6 +90,24 @@ export const createItemForSaleAPI = async (userId: string, communityId: string, 
     return response.data.createItemForSale;
   } catch (error: any) {
     throw new HttpError(`Error creating item for sale: ${error.message}`, error.statusCode || 500);
+  }
+};
+
+export const deleteItemForSaleAPI = async (item: ItemForSale) => {
+  try {
+    const response = await client.graphql({
+      query: deleteItemForSale,
+      variables: {
+        input: {
+          id: item.id,
+          _version: item._version,
+        },
+      },
+    });
+    console.log('Listing deleted successfully:', response.data.deleteItemForSale);
+    return response.data.deleteItemForSale;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting listing: ${error.message}`, error.statusCode || 500);
   }
 };
 
