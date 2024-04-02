@@ -9,6 +9,7 @@ import {
   TextInput,
   ActionIcon,
   Title,
+  Tooltip,
 } from '@mantine/core';
 import { useFormik } from 'formik';
 import { modals } from '@mantine/modals';
@@ -60,6 +61,11 @@ export function PostCard({ post, isLiked, isAuthor, onUpdate }: PostCardProps) {
     },
   });
 
+  const onDeleteComment = (commentId: string) => {
+    const updatedComments = comments.filter((comment) => comment.id !== commentId);
+    setComments(updatedComments);
+  };
+
   const handleDelete = () => {
     handleDeletePost(post);
     onUpdate?.();
@@ -107,16 +113,18 @@ export function PostCard({ post, isLiked, isAuthor, onUpdate }: PostCardProps) {
           {formatPostedAt(post.createdAt)}
         </Text>
         {isAuthor && (
-          <ActionIcon
-            color="red.6"
-            radius="xl"
-            variant="subtle"
-            size="sm"
-            onClick={openDeleteModal}
-            data-testid="delete-post-btn"
-          >
-            <FontAwesomeIcon icon={faTrash} size="xs" />
-          </ActionIcon>
+          <Tooltip label="Delete post">
+            <ActionIcon
+              color="red.7"
+              radius="xl"
+              variant="subtle"
+              size="sm"
+              onClick={openDeleteModal}
+              data-testid="delete-post-btn"
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Tooltip>
         )}
       </Group>
       <Text mt="xs" size="sm">
@@ -185,7 +193,7 @@ export function PostCard({ post, isLiked, isAuthor, onUpdate }: PostCardProps) {
           </Box>
         </form>
       </Collapse>
-      <PostCommentList comments={{ items: comments }} />
+      <PostCommentList comments={{ items: comments }} onDeleteComment={onDeleteComment} />
     </Box>
   );
 }

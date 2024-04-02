@@ -93,6 +93,9 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
       createdAt: new Date().toISOString(),
     })),
   })),
+  useDeleteComment: jest.fn(() => ({
+    handleDeleteComment: jest.fn(),
+  })),
 }));
 
 afterEach(() => {

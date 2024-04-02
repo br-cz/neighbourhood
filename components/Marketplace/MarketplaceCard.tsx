@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Image, Text, Button, Group, Center, Avatar, Title, ActionIcon } from '@mantine/core';
+import {
+  Card,
+  Image,
+  Text,
+  Button,
+  Group,
+  Center,
+  Avatar,
+  Title,
+  ActionIcon,
+  Tooltip,
+} from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBookmark, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -92,17 +103,19 @@ export function MarketplaceCard({
           {item?.title}
         </Text>
         {isSeller && (
-          <ActionIcon
-            color="red.7"
-            radius="xl"
-            variant="subtle"
-            size="sm"
-            className={classes.title}
-            onClick={openDeleteModal}
-            data-testid="delete-listing-btn"
-          >
-            <FontAwesomeIcon icon={faTrash} size="xs" />
-          </ActionIcon>
+          <Tooltip label="Delete listing">
+            <ActionIcon
+              color="red.7"
+              radius="xl"
+              variant="subtle"
+              size="sm"
+              className={classes.title}
+              onClick={openDeleteModal}
+              data-testid="delete-listing-btn"
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Tooltip>
         )}
       </Group>
 

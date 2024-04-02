@@ -52,6 +52,8 @@ export interface CommentItem {
   author: User;
   content: string;
   createdAt: string;
+  _version: number;
+  _deleted?: boolean;
 }
 
 export interface Comments {

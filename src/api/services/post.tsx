@@ -7,8 +7,9 @@ import {
   createUserLikedPosts,
   deleteUserLikedPosts,
   deletePost,
+  deleteComment,
 } from '@/src/graphql/mutations';
-import { CommentDataInput, PostDataInput, Post } from '@/types/types';
+import { CommentDataInput, PostDataInput, Post, CommentItem } from '@/types/types';
 import { HttpError } from '@/src/models/error/HttpError';
 import { UserLikedPosts } from '@/src/API';
 import { getCurrentUserID } from '@/src/hooks/usersCustomHooks';
@@ -80,6 +81,8 @@ export const getCommunityPostsAPI = async (communityId: string) => {
                 }
                 id
                 createdAt
+                _version
+                _deleted
               }
             }
             _version
@@ -147,6 +150,24 @@ export const createNewCommentAPI = async (commentData: CommentDataInput) => {
     return comment.data.createComment;
   } catch (error: any) {
     throw new HttpError(`Error creating comment: ${error.message}`, error.statusCode || 500);
+  }
+};
+
+export const deleteCommentAPI = async (comment: CommentItem) => {
+  try {
+    const response = await client.graphql({
+      query: deleteComment,
+      variables: {
+        input: {
+          id: comment.id,
+          _version: comment._version,
+        },
+      },
+    });
+    console.log('Comment deleted successfully:', response.data.deleteComment);
+    return response.data.deleteComment;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting comment: ${error.message}`, error.statusCode || 500);
   }
 };
 

@@ -10,6 +10,7 @@ import {
   Stack,
   Title,
   ActionIcon,
+  Tooltip,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -90,17 +91,19 @@ export function EventCard({ event, isSaved, isOrganizer, onView, onUpdate }: Eve
           {event?.name}
         </Text>
         {isOrganizer && (
-          <ActionIcon
-            color="red.7"
-            radius="xl"
-            variant="subtle"
-            size="sm"
-            className={classes.title}
-            onClick={openDeleteModal}
-            data-testid="delete-event-btn"
-          >
-            <FontAwesomeIcon icon={faTrash} size="xs" />
-          </ActionIcon>
+          <Tooltip label="Delete event">
+            <ActionIcon
+              color="red.7"
+              radius="xl"
+              variant="subtle"
+              size="sm"
+              className={classes.title}
+              onClick={openDeleteModal}
+              data-testid="delete-event-btn"
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Tooltip>
         )}
       </Group>
 
