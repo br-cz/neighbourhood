@@ -12,6 +12,7 @@ import {
   ActionIcon,
   Image,
   Box,
+  Tooltip,
 } from '@mantine/core';
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -185,6 +186,7 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             placeholder="Pick a date"
             mt="md"
             data-testid="date"
+            minDate={new Date()}
             onChange={(value) => formik.setFieldValue('date', value)}
           />
 
@@ -222,17 +224,19 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             <Text size="sm" c="dimmed">
               (optional)
             </Text>
-            <ActionIcon
-              color="red"
-              radius="md"
-              variant="subtle"
-              size={16}
-              onClick={handleRemoveImage}
-              disabled={previews.length === 0}
-              ml={5}
-            >
-              <FontAwesomeIcon icon={faTrash} size="xs" />
-            </ActionIcon>
+            <Tooltip label="Remove image" disabled={previews.length === 0}>
+              <ActionIcon
+                color="red"
+                radius="md"
+                variant="subtle"
+                size={16}
+                onClick={handleRemoveImage}
+                disabled={previews.length === 0}
+                ml={5}
+              >
+                <FontAwesomeIcon icon={faTrash} size="xs" />
+              </ActionIcon>
+            </Tooltip>
           </Group>
           {previews.length === 0 ? (
             <Dropzone

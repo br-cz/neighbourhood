@@ -2,59 +2,11 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { generateClient } from '@aws-amplify/api';
-import { getCurrentUser, signIn, signOut } from '@aws-amplify/auth';
 import { Box, Button, Group, PasswordInput, Text, TextInput } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
-import { getCommunity, getUser } from '@/src/graphql/queries';
+import { handleSignIn } from '@/utils/authUtils';
+
 import styles from '@/components/Authorization/loginForm.module.css';
-
-const client = generateClient({});
-
-interface SignInParams {
-  username: string;
-  password: string;
-  clientInput: any;
-  handlers: any;
-  setErrorMessage: (message: string) => void;
-}
-
-export async function handleSignIn({
-  username,
-  password,
-  clientInput,
-  handlers,
-  setErrorMessage,
-}: SignInParams): Promise<void> {
-  await signOut({ global: true });
-  try {
-    await signIn({ username, password });
-    const { userId } = await getCurrentUser();
-
-    const user = await clientInput.graphql({ query: getUser, variables: { id: userId } });
-    localStorage.setItem('currentUserID', JSON.stringify(userId));
-    localStorage.setItem('currentUser', JSON.stringify(user.data.getUser));
-
-    if (user.data.getUser) {
-      const communityID = user.data.getUser.selectedCommunity;
-      const community = await clientInput.graphql({
-        query: getCommunity,
-        variables: { id: communityID },
-      });
-      localStorage.setItem('currentCommunityID', JSON.stringify(communityID));
-      localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
-      console.log('Logged in user:', user.data.getUser);
-      console.log('Logged in community:', community.data.getCommunity);
-      console.log('Logged in with ID:', userId);
-      console.log('Logged in with community ID:', communityID);
-    }
-  } catch (error) {
-    handlers.close();
-    console.log('Error signing in', error);
-    setErrorMessage('Oops! Check your details and try again.');
-  }
-}
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -69,15 +21,9 @@ export default function LoginForm() {
     await handleSignIn({
       username: email,
       password: pass,
-      clientInput: client,
+      router,
       handlers,
       setErrorMessage,
-    });
-    router.push('/neighbourhood');
-    notifications.show({
-      radius: 'md',
-      title: 'Hey, Neighbour! 👋 ',
-      message: 'Logged in successfully. Welcome back to your community!',
     });
   };
 

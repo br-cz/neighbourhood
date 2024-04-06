@@ -587,6 +587,13 @@ export const schema = {
                         ]
                     }
                 },
+                "likeCount": {
+                    "name": "likeCount",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "comments": {
                     "name": "comments",
                     "isArray": true,
@@ -831,6 +838,13 @@ export const schema = {
                         ]
                     }
                 },
+                "saveCount": {
+                    "name": "saveCount",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "visibility": {
                     "name": "visibility",
                     "isArray": false,
@@ -971,6 +985,13 @@ export const schema = {
                             "itemForSale"
                         ]
                     }
+                },
+                "saveCount": {
+                    "name": "saveCount",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "visibility": {
                     "name": "visibility",
@@ -1427,5 +1448,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "bc499130ed109479f2a2df2e3d806ee5"
+    "version": "fedde9e71aaa5a66ed68306a35e6c433"
 };

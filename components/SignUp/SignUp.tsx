@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { confirmSignUp } from 'aws-amplify/auth';
-import { generateClient } from '@aws-amplify/api';
 import { Stepper, Button, Group, Stack, Title, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
@@ -50,7 +49,7 @@ export const SignUp = () => {
       preferredUsername: '',
       firstName: '',
       familyName: '',
-      phoneNumber: '',
+      contact: '',
       bio: '',
       pronouns: '',
       profilePic: null,
@@ -78,7 +77,7 @@ export const SignUp = () => {
         'familyName',
         'preferredUsername',
         'bio',
-        'phoneNumber',
+        'contact',
         'profilePic',
         'kids',
         'pets',
@@ -153,10 +152,15 @@ export const SignUp = () => {
       const username = formik.values.email;
       const { password } = formik.values;
 
+      if (formik.values.profilePic && userId) {
+        await storeImage(formik.values.profilePic, userId);
+      }
       await handleSignIn({
         username,
         password,
-        clientInput: client,
+        router,
+        firstLogin: true,
+        firstName: formik.values.firstName,
         handlers,
         setErrorMessage: (message) => console.error(message),
       });
@@ -320,7 +324,7 @@ export const SignUp = () => {
                 familyName={formik.values.familyName}
                 preferredUsername={formik.values.preferredUsername}
                 bio={formik.values.bio}
-                phoneNumber={formik.values.phoneNumber}
+                contact={formik.values.contact}
                 pronouns={formik.values.pronouns}
                 birthday={formik.values.birthday}
                 kids={formik.values.kids}

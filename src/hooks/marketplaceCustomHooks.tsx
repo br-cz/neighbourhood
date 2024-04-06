@@ -1,8 +1,17 @@
 import { useState, useEffect } from 'react';
 import { getCurrentCommunityID } from './communityCustomHooks';
 import { getCurrentUserID, getCurrentUser } from './usersCustomHooks';
-import { createItemForSaleAPI, getCommunityItemsForSaleAPI } from '../api/services/marketplace';
+import {
+  createItemForSaleAPI,
+  createListingSaveAPI,
+  deleteItemForSaleAPI,
+  deleteListingSaveAPI,
+  getCommunityItemsForSaleAPI,
+  listUserSavedListingsAPI,
+} from '../api/services/marketplace';
 import { ItemForSale, Visibility } from '@/types/types';
+import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveItemImage } from '@/components/utils/s3Helpers/ItemForSaleImageS3Helper';
 
 export const useCreateListing = () => {
   const handleCreateListing = async (itemData: any) => {
@@ -10,7 +19,7 @@ export const useCreateListing = () => {
       const createdListing = await createItemForSaleAPI(
         getCurrentUserID(),
         getCurrentCommunityID(),
-        { ...itemData, images: [itemData.itemImage] }
+        { ...itemData, saveCount: 0, images: [itemData.itemImage] }
       );
       console.log('Listing created:', createdListing);
       return createdListing;
@@ -21,6 +30,25 @@ export const useCreateListing = () => {
   };
 
   return { handleCreateListing };
+};
+
+export const useDeleteListing = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+
+  const handleDeleteListing = async (item: ItemForSale) => {
+    setLoading(true);
+    try {
+      await deleteItemForSaleAPI(item);
+      setLoading(false);
+    } catch (err: any) {
+      console.error('Error deleting listing:', err);
+      setError(err.message || 'An error occurred');
+      setLoading(false);
+    }
+  };
+
+  return { handleDeleteListing, loading, error };
 };
 
 export const useFetchListings = (refresh: boolean = false) => {
@@ -37,12 +65,31 @@ export const useFetchListings = (refresh: boolean = false) => {
         const fetchedListings = await getCommunityItemsForSaleAPI(communityId);
         const visibleListings = fetchedListings.filter(
           (listing: ItemForSale) =>
-            listing.visibility === Visibility.PUBLIC ||
-            listing.seller.id === user!.id ||
-            (listing.visibility === Visibility.FRIENDS_ONLY &&
-              user!.friends!.includes(listing.seller.id))
+            listing._deleted !== true &&
+            (listing.visibility === Visibility.PUBLIC ||
+              listing.seller.id === user!.id ||
+              (listing.visibility === Visibility.FRIENDS_ONLY &&
+                user!.friends!.includes(listing.seller.id)))
         );
-        setListings(visibleListings);
+
+        const listingsWithImages = await Promise.all(
+          visibleListings.map(async (listing: any) => {
+            const itemImage = await retrieveItemImage(listing.id).catch(() => null);
+            const profilePicture = await retrieveProfilePicture(listing.seller.id).catch(
+              () => null
+            );
+            return {
+              ...listing,
+              images: [itemImage],
+              seller: {
+                ...listing.seller,
+                profilePic: profilePicture,
+              },
+            };
+          })
+        );
+
+        setListings(listingsWithImages);
       } catch (err) {
         setError(err);
       } finally {
@@ -54,4 +101,81 @@ export const useFetchListings = (refresh: boolean = false) => {
   }, [refresh]);
 
   return { listings, loading, error };
+};
+
+export const useListingSaves = (listingId: string) => {
+  const [isSaved, setIsSaved] = useState(false);
+  const [userListingSave, setUserListingSave] = useState<any>(null);
+  const [error, setError] = useState('');
+  const userId = getCurrentUserID();
+
+  const fetchSaveStatus = async () => {
+    try {
+      const likesResponse = await listUserSavedListingsAPI();
+      const userLike = likesResponse.find(
+        (item) => item.itemForSaleId === listingId && item.userId === userId && !item._deleted
+      );
+      setIsSaved(!!userLike);
+      setUserListingSave(userLike);
+    } catch (err) {
+      console.error('Error fetching save status:', err);
+      setError('Failed to fetch save status');
+    }
+  };
+
+  useEffect(() => {
+    fetchSaveStatus();
+  }, [listingId, userId]);
+
+  const saveListing = async () => {
+    if (!isSaved) {
+      try {
+        await createListingSaveAPI(listingId);
+        fetchSaveStatus();
+      } catch (err) {
+        console.error('Error saving listing:', err);
+        setError('Failed to save listing');
+      }
+    }
+  };
+
+  const unsaveListing = async () => {
+    if (isSaved && userListingSave) {
+      try {
+        await deleteListingSaveAPI(userListingSave);
+        fetchSaveStatus();
+      } catch (err) {
+        console.error('Error unsaving event:', err);
+        setError('Failed to unsave event');
+      }
+    }
+  };
+
+  return { isSaved, saveListing, unsaveListing, error };
+};
+
+export const useUserListingSaves = (refresh: boolean) => {
+  const [userListingSaves, setUserListingSaves] = useState(new Map());
+  const userId = getCurrentUserID();
+
+  useEffect(() => {
+    const fetchUserSaves = async () => {
+      try {
+        const savesResponse = await listUserSavedListingsAPI();
+        const userSavesMap = new Map();
+        savesResponse.forEach((save) => {
+          if (save.userId === userId && !save._deleted) {
+            userSavesMap.set(save.itemForSaleId, true);
+          }
+        });
+        setUserListingSaves(userSavesMap);
+      } catch (error) {
+        console.error('Failed to fetch user saves:', error);
+      }
+    };
+
+    fetchUserSaves();
+  }, [userId, refresh]);
+
+  return { saves: userListingSaves };
 };

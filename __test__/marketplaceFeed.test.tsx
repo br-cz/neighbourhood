@@ -4,7 +4,6 @@ import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { DataProvider } from '@/contexts/DataContext';
 import MarketplacePage from '@/components/Marketplace/MarketplacePage';
 import { MarketplaceFeed } from '@/components/Marketplace/MarketplaceFeed';
-import { CreateListingDrawer } from '@/components/Marketplace/CreateListingDrawer';
 
 const userHooks = require('@/src/hooks/usersCustomHooks');
 
@@ -30,7 +29,6 @@ const mockData = {
         firstName: 'Grunkle',
         lastName: 'Williams',
       },
-      
     },
     {
       id: '3',
@@ -52,6 +50,18 @@ jest.mock('@/src/hooks/marketplaceCustomHooks', () => ({
   })),
   useCreateListing: jest.fn(() => ({
     createdListing: jest.fn(),
+  })),
+  useDeleteListing: jest.fn(() => ({
+    handleDeleteListing: jest.fn(),
+  })),
+  useListingSaves: jest.fn(() => ({
+    saveListing: jest.fn(),
+    unsaveListing: jest.fn(),
+  })),
+  useUserListingSaves: jest.fn(() => ({
+    userListingSaves: {
+      get: () => false,
+    },
   })),
 }));
 
@@ -164,10 +174,12 @@ describe('MarketplacePage', () => {
     });
     fireEvent.click(screen.getAllByTestId('view-button')[0]);
     await waitFor(() => {
-      expect(screen.getByTestId('listing-modal-title')).toHaveTextContent("Test Item 1");
-      expect(screen.getByTestId('listing-modal-price')).toHaveTextContent("200");
-      expect(screen.getByTestId('listing-modal-seller')).toHaveTextContent("Bojangle Williams");
-      expect(screen.getByTestId('listing-modal-description')).toHaveTextContent("This is a test item!");
+      expect(screen.getByTestId('listing-modal-title')).toHaveTextContent('Test Item 1');
+      expect(screen.getByTestId('listing-modal-price')).toHaveTextContent('200');
+      expect(screen.getByTestId('listing-modal-seller')).toHaveTextContent('Bojangle Williams');
+      expect(screen.getByTestId('listing-modal-description')).toHaveTextContent(
+        'This is a test item!'
+      );
     });
   });
 
@@ -180,10 +192,12 @@ describe('MarketplacePage', () => {
     });
     fireEvent.click(screen.getAllByTestId('view-button')[0]);
     await waitFor(() => {
-      expect(screen.getByTestId('listing-modal-title')).toHaveTextContent("Test Item 2");
-      expect(screen.getByTestId('listing-modal-price')).toHaveTextContent("100");
-      expect(screen.getByTestId('listing-modal-seller')).toHaveTextContent("Grunkle Williams");
-      expect(screen.getByTestId('listing-modal-description')).toHaveTextContent("This is a second test item!");
+      expect(screen.getByTestId('listing-modal-title')).toHaveTextContent('Test Item 2');
+      expect(screen.getByTestId('listing-modal-price')).toHaveTextContent('100');
+      expect(screen.getByTestId('listing-modal-seller')).toHaveTextContent('Grunkle Williams');
+      expect(screen.getByTestId('listing-modal-description')).toHaveTextContent(
+        'This is a second test item!'
+      );
     });
   });
 
@@ -196,11 +210,12 @@ describe('MarketplacePage', () => {
     });
     fireEvent.click(screen.getAllByTestId('view-button')[0]);
     await waitFor(() => {
-      expect(screen.getByTestId('listing-modal-title')).toHaveTextContent("Test Item 3");
-      expect(screen.getByTestId('listing-modal-price')).toHaveTextContent("300");
-      expect(screen.getByTestId('listing-modal-seller')).toHaveTextContent("LeJon Brames");
-      expect(screen.getByTestId('listing-modal-description')).toHaveTextContent("This is a third test item!");
+      expect(screen.getByTestId('listing-modal-title')).toHaveTextContent('Test Item 3');
+      expect(screen.getByTestId('listing-modal-price')).toHaveTextContent('300');
+      expect(screen.getByTestId('listing-modal-seller')).toHaveTextContent('LeJon Brames');
+      expect(screen.getByTestId('listing-modal-description')).toHaveTextContent(
+        'This is a third test item!'
+      );
     });
   });
-
 });

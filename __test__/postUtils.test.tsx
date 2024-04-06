@@ -10,6 +10,7 @@ const mockPosts = [
     createdAt: '2023-12-20T12:00:00',
     visibility: Visibility.PUBLIC,
     comments: { items: [] },
+    _version: 1,
   },
   {
     id: '1',
@@ -19,6 +20,7 @@ const mockPosts = [
     createdAt: '2023-12-26T10:00:00',
     visibility: Visibility.PUBLIC,
     comments: { items: [] },
+    _version: 1,
   },
   {
     id: '3',
@@ -28,6 +30,7 @@ const mockPosts = [
     createdAt: '2023-12-16T20:00:00',
     visibility: Visibility.PUBLIC,
     comments: { items: [] },
+    _version: 1,
   },
 ];
 

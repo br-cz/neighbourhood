@@ -6,8 +6,10 @@ import {
   updatePost,
   createUserLikedPosts,
   deleteUserLikedPosts,
+  deletePost,
+  deleteComment,
 } from '@/src/graphql/mutations';
-import { CommentDataInput, PostDataInput } from '@/types/types';
+import { CommentDataInput, PostDataInput, Post, CommentItem } from '@/types/types';
 import { HttpError } from '@/src/models/error/HttpError';
 import { UserLikedPosts } from '@/src/API';
 import { getCurrentUserID } from '@/src/hooks/usersCustomHooks';
@@ -67,6 +69,7 @@ export const getCommunityPostsAPI = async (communityId: string) => {
                 }
               }
             }
+            likeCount
             comments {
               items {
                 content
@@ -78,8 +81,12 @@ export const getCommunityPostsAPI = async (communityId: string) => {
                 }
                 id
                 createdAt
+                _version
+                _deleted
               }
             }
+            _version
+            _deleted
           }
         }
       }
@@ -96,6 +103,24 @@ export const getCommunityPostsAPI = async (communityId: string) => {
       `Error retrieving community posts: ${error.message}`,
       error.statusCode || 500
     );
+  }
+};
+
+export const deletePostAPI = async (post: Post) => {
+  try {
+    const response = await client.graphql({
+      query: deletePost,
+      variables: {
+        input: {
+          id: post.id,
+          _version: post._version,
+        },
+      },
+    });
+    console.log('Post deleted successfully:', response.data.deletePost);
+    return response.data.deletePost;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting post: ${error.message}`, error.statusCode || 500);
   }
 };
 
@@ -128,6 +153,24 @@ export const createNewCommentAPI = async (commentData: CommentDataInput) => {
   }
 };
 
+export const deleteCommentAPI = async (comment: CommentItem) => {
+  try {
+    const response = await client.graphql({
+      query: deleteComment,
+      variables: {
+        input: {
+          id: comment.id,
+          _version: comment._version,
+        },
+      },
+    });
+    console.log('Comment deleted successfully:', response.data.deleteComment);
+    return response.data.deleteComment;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting comment: ${error.message}`, error.statusCode || 500);
+  }
+};
+
 export const getAllCommentsAPI = async () => {
   try {
     const response = await client.graphql({ query: listComments });
@@ -156,6 +199,34 @@ export const updatePostImageAPI = async (postId: string, image: string, _version
   }
 };
 
+export const updatePostLikeCountAPI = async (postId: string, adjustment: number) => {
+  try {
+    const postResponse = await getPostAPI(postId);
+    if (!postResponse) {
+      throw new Error('Post not found');
+    }
+    const { _version, likeCount = 0 } = postResponse;
+    const newLikeCount = Math.max(likeCount! + adjustment, 0);
+    const updatedPost = await client.graphql({
+      query: updatePost,
+      variables: {
+        input: {
+          id: postId,
+          likeCount: newLikeCount,
+          _version,
+        },
+      },
+    });
+    console.log('Post updated successfully:', updatedPost.data.updatePost);
+    return updatedPost.data.updatePost;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error updating post like count: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
+};
+
 export const createLikeAPI = async (postId: string) => {
   const userId = getCurrentUserID();
   try {
@@ -168,6 +239,7 @@ export const createLikeAPI = async (postId: string) => {
         },
       },
     });
+    await updatePostLikeCountAPI(postId, 1);
     return createUserLikedPostsResponse.data.createUserLikedPosts;
   } catch (error: any) {
     throw new HttpError(
@@ -179,7 +251,7 @@ export const createLikeAPI = async (postId: string) => {
 
 export const deleteLikeAPI = async (like: UserLikedPosts) => {
   try {
-    return await client.graphql({
+    const deleteUserLikedPostsResponse = await client.graphql({
       query: deleteUserLikedPosts,
       variables: {
         input: {
@@ -188,6 +260,8 @@ export const deleteLikeAPI = async (like: UserLikedPosts) => {
         },
       },
     });
+    await updatePostLikeCountAPI(like.postId, -1);
+    return deleteUserLikedPostsResponse.data.deleteUserLikedPosts;
   } catch (error: any) {
     throw new HttpError(`Error deleting like: ${error.message}`, error.statusCode || 500);
   }

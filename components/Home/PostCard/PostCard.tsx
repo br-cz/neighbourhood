@@ -1,40 +1,48 @@
 import { useState, useEffect } from 'react';
-import { Text, Avatar, Group, Box, Button, Collapse, TextInput, ActionIcon } from '@mantine/core';
+import {
+  Text,
+  Avatar,
+  Group,
+  Box,
+  Button,
+  Collapse,
+  TextInput,
+  ActionIcon,
+  Title,
+  Tooltip,
+} from '@mantine/core';
 import { useFormik } from 'formik';
+import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
-import { Post } from '@/types/types';
-import { formatPostedAt } from '@/utils/timeUtils';
-import classes from './PostCard.module.css';
-import { createCommentSchema } from './createCommentSchema';
-import { useCreateComment, usePostLikes } from '@/src/hooks/postsCustomHooks';
+import { faArrowRight, faComment, faHeart, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { PostCommentList } from './PostCommentList';
-import { retrieveImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
+import { createCommentSchema } from './createCommentSchema';
+import { formatPostedAt } from '@/utils/timeUtils';
+import { useCreateComment, useDeletePost, usePostLikes } from '@/src/hooks/postsCustomHooks';
+import { Post } from '@/types/types';
+import classes from './PostCard.module.css';
 
 interface PostCardProps {
   post: Post;
-  isLiked: boolean;
+  isLiked?: boolean;
+  isAuthor?: boolean;
+  onUpdate?: () => void;
 }
 
-export function PostCard({ post, isLiked }: PostCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
+export function PostCard({ post, isLiked, isAuthor, onUpdate }: PostCardProps) {
+  const profilePic = post.author?.profilePic || './img/placeholder-profile.jpg';
+  const { handleDeletePost } = useDeletePost();
   const { likePost, unlikePost } = usePostLikes(post.id);
   const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likeCount || 0);
   const [comments, setComments] = useState(post?.comments?.items);
   const [commentOpened, { toggle: toggleComment }] = useDisclosure(false);
   const { handleCreateComment } = useCreateComment();
 
   useEffect(() => {
-    if (!post?.author) return;
-    retrieveImage(post?.author?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [post?.author?.profilePic]);
-
-  useEffect(() => {
-    setLiked(isLiked);
+    setLiked(isLiked!);
   }, [isLiked]);
 
   const formik = useFormik({
@@ -53,13 +61,44 @@ export function PostCard({ post, isLiked }: PostCardProps) {
     },
   });
 
+  const onDeleteComment = (commentId: string) => {
+    const updatedComments = comments.filter((comment) => comment.id !== commentId);
+    setComments(updatedComments);
+  };
+
+  const handleDelete = () => {
+    handleDeletePost(post);
+    onUpdate?.();
+  };
+
+  const openDeleteModal = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Delete post?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete your post? This action cannot be undone.
+        </Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md', color: 'red.6' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Delete', cancel: 'Back' },
+      onConfirm: () => handleDelete(),
+    });
+  };
+
   const handleLike = async () => {
     if (liked) {
-      await unlikePost();
+      setLikeCount(likeCount! - 1);
       setLiked(false);
+      await unlikePost();
     } else {
-      await likePost();
+      setLikeCount(likeCount! + 1);
       setLiked(true);
+      await likePost();
     }
   };
 
@@ -73,6 +112,20 @@ export function PostCard({ post, isLiked }: PostCardProps) {
         <Text size="xs" c="dimmed">
           {formatPostedAt(post.createdAt)}
         </Text>
+        {isAuthor && (
+          <Tooltip label="Delete post">
+            <ActionIcon
+              color="red.7"
+              radius="xl"
+              variant="subtle"
+              size="sm"
+              onClick={openDeleteModal}
+              data-testid="delete-post-btn"
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Tooltip>
+        )}
       </Group>
       <Text mt="xs" size="sm">
         {post.content}
@@ -81,12 +134,12 @@ export function PostCard({ post, isLiked }: PostCardProps) {
         <Button
           size="xs"
           radius="md"
-          variant={liked ? 'outline' : 'filled'}
+          variant={liked || isLiked ? 'outline' : 'filled'}
           leftSection={<FontAwesomeIcon icon={faHeart} />}
           onClick={handleLike}
           data-testid="like-button"
         >
-          {liked ? 'Liked' : 'Like'}
+          {liked || isLiked ? 'Liked' : 'Like'}
         </Button>
         <Button
           size="xs"
@@ -140,7 +193,7 @@ export function PostCard({ post, isLiked }: PostCardProps) {
           </Box>
         </form>
       </Collapse>
-      <PostCommentList comments={{ items: comments }} />
+      <PostCommentList comments={{ items: comments }} onDeleteComment={onDeleteComment} />
     </Box>
   );
 }

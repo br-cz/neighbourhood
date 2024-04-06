@@ -25,6 +25,7 @@ import { useCurrentUser, userUpdateSubject } from '@/src/hooks/usersCustomHooks'
 import classes from './ProfileCard.module.css';
 import { utcToISO } from '@/utils/timeUtils';
 import { retrieveImage, storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { handleContactChange } from '@/utils/contactUtils';
 
 interface CustomizeProfileModalProps {
   opened: boolean;
@@ -105,17 +106,11 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
     }
   };
 
-  const handleContactChange = (e: any) => {
-    const { value } = e.target;
-    const numericPhoneNumber = value.replace(/\D/g, '');
-    const formattedPhoneNumber = numericPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-    formik.setFieldValue('contact', formattedPhoneNumber);
-  };
-
   return (
     <Modal
       opened={opened}
       data-testid="customize-profile-modal"
+      padding={30}
       onClose={() => {
         onClose();
         formik.resetForm();
@@ -160,7 +155,6 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
             <Grid.Col span={6}>
               <TextInput
                 label="First Name"
-                defaultValue={user?.firstName}
                 placeholder={user?.firstName}
                 {...formik.getFieldProps('firstName')}
               />
@@ -168,28 +162,21 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
             <Grid.Col span={6}>
               <TextInput
                 label="Last Name"
-                defaultValue={user?.lastName}
                 placeholder={user?.lastName}
                 {...formik.getFieldProps('lastName')}
               />
             </Grid.Col>
             <Grid.Col span={12}>
-              <TextInput
-                label="Bio"
-                defaultValue={user?.bio}
-                placeholder={user?.bio}
-                {...formik.getFieldProps('bio')}
-              />
+              <TextInput label="Bio" placeholder={user?.bio} {...formik.getFieldProps('bio')} />
             </Grid.Col>
             <Grid.Col span={6}>
               <TextInput
                 radius="md"
                 label="Contact"
-                defaultValue={user?.contact}
                 placeholder={user?.contact}
                 {...formik.getFieldProps('contact')}
                 data-testid="contact"
-                onChange={handleContactChange}
+                onChange={(e) => handleContactChange(e, formik.setFieldValue)}
                 maxLength={14}
               />
             </Grid.Col>
@@ -230,7 +217,6 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
                 placeholder={user?.pets}
                 min={0}
                 step={1}
-                value={formik.values.pets}
                 onChange={(value) => formik.setFieldValue('pets', value)}
               />
             </Grid.Col>
@@ -241,7 +227,6 @@ export function CustomizeProfileModal({ opened, onClose, onUpdate }: CustomizePr
                 placeholder={user?.kids}
                 min={0}
                 step={1}
-                value={formik.values.kids}
                 onChange={(value) => formik.setFieldValue('kids', value)}
               />
             </Grid.Col>

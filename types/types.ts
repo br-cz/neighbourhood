@@ -52,6 +52,8 @@ export interface CommentItem {
   author: User;
   content: string;
   createdAt: string;
+  _version: number;
+  _deleted?: boolean;
 }
 
 export interface Comments {
@@ -64,9 +66,12 @@ export interface Post {
   community: Community;
   content: string;
   likedBy?: User[];
+  likeCount?: number;
   comments: Comments;
   visibility: Visibility;
   createdAt: string;
+  _version: number;
+  _deleted?: boolean;
 }
 
 export interface Event {
@@ -80,7 +85,10 @@ export interface Event {
   organizer: User;
   attendees?: User[];
   likedBy?: User[];
+  saveCount?: number;
   visibility: Visibility;
+  _version: number;
+  _deleted?: boolean;
 }
 
 export interface ItemForSale {
@@ -93,7 +101,10 @@ export interface ItemForSale {
   seller: User;
   community: Community;
   likedBy: User[];
+  saveCount?: number;
   visibility: Visibility;
+  _version: number;
+  _deleted?: boolean;
 }
 
 export interface FriendRequest {

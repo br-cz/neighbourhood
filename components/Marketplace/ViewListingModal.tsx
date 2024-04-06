@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Modal, Text, Group, Avatar, Image, Stack, Title } from '@mantine/core';
 import classes from './ViewListingModal.module.css';
-import { ItemForSale } from '@/src/API';
-import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveItemImage } from '../utils/s3Helpers/ItemForSaleImageS3Helper';
+import { ItemForSale } from '@/types/types';
 
 interface ViewListingModalProps {
   opened: boolean;
@@ -12,22 +10,8 @@ interface ViewListingModalProps {
 }
 
 export function ViewListingModal({ opened, onClose, item }: ViewListingModalProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-  const [itemImage, setItemImage] = useState<string>('');
-
-  useEffect(() => {
-    if (!item?.seller) return;
-    retrieveProfilePicture(item?.seller?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [item?.seller?.profilePic]);
-
-  useEffect(() => {
-    if (!item) return;
-    retrieveItemImage(item.id).then((image) => {
-      setItemImage(image);
-    });
-  }, [item?.images]);
+  const itemImage = item.images?.[0] || './img/placeholder-img.jpg';
+  const profilePic = item.seller?.profilePic || './img/placeholder-profile.jpg';
 
   return (
     <Modal
@@ -57,7 +41,9 @@ export function ViewListingModal({ opened, onClose, item }: ViewListingModalProp
         {item.description && (
           <div>
             <Title order={6}>Description</Title>
-            <Text fz="sm" data-testid="listing-modal-description">{item?.description}</Text>
+            <Text fz="sm" data-testid="listing-modal-description">
+              {item?.description}
+            </Text>
           </div>
         )}
 
@@ -71,11 +57,15 @@ export function ViewListingModal({ opened, onClose, item }: ViewListingModalProp
         <Group gap="lg" mt="xs">
           <div>
             <Title order={6}>Price</Title>
-            <Text fz="sm" data-testid="listing-modal-price">${item?.price}</Text>
+            <Text fz="sm" data-testid="listing-modal-price">
+              {item?.price > 0 ? `$${item?.price}` : 'FREE'}
+            </Text>
           </div>
           <div>
             <Title order={6}>If Interested, Contact</Title>
-            <Text fz="sm" data-testid="listing-modal-contact">{item?.contact}</Text>
+            <Text fz="sm" data-testid="listing-modal-contact">
+              {item?.contact}
+            </Text>
           </div>
         </Group>
       </Stack>

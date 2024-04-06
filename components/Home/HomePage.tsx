@@ -1,30 +1,23 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title, Text } from '@mantine/core';
+import { Button, Group, Select, TextInput, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { CreatePostDrawer } from '@/components/Home/CreatePostDrawer/CreatePostDrawer';
-import { PostCard } from '@/components/Home/PostCard/PostCard';
-import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
-import { Post } from '@/types/types';
-import { filterAndSortPosts } from '@/components/utils/postUtils';
+import { PostFeed } from '@/components/Home/PostFeed/PostFeed';
 
 export default function HomePage() {
   const [refresh, setRefresh] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const { posts, loading } = useFetchPosts(refresh);
-  const { userLikes } = useUserLikes();
   const [drawerOpened, drawerHandlers] = useDisclosure(false);
   const [sortQuery, setSortQuery] = useState<string | null>(null);
-
   const toggleRefresh = () => setRefresh((flag) => !flag);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredAndSortedPosts = filterAndSortPosts(posts, searchQuery, sortQuery);
   return (
     <>
       <Group justify="space-between" m="20">
@@ -35,7 +28,13 @@ export default function HomePage() {
             placeholder="Sort by..."
             defaultValue="Newly Posted"
             onChange={setSortQuery}
-            data={['Newly Posted', 'Oldest']}
+            data={[
+              'Newly Posted',
+              'Oldest',
+              'Popular (This Week)',
+              'Popular (This Month)',
+              'Popular (All Time)',
+            ]}
           />
           <TextInput
             radius="md"
@@ -50,34 +49,12 @@ export default function HomePage() {
           </Button>
         </Group>
       </Group>
-      {loading ? (
-        <Group justify="center" mt="200">
-          <Loader />
-        </Group>
-      ) : posts.length === 0 ? (
-        <Group justify="center" mt="200">
-          <Text size="lg" c="dimmed">
-            No one has shared anything yet in this community, be the first one to share!
-          </Text>
-        </Group>
-      ) : filteredAndSortedPosts.length === 0 ? (
-        <Group justify="center" mt="200">
-          <Text size="lg" c="dimmed">
-            There is no post that matches your search query.
-          </Text>
-        </Group>
-      ) : (
-        <SimpleGrid
-          cols={1}
-          spacing="lg"
-          verticalSpacing={{ base: 'md', sm: 'lg' }}
-          data-testid="post-feed"
-        >
-          {filteredAndSortedPosts.map((post: Post) => (
-            <PostCard key={post.id} post={post} isLiked={userLikes.get(post.id)} />
-          ))}
-        </SimpleGrid>
-      )}
+      <PostFeed
+        refresh={refresh}
+        searchQuery={searchQuery}
+        sortQuery={sortQuery}
+        onUpdate={toggleRefresh}
+      />
       <CreatePostDrawer
         opened={drawerOpened}
         onClose={drawerHandlers.close}

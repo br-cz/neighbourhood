@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import EventsPage from '@/components/Events/EventsPage';
+import { MantineProvider } from '@mantine/core';
 import { DataProvider } from '@/contexts/DataContext';
 import { CreateEventDrawer } from '@/components/Events/CreateEventDrawer/CreateEventDrawer';
-import { MantineProvider } from '@mantine/core';
+import EventsPage from '@/components/Events/EventsPage';
 
-let mockEvents = {
+const mockEvents = {
   events: [
     {
       id: '1',
@@ -62,9 +62,27 @@ jest.mock('@/src/hooks/eventsCustomHooks', () => {
     }),
   });
 
+  const useDeleteEvent = () => ({
+    handleDeleteEvent: jest.fn(),
+  });
+
+  const useEventSaves = () => ({
+    saveEvent: jest.fn(),
+    unsaveEvent: jest.fn(),
+  });
+
+  const useUserEventSaves = () => ({
+    userEventSaves: {
+      get: () => false,
+    },
+  });
+
   return {
     useFetchEvents,
     useCreateEvent,
+    useDeleteEvent,
+    useEventSaves,
+    useUserEventSaves,
   };
 });
 

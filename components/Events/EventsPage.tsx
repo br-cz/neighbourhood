@@ -2,35 +2,28 @@
 
 import React, { useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Loader, Select, SimpleGrid, TextInput, Title, Text } from '@mantine/core';
+import { Button, Group, Select, TextInput, Title } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { EventCard } from '@/components/Events/EventCard/EventCard';
 import { CreateEventDrawer } from '@/components/Events/CreateEventDrawer/CreateEventDrawer';
-import { ViewEventModal } from '@/components/Events/ViewEventModal/ViewEventModal';
-import { useFetchEvents } from '@/src/hooks/eventsCustomHooks';
-import { Event } from '@/types/types';
-import { filterAndSortEvents } from '@/components/utils/eventUtils';
+import { EventFeed } from './EventFeed/EventFeed';
 
 export default function EventsPage() {
   const [refresh, setRefresh] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [drawerOpened, drawerHandlers] = useDisclosure(false);
-  const [viewEventModalOpened, setViewEventModalOpened] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const { events, loading } = useFetchEvents(refresh);
-  const toggleRefresh = () => setRefresh((flag) => !flag);
   const [sortQuery, setSortQuery] = useState<string | null>(null);
+  const [drawerOpened, drawerHandlers] = useDisclosure(false);
+  const toggleRefresh = () => setRefresh((flag) => !flag);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredAndSortedEvents = filterAndSortEvents(events, searchQuery, sortQuery);
-
-  const handleViewEvent = (event: any) => {
-    setSelectedEvent(event);
-    setViewEventModalOpened(true);
+  const handleSortChange = (value: string | null) => {
+    setSortQuery(value);
+    if (value === 'Saved') {
+      toggleRefresh();
+    }
   };
 
   return (
@@ -41,9 +34,9 @@ export default function EventsPage() {
           <Select
             radius="md"
             placeholder="Sort by..."
-            onChange={setSortQuery}
+            onChange={handleSortChange}
             defaultValue="Newly Posted"
-            data={['Newly Posted', 'Today', 'This Week', 'This Month']}
+            data={['Newly Posted', 'Upcoming', 'Today', 'This Week', 'This Month', 'Saved']}
           />
           <TextInput
             radius="md"
@@ -58,49 +51,17 @@ export default function EventsPage() {
           </Button>
         </Group>
       </Group>
-
-      {loading ? (
-        <Group justify="center" mt="200">
-          <Loader />
-        </Group>
-      ) : events.length === 0 ? (
-        <Group justify="center" mt="200">
-          <Text size="lg" c="dimmed">
-            No one is hosting an event yet, be the first one!
-          </Text>
-        </Group>
-      ) : filteredAndSortedEvents.length === 0 ? (
-        <Group justify="center" mt="200">
-          <Text size="lg" c="dimmed">
-            There is no event that matches your search query
-          </Text>
-        </Group>
-      ) : (
-        <SimpleGrid
-          cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-          spacing={{ base: 5, sm: 'lg' }}
-          verticalSpacing={{ base: 'md', sm: 'lg' }}
-          data-testid="event-feed"
-        >
-          {filteredAndSortedEvents.map((event: Event) => (
-            <EventCard key={event.id} event={event} onView={() => handleViewEvent(event)} />
-          ))}
-        </SimpleGrid>
-      )}
-
+      <EventFeed
+        refresh={refresh}
+        searchQuery={searchQuery}
+        sortQuery={sortQuery}
+        onUpdate={toggleRefresh}
+      />
       <CreateEventDrawer
         opened={drawerOpened}
         onClose={drawerHandlers.close}
         onPostCreated={toggleRefresh}
       />
-
-      {selectedEvent && (
-        <ViewEventModal
-          opened={viewEventModalOpened}
-          onClose={() => setViewEventModalOpened(false)}
-          event={selectedEvent}
-        />
-      )}
     </>
   );
 }

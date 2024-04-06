@@ -19,12 +19,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faPencil } from '@fortawesome/free-solid-svg-icons';
 import classes from './ProfileSetup.module.css';
 import { utcToISO } from '@/utils/timeUtils';
+import { handleContactChange } from '@/utils/contactUtils';
 
 interface ProfileSetupProps {
   preferredUsername: string;
   firstName: string;
   familyName: string;
-  phoneNumber: string;
+  contact: string;
   bio: string;
   pronouns: string;
   profilePic: File | null;
@@ -39,7 +40,7 @@ interface ProfileSetupProps {
     firstName?: string;
     familyName?: string;
     bio?: string;
-    phoneNumber?: string;
+    contact?: string;
     pronouns?: string;
     profilePic?: string;
     birthday?: string;
@@ -51,7 +52,7 @@ interface ProfileSetupProps {
     bio?: boolean;
     firstName?: boolean;
     familyName?: boolean;
-    phoneNumber?: boolean;
+    contact?: boolean;
     pronouns?: boolean;
     profilePic?: boolean;
     birthday?: boolean;
@@ -64,11 +65,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   preferredUsername,
   firstName,
   familyName,
-  phoneNumber,
+  contact,
   bio,
   pronouns,
-  profilePic,
-  birthday,
+  // These variables are used via setFieldValue, but not recognized by eslint
+  profilePic, // eslint-disable-line @typescript-eslint/no-unused-vars
+  birthday, // eslint-disable-line @typescript-eslint/no-unused-vars
   kids,
   pets,
   setFieldValue,
@@ -84,13 +86,6 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     setFieldValue('birthday', utcToISO(date));
-  };
-
-  const handleContactChange = (e: any) => {
-    const { value } = e.target;
-    const numericPhoneNumber = value.replace(/\D/g, '');
-    const formattedPhoneNumber = numericPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-    setFieldValue('phoneNumber', formattedPhoneNumber);
   };
 
   const handleImageUploadClick = () => {
@@ -249,12 +244,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({
             <TextInput
               label="Phone Number"
               name="phoneNumber"
-              value={phoneNumber}
-              onChange={handleContactChange}
+              value={contact}
+              onChange={(e) => handleContactChange(e, setFieldValue)}
               placeholder="Optional"
               maxLength={14}
               onBlur={onBlur}
-              error={touched.phoneNumber && errors.phoneNumber ? errors.phoneNumber : undefined}
+              error={touched.contact && errors.contact ? errors.contact : undefined}
               radius="md"
               data-testid="phone"
               rightSection={

@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Group, Avatar, Text, Box, Stack, Title, Loader } from '@mantine/core';
 import classes from './ProfileCard.module.css';
 import { formatDate, formatUTCDate, getAge } from '@/utils/timeUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
-import { retrieveImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
 
 interface ProfileCardProps {
   refresh: boolean;
@@ -13,14 +12,7 @@ interface ProfileCardProps {
 
 export function ProfileCard({ refresh }: ProfileCardProps) {
   const { currentUser: user, loading } = useCurrentUser(refresh);
-  const [profilePic, setProfilePic] = useState<string>('');
-
-  useEffect(() => {
-    if (!user) return;
-    retrieveImage(user?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [user?.profilePic]);
+  const profilePic = user?.profilePic || './img/placeholder-profile.jpg';
 
   return (
     <>
@@ -48,7 +40,7 @@ export function ProfileCard({ refresh }: ProfileCardProps) {
                       <b>Contact:</b> {user?.contact || 'N/A'}
                     </Text>
                     <Text size="sm">
-                      <b>Address:</b> {user?.address.split(',')[0] || 'N/A'}
+                      <b>Address:</b> {user?.address?.split(',')[0] || 'N/A'}
                     </Text>
                     <Text size="sm">
                       <b>Joined:</b> {formatDate(user?.createdAt)}

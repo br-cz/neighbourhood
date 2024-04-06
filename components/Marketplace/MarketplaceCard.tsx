@@ -1,34 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Image, Text, Button, Group, Center, Avatar } from '@mantine/core';
+import React, { useState, useEffect } from 'react';
+import {
+  Card,
+  Image,
+  Text,
+  Button,
+  Group,
+  Avatar,
+  Title,
+  ActionIcon,
+  Tooltip,
+} from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBookmark, faTrash } from '@fortawesome/free-solid-svg-icons';
 import classes from './MarketplaceCard.module.css';
-import { ItemForSale } from '@/src/API';
-import { retrieveImage as retrieveProfilePicture } from '../utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveItemImage } from '../utils/s3Helpers/ItemForSaleImageS3Helper';
+import { ItemForSale } from '@/types/types';
+import { useDeleteListing, useListingSaves } from '@/src/hooks/marketplaceCustomHooks';
 
 interface MarketplaceCardProps {
   item: ItemForSale;
+  isSaved?: boolean;
+  isSeller?: boolean;
   onView: () => void;
+  onUpdate?: () => void;
 }
 
-export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-  const [itemImage, setItemImage] = useState<string>('');
+export function MarketplaceCard({
+  item,
+  isSaved,
+  isSeller,
+  onView,
+  onUpdate,
+}: MarketplaceCardProps) {
+  const itemImage = item.images?.[0] || './img/placeholder-img.jpg';
+  const profilePic = item.seller?.profilePic || './img/placeholder-profile.jpg';
+  const { handleDeleteListing } = useDeleteListing();
+  const { saveListing, unsaveListing } = useListingSaves(item.id);
+  const [saved, setSaved] = useState(false);
+  const [saveCount, setSaveCount] = useState(item.saveCount || 0);
 
   useEffect(() => {
-    if (!item?.seller) return;
-    retrieveProfilePicture(item?.seller?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [item?.seller?.profilePic]);
+    setSaved(isSaved!);
+  }, [isSaved]);
 
-  useEffect(() => {
-    if (!item) return;
-    retrieveItemImage(item.id).then((image) => {
-      setItemImage(image);
+  const handleDelete = () => {
+    handleDeleteListing(item);
+    onUpdate?.();
+  };
+
+  const openDeleteModal = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Delete listing?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete your listing? This action cannot be undone.
+        </Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md', color: 'red.6' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Delete', cancel: 'Back' },
+      onConfirm: () => handleDelete(),
     });
-  }, [item?.images]);
+  };
+
+  const handleSave = async () => {
+    if (saved) {
+      setSaveCount(saveCount! - 1);
+      setSaved(false);
+      await unsaveListing();
+    } else {
+      setSaveCount(saveCount! + 1);
+      setSaved(true);
+      await saveListing();
+    }
+  };
 
   return (
     <Card withBorder radius="md" className={classes.card} data-testid="marketplace-card">
@@ -40,21 +89,51 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
         />
       </a>
 
-      <Text className={classes.title} fw={700} c="dark.6" fz="lg" component="a" truncate="end" data-testid="listing-title">
-        {item?.title}
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Text
+          className={classes.title}
+          fw={700}
+          c="dark.6"
+          fz="lg"
+          component="a"
+          truncate="end"
+          data-testid="listing-title"
+        >
+          {item?.title}
+        </Text>
+        {isSeller && (
+          <Tooltip label="Delete listing">
+            <ActionIcon
+              color="red.7"
+              radius="xl"
+              variant="subtle"
+              size="sm"
+              className={classes.title}
+              onClick={openDeleteModal}
+              data-testid="delete-listing-btn"
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Tooltip>
+        )}
+      </Group>
+
+      <Text
+        className={classes.price}
+        fw={500}
+        fz="md"
+        mt={0}
+        component="a"
+        data-testid="listing-price"
+      >
+        {item?.price > 0 ? `$${item?.price}` : 'FREE'}
       </Text>
 
-      <Text className={classes.price} fw={500} fz="md" mt={0} component="a" data-testid="listing-price">
-        ${item?.price}
-      </Text>
-
-      <Group>
-        <Center>
-          <Avatar src={profilePic} size={23} radius="xl" mr={7} />
-          <Text fz="sm" c="dimmed" truncate="end" data-testid="seller">
-            {item?.seller?.firstName} {item?.seller?.lastName}
-          </Text>
-        </Center>
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Avatar src={profilePic} size={23} radius="xl" mr={7} />
+        <Text fz="sm" c="dimmed" truncate="end" data-testid="seller">
+          {`${item?.seller?.firstName} ${item?.seller?.lastName}`}
+        </Text>
       </Group>
 
       <Text className={classes.details} c="dark.6" fz="sm" truncate="end" data-testid="description">
@@ -72,6 +151,16 @@ export function MarketplaceCard({ item, onView }: MarketplaceCardProps) {
             data-testid="view-button"
           >
             View
+          </Button>
+          <Button
+            radius="md"
+            size="compact-sm"
+            variant={saved || isSaved ? 'outline' : 'filled'}
+            leftSection={<FontAwesomeIcon icon={faBookmark} />}
+            onClick={handleSave}
+            data-testid="listing-save-button"
+          >
+            {saved || isSaved ? 'Saved' : 'Save'}
           </Button>
         </Group>
       </Group>

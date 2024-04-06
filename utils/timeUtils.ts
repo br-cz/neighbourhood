@@ -72,18 +72,61 @@ export function formatPostedAt(isoDate: string): string {
 
 export function combineDateTime(date: Date, time: string) {
   const dateTime = new Date(date);
+  let timeToParse = time;
 
-  //Time is '' if user doesnt put a specific time
   if (time === '') {
-    time = '00:00';
+    timeToParse = '00:00';
   }
 
   //Given the HH:MM format, we parse each into a proper number
-  const [hours, minutes] = time.split(':').map((num) => parseInt(num, 10));
+  const [hours, minutes] = timeToParse.split(':').map((num) => parseInt(num, 10));
 
   dateTime.setHours(hours);
   dateTime.setMinutes(minutes);
   dateTime.setSeconds(0); // Reset seconds to 0, not necessary but makes things more consistent
 
   return dateTime.toISOString();
+}
+
+export function dateIsToday(isoDate: string): boolean {
+  const date = new Date(isoDate);
+  const now = new Date();
+  return (
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear()
+  );
+}
+
+export function dateIsThisWeek(isoDate: string): boolean {
+  const date = new Date(isoDate);
+  const now = new Date();
+  const firstDayOfWeek = new Date(
+    now.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1))
+  );
+  firstDayOfWeek.setHours(0, 0, 0, 0);
+
+  const lastDayOfWeek = new Date(firstDayOfWeek);
+  lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+  lastDayOfWeek.setHours(23, 59, 59, 999);
+
+  return date >= firstDayOfWeek && date <= lastDayOfWeek;
+}
+
+export function dateIsThisMonth(isoDate: string): boolean {
+  const date = new Date(isoDate);
+  const now = new Date();
+  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+  return date >= firstDayOfMonth && date <= lastDayOfMonth;
+}
+
+export function dateIsThisYear(isoDate: string): boolean {
+  const date = new Date(isoDate);
+  const now = new Date();
+  const firstDayOfYear = new Date(now.getFullYear(), 0, 1);
+  const lastDayOfYear = new Date(now.getFullYear() + 1, 0, 0, 23, 59, 59, 999);
+
+  return date >= firstDayOfYear && date <= lastDayOfYear;
 }

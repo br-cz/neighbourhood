@@ -621,6 +621,7 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -690,6 +691,7 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -759,6 +761,7 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       startedAt
       __typename
     }
+    likeCount
     comments {
       nextToken
       startedAt
@@ -786,6 +789,7 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -844,6 +848,7 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -902,6 +907,7 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1005,6 +1011,7 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1072,6 +1079,7 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1139,6 +1147,7 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1208,6 +1217,7 @@ export const onCreateItemForSale = /* GraphQL */ `subscription OnCreateItemForSa
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1277,6 +1287,7 @@ export const onUpdateItemForSale = /* GraphQL */ `subscription OnUpdateItemForSa
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1346,6 +1357,7 @@ export const onDeleteItemForSale = /* GraphQL */ `subscription OnDeleteItemForSa
       startedAt
       __typename
     }
+    saveCount
     visibility
     createdAt
     updatedAt
@@ -1572,6 +1584,7 @@ export const onCreateUserLikedPosts = /* GraphQL */ `subscription OnCreateUserLi
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1631,6 +1644,7 @@ export const onUpdateUserLikedPosts = /* GraphQL */ `subscription OnUpdateUserLi
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1690,6 +1704,7 @@ export const onDeleteUserLikedPosts = /* GraphQL */ `subscription OnDeleteUserLi
       id
       images
       content
+      likeCount
       visibility
       createdAt
       updatedAt
@@ -1752,6 +1767,7 @@ export const onCreateUserLikedEvents = /* GraphQL */ `subscription OnCreateUserL
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -1814,6 +1830,7 @@ export const onUpdateUserLikedEvents = /* GraphQL */ `subscription OnUpdateUserL
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -1876,6 +1893,7 @@ export const onDeleteUserLikedEvents = /* GraphQL */ `subscription OnDeleteUserL
       images
       location
       datetime
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -1938,6 +1956,7 @@ export const onCreateUserLikedItems = /* GraphQL */ `subscription OnCreateUserLi
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -2000,6 +2019,7 @@ export const onUpdateUserLikedItems = /* GraphQL */ `subscription OnUpdateUserLi
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt
@@ -2062,6 +2082,7 @@ export const onDeleteUserLikedItems = /* GraphQL */ `subscription OnDeleteUserLi
       images
       contact
       price
+      saveCount
       visibility
       createdAt
       updatedAt
