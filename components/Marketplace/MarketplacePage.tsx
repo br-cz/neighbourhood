@@ -53,7 +53,12 @@ export default function MarketplacePage() {
           </Button>
         </Group>
       </Group>
-      <MarketplaceFeed refresh={refresh} searchQuery={searchQuery} sortQuery={sortQuery} />
+      <MarketplaceFeed
+        refresh={refresh}
+        searchQuery={searchQuery}
+        sortQuery={sortQuery}
+        onUpdate={toggleRefresh}
+      />
       <CreateListingDrawer
         opened={drawerOpened}
         onClose={drawerHandlers.close}

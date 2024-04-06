@@ -51,6 +51,9 @@ jest.mock('@/src/hooks/marketplaceCustomHooks', () => ({
   useCreateListing: jest.fn(() => ({
     createdListing: jest.fn(),
   })),
+  useDeleteListing: jest.fn(() => ({
+    handleDeleteListing: jest.fn(),
+  })),
   useListingSaves: jest.fn(() => ({
     saveListing: jest.fn(),
     unsaveListing: jest.fn(),
