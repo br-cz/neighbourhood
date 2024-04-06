@@ -22,11 +22,10 @@ import { UserListItemPreview } from './UserListItemPreview';
 interface UserListItemProps {
   user: User;
   relationshipStatus: string;
-  onUpdate: () => void;
+  onChange: (newStatus: string) => void;
 }
 
-export function UserListItem({ user, relationshipStatus, onUpdate }: UserListItemProps) {
-  const [status, setStatus] = useState(relationshipStatus);
+export function UserListItem({ user, relationshipStatus, onChange }: UserListItemProps) {
   const [active, setActive] = useState(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
   const profilePic = user?.profilePic || './img/placeholder-profile.jpg';
@@ -41,8 +40,6 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       setActive((a: boolean) => !a);
       setPopoverOpened((o: boolean) => !o);
     }
-    onUpdate();
-    console.log('On update called from UserList Item');
   };
 
   const handlePreviewClicked = () => {
@@ -57,9 +54,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
         receiverId: user.id,
         userFriendRequestsId: user.id,
       };
-
+      onChange('outgoing');
       await handleCreateFriendRequest(friendRequestData);
-      setStatus('outgoing');
     } catch (err) {
       console.error('Failed to send friend request:', err);
       notifications.show({
@@ -73,9 +69,9 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
 
   const handleAcceptRequest = async () => {
     try {
+      onChange('friend');
       await handleCreateFriend(user.id);
       console.log(`Friend request accepted from: ${user.firstName}`);
-      setStatus('friend');
     } catch (err) {
       console.error('Failed to add friend:', err);
       notifications.show({
@@ -104,8 +100,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       labels: { confirm: 'Decline', cancel: 'Back' },
       onConfirm: async () => {
         try {
+          onChange('decline');
           await handleDeleteIncomingFriendRequest(user.id);
-          setStatus('none');
         } catch (error) {
           console.error('Failed to decline friend request:', error);
           notifications.show({
@@ -134,8 +130,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       labels: { confirm: 'Remove', cancel: 'Back' },
       onConfirm: async () => {
         try {
+          onChange('remove');
           await handleDeleteFriend(user.id);
-          setStatus('none');
         } catch (error) {
           console.error('Failed to delete friend:', error);
           notifications.show({
@@ -166,8 +162,8 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
       labels: { confirm: 'Cancel', cancel: 'Back' },
       onConfirm: async () => {
         try {
+          onChange('cancel');
           await handleDeleteOutgoingFriendRequest(user.id);
-          setStatus('none');
         } catch (error) {
           console.error('Failed to decline friend request:', error);
           notifications.show({
@@ -183,7 +179,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
 
   // Decide the button based on the relationship status
   let button;
-  switch (status) {
+  switch (relationshipStatus) {
     case 'friend':
       button = (
         <Button
@@ -238,11 +234,11 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             size="xs"
             color="red"
             leftSection={<FontAwesomeIcon icon={faXmark} />}
+            data-testid="decline-request-btn"
             onClick={() => {
               handleDeclineRequest();
               handleButtonClicked();
             }}
-            data-testid="decline-request-btn"
           >
             Decline
           </Button>
@@ -296,7 +292,7 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
             </div>
             {button}
             <Popover.Dropdown>
-              <UserListItemPreview user={user} relationshipStatus={status} />
+              <UserListItemPreview user={user} relationshipStatus={relationshipStatus} />
             </Popover.Dropdown>
           </Group>
         </div>

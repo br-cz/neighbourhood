@@ -292,9 +292,7 @@ export const useFetchFriends = () => {
 
         const friendsIds = await getFriendsAPI(parsedUserData.id);
         const parsedFriendIds = JSON.parse(JSON.stringify(friendsIds));
-        console.log(parsedFriendIds);
         const friendsInfo = (await fetchFriendsInfo(parsedFriendIds)) || [];
-        console.log(friendsInfo);
         const friendsWithImages = await Promise.all(
           friendsInfo.map(async (friend: any) => {
             const profilePicture = await retrieveProfilePicture(friend.id).catch(() => null);
@@ -307,7 +305,6 @@ export const useFetchFriends = () => {
         setFriends(friendsWithImages);
       } catch (err: any) {
         setError(err);
-        console.log(err);
       } finally {
         setLoading(false);
       }
@@ -323,30 +320,19 @@ export const useFetchCommunityMembers = () => {
   const [noneFriends, setNoneFriends] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [reload, setReload] = useState(false); // Add a state to trigger re-fetch
+  const [reload, setReload] = useState(false);
 
-  const { members, refetch: refetchMembers } = useFetchMembers();
-  const { friends, refetch: refetchFriends } = useFetchFriends();
-  const { incomingFriendRequests, refetch: refetchIncoming } = useFetchIncomingFriendRequests();
-  const { outgoingFriendRequests, refetch: refetchOutgoing } = useFetchOutgoingFriendRequests();
-
-  //const refetch = () => setReload(!reload); // Function to toggle the reload state
+  const { members } = useFetchMembers();
+  const { friends } = useFetchFriends();
+  const { incomingFriendRequests } = useFetchIncomingFriendRequests();
+  const { outgoingFriendRequests } = useFetchOutgoingFriendRequests();
 
   const refetch = () => {
-    refetchFriends();
-    refetchMembers();
-    refetchIncoming();
-    refetchOutgoing();
     setReload(!reload);
   };
 
   useEffect(() => {
-    // Ensure members is defined and not empty before proceeding
     if (!members || members.length === 0) return;
-    console.log(
-      'Refetching is Working!, incoming friend request number:',
-      incomingFriendRequests.length
-    );
 
     const fetchFriends = async () => {
       try {
@@ -392,7 +378,6 @@ export const useFetchCommunityMembers = () => {
 
     fetchFriends();
   }, [members, friends, incomingFriendRequests, outgoingFriendRequests, reload]);
-  //[members, friends, incomingFriendRequests, outgoingFriendRequests, reload]
   return {
     friends,
     incomingFriendRequests,

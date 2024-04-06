@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Group, Select, TextInput, Title } from '@mantine/core';
+import { Group, Select, TextInput, Title, Loader } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { UserList } from '@/components/People/UserList/UserList';
+import { useFetchCommunityMembers } from '@/src/hooks/friendsCustomHooks';
 
 export default function PeoplePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,6 +13,12 @@ export default function PeoplePage() {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+  };
+  const { refetch, loading, ...data } = useFetchCommunityMembers();
+  const userListProps = {
+    ...data,
+    searchQuery,
+    sortQuery,
   };
 
   return (
@@ -36,7 +43,13 @@ export default function PeoplePage() {
           />
         </Group>
       </Group>
-      <UserList searchQuery={searchQuery} sortQuery={sortQuery} />
+      {loading ? (
+        <Group justify="center" mt="200">
+          <Loader />
+        </Group>
+      ) : (
+        <UserList {...userListProps} />
+      )}
     </>
   );
 }
