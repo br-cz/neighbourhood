@@ -6,8 +6,10 @@ import {
   updatePost,
   createUserLikedPosts,
   deleteUserLikedPosts,
+  deletePost,
+  deleteComment,
 } from '@/src/graphql/mutations';
-import { CommentDataInput, PostDataInput } from '@/types/types';
+import { CommentDataInput, PostDataInput, Post, CommentItem } from '@/types/types';
 import { HttpError } from '@/src/models/error/HttpError';
 import { UserLikedPosts } from '@/src/API';
 import { getCurrentUserID } from '@/src/hooks/usersCustomHooks';
@@ -79,8 +81,12 @@ export const getCommunityPostsAPI = async (communityId: string) => {
                 }
                 id
                 createdAt
+                _version
+                _deleted
               }
             }
+            _version
+            _deleted
           }
         }
       }
@@ -97,6 +103,24 @@ export const getCommunityPostsAPI = async (communityId: string) => {
       `Error retrieving community posts: ${error.message}`,
       error.statusCode || 500
     );
+  }
+};
+
+export const deletePostAPI = async (post: Post) => {
+  try {
+    const response = await client.graphql({
+      query: deletePost,
+      variables: {
+        input: {
+          id: post.id,
+          _version: post._version,
+        },
+      },
+    });
+    console.log('Post deleted successfully:', response.data.deletePost);
+    return response.data.deletePost;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting post: ${error.message}`, error.statusCode || 500);
   }
 };
 
@@ -126,6 +150,24 @@ export const createNewCommentAPI = async (commentData: CommentDataInput) => {
     return comment.data.createComment;
   } catch (error: any) {
     throw new HttpError(`Error creating comment: ${error.message}`, error.statusCode || 500);
+  }
+};
+
+export const deleteCommentAPI = async (comment: CommentItem) => {
+  try {
+    const response = await client.graphql({
+      query: deleteComment,
+      variables: {
+        input: {
+          id: comment.id,
+          _version: comment._version,
+        },
+      },
+    });
+    console.log('Comment deleted successfully:', response.data.deleteComment);
+    return response.data.deleteComment;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting comment: ${error.message}`, error.statusCode || 500);
   }
 };
 

@@ -14,6 +14,7 @@ import {
   Box,
   Stack,
   Image,
+  Tooltip,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
@@ -230,18 +231,20 @@ export function CreateListingDrawer({ opened, onClose, onPostCreated }: CreateLi
             <Text size="sm" c="dimmed">
               (optional)
             </Text>
-            <ActionIcon
-              color="red"
-              radius="md"
-              variant="subtle"
-              size={16}
-              onClick={handleRemoveImage}
-              disabled={previews.length === 0}
-              ml={5}
-              data-testid="remove-image"
-            >
-              <FontAwesomeIcon icon={faTrash} size="xs" />
-            </ActionIcon>
+            <Tooltip label="Remove image" disabled={previews.length === 0}>
+              <ActionIcon
+                color="red"
+                radius="md"
+                variant="subtle"
+                size={16}
+                onClick={handleRemoveImage}
+                disabled={previews.length === 0}
+                ml={5}
+                data-testid="remove-image"
+              >
+                <FontAwesomeIcon icon={faTrash} size="xs" />
+              </ActionIcon>
+            </Tooltip>
           </Group>
           {previews.length === 0 ? (
             <Dropzone

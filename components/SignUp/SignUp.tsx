@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { confirmSignUp } from 'aws-amplify/auth';
-import { generateClient } from '@aws-amplify/api';
 import { Stepper, Button, Group, Stack, Title, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
@@ -25,9 +24,7 @@ import { EmailVerify } from './EmailVerify';
 import { signUpSchema } from './signUpValidation';
 import { processSignUp } from './signUpLogic';
 import { storeImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
-import { handleSignIn } from '../Authorization/loginForm.client';
-
-const client = generateClient({});
+import { handleSignIn } from '@/utils/authUtils';
 
 export const SignUp = () => {
   const [userId, setUserId] = useState<string | null>(null);
@@ -152,21 +149,17 @@ export const SignUp = () => {
       const username = formik.values.email;
       const { password } = formik.values;
 
-      await handleSignIn({
-        username,
-        password,
-        clientInput: client,
-        handlers,
-        setErrorMessage: (message) => console.error(message),
-      });
       if (formik.values.profilePic && userId) {
         await storeImage(formik.values.profilePic, userId);
       }
-      router.push('/neighbourhood');
-      notifications.show({
-        radius: 'md',
-        title: 'Hey, Neighbour! 👋 ',
-        message: `Welcome to your new community, ${formik.values.firstName}!`,
+      await handleSignIn({
+        username,
+        password,
+        router,
+        firstLogin: true,
+        firstName: formik.values.firstName,
+        handlers,
+        setErrorMessage: (message) => console.error(message),
       });
     } catch (error) {
       console.error('Verification Error:', error);

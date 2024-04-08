@@ -1,35 +1,79 @@
 import { useEffect, useState } from 'react';
-import { Card, Image, Text, Button, Group, Center, Avatar, Stack } from '@mantine/core';
+import {
+  Card,
+  Image,
+  Text,
+  Button,
+  Group,
+  Avatar,
+  Stack,
+  Title,
+  ActionIcon,
+  Tooltip,
+} from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import classes from './EventCard.module.css';
-import { Event } from '@/types/types';
+import { faBars, faBookmark, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { formatDate, formatTime } from '@/utils/timeUtils';
-import { retrieveImage as retrieveProfilePic } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveEventImage } from '../../utils/s3Helpers/EventImageS3Helper';
+import { useDeleteEvent, useEventSaves } from '@/src/hooks/eventsCustomHooks';
+import { Event } from '@/types/types';
+import classes from './EventCard.module.css';
 
 interface EventCardProps {
   event: Event;
+  isSaved?: boolean;
+  isOrganizer?: boolean;
   onView: () => void;
+  onUpdate?: () => void;
 }
 
-export function EventCard({ event, onView }: EventCardProps) {
-  const [profilePic, setProfilePic] = useState<string>('');
-  const [eventImage, setEventImage] = useState<string>('');
+export function EventCard({ event, isSaved, isOrganizer, onView, onUpdate }: EventCardProps) {
+  const eventImage = event.images?.[0] || './img/placeholder-img.jpg';
+  const profilePic = event.organizer?.profilePic || './img/placeholder-profile.jpg';
+  const { handleDeleteEvent } = useDeleteEvent();
+  const { saveEvent, unsaveEvent } = useEventSaves(event.id);
+  const [saved, setSaved] = useState(false);
+  const [saveCount, setSaveCount] = useState(event.saveCount || 0);
 
   useEffect(() => {
-    if (!event?.organizer) return;
-    retrieveProfilePic(event?.organizer?.id).then((image) => {
-      setProfilePic(image);
-    });
-  }, [event?.organizer?.profilePic]);
+    setSaved(isSaved!);
+  }, [isSaved]);
 
-  useEffect(() => {
-    if (!event) return;
-    retrieveEventImage(event.id).then((image) => {
-      setEventImage(image);
+  const handleDelete = () => {
+    handleDeleteEvent(event);
+    onUpdate?.();
+  };
+
+  const openDeleteModal = () => {
+    modals.openConfirmModal({
+      title: (
+        <Title order={5} component="p">
+          Delete event?
+        </Title>
+      ),
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete your event? This action cannot be undone.
+        </Text>
+      ),
+      confirmProps: { size: 'xs', radius: 'md', color: 'red.6' },
+      cancelProps: { size: 'xs', radius: 'md' },
+      labels: { confirm: 'Delete', cancel: 'Back' },
+      onConfirm: () => handleDelete(),
     });
-  }, [event?.images]);
+  };
+
+  const handleSave = async () => {
+    if (saved) {
+      setSaveCount(saveCount! - 1);
+      setSaved(false);
+      await unsaveEvent();
+    } else {
+      setSaveCount(saveCount! + 1);
+      setSaved(true);
+      await saveEvent();
+    }
+  };
 
   return (
     <Card withBorder radius="md" className={classes.card} data-testid="event-card">
@@ -41,21 +85,36 @@ export function EventCard({ event, onView }: EventCardProps) {
         />
       </a>
 
-      <Text className={classes.title} fw={600} fz="lg" component="a">
-        {event?.name}
-      </Text>
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Text fw={600} fz="lg" component="a" className={classes.title} truncate="end">
+          {event?.name}
+        </Text>
+        {isOrganizer && (
+          <Tooltip label="Delete event">
+            <ActionIcon
+              color="red.7"
+              radius="xl"
+              variant="subtle"
+              size="sm"
+              className={classes.title}
+              onClick={openDeleteModal}
+              data-testid="delete-event-btn"
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" />
+            </ActionIcon>
+          </Tooltip>
+        )}
+      </Group>
 
-      <Group>
-        <Center>
-          <Avatar src={profilePic} size={23} radius="xl" mr="xs" />
-          <Text fz="sm" c="dimmed">
-            {event?.organizer?.firstName} {event?.organizer?.lastName}
-          </Text>
-        </Center>
+      <Group justify="flex-start" gap="0px" align="center" wrap="nowrap">
+        <Avatar src={profilePic} size={23} radius="xl" mr="xs" />
+        <Text fz="sm" c="dimmed" truncate="end">
+          {event?.organizer?.firstName} {event?.organizer?.lastName}
+        </Text>
       </Group>
 
       <Stack gap="0" className={classes.details}>
-        <Text fz="sm">
+        <Text fz="sm" truncate="end">
           <b>Location:</b> {event?.location}
         </Text>
         <Text fz="sm">
@@ -76,6 +135,16 @@ export function EventCard({ event, onView }: EventCardProps) {
             onClick={onView}
           >
             View
+          </Button>
+          <Button
+            radius="md"
+            size="compact-sm"
+            variant={saved || isSaved ? 'outline' : 'filled'}
+            leftSection={<FontAwesomeIcon icon={faBookmark} />}
+            onClick={handleSave}
+            data-testid="event-save-button"
+          >
+            {saved || isSaved ? 'Saved' : 'Save'}
           </Button>
         </Group>
       </Group>

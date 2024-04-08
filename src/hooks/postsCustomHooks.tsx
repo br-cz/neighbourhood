@@ -6,10 +6,13 @@ import {
   listUserLikedPostsAPI,
   deleteLikeAPI,
   createLikeAPI,
+  deletePostAPI,
+  deleteCommentAPI,
 } from '../api/services/post';
 import { getCurrentUser, getCurrentUserID } from './usersCustomHooks';
-import { Post, CommentDataInput, PostDataInput, Visibility } from '@/types/types';
+import { Post, CommentDataInput, PostDataInput, Visibility, CommentItem } from '@/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
+import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const useCreatePost = () => {
   const [error, setError] = useState<string | undefined>();
@@ -39,6 +42,25 @@ export const useCreatePost = () => {
   return { handleCreatePost, error };
 };
 
+export const useDeletePost = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+
+  const handleDeletePost = async (post: Post) => {
+    setLoading(true);
+    try {
+      await deletePostAPI(post);
+      setLoading(false);
+    } catch (err: any) {
+      console.error('Error deleting post:', err);
+      setError(err.message || 'An error occurred');
+      setLoading(false);
+    }
+  };
+
+  return { handleDeletePost, loading, error };
+};
+
 export const useFetchPosts = (refresh: boolean = false) => {
   const [posts, setPosts] = useState<any>([]);
   const [loading, setLoading] = useState(true);
@@ -54,11 +76,45 @@ export const useFetchPosts = (refresh: boolean = false) => {
         const jsonPosts = JSON.parse(JSON.stringify(response));
         const visiblePosts = jsonPosts.data.getCommunity.posts.items.filter(
           (post: Post) =>
-            post.visibility === Visibility.PUBLIC ||
-            post.author.id === user!.id ||
-            (post.visibility === Visibility.FRIENDS_ONLY && user!.friends?.includes(post.author.id))
+            post._deleted !== true &&
+            (post.visibility === Visibility.PUBLIC ||
+              post.author.id === user!.id ||
+              (post.visibility === Visibility.FRIENDS_ONLY &&
+                user!.friends?.includes(post.author.id)))
         );
-        setPosts(visiblePosts);
+        const postsWithImages = await Promise.all(
+          visiblePosts.map(async (post: any) => {
+            const profilePicture = await retrieveProfilePicture(post.author.id).catch(() => null);
+            const updatedPost = {
+              ...post,
+              author: {
+                ...post.author,
+                profilePic: profilePicture,
+              },
+            };
+            if (updatedPost.comments && updatedPost.comments.items.length > 0) {
+              const commentsWithImages = await Promise.all(
+                updatedPost.comments.items
+                  .filter((comment: any) => !comment._deleted)
+                  .map(async (comment: any) => {
+                    const commentProfilePicture = await retrieveProfilePicture(
+                      comment.author.id
+                    ).catch(() => null);
+                    return {
+                      ...comment,
+                      author: {
+                        ...comment.author,
+                        profilePic: commentProfilePicture,
+                      },
+                    };
+                  })
+              );
+              updatedPost.comments.items = commentsWithImages;
+            }
+            return updatedPost;
+          })
+        );
+        setPosts(postsWithImages);
       } catch (err: any) {
         console.error('Error fetching posts:', err);
         setError(err);
@@ -94,6 +150,25 @@ export const useCreateComment = () => {
   };
 
   return { handleCreateComment, error };
+};
+
+export const useDeleteComment = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+
+  const handleDeleteComment = async (comment: CommentItem) => {
+    setLoading(true);
+    try {
+      await deleteCommentAPI(comment);
+      setLoading(false);
+    } catch (err: any) {
+      console.error('Error deleting comment:', err);
+      setError(err.message || 'An error occurred');
+      setLoading(false);
+    }
+  };
+
+  return { handleDeleteComment, loading, error };
 };
 
 export const usePostLikes = (postId: string) => {

@@ -1,6 +1,8 @@
 import { filterAndSortEvents } from '@/components/utils/eventUtils';
 import { Visibility } from '@/types/types';
 
+const mockSaves = new Map<string, boolean>();
+
 const mockEvents = [
   {
     id: '1',
@@ -11,6 +13,7 @@ const mockEvents = [
     datetime: '2024-01-02:00:00',
     location: 'Test Location',
     visibility: Visibility.PUBLIC,
+    _version: 1,
   },
   {
     id: '2',
@@ -21,6 +24,7 @@ const mockEvents = [
     datetime: '2024-01-05T12:00:00',
     location: 'Test Location',
     visibility: Visibility.PUBLIC,
+    _version: 1,
   },
   {
     id: '3',
@@ -36,37 +40,38 @@ const mockEvents = [
     datetime: '2024-01-15T20:00:00',
     location: 'Test Location',
     visibility: Visibility.PUBLIC,
+    _version: 1,
   },
 ];
 
 describe('postUtils', () => {
   describe('filterAndSortEvents', () => {
     it('filters posts by content', () => {
-      const filtered = filterAndSortEvents(mockEvents, 'party', null);
+      const filtered = filterAndSortEvents(mockEvents, 'party', null, mockSaves);
       expect(filtered.length).toBe(1);
       expect(filtered[0].name).toBe('Birthday Party');
     });
 
     it('filters posts by author first name', () => {
-      const filtered = filterAndSortEvents(mockEvents, 'zoe', null);
+      const filtered = filterAndSortEvents(mockEvents, 'zoe', null, mockSaves);
       expect(filtered.length).toBe(1);
       expect(filtered[0].organizer.firstName).toBe('Zoe');
     });
 
     it('filters posts by author last name', () => {
-      const filtered = filterAndSortEvents(mockEvents, 'adams', null);
+      const filtered = filterAndSortEvents(mockEvents, 'adams', null, mockSaves);
       expect(filtered.length).toBe(1);
       expect(filtered[0].organizer.lastName).toBe('Adams');
     });
 
     it('filters posts by full name', () => {
-      const filtered = filterAndSortEvents(mockEvents, 'alex clark', null);
+      const filtered = filterAndSortEvents(mockEvents, 'alex clark', null, mockSaves);
       expect(filtered.length).toBe(1);
       expect(filtered[0].organizer.firstName).toBe('Alex');
     });
 
     it('sorts posts by posted date (new to old)', () => {
-      const sorted = filterAndSortEvents(mockEvents, '', 'Newly Posted');
+      const sorted = filterAndSortEvents(mockEvents, '', 'Newly Posted', mockSaves);
       expect(sorted[0].id).toBe('1');
       expect(sorted[2].id).toBe('3');
     });
@@ -75,7 +80,7 @@ describe('postUtils', () => {
       const today = new Date('2024-01-02T00:00:00');
       jest.useFakeTimers().setSystemTime(today);
 
-      const filtered = filterAndSortEvents(mockEvents, '', 'Today');
+      const filtered = filterAndSortEvents(mockEvents, '', 'Today', mockSaves);
       expect(filtered.length).toBe(1);
       expect(filtered[0].id).toBe('1');
 
@@ -86,7 +91,7 @@ describe('postUtils', () => {
       const thisWeekStart = new Date('2024-01-02T00:00:00');
       jest.useFakeTimers().setSystemTime(thisWeekStart);
 
-      const filtered = filterAndSortEvents(mockEvents, '', 'This Week');
+      const filtered = filterAndSortEvents(mockEvents, '', 'This Week', mockSaves);
       expect(filtered.length).toBe(2);
 
       jest.useRealTimers();
@@ -96,7 +101,7 @@ describe('postUtils', () => {
       const thisMonthStart = new Date('2024-01-02T00:00:00');
       jest.useFakeTimers().setSystemTime(thisMonthStart);
 
-      const filtered = filterAndSortEvents(mockEvents, '', 'This Month');
+      const filtered = filterAndSortEvents(mockEvents, '', 'This Month', mockSaves);
       console.log(filtered);
       expect(filtered.length).toBe(3);
 

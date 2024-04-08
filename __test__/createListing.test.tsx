@@ -1,12 +1,13 @@
 import React from 'react';
 import { MantineProvider } from '@mantine/core';
-import { render, waitFor, screen, fireEvent, cleanup} from '@testing-library/react';
+import { render, waitFor, screen, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 import MarketplacePage from '@/components/Marketplace/MarketplacePage';
 import { CreateListingDrawer } from '@/components/Marketplace/CreateListingDrawer';
 import { DataProvider } from '@/contexts/DataContext';
 import { Visibility } from '@/src/API';
-import userEvent from '@testing-library/user-event';
+
 jest.mock('formik', () => ({
   ...jest.requireActual('formik'),
   useFormik: jest.fn().mockImplementation(() => ({
@@ -38,6 +39,26 @@ jest.mock('formik', () => ({
   })),
 }));
 
+jest.mock('@/src/hooks/marketplaceCustomHooks', () => ({
+  useFetchListings: jest.fn(() => ({
+    listings: [],
+    loading: false,
+    refetch: jest.fn(),
+  })),
+  useCreateListing: jest.fn(() => ({
+    createdListing: jest.fn(),
+  })),
+  useListingSaves: jest.fn(() => ({
+    saveListing: jest.fn(),
+    unsaveListing: jest.fn(),
+  })),
+  useUserListingSaves: jest.fn(() => ({
+    userListingSaves: {
+      get: () => false,
+    },
+  })),
+}));
+
 const renderComponent = () =>
   render(
     <MantineProvider>
@@ -63,7 +84,7 @@ describe('MarketplacePage - Create Listing', () => {
     const priceInput = screen.queryByTestId('price-input');
     const descriptionInput = screen.queryByTestId('description');
     const contactInput = screen.queryByTestId('contact');
-    
+
     if (titleInput) userEvent.clear(titleInput);
     if (priceInput) userEvent.clear(priceInput);
     if (descriptionInput) userEvent.clear(descriptionInput);
@@ -90,10 +111,10 @@ describe('MarketplacePage - Create Listing', () => {
     renderComponent();
     await userEvent.click(screen.getByText(/New Listing.../i));
     await waitFor(() => {
-        expect(screen.getByTestId('title-input')).toBeInTheDocument();
-        expect(screen.getByTestId('price-input')).toBeInTheDocument();
-        expect(screen.getByTestId('description')).toBeInTheDocument();
-        expect(screen.getByTestId('contact')).toBeInTheDocument();
+      expect(screen.getByTestId('title-input')).toBeInTheDocument();
+      expect(screen.getByTestId('price-input')).toBeInTheDocument();
+      expect(screen.getByTestId('description')).toBeInTheDocument();
+      expect(screen.getByTestId('contact')).toBeInTheDocument();
     });
   });
 
@@ -156,7 +177,6 @@ describe('MarketplacePage - Create Listing', () => {
     userEvent.type(screen.getByTestId('title-input'), 'Test Item');
     userEvent.type(screen.getByTestId('description'), 'This is a test description');
     userEvent.type(screen.getByTestId('contact'), '1234567890');
-
 
     // Submit the form without filling in the required fields
     await userEvent.click(screen.getByText(/Post Item/i));

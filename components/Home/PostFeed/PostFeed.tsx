@@ -3,18 +3,22 @@ import { PostCard } from '@/components/Home//PostCard/PostCard';
 import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
 import { filterAndSortPosts } from '@/components/utils/postUtils';
 import { Post } from '@/types/types';
+import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 export function PostFeed({
   refresh,
   searchQuery,
   sortQuery,
+  onUpdate,
 }: {
   refresh: boolean;
   searchQuery: string;
   sortQuery: string | null;
+  onUpdate?: () => void;
 }) {
   const { posts, loading } = useFetchPosts(refresh);
   const { userLikes } = useUserLikes();
+  const { currentUser } = useCurrentUser();
   const filteredAndSortedPosts = filterAndSortPosts(posts, searchQuery, sortQuery);
 
   return (
@@ -43,7 +47,13 @@ export function PostFeed({
           data-testid="post-feed"
         >
           {filteredAndSortedPosts.map((post: Post) => (
-            <PostCard key={post.id} post={post} isLiked={userLikes.get(post.id)} />
+            <PostCard
+              key={post.id}
+              post={post}
+              isLiked={userLikes.get(post.id)}
+              isAuthor={post.author?.id === currentUser?.id}
+              onUpdate={onUpdate}
+            />
           ))}
         </SimpleGrid>
       )}

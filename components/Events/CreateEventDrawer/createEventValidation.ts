@@ -1,10 +1,15 @@
 import { object, string, date } from 'yup';
 
-const today = new Date();
-today.setHours(0, 0, 0, 0);
 export const createEventSchema = object({
-  eventName: string().required('Event name is required'),
-  location: string().required('Location is required'),
+  eventName: string()
+    .required('Event name is required')
+    .max(75, 'Event name must be 75 characters or less')
+    .min(3, 'Event name must be at least 3 characters'),
+  location: string()
+    .required('Location is required')
+    .max(50, 'Location must be 50 characters or less')
+    .min(3, 'Location must be at least 3 characters'),
   time: string().required('Time is required'),
-  date: date().min(today, 'Date must be in the future'),
+  description: string().max(750, 'Description must be 750 characters or less'),
+  date: date(),
 });

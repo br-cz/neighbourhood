@@ -1,7 +1,16 @@
 import { generateClient } from '@aws-amplify/api';
-import { createEvent, updateEvent } from '@/src/graphql/mutations';
-import { getEvent } from '@/src/graphql/queries';
+import {
+  createEvent,
+  createUserLikedEvents,
+  deleteEvent,
+  deleteUserLikedEvents,
+  updateEvent,
+} from '@/src/graphql/mutations';
+import { getEvent, listUserLikedEvents } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
+import { getCurrentUserID } from './community';
+import { Event } from '@/types/types';
+import { UserLikedEvents } from '@/src/API';
 
 const client = generateClient();
 
@@ -39,6 +48,7 @@ export const getCommunityEventsAPI = async (communityId: string) => {
                 }
               }
             }
+            saveCount
             location
             name
             updatedAt
@@ -51,6 +61,8 @@ export const getCommunityEventsAPI = async (communityId: string) => {
               lastName
               profilePic
             }
+            _version
+            _deleted
           }
         }
       }
@@ -88,21 +100,124 @@ export const createEventAPI = async (userId: string, communityId: string, eventD
   }
 };
 
+export const deleteEventAPI = async (event: Event) => {
+  try {
+    const response = await client.graphql({
+      query: deleteEvent,
+      variables: {
+        input: {
+          id: event.id,
+          _version: event._version,
+        },
+      },
+    });
+    console.log('Event deleted successfully:', response.data.deleteEvent);
+    return response.data.deleteEvent;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting event: ${error.message}`, error.statusCode || 500);
+  }
+};
+
 export const updateEventImageAPI = async (postId: string, image: string, _version: number) => {
-    try {
-        const updatedEvent = await client.graphql({
-          query: updateEvent,
-          variables: {
-            input: {
-              id: postId,
-              images: [image],
-              _version,
-            },
-          },
-        });
-        console.log('User updated successfully:', updatedEvent.data.updateEvent);
-        return updatedEvent.data.updateEvent;
-    } catch (error: any) {
-        throw new HttpError(`Error updating event image: ${error.message}`, error.statusCode || 500);
+  try {
+    const updatedEvent = await client.graphql({
+      query: updateEvent,
+      variables: {
+        input: {
+          id: postId,
+          images: [image],
+          _version,
+        },
+      },
+    });
+    console.log('User updated successfully:', updatedEvent.data.updateEvent);
+    return updatedEvent.data.updateEvent;
+  } catch (error: any) {
+    throw new HttpError(`Error updating event image: ${error.message}`, error.statusCode || 500);
+  }
+};
+
+export const listUserSavedEventsAPI = async () => {
+  try {
+    const response = await client.graphql({
+      query: listUserLikedEvents,
+    });
+    const filteredResponse = response.data.listUserLikedEvents.items.filter(
+      (item: any) => !item._deleted
+    );
+    return filteredResponse;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error retrieving user saved events: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
+};
+
+export const updateEventSaveCountAPI = async (eventId: string, adjustment: number) => {
+  try {
+    const eventResponse = await getEventAPI(eventId);
+    if (!eventResponse) {
+      throw new Error('Event not found');
     }
+    const { _version, saveCount = 0 } = eventResponse;
+    const newSaveCount = Math.max(saveCount! + adjustment, 0);
+    const updatedEvent = await client.graphql({
+      query: updateEvent,
+      variables: {
+        input: {
+          id: eventId,
+          saveCount: newSaveCount,
+          _version,
+        },
+      },
+    });
+    console.log('Event updated successfully:', updatedEvent.data.updateEvent);
+    return updatedEvent.data.updateEvent;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error updating event save count: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
+};
+
+export const createEventSaveAPI = async (eventId: string) => {
+  const userId = getCurrentUserID();
+  try {
+    const createUserLikedEventsResponse = await client.graphql({
+      query: createUserLikedEvents,
+      variables: {
+        input: {
+          eventId,
+          userId,
+        },
+      },
+    });
+    await updateEventSaveCountAPI(eventId, 1);
+    return createUserLikedEventsResponse.data.createUserLikedEvents;
+  } catch (error: any) {
+    throw new HttpError(
+      `Error creating user event connection: ${error.message}`,
+      error.statusCode || 500
+    );
+  }
+};
+
+export const deleteEventSaveAPI = async (like: UserLikedEvents) => {
+  try {
+    const deleteUserLikedEventsResponse = await client.graphql({
+      query: deleteUserLikedEvents,
+      variables: {
+        input: {
+          id: like.id,
+          _version: like._version,
+        },
+      },
+    });
+    await updateEventSaveCountAPI(like.eventId, -1);
+    return deleteUserLikedEventsResponse.data.deleteUserLikedEvents;
+  } catch (error: any) {
+    throw new HttpError(`Error deleting event save: ${error.message}`, error.statusCode || 500);
+  }
 };
