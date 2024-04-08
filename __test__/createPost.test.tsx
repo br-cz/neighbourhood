@@ -3,8 +3,8 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import HomePage from '@/components/Home/HomePage';
-import { DataProvider } from '@/contexts/DataContext';
+import HomePage from '@/src/components/Home/HomePage';
+import { DataProvider } from '@/src/contexts/DataContext';
 import { Visibility } from '@/src/API';
 
 const mockData = {

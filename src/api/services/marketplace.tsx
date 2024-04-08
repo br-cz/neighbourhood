@@ -10,7 +10,7 @@ import { getItemForSale, listUserLikedItems } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
 import { getCurrentUserID } from './community';
 import { UserLikedItems } from '@/src/API';
-import { ItemForSale } from '@/types/types';
+import { ItemForSale } from '@/src/types/types';
 
 const client = generateClient();
 

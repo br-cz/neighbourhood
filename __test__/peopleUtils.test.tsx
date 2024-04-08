@@ -1,4 +1,4 @@
-import { sortByFirstName, sortByLastName, sortByNewToOld } from '@/utils/sortUtils';
+import { sortByFirstName, sortByLastName, sortByNewToOld } from '@/src/utils/sortUtils';
 
 interface SimplifiedUser {
   id: string;

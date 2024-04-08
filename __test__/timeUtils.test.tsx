@@ -1,4 +1,4 @@
-import { formatDate, formatTime, formatPostedAt, combineDateTime } from '@/utils/timeUtils';
+import { formatDate, formatTime, formatPostedAt, combineDateTime } from '@/src/utils/timeUtils';
 
 // Test Suite for timeUtils
 describe('timeUtils', () => {

@@ -3,8 +3,8 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen } from '@testing-library/react';
 import { notifications } from '@mantine/notifications';
 import userEvent from '@testing-library/user-event';
-import ProfilePage from '@/components/Profile/ProfilePage';
-import { DataProvider } from '@/contexts/DataContext';
+import ProfilePage from '@/src/components/Profile/ProfilePage';
+import { DataProvider } from '@/src/contexts/DataContext';
 
 const Auth = require('@aws-amplify/auth');
 const UserAPI = require('@/src/api/services/user');

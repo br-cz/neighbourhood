@@ -9,9 +9,9 @@ import {
   getCommunityItemsForSaleAPI,
   listUserSavedListingsAPI,
 } from '../api/services/marketplace';
-import { ItemForSale, Visibility } from '@/types/types';
-import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveItemImage } from '@/components/utils/s3Helpers/ItemForSaleImageS3Helper';
+import { ItemForSale, Visibility } from '@/src/types/types';
+import { retrieveImage as retrieveProfilePicture } from '@/src/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveItemImage } from '@/src/components/utils/s3Helpers/ItemForSaleImageS3Helper';
 
 export const useCreateListing = () => {
   const handleCreateListing = async (itemData: any) => {

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MantineProvider } from '@mantine/core';
-import { DataProvider } from '@/contexts/DataContext';
-import { CreateEventDrawer } from '@/components/Events/CreateEventDrawer/CreateEventDrawer';
-import EventsPage from '@/components/Events/EventsPage';
+import { DataProvider } from '@/src/contexts/DataContext';
+import { CreateEventDrawer } from '@/src/components/Events/CreateEventDrawer/CreateEventDrawer';
+import EventsPage from '@/src/components/Events/EventsPage';
 
 const mockEvents = {
   events: [

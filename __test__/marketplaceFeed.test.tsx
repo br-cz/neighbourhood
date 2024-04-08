@@ -1,9 +1,9 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
-import { DataProvider } from '@/contexts/DataContext';
-import MarketplacePage from '@/components/Marketplace/MarketplacePage';
-import { MarketplaceFeed } from '@/components/Marketplace/MarketplaceFeed';
+import { DataProvider } from '@/src/contexts/DataContext';
+import MarketplacePage from '@/src/components/Marketplace/MarketplacePage';
+import { MarketplaceFeed } from '@/src/components/Marketplace/MarketplaceFeed';
 
 const userHooks = require('@/src/hooks/usersCustomHooks');
 
