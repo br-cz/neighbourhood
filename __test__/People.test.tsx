@@ -2,8 +2,8 @@
 import React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { DataProvider } from '@/contexts/DataContext';
-import PeoplePage from '@/components/People/PeoplePage';
+import { DataProvider } from '@/src/contexts/DataContext';
+import PeoplePage from '@/src/components/People/PeoplePage';
 import {
   useCreateFriend,
   useCreateFriendRequest,

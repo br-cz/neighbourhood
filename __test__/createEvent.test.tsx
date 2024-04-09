@@ -3,8 +3,8 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import EventsPage from '@/components/Events/EventsPage';
-import { DataProvider } from '@/contexts/DataContext';
+import EventsPage from '@/src/components/Events/EventsPage';
+import { DataProvider } from '@/src/contexts/DataContext';
 import { Visibility } from '@/src/API';
 
 jest.mock('formik', () => ({

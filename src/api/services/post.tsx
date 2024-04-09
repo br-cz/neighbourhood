@@ -9,7 +9,7 @@ import {
   deletePost,
   deleteComment,
 } from '@/src/graphql/mutations';
-import { CommentDataInput, PostDataInput, Post, CommentItem } from '@/types/types';
+import { CommentDataInput, PostDataInput, Post, CommentItem } from '@/src/types/types';
 import { HttpError } from '@/src/models/error/HttpError';
 import { UserLikedPosts } from '@/src/API';
 import { getCurrentUserID } from '@/src/hooks/usersCustomHooks';

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Box } from '@mantine/core';
 import Image from 'next/image';
-import LoginForm from '@/components/Authorization/loginForm.client';
+import LoginForm from '@/src/components/Authorization/loginForm.client';
 
 const containerStyling = {
   display: 'flex',

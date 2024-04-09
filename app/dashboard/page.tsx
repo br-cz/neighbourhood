@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Router from '@/components/NeighbourhoodShell/Router/Router';
-import { NeighbourhoodShell } from '@/components/NeighbourhoodShell/NeighbourhoodShell';
-import { useAuth } from '@/components/Authorization/useAuth';
+import Router from '@/src/components/NeighbourhoodShell/Router/Router';
+import { NeighbourhoodShell } from '@/src/components/NeighbourhoodShell/NeighbourhoodShell';
+import { useAuth } from '@/src/components/Authorization/useAuth';
 
 export default function AppPage() {
   const [activeTab, setActiveTab] = useState('home');

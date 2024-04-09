@@ -3,9 +3,9 @@ import { Subject } from 'rxjs';
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { notifications } from '@mantine/notifications';
-import { DataProvider } from '@/contexts/DataContext';
-import ProfilePage from '@/components/Profile/ProfilePage';
-import { storeImage } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { DataProvider } from '@/src/contexts/DataContext';
+import ProfilePage from '@/src/components/Profile/ProfilePage';
+import { storeImage } from '@/src/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 function createMockImageFile(filename = 'test-image.jpg', type = 'image/jpeg') {
   return new File([new Blob([], { type })], filename);
@@ -29,7 +29,7 @@ const mockData = {
   },
 };
 
-jest.mock('@/components/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
+jest.mock('@/src/components/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue('mock://image-preview'),
   storeImage: jest.fn().mockResolvedValue('mock://image-url'),
 }));

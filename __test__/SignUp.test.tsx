@@ -3,9 +3,9 @@ import { MantineProvider } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { SignUp } from '@/components/SignUp/SignUp';
-import { DataProvider } from '@/contexts/DataContext';
-import { EmailVerify } from '@/components/SignUp/EmailVerify';
+import { SignUp } from '@/src/components/SignUp/SignUp';
+import { DataProvider } from '@/src/contexts/DataContext';
+import { EmailVerify } from '@/src/components/SignUp/EmailVerify';
 
 const mockVerificationCode = jest.fn();
 
