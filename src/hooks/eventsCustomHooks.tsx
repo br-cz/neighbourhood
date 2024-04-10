@@ -9,9 +9,9 @@ import {
   deleteEventSaveAPI,
   deleteEventAPI,
 } from '../api/services/event';
-import { Event, Visibility } from '@/types/types';
-import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
-import { retrieveImage as retrieveEventImage } from '@/components/utils/s3Helpers/EventImageS3Helper';
+import { Event, Visibility } from '@/src/types/types';
+import { retrieveImage as retrieveProfilePicture } from '@/src/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveEventImage } from '@/src/components/utils/s3Helpers/EventImageS3Helper';
 
 export const useCreateEvent = () => {
   const handleCreateEvent = async (eventData: any) => {

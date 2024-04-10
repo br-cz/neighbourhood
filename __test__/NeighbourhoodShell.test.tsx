@@ -6,9 +6,9 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { notifications } from '@mantine/notifications';
 import { signOut } from 'aws-amplify/auth';
 import { NextRouter } from 'next/router';
-import { DataProvider } from '@/contexts/DataContext';
+import { DataProvider } from '@/src/contexts/DataContext';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
-import { handleSignOut } from '@/utils/authUtils';
+import { handleSignOut } from '@/src/utils/authUtils';
 import AppPage from '@/app/dashboard/page';
 
 const mockLikePost = jest.fn();

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MantineProvider } from '@mantine/core';
 import userEvent from '@testing-library/user-event';
-import LoginForm from '../components/Authorization/loginForm.client';
+import LoginForm from '../src/components/Authorization/loginForm.client';
 
 const mockedSignIn = require('@aws-amplify/auth').signIn;
 

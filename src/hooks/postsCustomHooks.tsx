@@ -10,9 +10,9 @@ import {
   deleteCommentAPI,
 } from '../api/services/post';
 import { getCurrentUser, getCurrentUserID } from './usersCustomHooks';
-import { Post, CommentDataInput, PostDataInput, Visibility, CommentItem } from '@/types/types';
+import { Post, CommentDataInput, PostDataInput, Visibility, CommentItem } from '@/src/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
-import { retrieveImage as retrieveProfilePicture } from '@/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveProfilePicture } from '@/src/components/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const useCreatePost = () => {
   const [error, setError] = useState<string | undefined>();

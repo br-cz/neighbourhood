@@ -3,9 +3,9 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import MarketplacePage from '@/components/Marketplace/MarketplacePage';
-import { CreateListingDrawer } from '@/components/Marketplace/CreateListingDrawer';
-import { DataProvider } from '@/contexts/DataContext';
+import MarketplacePage from '@/src/components/Marketplace/MarketplacePage';
+import { CreateListingDrawer } from '@/src/components/Marketplace/CreateListingDrawer';
+import { DataProvider } from '@/src/contexts/DataContext';
 import { Visibility } from '@/src/API';
 
 jest.mock('formik', () => ({

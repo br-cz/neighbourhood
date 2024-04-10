@@ -9,7 +9,7 @@ import {
 import { getEvent, listUserLikedEvents } from '@/src/graphql/queries';
 import { HttpError } from '@/src/models/error/HttpError';
 import { getCurrentUserID } from './community';
-import { Event } from '@/types/types';
+import { Event } from '@/src/types/types';
 import { UserLikedEvents } from '@/src/API';
 
 const client = generateClient();

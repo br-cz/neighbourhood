@@ -18,21 +18,20 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 class ResizeObserver {
-  observe() { }
-  unobserve() { }
-  disconnect() { }
+  observe() {}
+  unobserve() {}
+  disconnect() {}
 }
 
 window.ResizeObserver = ResizeObserver;
 
-
 //Global mocks
 
-// jest.mock('@/components/Authorization/useAuth', () => ({
+// jest.mock('@/src/components/Authorization/useAuth', () => ({
 //   useAuth: () => ({ user: { loggedIn: true } }),
 // }));
 
-jest.mock('@/components/Authorization/useAuth', () => ({
+jest.mock('@/src/components/Authorization/useAuth', () => ({
   useAuth: jest.fn(() => ({
     user: 'user1',
   })),
@@ -56,7 +55,7 @@ const closestCommunityMock = jest.fn().mockResolvedValue([
     distanceKm: 10,
   },
 ]);
-jest.mock('@/components/utils/relevantCommunitiesHelpers/getClosestCommunities', () => ({
+jest.mock('@/src/components/utils/relevantCommunitiesHelpers/getClosestCommunities', () => ({
   getClosestCommunities: closestCommunityMock,
 }));
 
@@ -236,8 +235,6 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
     // ],
     loading: false,
   })),
-
-
 
   // {
   //   id: 'community1',
@@ -419,16 +416,7 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
     ],
     loading: false,
   })),
-
 }));
-
-
-
-
-
-
-
-
 
 jest.mock('@/src/api/services/user', () => ({
   updateUserEmailAPI: jest.fn(),
@@ -438,23 +426,23 @@ jest.mock('@/src/api/services/user', () => ({
   getUserAPI: jest.fn(),
 }));
 
-jest.mock('@/components/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
+jest.mock('@/src/components/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
-jest.mock('@/components/utils/s3Helpers/CommunityImageS3Helper', () => ({
+jest.mock('@/src/components/utils/s3Helpers/CommunityImageS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
-jest.mock('@/components/utils/s3Helpers/EventImageS3Helper', () => ({
+jest.mock('@/src/components/utils/s3Helpers/EventImageS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
-jest.mock('@/components/utils/s3Helpers/PostImageS3Helper', () => ({
+jest.mock('@/src/components/utils/s3Helpers/PostImageS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
-jest.mock('@/components/utils/s3Helpers/ItemForSaleImageS3Helper', () => ({
+jest.mock('@/src/components/utils/s3Helpers/ItemForSaleImageS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
@@ -472,7 +460,7 @@ jest.mock('@/src/hooks/postsCustomHooks', () => ({
     loading: true,
   })),
   useCreatePost: () => ({
-    handleCreatePost: jest.fn().mockResolvedValue(true)
+    handleCreatePost: jest.fn().mockResolvedValue(true),
   }),
 }));
 
@@ -504,7 +492,6 @@ jest.mock('@mantine/modals', () => ({
     }),
   },
 }));
-
 
 jest.mock('@/src/hooks/googleMapsAPI', () => ({
   useGoogleMapsApi: jest.fn(() => ({

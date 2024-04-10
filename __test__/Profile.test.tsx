@@ -1,8 +1,8 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen } from '@testing-library/react';
-import { DataProvider } from '@/contexts/DataContext';
-import ProfilePage from '@/components/Profile/ProfilePage';
+import { DataProvider } from '@/src/contexts/DataContext';
+import ProfilePage from '@/src/components/Profile/ProfilePage';
 
 const mockData = {
   currentUser: {

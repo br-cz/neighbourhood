@@ -2,13 +2,13 @@ import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
+import ConfigureAmplifyClientSide from '@/src/components/ConfigureAmplify';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
 import '@mantine/notifications/styles.css';
 import { theme } from '../theme';
-import { DataProvider } from '@/contexts/DataContext';
+import { DataProvider } from '@/src/contexts/DataContext';
 
 export const metadata = {
   title: 'neighbourhood - your community at your fingertips',
