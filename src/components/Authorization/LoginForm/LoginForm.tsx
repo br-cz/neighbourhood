@@ -6,7 +6,7 @@ import { Box, Button, Group, PasswordInput, Text, TextInput } from '@mantine/cor
 import { useDisclosure } from '@mantine/hooks';
 import { handleSignIn } from '@/src/utils/authUtils';
 
-import styles from '@/src/components/Authorization/loginForm.module.css';
+import styles from '@/src/components/Authorization/LoginForm/LoginForm.module.css';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');

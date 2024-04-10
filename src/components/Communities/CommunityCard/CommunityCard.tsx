@@ -3,7 +3,7 @@ import { Avatar, Text, Stack, Button, Grid, Group, Box, Tooltip, Skeleton } from
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Community, User } from '@/src/API';
-import { retrieveImage } from '@/src/components/utils/s3Helpers/CommunityImageS3Helper';
+import { retrieveImage } from '@/src/utils/s3Helpers/CommunityImageS3Helper';
 import classes from './CommunityCard.module.css';
 
 interface CommunityCardProps {

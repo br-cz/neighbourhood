@@ -9,7 +9,6 @@ export default function AppPage() {
   const [activeTab, setActiveTab] = useState('home');
   const { user } = useAuth();
   if (!user) return null;
-  console.log('in app page');
 
   return (
     <NeighbourhoodShell activeTab={activeTab} setActiveTab={setActiveTab}>

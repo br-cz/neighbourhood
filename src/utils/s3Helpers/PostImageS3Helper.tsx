@@ -1,7 +1,7 @@
 import { uploadData } from '@aws-amplify/storage'; // Assuming getUrl is not needed due to retrieveImageURLFromS3 utility
 import ConfigureAmplifyClientSide from '@/src/components/ConfigureAmplify';
 import { getPostAPI, updatePostImageAPI } from '@/src/api/services/post';
-import { deleteImageFromS3, retrieveImageURLFromS3 } from '../utilFunctions'; // Assuming these utility functions are similar to the event helper
+import { deleteImageFromS3, retrieveImageURLFromS3 } from '../s3Utils'; // Assuming these utility functions are similar to the event helper
 
 ConfigureAmplifyClientSide();
 

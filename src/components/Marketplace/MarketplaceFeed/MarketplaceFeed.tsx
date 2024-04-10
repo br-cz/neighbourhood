@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Group, Loader, SimpleGrid, Text } from '@mantine/core';
 import { ItemForSale } from '@/src/types/types';
-import { MarketplaceCard } from '@/src/components/Marketplace/MarketplaceCard';
-import { ViewListingModal } from '@/src/components/Marketplace/ViewListingModal';
+import { MarketplaceCard } from '@/src/components/Marketplace/MarketplaceCard/MarketplaceCard';
+import { ViewListingModal } from '@/src/components/Marketplace/ViewListingModal/ViewListingModal';
 import { useFetchListings, useUserListingSaves } from '@/src/hooks/marketplaceCustomHooks';
-import { filterAndSortListings } from '@/src/components/utils/marketplaceUtils';
+import { filterAndSortListings } from '@/src/utils/marketplaceUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 export function MarketplaceFeed({

@@ -145,7 +145,6 @@ export function UserListItem({ user, relationshipStatus, onChange }: UserListIte
     });
   };
   const handleCancelRequest = () => {
-    console.log(user);
     modals.openConfirmModal({
       title: (
         <Title order={5} component="p">

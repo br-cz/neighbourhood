@@ -13,7 +13,6 @@ export async function handleProfileUpdate(
   try {
     const user = await getCurrentUser();
     let notificationTitle = '';
-    console.log('User info update:', oldPassword, newPassword, newEmail);
 
     if (oldPassword && newPassword) {
       await updatePassword({ oldPassword, newPassword });

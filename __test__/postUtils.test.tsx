@@ -1,4 +1,4 @@
-import { filterAndSortPosts } from '@/src/components/utils/postUtils';
+import { filterAndSortPosts } from '@/src/utils/postUtils';
 import { Visibility } from '@/src/types/types';
 
 const mockPosts = [

@@ -5,8 +5,8 @@ import { Button, Group, Select, TextInput, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { MarketplaceFeed } from '@/src/components/Marketplace/MarketplaceFeed';
-import { CreateListingDrawer } from '@/src/components/Marketplace/CreateListingDrawer';
+import { MarketplaceFeed } from '@/src/components/Marketplace/MarketplaceFeed/MarketplaceFeed';
+import { CreateListingDrawer } from '@/src/components/Marketplace/CreateListingDrawer/CreateListingDrawer';
 
 export default function MarketplacePage() {
   const [refresh, setRefresh] = useState(false);

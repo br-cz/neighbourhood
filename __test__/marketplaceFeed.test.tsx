@@ -3,7 +3,7 @@ import { MantineProvider } from '@mantine/core';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { DataProvider } from '@/src/contexts/DataContext';
 import MarketplacePage from '@/src/components/Marketplace/MarketplacePage';
-import { MarketplaceFeed } from '@/src/components/Marketplace/MarketplaceFeed';
+import { MarketplaceFeed } from '@/src/components/Marketplace/MarketplaceFeed/MarketplaceFeed';
 
 const userHooks = require('@/src/hooks/usersCustomHooks');
 

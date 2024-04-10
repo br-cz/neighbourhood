@@ -11,19 +11,17 @@ export const useGoogleMapsApi = (apiKey: string) => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey, // Your Google Maps API key
+      apiKey,
       version: 'weekly',
-      libraries: ['places'], // Specify the libraries you need, e.g., "places" for Places API
+      libraries: ['places'],
     });
 
     loader
       .load()
       .then(() => {
         setIsLoaded(true);
-        // The API can now be used, for example to initialize Autocomplete
       })
       .catch((error: any) => {
-        // Explicitly specify the type of 'error' as 'any'
         setLoadError(error);
       });
   }, [apiKey]);

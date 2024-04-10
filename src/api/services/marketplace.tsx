@@ -104,7 +104,6 @@ export const deleteItemForSaleAPI = async (item: ItemForSale) => {
         },
       },
     });
-    console.log('Listing deleted successfully:', response.data.deleteItemForSale);
     return response.data.deleteItemForSale;
   } catch (error: any) {
     throw new HttpError(`Error deleting listing: ${error.message}`, error.statusCode || 500);
@@ -127,7 +126,6 @@ export const updateItemForSaleImageAPI = async (
         },
       },
     });
-    console.log('Item for sale updated successfully:', updatedItemForSale.data.updateItemForSale);
     return updatedItemForSale.data.updateItemForSale;
   } catch (error: any) {
     throw new HttpError(
@@ -172,7 +170,6 @@ export const updateListingSaveCountAPI = async (listingId: string, adjustment: n
         },
       },
     });
-    console.log('Listing updated successfully:', updatedListing.data.updateItemForSale);
     return updatedListing.data.updateItemForSale;
   } catch (error: any) {
     throw new HttpError(

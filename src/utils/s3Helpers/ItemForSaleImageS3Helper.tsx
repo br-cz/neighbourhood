@@ -1,7 +1,7 @@
 import { uploadData } from '@aws-amplify/storage';
 import ConfigureAmplifyClientSide from '@/src/components/ConfigureAmplify';
 import { getListingAPI, updateItemForSaleImageAPI } from '@/src/api/services/marketplace';
-import { deleteImageFromS3, retrieveImageURLFromS3 } from '../utilFunctions';
+import { deleteImageFromS3, retrieveImageURLFromS3 } from '../s3Utils';
 
 ConfigureAmplifyClientSide();
 

@@ -12,7 +12,7 @@ import {
 import { getCurrentUser, getCurrentUserID } from './usersCustomHooks';
 import { Post, CommentDataInput, PostDataInput, Visibility, CommentItem } from '@/src/types/types';
 import { getCurrentCommunityID } from './communityCustomHooks';
-import { retrieveImage as retrieveProfilePicture } from '@/src/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveProfilePicture } from '@/src/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const useCreatePost = () => {
   const [error, setError] = useState<string | undefined>();
@@ -30,7 +30,6 @@ export const useCreatePost = () => {
         communityPostsId: communityId,
       };
       const post = await createNewPostAPI(newPostData);
-      console.log('Post created:', post);
       return post;
     } catch (err: any) {
       console.error('Error creating post:', err);
@@ -140,7 +139,6 @@ export const useCreateComment = () => {
         userCommentsId: userId,
       };
       const comment = await createNewCommentAPI(newCommentData);
-      console.log('Comment created:', comment);
       return comment;
     } catch (err: any) {
       console.error('Error creating comment:', err);

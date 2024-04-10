@@ -14,7 +14,7 @@ import {
 } from '@/src/hooks/communityCustomHooks';
 import { Community } from '@/src/API';
 import SelectCommunityModal from '@/src/components/Communities/SelectCommunityModal/SelectCommunityModal';
-import { switchCommunity, leaveCommunity } from '../utils/communityUtils';
+import { switchCommunity, leaveCommunity } from '../../utils/communityUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 export default function CommunitiesPage() {
@@ -30,8 +30,6 @@ export default function CommunitiesPage() {
   const userCommunities = Object.values(communities).filter((community: Community) =>
     community.members?.items?.some((member) => member?.user?.id === user && !member?._deleted)
   );
-
-  console.log(JSON.stringify(userCommunities, null, 2));
 
   userCommunities.sort((a: Community, b: Community) => a.name.localeCompare(b.name));
 

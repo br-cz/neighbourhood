@@ -2,14 +2,16 @@ import { notifications } from '@mantine/notifications';
 import { switchCommunityAPI } from '@/src/api/services/community';
 import { getCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { getCurrentCommunityID, communityUpdateSubject } from '@/src/hooks/communityCustomHooks';
-import {
-  updateUserSelectedCommunity,
-  getCurrentUserAPI,
-  deleteUserCommunityAPI,
-} from '@/src/api/services/user';
+import { updateUserSelectedCommunity, deleteUserCommunityAPI } from '@/src/api/services/user';
 import { Community, UserCommunity } from '@/src/API';
 
-export const SCHOOL_COMMUNITY_IDS = ['d2130b0b-f831-4d98-92f9-920095bbd77e', '6dac446a-83aa-441f-82b0-0b5d474a92ce', '2b278358-f517-46db-81f0-8ea460d7d75b', 'e06f283b-a890-487c-965a-1e5eacc59fd8', '17b85438-7fcf-4f78-b5ef-cee07c6dedae'];
+export const SCHOOL_COMMUNITY_IDS = [
+  'd2130b0b-f831-4d98-92f9-920095bbd77e',
+  '6dac446a-83aa-441f-82b0-0b5d474a92ce',
+  '2b278358-f517-46db-81f0-8ea460d7d75b',
+  'e06f283b-a890-487c-965a-1e5eacc59fd8',
+  '17b85438-7fcf-4f78-b5ef-cee07c6dedae',
+];
 
 const triggerCommunityUpdate = () => {
   communityUpdateSubject.next();
@@ -24,16 +26,14 @@ export const switchCommunity = async (
   const currentUser = await getCurrentUser();
   if (currentUser) {
     try {
-      console.log('Switching to community:', community.id);
       await updateUserSelectedCommunity(currentUser.id, community.id, currentUser._version);
       await switchCommunityAPI(user, community.id);
-      console.log('Updated User details: ', await getCurrentUserAPI());
       localStorage.setItem('currentCommunityID', JSON.stringify(community.id));
       localStorage.setItem('currentCommunity', JSON.stringify(community));
       notifications.show({
         radius: 'md',
-        title: 'Welcome back!',
-        message: `You've switched to the ${community.name} community.`,
+        title: 'Community switched!',
+        message: `You are now viewing content from the ${community.name} community.`,
       });
       triggerCommunityUpdate();
     } catch (error) {
@@ -62,7 +62,6 @@ export const leaveCommunity = async (
       !userCommunity._deleted
   ) as UserCommunity;
   try {
-    console.log('Deleting user community:', relationship.id);
     await deleteUserCommunityAPI(relationship.id);
     notifications.show({
       radius: 'md',
