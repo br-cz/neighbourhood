@@ -1,4 +1,4 @@
-import { filterAndSortEvents } from '@/src/components/utils/eventUtils';
+import { filterAndSortEvents } from '@/src/utils/eventUtils';
 import { Visibility } from '@/src/types/types';
 
 const mockSaves = new Map<string, boolean>();

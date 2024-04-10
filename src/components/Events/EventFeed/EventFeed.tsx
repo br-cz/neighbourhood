@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Group, Loader, SimpleGrid, Text } from '@mantine/core';
 import { useFetchEvents, useUserEventSaves } from '@/src/hooks/eventsCustomHooks';
-import { filterAndSortEvents } from '@/src/components/utils/eventUtils';
+import { filterAndSortEvents } from '@/src/utils/eventUtils';
 import { Event } from '@/src/types/types';
 import { EventCard } from '@/src/components/Events/EventCard/EventCard';
 import { ViewEventModal } from '@/src/components/Events/ViewEventModal/ViewEventModal';

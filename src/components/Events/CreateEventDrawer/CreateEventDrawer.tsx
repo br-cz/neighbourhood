@@ -25,7 +25,7 @@ import { Visibility } from '@/src/types/types';
 import { useCreateEvent } from '@/src/hooks/eventsCustomHooks';
 import { combineDateTime } from '@/src/utils/timeUtils';
 import { createEventSchema } from './createEventValidation';
-import { storeImage } from '../../utils/s3Helpers/EventImageS3Helper';
+import { storeImage } from '../../../utils/s3Helpers/EventImageS3Helper';
 
 interface CreateEventDrawerProps {
   opened: boolean;

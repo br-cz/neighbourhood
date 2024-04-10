@@ -13,7 +13,7 @@ import {
 import { useFormik } from 'formik';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { handleProfileUpdate } from '@/src/components/utils/profileUtils';
+import { handleProfileUpdate } from '@/src/utils/profileUtils';
 import { accountSettingsSchema } from './accountSettingsValidation';
 
 interface AccountSettingsModalProps {

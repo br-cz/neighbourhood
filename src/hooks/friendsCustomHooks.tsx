@@ -10,7 +10,7 @@ import {
   removeFriendAPI,
 } from '../api/services/friend';
 import { getUserAPI } from '../api/services/user';
-import { retrieveImage as retrieveProfilePicture } from '@/src/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage as retrieveProfilePicture } from '@/src/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const useCreateFriendRequest = () => {
   const [friendRequest, sentFriendRequest] = useState<string>('');

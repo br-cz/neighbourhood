@@ -1,7 +1,7 @@
 import { uploadData } from '@aws-amplify/storage';
 import ConfigureAmplifyClientSide from '@/src/components/ConfigureAmplify';
 import { getEventAPI, updateEventImageAPI } from '@/src/api/services/event';
-import { deleteImageFromS3, retrieveImageURLFromS3 } from '../utilFunctions';
+import { deleteImageFromS3, retrieveImageURLFromS3 } from '../s3Utils';
 
 ConfigureAmplifyClientSide();
 

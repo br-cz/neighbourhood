@@ -23,7 +23,7 @@ import { ProfileSetup } from './ProfileSetup';
 import { EmailVerify } from './EmailVerify';
 import { signUpSchema } from './signUpValidation';
 import { processSignUp } from './signUpLogic';
-import { storeImage } from '../utils/s3Helpers/UserProfilePictureS3Helper';
+import { storeImage } from '../../utils/s3Helpers/UserProfilePictureS3Helper';
 import { handleSignIn } from '@/src/utils/authUtils';
 
 export const SignUp = () => {

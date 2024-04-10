@@ -5,7 +5,7 @@ import { getUserAPI, updateUserAPI } from '../api/services/user';
 import {
   storeImage,
   retrieveImage as retrieveProfilePicture,
-} from '@/src/components/utils/s3Helpers/UserProfilePictureS3Helper';
+} from '@/src/utils/s3Helpers/UserProfilePictureS3Helper';
 
 export const userUpdateSubject = new Subject<void>();
 

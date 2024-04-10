@@ -14,7 +14,7 @@ import {
 } from '@/src/hooks/communityCustomHooks';
 import { Community } from '@/src/API';
 import SelectCommunityModal from '@/src/components/Communities/SelectCommunityModal/SelectCommunityModal';
-import { switchCommunity, leaveCommunity } from '../utils/communityUtils';
+import { switchCommunity, leaveCommunity } from '../../utils/communityUtils';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 
 export default function CommunitiesPage() {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { UnstyledButton, Group, Avatar, Text, rem, Skeleton } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarCommunityButton.module.css';
-import { retrieveImage } from '../../../utils/s3Helpers/CommunityImageS3Helper';
+import { retrieveImage } from '../../../../utils/s3Helpers/CommunityImageS3Helper';
 import { useCurrentCommunity } from '@/src/hooks/communityCustomHooks';
 
 interface NavbarCommunityButtonProps {
