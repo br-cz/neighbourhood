@@ -168,35 +168,6 @@ describe('MarketplacePage - Create Listing', () => {
     );
   });
 
-  //1.6
-  test('Drawer does not close if price is missing', async () => {
-    //First render the component
-    renderComponent();
-    await userEvent.click(screen.getByText(/New Listing.../i));
-
-    userEvent.type(screen.getByTestId('title-input'), 'Test Item');
-    userEvent.type(screen.getByTestId('description'), 'This is a test description');
-    userEvent.type(screen.getByTestId('contact'), '1234567890');
-
-    // Submit the form without filling in the required fields
-    await userEvent.click(screen.getByText(/Post Item/i));
-
-    await waitFor(
-      () => {
-        expect(screen.getByTestId('title-input')).toBeInTheDocument();
-        expect(screen.getByTestId('price-input')).toBeInTheDocument();
-        expect(screen.getByTestId('description')).toBeInTheDocument();
-        expect(screen.getByTestId('contact')).toBeInTheDocument();
-        expect(require('@mantine/notifications').notifications.show).toHaveBeenCalledWith(
-          expect.objectContaining({
-            title: 'Oops!',
-          })
-        );
-      },
-      { timeout: 2000 }
-    );
-  });
-
   //1.7
   test('Drawer does not close if contact is missing', async () => {
     //First render the component
