@@ -1,6 +1,6 @@
 import { Post } from '@/types/types';
 import { sortByLikeCount, sortByNewToOld, sortByOldToNew } from '@/utils/sortUtils';
-import { dateIsThisMonth, dateIsThisWeek } from '@/utils/timeUtils';
+import { dateIsPast7Days, dateIsPast30Days } from '@/utils/timeUtils';
 
 // Function to filter and sort posts
 export const filterAndSortPosts = (
@@ -26,11 +26,11 @@ export const filterAndSortPosts = (
       filteredPosts.sort(sortByOldToNew);
       break;
     case 'Popular (This Week)':
-      filteredPosts = filteredPosts.filter((post) => dateIsThisWeek(post.createdAt));
+      filteredPosts = filteredPosts.filter((post) => dateIsPast7Days(post.createdAt));
       filteredPosts.sort(sortByLikeCount);
       break;
     case 'Popular (This Month)':
-      filteredPosts = filteredPosts.filter((post) => dateIsThisMonth(post.createdAt));
+      filteredPosts = filteredPosts.filter((post) => dateIsPast30Days(post.createdAt));
       filteredPosts.sort(sortByLikeCount);
       break;
     case 'Popular (All Time)':

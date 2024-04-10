@@ -21,9 +21,8 @@ export const communitySelectHandler = async (
       await createUserCommunityAPI(userId, community.id);
       notifications.show({
         radius: 'md',
-        title: 'Woo-hoo!',
-        color: 'yellow.6',
-        message: `You are now part of ${community.name}!`,
+        title: 'Community joined',
+        message: `You are now part of ${community.name}. Say hi!`,
       });
     } catch (error) {
       notifications.show({
