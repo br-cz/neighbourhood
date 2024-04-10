@@ -31,8 +31,6 @@ export default function CommunitiesPage() {
     community.members?.items?.some((member) => member?.user?.id === user && !member?._deleted)
   );
 
-  console.log(JSON.stringify(userCommunities, null, 2));
-
   userCommunities.sort((a: Community, b: Community) => a.name.localeCompare(b.name));
 
   useEffect(() => {

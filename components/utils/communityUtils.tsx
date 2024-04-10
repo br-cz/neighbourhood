@@ -2,7 +2,11 @@ import { notifications } from '@mantine/notifications';
 import { switchCommunityAPI } from '@/src/api/services/community';
 import { getCurrentUser } from '@/src/hooks/usersCustomHooks';
 import { getCurrentCommunityID, communityUpdateSubject } from '@/src/hooks/communityCustomHooks';
-import { updateUserSelectedCommunity, deleteUserCommunityAPI } from '@/src/api/services/user';
+import {
+  updateUserSelectedCommunity,
+  getCurrentUserAPI,
+  deleteUserCommunityAPI,
+} from '@/src/api/services/user';
 import { Community, UserCommunity } from '@/src/API';
 
 export const SCHOOL_COMMUNITY_IDS = [

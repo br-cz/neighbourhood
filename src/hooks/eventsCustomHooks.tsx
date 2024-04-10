@@ -21,7 +21,6 @@ export const useCreateEvent = () => {
         saveCount: 0,
         images: [eventData.eventImage],
       });
-      console.log('Event created:', createdEvent);
       return createdEvent;
     } catch (err) {
       console.error('Error creating event:', err);

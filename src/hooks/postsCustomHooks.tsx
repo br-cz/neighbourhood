@@ -30,7 +30,6 @@ export const useCreatePost = () => {
         communityPostsId: communityId,
       };
       const post = await createNewPostAPI(newPostData);
-      console.log('Post created:', post);
       return post;
     } catch (err: any) {
       console.error('Error creating post:', err);
@@ -140,7 +139,6 @@ export const useCreateComment = () => {
         userCommentsId: userId,
       };
       const comment = await createNewCommentAPI(newCommentData);
-      console.log('Comment created:', comment);
       return comment;
     } catch (err: any) {
       console.error('Error creating comment:', err);

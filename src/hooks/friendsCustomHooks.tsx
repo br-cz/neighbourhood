@@ -28,8 +28,6 @@ export const useCreateFriendRequest = () => {
       };
 
       const friendRequestResponse = await createFriendRequestAPI(updatedFriendRequestData);
-      console.log('friendRequest created:', friendRequestResponse);
-
       sentFriendRequest(JSON.stringify(friendRequestResponse));
     } catch (err: any) {
       console.error('Error creating friendRequest:', err);
@@ -253,7 +251,6 @@ export const useDeleteFriend = () => {
       await removeFriendAPI(newFriendId, parsedUserData.id);
 
       setDeletedFriend(JSON.parse(JSON.stringify(res)));
-      console.log('Friendship deleted successfully');
     } catch (err: any) {
       console.error('Error deleting friend:', err);
       setError(err);
@@ -289,9 +286,7 @@ export const useFetchFriends = () => {
 
         const friendsIds = await getFriendsAPI(parsedUserData.id);
         const parsedFriendIds = JSON.parse(JSON.stringify(friendsIds));
-        console.log(parsedFriendIds);
         const friendsInfo = (await fetchFriendsInfo(parsedFriendIds)) || [];
-        console.log(friendsInfo);
         const friendsWithImages = await Promise.all(
           friendsInfo.map(async (friend: any) => {
             const profilePicture = await retrieveProfilePicture(friend.id).catch(() => null);
@@ -304,7 +299,7 @@ export const useFetchFriends = () => {
         setFriends(friendsWithImages);
       } catch (err: any) {
         setError(err);
-        console.log(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }

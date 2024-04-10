@@ -117,7 +117,6 @@ export const deletePostAPI = async (post: Post) => {
         },
       },
     });
-    console.log('Post deleted successfully:', response.data.deletePost);
     return response.data.deletePost;
   } catch (error: any) {
     throw new HttpError(`Error deleting post: ${error.message}`, error.statusCode || 500);
@@ -164,7 +163,6 @@ export const deleteCommentAPI = async (comment: CommentItem) => {
         },
       },
     });
-    console.log('Comment deleted successfully:', response.data.deleteComment);
     return response.data.deleteComment;
   } catch (error: any) {
     throw new HttpError(`Error deleting comment: ${error.message}`, error.statusCode || 500);
@@ -192,7 +190,6 @@ export const updatePostImageAPI = async (postId: string, image: string, _version
         },
       },
     });
-    console.log('User updated successfully:', updatedPost.data.updatePost);
     return updatedPost.data.updatePost;
   } catch (error: any) {
     throw new HttpError(`Error updating post image: ${error.message}`, error.statusCode || 500);
@@ -217,7 +214,6 @@ export const updatePostLikeCountAPI = async (postId: string, adjustment: number)
         },
       },
     });
-    console.log('Post updated successfully:', updatedPost.data.updatePost);
     return updatedPost.data.updatePost;
   } catch (error: any) {
     throw new HttpError(

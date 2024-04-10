@@ -21,7 +21,6 @@ export const useCreateListing = () => {
         getCurrentCommunityID(),
         { ...itemData, saveCount: 0, images: [itemData.itemImage] }
       );
-      console.log('Listing created:', createdListing);
       return createdListing;
     } catch (err) {
       console.error('Error creating listing:', err);

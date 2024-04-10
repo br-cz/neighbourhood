@@ -5,8 +5,8 @@ import { Button, Group, Title } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faPen } from '@fortawesome/free-solid-svg-icons';
 import { ProfileCard } from '@/src/components/Profile/ProfileCard/ProfileCard';
-import { AccountSettingsModal } from '@/src/components/Profile/ProfileCard/AccountSettingsModal';
-import { CustomizeProfileModal } from '@/src/components/Profile/ProfileCard/CustomizeProfileModal';
+import { AccountSettingsModal } from '@/src/components/Profile/AccountSettingsModal/AccountSettingsModal';
+import { CustomizeProfileModal } from '@/src/components/Profile/CustomizeProfileModal/CustomizeProfileModal';
 
 export default function ProfilePage() {
   const [refresh, setRefresh] = useState(false);

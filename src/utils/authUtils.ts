@@ -45,14 +45,9 @@ export async function handleSignIn({
       });
       localStorage.setItem('currentCommunityID', JSON.stringify(communityID));
       localStorage.setItem('currentCommunity', JSON.stringify(community.data.getCommunity));
-      console.log('Logged in user:', user.data.getUser);
-      console.log('Logged in community:', community.data.getCommunity);
-      console.log('Logged in with ID:', userId);
-      console.log('Logged in with community ID:', communityID);
     }
   } catch (error) {
     handlers.close();
-    console.log('Error signing in', error);
     if (setErrorMessage) {
       setErrorMessage('Oops! Check your details and try again.');
     }
@@ -81,7 +76,6 @@ export async function handleSignOut({ router }: SignOutParams) {
     localStorage.removeItem('currentUserID');
     localStorage.removeItem('currentCommunity');
     localStorage.removeItem('currentCommunityID');
-    console.log('Signed out!');
   } catch (error) {
     console.error('Error signing out:', error);
   } finally {

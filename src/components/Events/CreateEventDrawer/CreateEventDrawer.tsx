@@ -288,7 +288,6 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             data-testid="submit-btn"
             onClick={() => {
               formik.validateForm().then((errors) => {
-                console.log(errors);
                 if (Object.keys(errors).length === 0 && !loading) {
                   formik.submitForm();
                 } else {

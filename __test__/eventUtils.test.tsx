@@ -102,7 +102,6 @@ describe('postUtils', () => {
       jest.useFakeTimers().setSystemTime(thisMonthStart);
 
       const filtered = filterAndSortEvents(mockEvents, '', 'This Month', mockSaves);
-      console.log(filtered);
       expect(filtered.length).toBe(3);
 
       jest.useRealTimers();
