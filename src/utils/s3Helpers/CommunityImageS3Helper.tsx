@@ -2,7 +2,7 @@ import { uploadData } from '@aws-amplify/storage';
 
 import ConfigureAmplifyClientSide from '@/src/components/ConfigureAmplify';
 import { getCommunityAPI, updateCommunityImageAPI } from '@/src/api/services/community';
-import { deleteImageFromS3, retrieveImageURLFromS3 } from '../utilFunctions';
+import { deleteImageFromS3, retrieveImageURLFromS3 } from '../s3Utils';
 
 ConfigureAmplifyClientSide();
 

@@ -62,13 +62,7 @@ export const NeighbourhoodShell: React.FC<NeighbourhoodShellProps> = ({
               data-testid="logo"
             />
           </Group>
-          <Button
-            onClick={openSignOutModal}
-            radius="md"
-            variant="default"
-            color="red"
-            data-testid="logout"
-          >
+          <Button onClick={openSignOutModal} radius="md" variant="default" data-testid="logout">
             Sign Out
           </Button>
         </Group>

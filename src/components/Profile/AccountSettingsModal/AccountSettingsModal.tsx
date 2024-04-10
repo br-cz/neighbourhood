@@ -13,7 +13,7 @@ import {
 import { useFormik } from 'formik';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { handleProfileUpdate } from '@/src/components/utils/profileUtils';
+import { handleProfileUpdate } from '@/src/utils/profileUtils';
 import { accountSettingsSchema } from './accountSettingsValidation';
 
 interface AccountSettingsModalProps {
@@ -123,11 +123,8 @@ export function AccountSettingsModal({ opened, onClose }: AccountSettingsModalPr
                 type="button"
                 data-testid="submit-btn"
                 onClick={() => {
-                  console.log(formik.values); // For logging
                   formik.validateForm().then((errors) => {
-                    console.log(errors); // For logging
                     if (Object.keys(errors).length === 0 && !loading) {
-                      // No errors, form is valid so we submit
                       formik.submitForm();
                     } else {
                       notifications.show({

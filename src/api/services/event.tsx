@@ -111,7 +111,6 @@ export const deleteEventAPI = async (event: Event) => {
         },
       },
     });
-    console.log('Event deleted successfully:', response.data.deleteEvent);
     return response.data.deleteEvent;
   } catch (error: any) {
     throw new HttpError(`Error deleting event: ${error.message}`, error.statusCode || 500);
@@ -130,7 +129,6 @@ export const updateEventImageAPI = async (postId: string, image: string, _versio
         },
       },
     });
-    console.log('User updated successfully:', updatedEvent.data.updateEvent);
     return updatedEvent.data.updateEvent;
   } catch (error: any) {
     throw new HttpError(`Error updating event image: ${error.message}`, error.statusCode || 500);
@@ -172,7 +170,6 @@ export const updateEventSaveCountAPI = async (eventId: string, adjustment: numbe
         },
       },
     });
-    console.log('Event updated successfully:', updatedEvent.data.updateEvent);
     return updatedEvent.data.updateEvent;
   } catch (error: any) {
     throw new HttpError(

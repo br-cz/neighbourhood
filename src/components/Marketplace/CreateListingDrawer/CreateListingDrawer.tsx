@@ -26,7 +26,7 @@ import { Visibility } from '@/src/API';
 import { useCreateListing } from '@/src/hooks/marketplaceCustomHooks';
 import { createListingSchema } from './createListingValidation';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
-import { storeImage } from '@/src/components/utils/s3Helpers/ItemForSaleImageS3Helper';
+import { storeImage } from '@/src/utils/s3Helpers/ItemForSaleImageS3Helper';
 import { handleContactChange } from '@/src/utils/contactUtils';
 
 interface CreateListingDrawerProps {

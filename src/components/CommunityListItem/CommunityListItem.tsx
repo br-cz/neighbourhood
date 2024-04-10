@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Box, Skeleton } from '@mantine/core';
 import classes from './CommunityListItem.module.css';
 import { Community } from '@/src/API';
-import { retrieveImage } from '../utils/s3Helpers/CommunityImageS3Helper';
+import { retrieveImage } from '../../utils/s3Helpers/CommunityImageS3Helper';
 
 interface CommunityListItemProps {
   community: Community;

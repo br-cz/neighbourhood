@@ -1,7 +1,7 @@
 import { Group, Loader, SimpleGrid, Text } from '@mantine/core';
 import { PostCard } from '@/src/components/Home/PostCard/PostCard';
 import { useFetchPosts, useUserLikes } from '@/src/hooks/postsCustomHooks';
-import { filterAndSortPosts } from '@/src/components/utils/postUtils';
+import { filterAndSortPosts } from '@/src/utils/postUtils';
 import { Post } from '@/src/types/types';
 import { useCurrentUser } from '@/src/hooks/usersCustomHooks';
 

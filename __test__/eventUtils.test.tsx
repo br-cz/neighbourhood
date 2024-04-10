@@ -1,4 +1,4 @@
-import { filterAndSortEvents } from '@/src/components/utils/eventUtils';
+import { filterAndSortEvents } from '@/src/utils/eventUtils';
 import { Visibility } from '@/src/types/types';
 
 const mockSaves = new Map<string, boolean>();
@@ -102,7 +102,6 @@ describe('postUtils', () => {
       jest.useFakeTimers().setSystemTime(thisMonthStart);
 
       const filtered = filterAndSortEvents(mockEvents, '', 'This Month', mockSaves);
-      console.log(filtered);
       expect(filtered.length).toBe(3);
 
       jest.useRealTimers();

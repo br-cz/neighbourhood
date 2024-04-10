@@ -73,7 +73,6 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
   const handleAcceptRequest = async () => {
     try {
       await handleCreateFriend(user.id);
-      console.log(`Friend request accepted from: ${user.firstName}`);
       setStatus('friend');
     } catch (err) {
       console.error('Failed to add friend:', err);
@@ -148,7 +147,6 @@ export function UserListItem({ user, relationshipStatus, onUpdate }: UserListIte
     });
   };
   const handleCancelRequest = () => {
-    console.log(user);
     modals.openConfirmModal({
       title: (
         <Title order={5} component="p">

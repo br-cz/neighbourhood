@@ -41,7 +41,6 @@ export const updateUserEmailAPI = async (userId: string, newEmail: string, _vers
       query: updateUser,
       variables: { input },
     });
-    console.log('User updated successfully:', updatedUser.data.updateUser);
     return updatedUser.data.updateUser;
   } catch (error: any) {
     throw new HttpError(`Error updating user email: ${error.message}`, error.statusCode || 500);
@@ -60,7 +59,6 @@ export const updateUserProfilePicAPI = async (userId: string, image: string, _ve
         },
       },
     });
-    console.log('User updated successfully:', updatedUser.data.updateUser);
     return updatedUser.data.updateUser;
   } catch (error: any) {
     throw new HttpError(
@@ -81,7 +79,6 @@ export const updateUserSelectedCommunity = async (
       query: updateUser,
       variables: { input },
     });
-    console.log('User selected community successfully updated:', updatedUser.data.updateUser);
     return updatedUser.data.updateUser;
   } catch (error: any) {
     throw new HttpError(
@@ -155,7 +152,7 @@ export const deleteUserCommunityAPI = async (id: string) => {
     });
     return deleteUserCommunityResponse.data.deleteUserCommunity;
   } catch (error: any) {
-    console.log('Error deleting user community connection:', error);
+    console.error('Error deleting user community connection:', error);
     throw new HttpError(
       `Error deleting user community connection: ${error.message}`,
       error.statusCode || 500

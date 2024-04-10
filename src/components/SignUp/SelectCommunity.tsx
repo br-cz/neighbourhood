@@ -6,8 +6,8 @@ import { CommunityListItem } from '../CommunityListItem/CommunityListItem';
 import {
   CommunityWithDistance,
   getClosestCommunities,
-} from '../utils/relevantCommunitiesHelpers/getClosestCommunities';
-import { SCHOOL_COMMUNITY_IDS } from '../utils/communityUtils';
+} from '../../utils/relevantCommunitiesHelpers/getClosestCommunities';
+import { SCHOOL_COMMUNITY_IDS } from '../../utils/communityUtils';
 
 interface SelectCommunityProps {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;

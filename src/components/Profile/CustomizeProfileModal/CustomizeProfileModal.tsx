@@ -22,13 +22,10 @@ import { DatePickerInput } from '@mantine/dates';
 import { useFormik } from 'formik';
 import { customizeProfileSchema } from './customizeProfileValidation';
 import { useCurrentUser, userUpdateSubject } from '@/src/hooks/usersCustomHooks';
-import classes from './ProfileCard.module.css';
 import { utcToISO } from '@/src/utils/timeUtils';
-import {
-  retrieveImage,
-  storeImage,
-} from '@/src/components/utils/s3Helpers/UserProfilePictureS3Helper';
+import { retrieveImage, storeImage } from '@/src/utils/s3Helpers/UserProfilePictureS3Helper';
 import { handleContactChange } from '@/src/utils/contactUtils';
+import classes from './CustomizeProfileModal.module.css';
 
 interface CustomizeProfileModalProps {
   opened: boolean;

@@ -130,3 +130,19 @@ export function dateIsThisYear(isoDate: string): boolean {
 
   return date >= firstDayOfYear && date <= lastDayOfYear;
 }
+
+export function dateIsPast7Days(isoDate: string): boolean {
+  const now = new Date();
+  const date = new Date(isoDate);
+  const diffInTime = now.getTime() - date.getTime();
+  const diffInDays = diffInTime / (1000 * 3600 * 24);
+  return diffInDays <= 7 && diffInDays >= 0;
+}
+
+export function dateIsPast30Days(isoDate: string): boolean {
+  const now = new Date();
+  const date = new Date(isoDate);
+  const diffInTime = now.getTime() - date.getTime();
+  const diffInDays = diffInTime / (1000 * 3600 * 24);
+  return diffInDays <= 30 && diffInDays >= 0;
+}

@@ -172,7 +172,6 @@ export function PostCard({ post, isLiked, isAuthor, onUpdate }: PostCardProps) {
                   data-testid="submit-comment"
                   onClick={() => {
                     formik.validateForm().then((errors) => {
-                      console.log(errors);
                       if (Object.keys(errors).length === 0) {
                         formik.submitForm();
                       } else {

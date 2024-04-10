@@ -4,7 +4,7 @@ import { render, waitFor, screen, fireEvent, cleanup } from '@testing-library/re
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import MarketplacePage from '@/src/components/Marketplace/MarketplacePage';
-import { CreateListingDrawer } from '@/src/components/Marketplace/CreateListingDrawer';
+import { CreateListingDrawer } from '@/src/components/Marketplace/CreateListingDrawer/CreateListingDrawer';
 import { DataProvider } from '@/src/contexts/DataContext';
 import { Visibility } from '@/src/API';
 

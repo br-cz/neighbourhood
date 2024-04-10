@@ -25,7 +25,7 @@ import { Visibility } from '@/src/types/types';
 import { useCreateEvent } from '@/src/hooks/eventsCustomHooks';
 import { combineDateTime } from '@/src/utils/timeUtils';
 import { createEventSchema } from './createEventValidation';
-import { storeImage } from '../../utils/s3Helpers/EventImageS3Helper';
+import { storeImage } from '../../../utils/s3Helpers/EventImageS3Helper';
 
 interface CreateEventDrawerProps {
   opened: boolean;
@@ -288,7 +288,6 @@ export function CreateEventDrawer({ opened, onClose, onPostCreated }: CreateEven
             data-testid="submit-btn"
             onClick={() => {
               formik.validateForm().then((errors) => {
-                console.log(errors);
                 if (Object.keys(errors).length === 0 && !loading) {
                   formik.submitForm();
                 } else {
