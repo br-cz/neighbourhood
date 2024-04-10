@@ -27,10 +27,6 @@ window.ResizeObserver = ResizeObserver;
 
 //Global mocks
 
-// jest.mock('@/src/components/Authorization/useAuth', () => ({
-//   useAuth: () => ({ user: { loggedIn: true } }),
-// }));
-
 jest.mock('@/src/components/Authorization/useAuth', () => ({
   useAuth: jest.fn(() => ({
     user: 'user1',
@@ -435,6 +431,6 @@ jest.mock('@mantine/modals', () => ({
 jest.mock('@/src/hooks/googleMapsAPI', () => ({
   useGoogleMapsApi: jest.fn(() => ({
     isLoaded: true,
-    loadError: null, // Adjust according to your needs, could be an error object in other scenarios
+    loadError: null,
   })),
 }));
