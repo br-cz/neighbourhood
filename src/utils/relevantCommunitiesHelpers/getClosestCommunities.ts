@@ -1,13 +1,8 @@
-// utils/findClosestCommunities.tsx
-
 import { generateClient } from '@aws-amplify/api';
 import { listCommunities } from '@/src/graphql/queries';
-
-// You might need to replace `configureAmplify` depending on how your Amplify is set up.
 import { configureAmplify } from '@/src/components/ConfigureAmplifyServer';
 import { Community } from '@/src/API';
 
-// Type for the community with distance
 export interface CommunityWithDistance {
   community: Community;
   distanceKm: number;
@@ -44,7 +39,7 @@ export async function getClosestCommunities(coordinates: string): Promise<Commun
     communityDistances.push(...distances);
   } catch (err) {
     console.error(err);
-    throw err; // Or handle the error as needed
+    throw err;
   }
 
   return communityDistances.sort((a, b) => a.distanceKm - b.distanceKm);

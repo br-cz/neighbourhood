@@ -55,7 +55,7 @@ const closestCommunityMock = jest.fn().mockResolvedValue([
     distanceKm: 10,
   },
 ]);
-jest.mock('@/src/components/utils/relevantCommunitiesHelpers/getClosestCommunities', () => ({
+jest.mock('@/src/utils/relevantCommunitiesHelpers/getClosestCommunities', () => ({
   getClosestCommunities: closestCommunityMock,
 }));
 
@@ -81,27 +81,6 @@ jest.mock('next/navigation', () => ({
   })),
   usePathname: jest.fn(() => '/mocked-path'),
 }));
-
-// jest.mock('@/src/hooks/usersCustomHooks', () => ({
-//   getCurrentUser: jest.fn(),
-//   useCurrentUser: jest.fn(() => ({
-//     user: {
-//       id: 'user1',
-//       username: 'testUser1',
-//       email: 'test@example.com',
-//       postalCode: '12345',
-//       firstName: 'Test',
-//       lastName: 'User',
-//       selectedCommunity: 'community1',
-//       location: 'Test Location',
-//       // age: 30,
-//       // bio: 'This is a test bio.',
-//       // profilePic: 'path/to/profilePic.jpg',
-//       // pets: 1,
-//       // kids: 2,
-//     },
-//   })),
-// }));
 
 jest.mock('@/src/hooks/usersCustomHooks', () => ({
   getCurrentUser: jest.fn(), // Keep this mock as-is, assuming it's used within the fetchCurrentUser function.
@@ -235,46 +214,6 @@ jest.mock('@/src/hooks/communityCustomHooks', () => ({
     // ],
     loading: false,
   })),
-
-  // {
-  //   id: 'community1',
-  //   name: 'Test Community1',
-  //   location: 'Test Location',
-  //   // coordinates: '123, 456',
-  //   image: 'path/to/communityImage.jpg',
-  //   // members: ['user1', 'user2', 'user3'],
-  //   members: [
-  //     {
-  //       id: 'memberid1',
-  //       userId: 'user1',
-  //       user: {
-  //         id: 'user1',
-  //         username: 'testUser1',
-  //       },
-  //       _deleted: false,
-  //     },
-  //   ],
-  //   posts: ['post1', 'post2', 'post3'],
-  // },
-
-  // {
-  //   id: 'community2',
-  //   name: 'Test Community2',
-  //   location: 'Test Location',
-  //   // coordinates: '123, 456',
-  //   image: 'path/to/communityImage.jpg',
-  //   members: ['user1', 'user2', 'user3'],
-  //   posts: ['post1', 'post2', 'post3'],
-  // },
-  // {
-  //   id: 'community3',
-  //   name: 'Test Community3',
-  //   location: 'Test Location',
-  //   // coordinates: '123, 456',
-  //   image: 'path/to/communityImage.jpg',
-  //   members: ['user1', 'user2', 'user3'],
-  //   posts: ['post1', 'post2', 'post3'],
-  // },
 
   useFetchRelevantCommunities: jest.fn(() => ({
     communities: [
@@ -426,23 +365,23 @@ jest.mock('@/src/api/services/user', () => ({
   getUserAPI: jest.fn(),
 }));
 
-jest.mock('@/src/components/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
+jest.mock('@/src/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
-jest.mock('@/src/components/utils/s3Helpers/CommunityImageS3Helper', () => ({
+jest.mock('@/src/utils/s3Helpers/CommunityImageS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
-jest.mock('@/src/components/utils/s3Helpers/EventImageS3Helper', () => ({
+jest.mock('@/src/utils/s3Helpers/EventImageS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
-jest.mock('@/src/components/utils/s3Helpers/PostImageS3Helper', () => ({
+jest.mock('@/src/utils/s3Helpers/PostImageS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 
-jest.mock('@/src/components/utils/s3Helpers/ItemForSaleImageS3Helper', () => ({
+jest.mock('@/src/utils/s3Helpers/ItemForSaleImageS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue(''),
 }));
 

@@ -29,7 +29,7 @@ const mockData = {
   },
 };
 
-jest.mock('@/src/components/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
+jest.mock('@/src/utils/s3Helpers/UserProfilePictureS3Helper', () => ({
   retrieveImage: jest.fn().mockResolvedValue('mock://image-preview'),
   storeImage: jest.fn().mockResolvedValue('mock://image-url'),
 }));
