@@ -29,7 +29,7 @@ interface EventCardProps {
 
 export function EventCard({ event, isSaved, isOrganizer, onView, onUpdate }: EventCardProps) {
   const eventImage = event.images?.[0] || './img/placeholder-img.jpg';
-  const profilePic = event.organizer?.profilePic || './img/placeholder-profile.jpg';
+  const profilePic = event.organizer?.profilePic || './img/placeholder-profile.jpg'; //
   const { handleDeleteEvent } = useDeleteEvent();
   const { saveEvent, unsaveEvent } = useEventSaves(event.id);
   const [saved, setSaved] = useState(false);
